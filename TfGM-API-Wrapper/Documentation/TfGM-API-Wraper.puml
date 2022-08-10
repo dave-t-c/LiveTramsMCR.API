@@ -11,6 +11,15 @@ Models.Services.ServiceFormatter *-- Models.Services.FormattedServices
 Models.Services.ServiceProcessor *-- Models.Services.ServiceRequester
 Models.Services.ServiceProcessor *-- Models.Services.ServiceFormatter
 Models.Services.ServiceProcessor *-- Models.Stops.StopLookup
+Models.Services.ServicesDataModel *-- Models.Services.ServiceProcessor
+}
+
+class Models.Services.ServicesDataModel #Yellow {
+Data model that handles requests for service information.
+---
++ ServicesDataModel(ImportedResources importedResources, IRequester requester)
+---
++ RequestServices(string stop): FormattedServices
 }
 
 class Models.Services.Tram #Yellow{
@@ -78,14 +87,13 @@ returned JSON.
 + MessageBoard: string
 + LastUpdated: string
 }
-
 class Models.Services.ServiceRequester #Yellow {
 Requests service information from the TfGM API.
 ---
-+ ServiceRequester(IConfiguration config = null)
++ ServiceRequester(ApiOptions apiOptions)
 ---
 + RequestServices(List<int> ids): List<UnformattedServices> 
-+ RequestId(int id): Task<UnformattedServices> 
+- RequestId(int id): Task<UnformattedServices> 
 }
 
 class Models.Services.ServiceFormatter #Yellow {
@@ -107,6 +115,14 @@ Handles the requesting and formatting of TfGM service information
 'Models.Stops'
 package Models.Stops {
 Models.Stops.StopLookup *-- Models.Stops.Stop
+}
+
+class Models.Stops.StopsDataModel #Orange {
+Data model for processing stops related requests.
+---
++ StopsDataModel(ImportedResources importedResources)
+---
+GetStops(): List<Stop> 
 }
 
 class Models.Stops.StopLookup #Orange {
@@ -145,7 +161,13 @@ Models.Resources.ResourceLoader *-- Models.Resources.StopLoader
 Models.Resources.ResourceLoader *-- Models.Resources.StationNamesToTlarefLoader
 Models.Resources.ResourceLoader *-- Models.Resources.TlarefToIdsLoader
 Models.Resources.ResourceLoader *-- Models.Resources.ResourcesConfig
+Models.Services.ServiceRequester *-- Models.Resources.ApiOptions 
+}
 
+class Models.Resources.ApiOptions #LightSkyBlue {
+Stores API settings used when requesting data from the TfGM API.
+---
++ OcpApimSubscriptionKey: String
 }
 
 class Models.Resources.LoaderHelper #LightSkyBlue {
@@ -197,37 +219,25 @@ class Models.Resources.ResourcesConfig #LightSkyBlue {
 + DeepCopy(): ResourcesConfig
 }
 
-'Models'
-package Models{
-Models.WrapperDataModel <-- Models.Resources.ResourceLoader
-Models.WrapperDataModel <-- Models.Services.ServiceProcessor
-}
-
-class Models.WrapperDataModel #Lavender{
-Main data model for the TfGM-API-Wrapper project
----
-+ WrapperDataModel(ResourcesConfig resourcesConfig, IRequester requester = null)
-+ ImportResources(): ImportedResources 
-+ RequestServices(string stop): FormattedServices
-}
-
 'Controllers
 package Controllers {
-Controllers.StopsController "Uses" <-- Models.WrapperDataModel
-Controllers.ServiceController "Uses" <-- Models.WrapperDataModel
+Controllers.StopsController "Uses" <-- Models.Stops.StopsDataModel
+Controllers.ServiceController "Uses" <-- Models.Services.ServicesDataModel
 }
 
 class Controllers.ServiceController #HoneyDew{
 Controller for handling requests for service information
 ---
-+ ServiceController(IConfiguration config, IOptions<ResourcesConfig> resources)
++ ServiceController(IServiceDataModel serviceDataModel)
+---
 + GetService(string stop): IActionResult 
 }
 
 class Controllers.StopsController #HoneyDew {
 Controller for handling requests for stop information
 ---
-+ StopsController(IOptions<ResourcesConfig> config)
++ StopsController(IStopsDataModel)
+---
 + GetAllStops(): IActionResult 
 }
 

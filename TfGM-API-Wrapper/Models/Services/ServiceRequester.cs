@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using TfGM_API_Wrapper.Models.Resources;
 
 namespace TfGM_API_Wrapper.Models.Services;
 
@@ -11,16 +13,16 @@ namespace TfGM_API_Wrapper.Models.Services;
 /// </summary>
 public class ServiceRequester : IRequester
 {
-    private readonly IConfiguration _config;
+    private readonly ApiOptions _apiOptions;
 
     /// <summary>
     /// Creates a new ServiceRequester using an injected IConfiguration.
     /// config has a default of null in case it is not injected or has not been configured.
     /// </summary>
-    /// <param name="config"></param>
-    public ServiceRequester(IConfiguration config = null)
+    /// <param name="apiOptions">API Options imported on startup. These are injected</param>
+    public ServiceRequester(ApiOptions apiOptions)
     {
-        _config = config;
+        _apiOptions = apiOptions;
     }
 
     /// <summary>
@@ -44,9 +46,9 @@ public class ServiceRequester : IRequester
     private async Task<UnformattedServices> RequestId(int id)
     {
         var client = new HttpClient();
-
+        
         // Request headers
-        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config["OcpApimSubscriptionKey"]);
+        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiOptions.OcpApimSubscriptionKey);
 
         var uri = $"https://api.tfgm.com/odata/Metrolinks({id})";
 

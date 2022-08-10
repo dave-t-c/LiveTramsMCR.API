@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Controllers;
 using TfGM_API_Wrapper.Models.Resources;
@@ -13,8 +12,9 @@ namespace TfGM_API_Wrapper_Tests.TestControllers;
 /// </summary>
 public class TestStopsController
 {
-    private IOptions<ResourcesConfig>? _resourceOptions;
     private ResourcesConfig? _resourcesConfig;
+    private ImportedResources? _importedResources;
+    private IStopsDataModel? _stopsDataModel;
     private StopsController? _testStopController;
 
     [SetUp]
@@ -26,8 +26,9 @@ public class TestStopsController
             StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json",
             TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json"
         };
-        _resourceOptions = Options.Create(_resourcesConfig);
-        _testStopController = new StopsController(_resourceOptions);
+        _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
+        _stopsDataModel = new StopsDataModel(_importedResources);
+        _testStopController = new StopsController(_stopsDataModel);
     }
 
     /// <summary>
@@ -38,7 +39,10 @@ public class TestStopsController
     public void Teardown()
     {
         _testStopController = null;
-        _resourceOptions = null;
+        _resourcesConfig = null;
+        _importedResources = null;
+        _stopsDataModel = null;
+        _testStopController = null;
     }
 
     /// <summary>

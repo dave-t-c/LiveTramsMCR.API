@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Annotations;
 using TfGM_API_Wrapper.Models;
 using TfGM_API_Wrapper.Models.Resources;
+using TfGM_API_Wrapper.Models.Stops;
 
 namespace TfGM_API_Wrapper.Controllers;
 
@@ -14,7 +15,7 @@ namespace TfGM_API_Wrapper.Controllers;
 [ApiController]
 public class StopsController : Controller
 {
-    private readonly ImportedResources _importedResources;
+    private readonly IStopsDataModel _stopsDataModel;
 
     /// <summary>
     ///     Controller Constructor that allows for custom stops path file location.
@@ -22,12 +23,10 @@ public class StopsController : Controller
     ///     Default = Default location for stop data file. This should ideally be
     ///     extracted to the properties file.
     /// </summary>
-    /// <param name="config">ResourcesConfig - Configuration for resources location</param>
-    public StopsController(IOptions<ResourcesConfig> config)
+    /// <param name="stopsDataModel">Data Model used for processing stops information</param>
+    public StopsController(IStopsDataModel stopsDataModel)
     {
-        var resourceConfig = config.Value;
-        var wrapperDataModel = new WrapperDataModel(resourceConfig);
-        _importedResources = wrapperDataModel.ImportResources();
+        _stopsDataModel = stopsDataModel;
     }
 
     /// <summary>
@@ -40,6 +39,6 @@ public class StopsController : Controller
     [HttpGet]
     public IActionResult GetAllStops()
     {
-        return Ok(_importedResources.ImportedStops);
+        return Ok(_stopsDataModel.GetStops());
     }
 }
