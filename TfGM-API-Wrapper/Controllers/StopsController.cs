@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -35,7 +36,7 @@ public class StopsController : Controller
     /// <returns>JSON List -> Stop</returns>
     [Route("/api/stops")]
     [Produces("application/json")]
-    [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse (type:typeof (List<Stop>), statusCode: StatusCodes.Status200OK)]
     [HttpGet]
     public IActionResult GetAllStops()
     {
