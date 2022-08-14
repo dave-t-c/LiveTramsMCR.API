@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography.Xml;
 
 namespace TfGM_API_Wrapper.Models.Services;
 
@@ -27,11 +28,13 @@ public class Tram
     /// <summary>
     /// Destination for the tram, e.g. Piccadilly.
     /// </summary>
+    /// <example>Piccadilly</example>
     public string Destination { get; }
 
     /// <summary>
     /// Number of carriages the tram has, either 'Single' or 'Double'
     /// </summary>
+    /// <example>Double</example>
     // The carriages could be a good candidate for an enum, but given there are only
     // two possible values, but this may be unnecessary. 
     public string Carriages { get; }
@@ -39,6 +42,7 @@ public class Tram
     /// <summary>
     /// Status of the Tram, e.g. 'Due'
     /// </summary>
+    /// <example>Due</example>
     public string Status { get; }
     
     /// <summary>
@@ -46,6 +50,7 @@ public class Tram
     /// This is stored as a string as this is the format returned by the TfGM API.
     /// It is not converted as no calculations are completed using it.
     /// </summary>
+    /// <example>10</example>
     public string Wait { get; }
 
     /// <summary>
