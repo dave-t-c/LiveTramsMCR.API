@@ -1,6 +1,35 @@
 @startuml TfGM-API-Wrapper
 skinparam classFontColor automatic
 
+'Models.RoutePlanner'
+package Models.RoutePlanner {
+Models.Resources.RouteLoader *-- Models.RoutePlanner.Route
+Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.PlannedRoute
+}
+
+class Models.RoutePlanner.Route #Purple {
+Stores the information about a single Route
+---
++ Route(string name, List<Stop> stops)
+---
++ Name: string
++ Stops: List<Stop>
+}
+
+class Models.RoutePlanner.PlannedRoute #Purple {
+}
+
+class Models.RoutePlanner.RouteNotPossibleException  #Purple {
+}
+
+class Models.RoutePlanner.RoutePlanner #Purple {
+Identifies a route between two stops
+---
++ RoutePlanner(List<Route> routes)
+---
++ FindRoute(Stop origin, Stop destination): PlannedRoute
+}
+
 'Models.Services' 
 package Models.Services {
 Models.Services.FormattedServices *-- Models.Services.Tram 
