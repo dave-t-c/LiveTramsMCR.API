@@ -5,8 +5,19 @@ skinparam classFontColor automatic
 package Models.RoutePlanner {
 Models.Resources.RouteLoader *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.PlannedRoute
+Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteNotPossibleException
-Models.RoutePlanner.RoutePlanner *-- Models.Stops.StopLookup
+Models.RoutePlanner.RoutePlannerDataModel *-- Models.Stops.StopLookup
+Models.RoutePlanner.RoutePlannerDataModel *-- Models.RoutePlanner.RoutePlanner
+Models.RoutePlanner.RoutePlanner "Implements" --|> Models.RoutePlanner.IRoutePlanner
+}
+
+class Models.RoutePlanner.RoutePlannerDataModel #Purple {
+Data Model for Route planning requests
+---
++ RoutePlannerDataModel(ImportedResources importedResources, IRoutePlanner routePlanner)
+---
++ FindRoute(string origin, string destination): List<PlannedRoute>
 }
 
 class Models.RoutePlanner.Route #Purple {
@@ -15,6 +26,7 @@ Stores the information about a single Route
 + Route(string name, List<Stop> stops)
 ---
 + GetStopsBetween(Stop start, Stop destination): List<Stop>
+---
 + Name: string
 + Stops: List<Stop>
 }
@@ -28,9 +40,7 @@ Stores a possible route between an origin and destination
 + DestinationStop: Stop
 + InterchangeStop: Stop
 + RouteFromOrigin: Route
-+ RouteFromOriginDestination: string
 + RouteFromInterchange: Route
-+ RouteFromInterchangeDestination: string
 + RequiresInterchange: bool
 + RouteDetails: string
 }
@@ -39,6 +49,14 @@ class Models.RoutePlanner.RouteNotPossibleException  #Purple {
 Thrown when a route between two stops 
 cannot be generated
 }
+
+interface Models.RoutePlanner.IRoutePlanner #Purple {
+Interface needed to be implemented for a 
+route planner. 
+---
++ FindRoute(Stop origin, Stop destination): List<PlannedRoute>
+}
+
 
 class Models.RoutePlanner.RoutePlanner #Purple {
 Identifies a route between two stops
@@ -162,6 +180,7 @@ Handles the requesting and formatting of TfGM service information
 'Models.Stops'
 package Models.Stops {
 Models.Stops.StopLookup *-- Models.Stops.Stop
+Models.Stops.StopLookup *-- Models.Stops.StopNotFoundException
 }
 
 class Models.Stops.StopsDataModel #Orange {
@@ -180,6 +199,11 @@ or TLAREF.
 + TlarefLookup(string tlaref): List<int> 
 + StationNameLookup(string stationName): List<int> 
 + LookupIDs(string value): List<int> 
++ IdentifyStop(string value): Stop
+}
+
+class Models.Stops.StopNotFoundException #Orange {
+Exception thrown when a stop could not be identified
 }
 
 class Models.Stops.Stop #Orange{
@@ -281,6 +305,15 @@ class Models.Resources.ResourcesConfig #LightSkyBlue {
 package Controllers {
 Controllers.StopsController "Uses" <-- Models.Stops.StopsDataModel
 Controllers.ServiceController "Uses" <-- Models.Services.ServicesDataModel
+Controllers.RoutePlannerController "Uses" <-- Models.RoutePlanner.RoutePlannerDataModel
+}
+
+class Controllers.RoutePlannerController #HoneyDew {
+Controller for handling requests for planning RoutesResourcePath
+---
++ RoutePlannerController(IRoutePlannerDataModel)
+---
++ FindRoute(string origin, string destination): IActionResult
 }
 
 class Controllers.ServiceController #HoneyDew{
