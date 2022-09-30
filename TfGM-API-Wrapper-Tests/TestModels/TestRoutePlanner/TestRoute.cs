@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
 using TfGM_API_Wrapper.Models.RoutePlanner;
@@ -18,9 +19,10 @@ public class TestRoute
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/routes.json";
     private ResourcesConfig? _validResourcesConfig;
-    private List<Stop> _importedStops;
-    private StopLoader _stopLoader;
-    private Stop _exampleStop;
+    private List<Stop>? _importedStops;
+    private StopLoader? _stopLoader;
+    private Stop? _exampleStop;
+    private Route? _validRoute;
     
     
     /// <summary>
@@ -43,6 +45,8 @@ public class TestRoute
         {
             StopName = "Example"
         };
+
+        _validRoute = new Route("Example route", "#0044cc", _importedStops);
 
     }
 
@@ -124,5 +128,21 @@ public class TestRoute
             {
                 var unused = new Route("Example", "#0044cd", null);
             });
+    }
+
+    /// <summary>
+    /// Identify the stops that occur between two stops on a route.
+    /// This should return a list of one stop,
+    /// as the stops file contains Example-1, Example-2, Example 3.
+    /// </summary>
+    [Test]
+    public void TestGetStopsBetweenOnRoute()
+    {
+        var identifiedStops = _validRoute?.GetStopsBetween(_importedStops?.First(), _importedStops?.Last());
+        var expectedStop = _importedStops?.First(stop => stop.StopName == "Example-2");
+        Assert.IsNotEmpty(identifiedStops ?? throw new NullReferenceException());
+        Assert.AreEqual(1, identifiedStops.Count);
+        Assert.IsTrue(identifiedStops.Contains(expectedStop));
+        
     }
 }
