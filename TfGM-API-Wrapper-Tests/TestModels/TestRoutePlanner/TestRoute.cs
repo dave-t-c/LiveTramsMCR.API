@@ -95,4 +95,19 @@ public class TestRoute
                 var unused = new Route(null, "#0044cd", new List<Stop> {_exampleStop});
             });
     }
+
+    /// <summary>
+    /// Test creating a route with a null colour.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestNullColour()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'colour')"),
+            delegate
+            {
+                var unused = new Route("Example", null, new List<Stop> {_exampleStop});
+            });
+    }
 }

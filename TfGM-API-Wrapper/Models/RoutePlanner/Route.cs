@@ -35,7 +35,7 @@ public class Route
     public Route(string name, string colour, List<Stop> stops)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
-        Colour = colour;
+        Colour = colour ?? throw new ArgumentNullException(nameof(colour));
         Stops = stops;
     }
 }
