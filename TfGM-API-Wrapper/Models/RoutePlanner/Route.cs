@@ -9,7 +9,14 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 /// </summary>
 public class Route
 {
+    /// <summary>
+    /// Name of the route, e.g. "Purple"
+    /// </summary>
     public string Name { get; }
+    
+    /// <summary>
+    /// Hex colour string for the route, e.g. #7B2082
+    /// </summary>
     public string Colour { get; }
     
     /// <summary>
@@ -26,8 +33,8 @@ public class Route
     ///
     public Route(string name, string colour, List<Stop> stops)
     {
-        Name = "Example";
-        Colour = "#0044cc";
-        Stops = new List<Stop> {new ()};
+        Name = name;
+        Colour = colour;
+        Stops = stops;
     }
 }
