@@ -219,4 +219,20 @@ public class TestRoute
                 var unused = _validRoute?.GetStopsBetween(_exampleStop, _importedStops?.First());
             });
     }
+    
+    /// <summary>
+    /// Test to get the routes between a valid start stop, and an end stop
+    /// not on the route.
+    /// This should throw an invalid operation exception.
+    /// </summary>
+    [Test]
+    public void TestEndNotInRoute()
+    {
+        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                .And.Message.EqualTo("Route does not contain stop Example"),
+            delegate
+            {
+                var unused = _validRoute?.GetStopsBetween(_importedStops?.First(), _exampleStop);
+            });
+    }
 }
