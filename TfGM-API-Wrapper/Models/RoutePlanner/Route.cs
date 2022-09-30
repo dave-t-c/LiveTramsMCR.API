@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TfGM_API_Wrapper.Models.Stops;
 
 namespace TfGM_API_Wrapper.Models.RoutePlanner;
@@ -37,5 +38,26 @@ public class Route
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Colour = colour ?? throw new ArgumentNullException(nameof(colour));
         Stops = stops ?? throw new ArgumentNullException(nameof(stops));
+    }
+
+    /// <summary>
+    /// Identifies a list of stops that occur between two stops
+    /// E.g. for the route A -> B -> C -> D, stops between A and D 
+    /// this will return B then C.
+    /// </summary>
+    /// <param name="start">Stop in list to start</param>
+    /// <param name="end">Stop in list to end at</param>
+    /// <returns>List of Interim Stops</returns>
+    public List<Stop> GetStopsBetween(Stop start, Stop end)
+    {
+        var startIndex = Stops.IndexOf(start);
+        var endIndex = Stops.IndexOf(end);
+
+        var identifiedStops = new List<Stop>();
+        for (int i = startIndex + 1; i < endIndex; i++)
+        {
+            identifiedStops.Add(Stops.ElementAt(i));
+        }
+        return identifiedStops;
     }
 }
