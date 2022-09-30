@@ -247,6 +247,7 @@ Models.Resources.ResourceLoader *-- Models.Resources.StopLoader
 Models.Resources.ResourceLoader *-- Models.Resources.StationNamesToTlarefLoader
 Models.Resources.ResourceLoader *-- Models.Resources.TlarefToIdsLoader
 Models.Resources.ResourceLoader *-- Models.Resources.RouteLoader
+Models.Resources.RouteLoader *-- Models.RoutePlanner.Route
 Models.Resources.ResourceLoader *-- Models.Resources.ResourcesConfig
 Models.Services.ServiceRequester *-- Models.Resources.ApiOptions 
 }
@@ -282,7 +283,7 @@ Loads the TlarefsToIds Dictionary
 class Models.Resources.RouteLoader #LightSkyBlue {
 Loads stored Route data
 ----
-+ RouteLoader(ResourcesConfig resourcesConfig)
++ RouteLoader(ResourcesConfig resourcesConfig, List<Stop> stops)
 + ImportRoutes(): List<Route>
 }
 
