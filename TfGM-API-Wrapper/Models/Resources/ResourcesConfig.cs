@@ -20,6 +20,11 @@ public class ResourcesConfig
     /// Path for file that maps a stations tlaref to it's associated IDs.
     /// </summary>
     public string TlarefsToIdsPath { get; set; }
+    
+    /// <summary>
+    /// Path for the routes resource file that maps routes to their stop names.
+    /// </summary>
+    public string RoutesResourcePath { get; set; }
 
     /// <summary>
     ///     Creates a Deep Copy of this resource config object.
