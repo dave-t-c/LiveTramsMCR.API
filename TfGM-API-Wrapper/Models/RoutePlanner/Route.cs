@@ -36,6 +36,6 @@ public class Route
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Colour = colour ?? throw new ArgumentNullException(nameof(colour));
-        Stops = stops;
+        Stops = stops ?? throw new ArgumentNullException(nameof(stops));
     }
 }
