@@ -52,9 +52,10 @@ public class Route
     {
         var startIndex = Stops.IndexOf(start);
         var endIndex = Stops.IndexOf(end);
-
+        // Use the differences in index to identify if we will be going up or down the list.
+        var increment = endIndex > startIndex ? 1 : -1;
         var identifiedStops = new List<Stop>();
-        for (int i = startIndex + 1; i < endIndex; i++)
+        for (int i = startIndex + increment; i != endIndex; i += increment)
         {
             identifiedStops.Add(Stops.ElementAt(i));
         }
