@@ -15,10 +15,10 @@ public class TestRouteLoader
     private const string StopResourcePathConst = "../../../Resources/ValidStopLoader.json";
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
-    private const string RoutesResourcePath = "../../../Resources/routes.json";
+    private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private ResourcesConfig? _validResourcesConfig;
-    private StopLoader _stopLoader;
-    private List<Stop> _importedStops;
+    private StopLoader? _stopLoader;
+    private List<Stop>? _importedStops;
     
     /// <summary>
     /// Create configs and stops for testing the route loader

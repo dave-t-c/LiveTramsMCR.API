@@ -19,7 +19,7 @@ public class TestRoute
     private const string StopsResourcePathExtended = "../../../Resources/TestRoutePlanner/example-route-stops-extended.json";
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
-    private const string RoutesResourcePath = "../../../Resources/routes.json";
+    private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private ResourcesConfig? _validResourcesConfig;
     private List<Stop>? _importedStops;
     private List<Stop>? _extendedImportedStops;
