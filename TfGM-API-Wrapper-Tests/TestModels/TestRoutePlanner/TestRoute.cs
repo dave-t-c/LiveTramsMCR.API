@@ -110,4 +110,19 @@ public class TestRoute
                 var unused = new Route("Example", null, new List<Stop> {_exampleStop});
             });
     }
+
+    /// <summary>
+    /// Test to create a route with a null stops list.
+    /// This should throw an args null exception
+    /// </summary>
+    [Test]
+    public void TestNullStops()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'stops')"),
+            delegate
+            {
+                var unused = new Route("Example", "#0044cd", null);
+            });
+    }
 }
