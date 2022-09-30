@@ -26,7 +26,7 @@ public class Route
     public List<Stop> Stops { get; }
     
     /// <summary>
-    /// Creates a new route, the params are currently not checked.
+    /// Creates a new route, the params are only null sanitised
     /// </summary>
     /// <param name="name">Route name, e.g. Purple</param>
     /// <param name="colour">Route hex colour, e.g. #7B2082</param>
