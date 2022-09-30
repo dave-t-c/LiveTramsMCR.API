@@ -52,6 +52,8 @@ public class Route
     {
         _ = start ?? throw new ArgumentNullException(nameof(start));
         _ = end ?? throw new ArgumentNullException(nameof(end));
+        if (!Stops.Contains(start)) 
+            throw new InvalidOperationException("Route does not contain stop " + start.StopName);
         var startIndex = Stops.IndexOf(start);
         var endIndex = Stops.IndexOf(end);
         // Use the differences in index to identify if we will be going up or down the list.
