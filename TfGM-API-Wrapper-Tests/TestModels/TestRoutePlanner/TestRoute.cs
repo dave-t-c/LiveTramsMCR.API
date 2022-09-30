@@ -197,7 +197,7 @@ public class TestRoute
     public void TestRouteBetweenNullEnd()
     {
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'start')"),
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'end')"),
             delegate
             {
                 var unused = _validRoute?.GetStopsBetween(_importedStops?.First(), null);
