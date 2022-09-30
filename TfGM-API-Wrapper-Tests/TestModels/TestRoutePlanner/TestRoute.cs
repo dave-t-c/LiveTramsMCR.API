@@ -188,4 +188,19 @@ public class TestRoute
                 var unused = _validRoute?.GetStopsBetween(null, _importedStops?.Last());
             });
     }
+
+    /// <summary>
+    /// Test to get the stops between a valid start and null stop.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestRouteBetweenNullEnd()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'start')"),
+            delegate
+            {
+                var unused = _validRoute?.GetStopsBetween(_importedStops?.First(), null);
+            });
+    }
 }
