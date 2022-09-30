@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
@@ -78,5 +79,20 @@ public class TestRoute
         Assert.IsTrue(testRoute.Stops.Contains(_exampleStop));
         Assert.AreEqual("Example-2", testRoute.Name);
         Assert.AreEqual("#0044cd", testRoute.Colour);
+    }
+
+    /// <summary>
+    /// Create a route with a null name.
+    /// This should throw a args null exception.
+    /// </summary>
+    [Test]
+    public void TestNullRouteName()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'name')"),
+            delegate
+            {
+                var unused = new Route(null, "#0044cd", new List<Stop> {_exampleStop});
+            });
     }
 }

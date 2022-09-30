@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TfGM_API_Wrapper.Models.Stops;
 
@@ -33,7 +34,7 @@ public class Route
     ///
     public Route(string name, string colour, List<Stop> stops)
     {
-        Name = name;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
         Colour = colour;
         Stops = stops;
     }
