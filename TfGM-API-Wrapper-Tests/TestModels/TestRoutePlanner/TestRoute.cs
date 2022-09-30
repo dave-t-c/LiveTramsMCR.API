@@ -172,4 +172,20 @@ public class TestRoute
         Assert.IsTrue(identifiedStops.Contains(secondExpectedStop));
         Assert.IsTrue(identifiedStops.IndexOf(firstExpectedStop) < identifiedStops.IndexOf(secondExpectedStop));
     }
+
+    /// <summary>
+    /// Test to get the stops between a null start and end stop.
+    /// This should throw an arg null exception.
+    /// </summary>
+    [Test]
+    public void TestRouteBetweenNullStart()
+    {
+        
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'start')"),
+            delegate
+            {
+                var unused = _validRoute?.GetStopsBetween(null, _importedStops?.Last());
+            });
+    }
 }
