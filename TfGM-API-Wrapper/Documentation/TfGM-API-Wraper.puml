@@ -3,7 +3,7 @@ skinparam classFontColor automatic
 
 'Models.RoutePlanner'
 package Models.RoutePlanner {
-Models.Resources.RouteLoader *-- Models.RoutePlanner.Route
+Models.Resources.RouteLoader *-- Models.RoutePlanner.UnprocessedRoute
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.PlannedRoute
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteNotPossibleException
@@ -23,12 +23,26 @@ Data Model for Route planning requests
 class Models.RoutePlanner.Route #Purple {
 Stores the information about a single Route
 ---
-+ Route(string name, List<Stop> stops)
++ Route(string name, string colour, List<Stop> stops)
 ---
 + GetStopsBetween(Stop start, Stop destination): List<Stop>
 ---
 + Name: string
++ Colour: string
 + Stops: List<Stop>
+}
+
+class Models.RoutePlanner.UnprocessedRoute #Purple {
+POCO used for importing routes from a file.
+These only contain the stop names.
+The Route type containing the Stop class is created 
+when the resources are imported.
+---
++ Route(string name, string colour, List<string> stops)
+---
++ Name: string
++ Colour: string
++ Stops: List<string>
 }
 
 class Models.RoutePlanner.PlannedRoute #Purple {
