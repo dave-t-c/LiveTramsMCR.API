@@ -9,14 +9,25 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 /// </summary>
 public class Route
 {
+    public string Name { get; }
+    public string Colour { get; }
+    
+    /// <summary>
+    /// Stops belonging to a route in the order they can be travelled between.
+    /// </summary>
+    public List<Stop> Stops { get; }
+    
     /// <summary>
     /// Creates a new route, the params are currently not checked.
     /// </summary>
     /// <param name="name">Route name, e.g. Purple</param>
     /// <param name="colour">Route hex colour, e.g. #7B2082</param>
     /// <param name="stops"></param>
+    ///
     public Route(string name, string colour, List<Stop> stops)
     {
-        
+        Name = "Example";
+        Colour = "#0044cc";
+        Stops = new List<Stop> {new ()};
     }
 }
