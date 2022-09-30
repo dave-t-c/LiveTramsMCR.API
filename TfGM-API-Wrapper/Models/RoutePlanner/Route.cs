@@ -50,6 +50,7 @@ public class Route
     /// <returns>List of Interim Stops</returns>
     public List<Stop> GetStopsBetween(Stop start, Stop end)
     {
+        _ = start ?? throw new ArgumentNullException(nameof(start));
         var startIndex = Stops.IndexOf(start);
         var endIndex = Stops.IndexOf(end);
         // Use the differences in index to identify if we will be going up or down the list.
