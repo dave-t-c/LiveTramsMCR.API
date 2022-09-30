@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -14,15 +15,18 @@ namespace TfGM_API_Wrapper_Tests.TestModels.TestRoutePlanner;
 /// </summary>
 public class TestRoute
 {
-    private const string StopResourcePathConst = "../../../Resources/example-route-stops.json";
+    private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/example-route-stops.json";
+    private const string StopsResourcePathExtended = "../../../Resources/TestRoutePlanner/example-route-stops-extended.json";
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/routes.json";
     private ResourcesConfig? _validResourcesConfig;
     private List<Stop>? _importedStops;
+    private List<Stop>? _extendedImportedStops;
     private StopLoader? _stopLoader;
     private Stop? _exampleStop;
     private Route? _validRoute;
+    private Route? _extendedStopsRoute;
     
     
     /// <summary>
@@ -41,12 +45,18 @@ public class TestRoute
 
         _stopLoader = new StopLoader(_validResourcesConfig);
         _importedStops = _stopLoader.ImportStops();
+
+        _validResourcesConfig.StopResourcePath = StopsResourcePathExtended;
+        _stopLoader = new StopLoader(_validResourcesConfig);
+        _extendedImportedStops = _stopLoader.ImportStops();
+        
         _exampleStop = new Stop()
         {
             StopName = "Example"
         };
 
         _validRoute = new Route("Example route", "#0044cc", _importedStops);
+        _extendedStopsRoute = new Route("Example route", "#0044cc", _extendedImportedStops);
 
     }
 
@@ -143,6 +153,23 @@ public class TestRoute
         Assert.IsNotEmpty(identifiedStops ?? throw new NullReferenceException());
         Assert.AreEqual(1, identifiedStops.Count);
         Assert.IsTrue(identifiedStops.Contains(expectedStop));
-        
+    }
+
+    /// <summary>
+    /// Test to try and get the stops between a start and end location in a different order.
+    /// This should return two stops, in the order Example-3, Example-2.
+    /// </summary>
+    [Test]
+    public void TestGetStopsBetweenBackwards()
+    {
+        var identifiedStops =
+            _extendedStopsRoute?.GetStopsBetween(_extendedImportedStops?.Last(), _extendedImportedStops?.First());
+        var firstExpectedStop = _extendedImportedStops?.First(stop => stop.StopName == "Example-3");
+        var secondExpectedStop = _extendedImportedStops?.First(stop => stop.StopName == "Example-2");
+        Assert.IsNotEmpty(identifiedStops ?? throw new NullReferenceException());
+        Assert.AreEqual(2, identifiedStops.Count);
+        Assert.IsTrue(identifiedStops.Contains(firstExpectedStop));
+        Assert.IsTrue(identifiedStops.Contains(secondExpectedStop));
+        Assert.IsTrue(identifiedStops.IndexOf(firstExpectedStop) < identifiedStops.IndexOf(secondExpectedStop));
     }
 }
