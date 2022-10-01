@@ -26,7 +26,7 @@ public class RouteLoader
     /// <param name="importedStops">Imported Stops to assign to Routes</param>
     public RouteLoader(ResourcesConfig resourcesConfig, List<Stop> importedStops)
     {
-        _resourcesConfig = resourcesConfig;
+        _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
         _importedStops = importedStops;
     }
 
