@@ -26,8 +26,12 @@ public class RouteLoader
     /// <param name="importedStops">Imported Stops to assign to Routes</param>
     public RouteLoader(ResourcesConfig resourcesConfig, List<Stop> importedStops)
     {
+        var loaderHelper = new LoaderHelper();
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
         _importedStops = importedStops ?? throw new ArgumentNullException(nameof(importedStops));
+
+        _resourcesConfig.RoutesResourcePath = loaderHelper.CheckFileRequirements(resourcesConfig.RoutesResourcePath,
+            nameof(resourcesConfig.RoutesResourcePath));
     }
 
     /// <summary>
