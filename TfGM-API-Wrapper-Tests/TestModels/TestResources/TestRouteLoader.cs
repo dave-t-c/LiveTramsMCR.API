@@ -114,4 +114,15 @@ public class TestRouteLoader
                 var unused = new RouteLoader(null, _importedStops);
             });
     }
+
+    [Test]
+    public void TestRouteLoaderNullImportedStops()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'importedStops')"),
+            delegate
+            {
+                var unused = new RouteLoader(_validResourcesConfig, null);
+            });
+    }
 }
