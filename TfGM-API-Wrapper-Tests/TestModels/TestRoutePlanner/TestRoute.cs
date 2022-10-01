@@ -88,7 +88,7 @@ public class TestRoute
     [Test]
     public void TestCreateRouteWithDifferentValues()
     {
-        var testRoute = new Route("Example-2", "#0044cd", new List<Stop> {_exampleStop});
+        var testRoute = new Route("Example-2", "#0044cd", new List<Stop> {_exampleStop!});
         Assert.AreEqual(1, testRoute.Stops.Count);
         Assert.IsTrue(testRoute.Stops.Contains(_exampleStop));
         Assert.AreEqual("Example-2", testRoute.Name);
@@ -106,7 +106,7 @@ public class TestRoute
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'name')"),
             delegate
             {
-                var unused = new Route(null, "#0044cd", new List<Stop> {_exampleStop});
+                var unused = new Route(null, "#0044cd", new List<Stop> {_exampleStop!});
             });
     }
 
@@ -121,7 +121,7 @@ public class TestRoute
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'colour')"),
             delegate
             {
-                var unused = new Route("Example", null, new List<Stop> {_exampleStop});
+                var unused = new Route("Example", null, new List<Stop> {_exampleStop!});
             });
     }
 

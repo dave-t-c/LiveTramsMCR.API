@@ -14,8 +14,8 @@ namespace TfGM_API_Wrapper.Models.Resources;
 /// </summary>
 public class RouteLoader
 {
-    private ResourcesConfig _resourcesConfig;
-    private List<Stop> _importedStops;
+    private readonly ResourcesConfig _resourcesConfig;
+    private readonly List<Stop> _importedStops;
     private Dictionary<string, Stop> _stopsDictionary;
 
     /// <summary>
