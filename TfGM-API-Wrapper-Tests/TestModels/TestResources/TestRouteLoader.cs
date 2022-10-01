@@ -21,6 +21,7 @@ public class TestRouteLoader
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private ResourcesConfig? _validResourcesConfig;
     private ResourcesConfig? _diffRoutesResourcesConfig;
+    private ResourcesConfig? _nullRoutesPathResourcesConfig;
     private StopLoader? _stopLoader;
     private List<Stop>? _importedStops;
     
@@ -40,6 +41,9 @@ public class TestRouteLoader
 
         _diffRoutesResourcesConfig = _validResourcesConfig.DeepCopy();
         _diffRoutesResourcesConfig.RoutesResourcePath = RoutesDiffLengthResourcePath;
+
+        _nullRoutesPathResourcesConfig = _validResourcesConfig.DeepCopy();
+        _nullRoutesPathResourcesConfig.RoutesResourcePath = null;
 
         _stopLoader = new StopLoader(_validResourcesConfig);
         _importedStops = _stopLoader.ImportStops();
@@ -115,6 +119,10 @@ public class TestRouteLoader
             });
     }
 
+    /// <summary>
+    /// Test to create a route loader with a null stops list.
+    /// This should throw an args null exception.
+    /// </summary>
     [Test]
     public void TestRouteLoaderNullImportedStops()
     {
@@ -123,6 +131,21 @@ public class TestRouteLoader
             delegate
             {
                 var unused = new RouteLoader(_validResourcesConfig, null);
+            });
+    }
+
+    /// <summary>
+    /// Create a route loader with a null resources route path.
+    /// This should throw an invalid operation exception.
+    /// </summary>
+    [Test]
+    public void TestRouteLoaderNullRoutesPath()
+    {
+        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                .And.Message.EqualTo("RoutesResourcePath cannot be null"),
+            delegate
+            {
+                var unused = new RouteLoader(_nullRoutesPathResourcesConfig, _importedStops);
             });
     }
 }
