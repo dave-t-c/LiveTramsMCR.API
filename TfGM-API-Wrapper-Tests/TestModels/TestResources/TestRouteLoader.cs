@@ -16,7 +16,9 @@ public class TestRouteLoader
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
+    private const string RoutesDiffLengthResourcePath = "../../../Resources/TestRoutePlanner/routes-diff-length.json";
     private ResourcesConfig? _validResourcesConfig;
+    private ResourcesConfig? _diffRoutesResourcesConfig;
     private StopLoader? _stopLoader;
     private List<Stop>? _importedStops;
     
@@ -33,6 +35,9 @@ public class TestRouteLoader
             TlarefsToIdsPath = TlarefsToIdsPath,
             RoutesResourcePath = RoutesResourcePath
         };
+
+        _diffRoutesResourcesConfig = _validResourcesConfig.DeepCopy();
+        _diffRoutesResourcesConfig.RoutesResourcePath = RoutesDiffLengthResourcePath;
 
         _stopLoader = new StopLoader(_validResourcesConfig);
         _importedStops = _stopLoader.ImportStops();
@@ -57,5 +62,19 @@ public class TestRouteLoader
     {
         var testRouteLoader = new RouteLoader(_validResourcesConfig, _importedStops);
         Assert.AreEqual(8, testRouteLoader.ImportRoutes().Count);
+    }
+
+    /// <summary>
+    /// Test to import a different number of routes.
+    /// This should return 7 routes.
+    /// </summary>
+    [Test]
+    public void TestRouteImportDifferentNumberOfRoutes()
+    {
+        var testRouteLoader = new RouteLoader(_diffRoutesResourcesConfig, _importedStops);
+        var importedRoutes = testRouteLoader.ImportRoutes();
+        Assert.NotNull(importedRoutes);
+        Assert.IsNotEmpty(importedRoutes);
+        Assert.AreEqual(7, importedRoutes.Count);
     }
 }
