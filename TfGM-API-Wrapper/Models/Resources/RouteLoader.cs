@@ -27,7 +27,7 @@ public class RouteLoader
     public RouteLoader(ResourcesConfig resourcesConfig, List<Stop> importedStops)
     {
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
-        _importedStops = importedStops;
+        _importedStops = importedStops ?? throw new ArgumentNullException(nameof(importedStops));
     }
 
     /// <summary>
