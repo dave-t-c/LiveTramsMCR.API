@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -96,5 +97,21 @@ public class TestRouteLoader
         var purpleRoute = importedRoutes.First(route => route.Name == "Purple");
         Assert.Contains(piccadillyStop, purpleRoute.Stops);
         Assert.AreEqual(1, purpleRoute.Stops.FindAll(stop => stop.StopName == "Piccadilly").Count);
+    }
+
+    
+    /// <summary>
+    /// Create a route loader with a null resources config.
+    /// This should throw a null args exception.
+    /// </summary>
+    [Test]
+    public void TestRouteLoaderNullResources()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'resourcesConfig')"),
+            delegate
+            {
+                var unused = new RouteLoader(null, _importedStops);
+            });
     }
 }
