@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using TfGM_API_Wrapper.Models.RoutePlanner;
 using TfGM_API_Wrapper.Models.Stops;
@@ -13,7 +16,8 @@ public class RouteLoader
 {
     private ResourcesConfig _resourcesConfig;
     private List<Stop> _importedStops;
-    
+    private Dictionary<string, Stop> _stopsDictionary;
+
     /// <summary>
     /// Loads routes from the resources configuration and assigns the imported
     /// stops to those on a route.
@@ -37,8 +41,22 @@ public class RouteLoader
         var jsonString = reader.ReadToEnd();
         var unprocessedRoutes = JsonConvert.DeserializeObject<List<UnprocessedRoute>> (jsonString);
         var importedRoutes = new List<Route>();
-        for(int i = 0; i < unprocessedRoutes?.Count; i++)
-            importedRoutes.Add(new Route("", "", new List<Stop>()));
+        
+        //Create a Stops Dictionary for faster lookup instead of having to through the list
+        _stopsDictionary = new Dictionary<string, Stop>();
+        foreach (var stop in _importedStops)
+        {
+            _stopsDictionary[stop.StopName] = stop;
+        }
+        
+        //Process all of the unprocessed routes, attaching the stops in the expected order
+        Debug.Assert(unprocessedRoutes != null, nameof(unprocessedRoutes) + " != null");
+        foreach (var unprocessedRoute in unprocessedRoutes)
+        {
+            var identifiedStops = unprocessedRoute.Stops
+                .Select(stop => _stopsDictionary[stop]).ToList();
+            importedRoutes.Add(new Route(unprocessedRoute.RouteName, unprocessedRoute.Colour, identifiedStops));
+        }
         return importedRoutes;
     }
 }

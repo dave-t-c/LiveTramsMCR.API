@@ -10,7 +10,7 @@ public class UnprocessedRoute
     /// <summary>
     /// Name of the route, e.g. Purple
     /// </summary>
-    public string Name { get; set; }
+    public string RouteName { get; set; }
     
     /// <summary>
     /// Hex string of the route colour, e.g. "#7B2082"
