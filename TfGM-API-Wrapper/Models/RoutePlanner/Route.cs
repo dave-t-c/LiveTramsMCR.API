@@ -67,4 +67,14 @@ public class Route
         }
         return identifiedStops;
     }
+
+    /// <summary>
+    /// Determines if this route contains a given Stop.
+    /// </summary>
+    /// <param name="stop">Stop to check membership of</param>
+    /// <returns>True if route contains Stop, else false.</returns>
+    public bool ContainsStop(Stop stop)
+    {
+        return true;
+    }
 }
