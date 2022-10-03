@@ -76,4 +76,15 @@ public class TestRouteIdentifier
         var saleStop = _importedStops?.First(stop => stop.StopName == "Sale");
         Assert.IsFalse(_routeIdentifier?.IsInterchangeRequired(altrinchamStop, saleStop));
     }
+
+    /// <summary>
+    /// Test to see if an interchange is required by checking 
+    /// </summary>
+    [Test]
+    public void TestInterchangeShouldBeRequired()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton Moss");
+        Assert.IsTrue(_routeIdentifier?.IsInterchangeRequired(altrinchamStop, ashtonStop));
+    }
 }
