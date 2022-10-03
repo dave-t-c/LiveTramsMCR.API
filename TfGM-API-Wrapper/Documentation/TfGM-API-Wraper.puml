@@ -7,6 +7,8 @@ Models.Resources.RouteLoader *-- Models.RoutePlanner.UnprocessedRoute
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.PlannedRoute
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteNotPossibleException
+Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteIdentifier
+Models.RoutePlanner.RouteIdentifier *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlannerDataModel *-- Models.Stops.StopLookup
 Models.RoutePlanner.RoutePlannerDataModel *-- Models.RoutePlanner.RoutePlanner
 Models.RoutePlanner.RoutePlanner "Implements" --|> Models.RoutePlanner.IRoutePlanner
@@ -26,6 +28,7 @@ Stores the information about a single Route
 + Route(string name, string colour, List<Stop> stops)
 ---
 + GetStopsBetween(Stop start, Stop destination): List<Stop>
++ ContainsStop(Stop stop): bool
 ---
 + Name: string
 + Colour: string
@@ -69,6 +72,18 @@ Interface needed to be implemented for a
 route planner. 
 ---
 + FindRoute(Stop origin, Stop destination): List<PlannedRoute>
+}
+
+class Models.RoutePlanner.RouteIdentifier #Purple {
+Identifies valid routes for a journey by identifying routes that include the start
+and destination stops. 
+---
++ RouteIdentifier(List<Route> routes)
+---
++ IdentifySingleRoute(Stop origin, Stop destination): List<Route>
++ IdentifyInterchangeStop(Stop origin, Stop destination): Stop
++ IdentifyInterchangeRoutes(Stop origin, Stop destination, Stop interchange): List<Route> 
++ IsInterchangeRequired(Stop origin, Stop destination): bool
 }
 
 
