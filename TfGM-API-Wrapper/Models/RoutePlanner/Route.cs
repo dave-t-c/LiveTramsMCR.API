@@ -75,6 +75,6 @@ public class Route
     /// <returns>True if route contains Stop, else false.</returns>
     public bool ContainsStop(Stop stop)
     {
-        return true;
+        return Stops.Contains(stop);
     }
 }
