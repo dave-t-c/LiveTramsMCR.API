@@ -246,4 +246,15 @@ public class TestRoute
         var exampleStop = _importedStops?.First(stop => stop.StopName == "Example-1");
         Assert.IsTrue(_validRoute?.ContainsStop(exampleStop));
     }
+
+    
+    /// <summary>
+    /// Test to see if a route contains a stop that is not a member of the route.
+    /// This should return false.
+    /// </summary>
+    [Test]
+    public void TestRouteDoesNotContainStop()
+    {
+        Assert.IsFalse(_validRoute?.ContainsStop(_exampleStop));
+    }
 }
