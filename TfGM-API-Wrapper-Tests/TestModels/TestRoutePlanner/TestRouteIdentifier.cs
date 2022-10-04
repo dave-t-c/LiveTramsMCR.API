@@ -106,4 +106,21 @@ public class TestRouteIdentifier
                 var unused = _routeIdentifier?.IsInterchangeRequired(null, altrinchamStop);
             });
     }
+
+    /// <summary>
+    /// Test to determine if an interchange is required between a valid origin stop
+    /// and a null dest.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestInterchangeNullDest()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
+            delegate
+            {
+                var unused = _routeIdentifier?.IsInterchangeRequired(altrinchamStop, null);
+            });
+    }
 }
