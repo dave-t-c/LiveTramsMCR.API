@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -78,7 +79,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to see if an interchange is required by checking 
+    /// Test to see if an interchange is required by checking stops on different routes.
+    /// This should return true
     /// </summary>
     [Test]
     public void TestInterchangeShouldBeRequired()
@@ -86,5 +88,22 @@ public class TestRouteIdentifier
         var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
         var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton Moss");
         Assert.IsTrue(_routeIdentifier?.IsInterchangeRequired(altrinchamStop, ashtonStop));
+    }
+
+    /// <summary>
+    /// Test to determine if a null origin stop
+    /// requires an interchange to a valid dest.
+    /// This should throw an illegal args exception
+    /// </summary>
+    [Test]
+    public void TestInterchangeNullOrigin()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
+            delegate
+            {
+                var unused = _routeIdentifier?.IsInterchangeRequired(null, altrinchamStop);
+            });
     }
 }
