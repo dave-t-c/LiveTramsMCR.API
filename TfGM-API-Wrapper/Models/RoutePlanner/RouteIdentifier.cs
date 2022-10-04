@@ -26,6 +26,9 @@ public class RouteIdentifier
         if (origin is null)
             throw new ArgumentNullException(nameof(origin));
         
+        if (destination is null)
+            throw new ArgumentNullException(nameof(destination));
+        
         //Returns true if there is a route that contains both origin and dest stops.
         //Find returns null if there is not a match, so interchange is required if there is not a match
         return _routes.Find(route => route.Stops.Contains(origin) && route.Stops.Contains(destination)) is null;
