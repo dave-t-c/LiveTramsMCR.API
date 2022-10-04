@@ -17,11 +17,13 @@ public class RouteIdentifier
     /// by checking to see if there is a route that contains
     /// both the origin and destination stop.
     /// </summary>
-    /// <param name="origin"></param>
-    /// <param name="destination"></param>
-    /// <returns></returns>
+    /// <param name="origin">Start of journey</param>
+    /// <param name="destination">End of journey</param>
+    /// <returns>If there is route that contains both Stops</returns>
     public bool IsInterchangeRequired(Stop origin, Stop destination)
     {
-        return false;
+        //Returns true if there is a route that contains both origin and dest stops.
+        //Find returns null if there is not a match, so interchange is required if there is not a match
+        return _routes.Find(route => route.Stops.Contains(origin) && route.Stops.Contains(destination)) is null;
     }
 }
