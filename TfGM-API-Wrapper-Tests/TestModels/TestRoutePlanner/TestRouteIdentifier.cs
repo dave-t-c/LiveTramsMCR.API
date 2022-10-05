@@ -351,4 +351,23 @@ public class TestRouteIdentifier
             intermediateStops.First(stop => stop.StopName == "Sale"))
         );
     }
+
+    /// <summary>
+    /// Test to identify an intermediate stops with an origin Stop not on the route.
+    /// This should throw an InvalidOperationException.
+    /// </summary>
+    [Test]
+    public void TestToIdentifyIntermediateStopsWithInvalidStop()
+    {
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                .And.Message.EqualTo("Bury does not exist on Purple route"),
+            delegate
+            {
+                var unused = _routeIdentifier?
+                    .IdentifyIntermediateStops(buryStop, stretfordStop, purpleRoute);
+            });
+    }
 }
