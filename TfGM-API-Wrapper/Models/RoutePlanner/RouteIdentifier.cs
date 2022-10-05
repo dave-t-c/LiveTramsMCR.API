@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TfGM_API_Wrapper.Models.Stops;
 
 namespace TfGM_API_Wrapper.Models.RoutePlanner;
@@ -48,9 +49,32 @@ public class RouteIdentifier
         // you can go between that cant be completed with a max of 1 interchange, 
         // as it is a hub and spokes network, where the central section (Cornbrook to St Peters Square)
         // acts as the hub.
-        return new Stop()
+
+        //Identify the routes for a stop.
+        var originRoutes = _routes.FindAll(route => route.ContainsStop(origin));
+        var destRoutes = _routes.FindAll(route => route.ContainsStop(destination));
+
+        // We need to identify stops that exist on both lines, and then select the 
+        // stop closest to the dest stop.
+        var stopDistanceFromDestination = new Dictionary<Stop, int>();
+        foreach (var originRoute in originRoutes)
         {
-            StopName = "Piccadilly"
-        };
+            foreach (var destRoute in destRoutes)
+            {
+                var intersectingStops = originRoute.Stops.Intersect(destRoute.Stops).ToList();
+                if (!intersectingStops.Any())
+                    continue;
+
+                foreach (var stop in intersectingStops.Where(stop => !stopDistanceFromDestination.ContainsKey(stop)))
+                {
+                    stopDistanceFromDestination[stop] = destRoute.GetStopsBetween(stop, destination).Count + 1;
+                }
+            }
+        }
+        
+        // When there are multiple routes, the interchange stop closest to the 
+        // destination is selected.
+        var interchangeStop = stopDistanceFromDestination.MinBy(kvp => kvp.Value).Key;
+        return interchangeStop;
     }
 }
