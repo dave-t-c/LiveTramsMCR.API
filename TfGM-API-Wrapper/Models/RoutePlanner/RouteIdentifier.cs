@@ -50,6 +50,9 @@ public class RouteIdentifier
         // as it is a hub and spokes network, where the central section (Cornbrook to St Peters Square)
         // acts as the hub.
 
+        if (origin is null)
+            throw new ArgumentNullException(nameof(origin));
+
         //Identify the routes for a stop.
         var originRoutes = _routes.FindAll(route => route.ContainsStop(origin));
         var destRoutes = _routes.FindAll(route => route.ContainsStop(destination));
