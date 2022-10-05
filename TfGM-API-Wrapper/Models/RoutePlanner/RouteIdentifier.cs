@@ -93,6 +93,8 @@ public class RouteIdentifier
     /// <returns>Routes that link the two stops</returns>
     public List<Route> IdentifyRoutesBetween(Stop origin, Stop destination)
     {
+        if (origin is null)
+            throw new ArgumentNullException(nameof(origin));
         return _routes.FindAll(route => route.ContainsStop(origin) && route.ContainsStop(destination));
     }
 }
