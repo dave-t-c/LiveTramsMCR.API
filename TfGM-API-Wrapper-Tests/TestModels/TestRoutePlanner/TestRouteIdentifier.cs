@@ -234,6 +234,10 @@ public class TestRouteIdentifier
     }
 
 
+    /// <summary>
+    /// Test to identify the routes between Bury and Market Street.
+    /// This should identify the green and yellow route.
+    /// </summary>
     [Test]
     public void TestIdentifyRoutesBetweenBuryMarketStreet()
     {
@@ -245,5 +249,18 @@ public class TestRouteIdentifier
         Assert.AreEqual(2, identifiedRoutes?.Count);
         Assert.That(identifiedRoutes!.Any(route => route.Name == "Green"));
         Assert.That(identifiedRoutes!.Any(route => route.Name == "Yellow"));
+    }
+
+
+    [Test]
+    public void TestIdentifyRoutesBetweenNullOrigin()
+    {
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
+            delegate
+            {
+                var unused = _routeIdentifier?.IdentifyRoutesBetween(null, buryStop);
+            });
     }
 }
