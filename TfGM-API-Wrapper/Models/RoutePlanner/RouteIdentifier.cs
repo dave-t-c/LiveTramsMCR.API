@@ -83,4 +83,18 @@ public class RouteIdentifier
         var interchangeStop = stopDistanceFromDestination.MinBy(kvp => kvp.Value).Key;
         return interchangeStop;
     }
+
+    /// <summary>
+    /// Identifies the Routes that connect two stops.
+    /// This returns a list of routes that can be taken between two stops.
+    /// </summary>
+    /// <param name="origin">Start of journey</param>
+    /// <param name="destination">End of journey</param>
+    /// <returns>Routes that link the two stops</returns>
+    public List<Route> IdentifyRoutesBetween(Stop origin, Stop destination)
+    {
+        var purpleRoute = new Route("Purple", "", new List<Stop>());
+        var greenRoute = new Route("Green", "", new List<Stop>());
+        return new List<Route>{purpleRoute, greenRoute};
+    }
 }
