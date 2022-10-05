@@ -283,4 +283,23 @@ public class TestRouteIdentifier
                 var unused = _routeIdentifier?.IdentifyRoutesBetween(buryStop, null);
             });
     }
+
+    /// <summary>
+    /// Test to identify the stops between an
+    /// origin and a destination on a given route.
+    /// This should identify a single stop, and not include the origin or destination Stop.
+    /// </summary>
+    [Test]
+    public void TestIdentifyIntermediateStops()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var timperleyStop = _importedStops?.First(stop => stop.StopName == "Timperley");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        var intermediateStops = _routeIdentifier?
+            .IdentifyIntermediateStops(altrinchamStop, timperleyStop, purpleRoute);
+        Assert.IsNotNull(intermediateStops);
+        Assert.IsNotEmpty(intermediateStops!);
+        Assert.AreEqual(1, intermediateStops?.Count);
+        Assert.IsTrue(intermediateStops?.Any(stop => stop.StopName == "Navigation Road"));
+    }
 }
