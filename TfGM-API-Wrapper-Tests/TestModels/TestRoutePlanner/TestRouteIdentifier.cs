@@ -252,6 +252,10 @@ public class TestRouteIdentifier
     }
 
 
+    /// <summary>
+    /// Identify routes with a null origin.
+    /// This should throw a null args exception.
+    /// </summary>
     [Test]
     public void TestIdentifyRoutesBetweenNullOrigin()
     {
@@ -261,6 +265,22 @@ public class TestRouteIdentifier
             delegate
             {
                 var unused = _routeIdentifier?.IdentifyRoutesBetween(null, buryStop);
+            });
+    }
+
+    /// <summary>
+    /// Identify the routes between stops with a null destination.
+    /// This should throw a null args exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyRoutesBetweenNullDestination()
+    {
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
+            delegate
+            {
+                var unused = _routeIdentifier?.IdentifyRoutesBetween(buryStop, null);
             });
     }
 }
