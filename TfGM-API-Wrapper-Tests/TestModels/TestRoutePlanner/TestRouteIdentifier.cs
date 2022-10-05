@@ -327,4 +327,28 @@ public class TestRouteIdentifier
             intermediateStops.First(stop => stop.StopName == "Sale"))
         );
     }
+
+    /// <summary>
+    /// Test to identify the same intermediate stops as the previous test,
+    /// but as the origin and destination have been swapped, they should be in the
+    /// opposite order.
+    /// </summary>
+    [Test]
+    public void TestIdentifyIntermediateStopsReverse()
+    {
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        var intermediateStops = _routeIdentifier?
+            .IdentifyIntermediateStops(brooklandsStop, stretfordStop, purpleRoute);
+        Assert.IsNotNull(intermediateStops);
+        Assert.IsNotEmpty(intermediateStops!);
+        Assert.AreEqual(2, intermediateStops?.Count);
+        Assert.AreEqual(1, intermediateStops?.IndexOf(
+            intermediateStops.First(stop => stop.StopName == "Dane Road"))
+        );
+        Assert.AreEqual(0, intermediateStops?.IndexOf(
+            intermediateStops.First(stop => stop.StopName == "Sale"))
+        );
+    }
 }
