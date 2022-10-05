@@ -214,4 +214,22 @@ public class TestRouteIdentifier
                 var unused = _routeIdentifier?.IdentifyInterchangeStop(airportStop, null);
             });
     }
+
+    /// <summary>
+    /// Test to Identify the routes between two stops.
+    /// This should contain 2 items, Purple and Green
+    /// </summary>
+    [Test]
+    public void TestIdentifyRoutesBetweenStops()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var cornbrookStop = _importedStops?.First(stop => stop.StopName == "Cornbrook");
+
+        var identifiedRoutes = _routeIdentifier?.IdentifyRoutesBetween(altrinchamStop, cornbrookStop);
+        Assert.IsNotNull(identifiedRoutes);
+        Assert.IsNotEmpty(identifiedRoutes ?? new List<Route>());
+        Assert.AreEqual(2, identifiedRoutes?.Count);
+        Assert.That(identifiedRoutes!.Any(route => route.Name == "Purple"));
+        Assert.That(identifiedRoutes!.Any(route => route.Name == "Green"));
+    }
 }
