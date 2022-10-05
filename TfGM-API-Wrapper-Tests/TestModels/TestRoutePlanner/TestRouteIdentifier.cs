@@ -123,4 +123,18 @@ public class TestRouteIdentifier
                 var unused = _routeIdentifier?.IsInterchangeRequired(altrinchamStop, null);
             });
     }
+
+    /// <summary>
+    /// Test to identify an interchange stop for a journey where an interchange is required.
+    /// This should identify the stop shared on both routes that is closest to the destination.
+    /// </summary>
+    [Test]
+    public void TestIdentifyInterChange()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton Moss");
+        var interchangeStop = _routeIdentifier?.IdentifyInterchangeStop(altrinchamStop, ashtonStop);
+        Assert.NotNull(interchangeStop);
+        Assert.AreEqual("Piccadilly", interchangeStop?.StopName);
+    }
 }
