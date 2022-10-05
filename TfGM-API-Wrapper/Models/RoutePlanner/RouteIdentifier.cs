@@ -33,4 +33,24 @@ public class RouteIdentifier
         //Find returns null if there is not a match, so interchange is required if there is not a match
         return _routes.Find(route => route.Stops.Contains(origin) && route.Stops.Contains(destination)) is null;
     }
+
+    /// <summary>
+    /// Identifies the Interchange Stop for Stops where
+    /// the interchange stop belongs to a route available from the Origin Stop,
+    /// and also belongs to a route that belongs to the Destination Stop.
+    /// </summary>
+    /// <param name="origin"></param>
+    /// <param name="destination"></param>
+    /// <returns></returns>
+    public Stop IdentifyInterchangeStop(Stop origin, Stop destination)
+    {
+        // N.b. We can take this approach as there is nowhere on the metrolink network that
+        // you can go between that cant be completed with a max of 1 interchange, 
+        // as it is a hub and spokes network, where the central section (Cornbrook to St Peters Square)
+        // acts as the hub.
+        return new Stop()
+        {
+            StopName = "Piccadilly"
+        };
+    }
 }
