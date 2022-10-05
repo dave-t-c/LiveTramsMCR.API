@@ -53,6 +53,9 @@ public class RouteIdentifier
         if (origin is null)
             throw new ArgumentNullException(nameof(origin));
 
+        if (destination is null)
+            throw new ArgumentNullException(nameof(destination));
+
         //Identify the routes for a stop.
         var originRoutes = _routes.FindAll(route => route.ContainsStop(origin));
         var destRoutes = _routes.FindAll(route => route.ContainsStop(destination));
