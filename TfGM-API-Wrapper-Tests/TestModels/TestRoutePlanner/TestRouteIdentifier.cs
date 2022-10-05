@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using TfGM_API_Wrapper.Models.Resources;
 using TfGM_API_Wrapper.Models.RoutePlanner;
 using TfGM_API_Wrapper.Models.Stops;
@@ -136,5 +137,34 @@ public class TestRouteIdentifier
         var interchangeStop = _routeIdentifier?.IdentifyInterchangeStop(altrinchamStop, ashtonStop);
         Assert.NotNull(interchangeStop);
         Assert.AreEqual("Piccadilly", interchangeStop?.StopName);
+    }
+
+    
+    /// <summary>
+    /// Test to identify the interchange between Eccles and the Trafford Centre.
+    /// This should return Pomona.
+    /// </summary>
+    [Test]
+    public void TestIdentifyEcclesTraffordCentreInterchange()
+    {
+        var ecclesStop = _importedStops?.First(stop => stop.StopName == "Eccles");
+        var traffordStop = _importedStops?.First(stop => stop.StopName == "The Trafford Centre");
+        var interchangeStop = _routeIdentifier?.IdentifyInterchangeStop(ecclesStop, traffordStop);
+        Assert.IsNotNull(interchangeStop);
+        Assert.AreEqual("Pomona", interchangeStop?.StopName);
+    }
+
+    /// <summary>
+    /// Test to identify the interchange between the Airport and Bury.
+    /// This should return Victoria.
+    /// </summary>
+    [Test]
+    public void TestIdentifyInterchangeAirportBury()
+    {
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var interchangeStop = _routeIdentifier?.IdentifyInterchangeStop(airportStop, buryStop);
+        Assert.IsNotNull(interchangeStop);
+        Assert.AreEqual("Victoria", interchangeStop?.StopName);
     }
 }
