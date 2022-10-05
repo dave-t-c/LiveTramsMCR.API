@@ -110,10 +110,16 @@ public class RouteIdentifier
     /// <returns>List of intermediate stops between origin and destination on given route.</returns>
     public List<Stop> IdentifyIntermediateStops(Stop origin, Stop destination, Route route)
     {
-        var createdStop = new Stop()
+        var originIndex = route.Stops.IndexOf(origin);
+        var destinationIndex = route.Stops.IndexOf(destination);
+        var increment = destinationIndex > originIndex ? 1 : -1;
+
+        var intermediateStops = new List<Stop>();
+        for (var i = originIndex + increment; i != destinationIndex; i += increment)
         {
-            StopName = "Navigation Road"
-        };
-        return new List<Stop> {createdStop};
+            intermediateStops.Add(route.Stops[i]);
+        }
+
+        return intermediateStops;
     }
 }
