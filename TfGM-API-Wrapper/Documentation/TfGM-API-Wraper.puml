@@ -80,9 +80,9 @@ and destination stops.
 ---
 + RouteIdentifier(List<Route> routes)
 ---
-+ IdentifySingleRoute(Stop origin, Stop destination): List<Route>
 + IdentifyInterchangeStop(Stop origin, Stop destination): Stop
-+ IdentifyInterchangeRoutes(Stop origin, Stop destination, Stop interchange): List<Route> 
++ IdentifyRoutesBetween(Stop origin, Stop destination): List<Route>
++ IdentifyStopsBetween(Stop origin, Stop destination, Route route): List<Stop>
 + IsInterchangeRequired(Stop origin, Stop destination): bool
 }
 
