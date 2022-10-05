@@ -198,4 +198,20 @@ public class TestRouteIdentifier
                 var unused = _routeIdentifier?.IdentifyInterchangeStop(null, airportStop);
             });
     }
+
+    /// <summary>
+    /// Test to identify an interchange for a journey with a null destination.
+    /// This should throw a null args exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyInterchangeNullDestination()
+    {
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
+            delegate
+            {
+                var unused = _routeIdentifier?.IdentifyInterchangeStop(airportStop, null);
+            });
+    }
 }
