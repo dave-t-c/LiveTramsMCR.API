@@ -167,4 +167,19 @@ public class TestRouteIdentifier
         Assert.IsNotNull(interchangeStop);
         Assert.AreEqual("Victoria", interchangeStop?.StopName);
     }
+
+
+    /// <summary>
+    /// Test to identify the interchange between the Airport and East Didsbury.
+    /// This should be St Werburgh's Road.
+    /// </summary>
+    [Test]
+    public void TestIdentifyInterchangeAirportDidsbury()
+    {
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
+        var didsburyStop = _importedStops?.First(stop => stop.StopName == "East Didsbury");
+        var interchangeStop = _routeIdentifier?.IdentifyInterchangeStop(airportStop, didsburyStop);
+        Assert.IsNotNull(interchangeStop);
+        Assert.AreEqual("St Werburgh's Road", interchangeStop?.StopName);
+    }
 }
