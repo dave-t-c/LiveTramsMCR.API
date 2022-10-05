@@ -302,4 +302,29 @@ public class TestRouteIdentifier
         Assert.AreEqual(1, intermediateStops?.Count);
         Assert.IsTrue(intermediateStops?.Any(stop => stop.StopName == "Navigation Road"));
     }
+
+    /// <summary>
+    /// Test to identify intermediate stops for a different journey.
+    /// This should return the stops between Stretford and Brooklands
+    /// starting with Dane Road.
+    /// This should match the order they would be traversed in if travelled between.
+    /// </summary>
+    [Test]
+    public void TestIdentifyIntermediateStopsDifferentRoute()
+    {
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        var intermediateStops = _routeIdentifier?
+            .IdentifyIntermediateStops(stretfordStop, brooklandsStop, purpleRoute);
+        Assert.IsNotNull(intermediateStops);
+        Assert.IsNotEmpty(intermediateStops!);
+        Assert.AreEqual(2, intermediateStops?.Count);
+        Assert.AreEqual(0, intermediateStops?.IndexOf(
+            intermediateStops.First(stop => stop.StopName == "Dane Road"))
+        );
+        Assert.AreEqual(1, intermediateStops?.IndexOf(
+            intermediateStops.First(stop => stop.StopName == "Sale"))
+        );
+    }
 }
