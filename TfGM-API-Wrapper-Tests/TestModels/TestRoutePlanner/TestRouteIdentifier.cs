@@ -182,4 +182,20 @@ public class TestRouteIdentifier
         Assert.IsNotNull(interchangeStop);
         Assert.AreEqual("St Werburgh's Road", interchangeStop?.StopName);
     }
+
+    /// <summary>
+    /// Test to identify the interchange with a null origin.
+    /// This should throw a null args exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyInterchangeNullOrigin()
+    {
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
+            delegate
+            {
+                var unused = _routeIdentifier?.IdentifyInterchangeStop(null, airportStop);
+            });
+    }
 }
