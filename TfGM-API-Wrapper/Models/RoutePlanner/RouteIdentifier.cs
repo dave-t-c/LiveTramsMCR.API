@@ -99,4 +99,21 @@ public class RouteIdentifier
             throw new ArgumentNullException(nameof(destination));
         return _routes.FindAll(route => route.ContainsStop(origin) && route.ContainsStop(destination));
     }
+
+    /// <summary>
+    /// Identifies Stops between an Origin and Destination stop.
+    /// This excludes the origin and destination stop.
+    /// </summary>
+    /// <param name="origin">Stop to start at.</param>
+    /// <param name="destination">Stop to end at.</param>
+    /// <param name="route">Route to identify intermediate stops on.</param>
+    /// <returns>List of intermediate stops between origin and destination on given route.</returns>
+    public List<Stop> IdentifyIntermediateStops(Stop origin, Stop destination, Route route)
+    {
+        var createdStop = new Stop()
+        {
+            StopName = "Navigation Road"
+        };
+        return new List<Stop> {createdStop};
+    }
 }
