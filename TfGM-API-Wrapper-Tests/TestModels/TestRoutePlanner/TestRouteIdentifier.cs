@@ -232,4 +232,18 @@ public class TestRouteIdentifier
         Assert.That(identifiedRoutes!.Any(route => route.Name == "Purple"));
         Assert.That(identifiedRoutes!.Any(route => route.Name == "Green"));
     }
+
+
+    [Test]
+    public void TestIdentifyRoutesBetweenBuryMarketStreet()
+    {
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var marketStreetStop = _importedStops?.First(stop => stop.StopName == "Market Street");
+        var identifiedRoutes = _routeIdentifier?.IdentifyRoutesBetween(buryStop, marketStreetStop);
+        Assert.IsNotNull(identifiedRoutes);
+        Assert.IsNotEmpty(identifiedRoutes ?? new List<Route>());
+        Assert.AreEqual(2, identifiedRoutes?.Count);
+        Assert.That(identifiedRoutes!.Any(route => route.Name == "Green"));
+        Assert.That(identifiedRoutes!.Any(route => route.Name == "Yellow"));
+    }
 }
