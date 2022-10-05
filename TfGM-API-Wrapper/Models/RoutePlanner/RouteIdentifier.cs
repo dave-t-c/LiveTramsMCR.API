@@ -95,6 +95,8 @@ public class RouteIdentifier
     {
         if (origin is null)
             throw new ArgumentNullException(nameof(origin));
+        if (destination is null)
+            throw new ArgumentNullException(nameof(destination));
         return _routes.FindAll(route => route.ContainsStop(origin) && route.ContainsStop(destination));
     }
 }
