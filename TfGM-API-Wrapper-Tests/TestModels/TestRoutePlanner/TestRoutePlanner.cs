@@ -23,6 +23,7 @@ public class TestRoutePlanner
     private List<Stop>? _importedStops;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
+    private RoutePlanner? _routePlanner;
     
     /// <summary>
     /// Sets up the required resources for testing route planning,
@@ -46,6 +47,7 @@ public class TestRoutePlanner
 
         _routeLoader = new RouteLoader(_validResourcesConfig, _importedStops);
         _routes = _routeLoader.ImportRoutes();
+        _routePlanner = new RoutePlanner(_routes);
     }
 
     /// <summary>
@@ -59,27 +61,22 @@ public class TestRoutePlanner
 
     /// <summary>
     /// Test to plan a route on a single line between Altrincham and Sale
-    /// This should return a planned route POCO with the expected origin and destination stops
+    /// This should return a planned route POCO with the expected origin and destination stops.
+    /// This should return that the journey does not require an interchange
+    /// and has two possible routes from the origin.
     /// </summary>
     [Test]
     public void TestIdentifyRouteOnSameLine()
     {
-        Assert.Pass();
-        //This test case has already started being developed, but will 
-        //need to wait until other sections of the route planning have been developed.
         var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
         var saleStop = _importedStops?.First(stop => stop.StopName == "Sale");
-        var routePlanner = new RoutePlanner(_routes);
-        var plannedRoutes = routePlanner.FindRoute(altrinchamStop, saleStop);
-        //Should be two possible routes, one using purple, one using green.
-        Assert.IsNotNull(plannedRoutes);
-        Assert.IsNotEmpty(plannedRoutes);
-        Assert.AreEqual(2, plannedRoutes.Count);
-        var firstRoute = plannedRoutes[0];
-        var secondRoute = plannedRoutes[1];
-        Assert.IsNotNull(firstRoute);
-        Assert.IsNotNull(secondRoute);
-        Assert.AreEqual(altrinchamStop, firstRoute.OriginStop);
-        Assert.AreEqual(altrinchamStop, secondRoute.DestinationStop);
+        var plannedJourney = _routePlanner?.FindRoute(altrinchamStop, saleStop);
+        //Should be two possible routes from the origin, purple and green
+       Assert.IsNotNull(plannedJourney);
+       Assert.IsFalse(plannedJourney?.RequiresInterchange);
+       Assert.IsNotNull(plannedJourney?.RoutesFromOrigin);
+       Assert.AreEqual(2, plannedJourney?.RoutesFromOrigin.Count);
+       Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Green"));
+       Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Purple"));
     }
 }
