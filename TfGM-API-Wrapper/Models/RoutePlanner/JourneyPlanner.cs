@@ -8,13 +8,17 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 /// </summary>
 public class JourneyPlanner : IJourneyPlanner
 {
+    private List<Route> _routes;
+    private RouteIdentifier _routeIdentifier;
+    
     /// <summary>
     /// Create a new route planner with a list of available routes.
     /// </summary>
     /// <param name="routes">List of possible routes a journey can take</param>
     public JourneyPlanner(List<Route> routes)
     {
-        
+        _routes = routes;
+        _routeIdentifier = new RouteIdentifier(_routes);
     }
     
     /// <summary>
@@ -27,10 +31,15 @@ public class JourneyPlanner : IJourneyPlanner
     {
         var purpleRoute = new Route("Purple", "", new List<Stop>());
         var greenRoute = new Route("Green", "", new List<Stop>());
+        var yellowRoute = new Route("Yellow", "", new List<Stop>());
         var routesFromOrigin = new List<Route> {purpleRoute, greenRoute};
+        var routesFromInterchange = new List<Route> {greenRoute, yellowRoute};
+        var isInterchangeRequired = _routeIdentifier.IsInterchangeRequired(origin, destination);
         return new PlannedJourney
         {
-            RoutesFromOrigin = routesFromOrigin
+            RoutesFromOrigin = routesFromOrigin,
+            RoutesFromInterchange = routesFromInterchange,
+            RequiresInterchange = isInterchangeRequired
         };
     }
 }
