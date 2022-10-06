@@ -23,7 +23,7 @@ public class TestRoutePlanner
     private List<Stop>? _importedStops;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
-    private RoutePlanner? _routePlanner;
+    private JourneyPlanner? _routePlanner;
     
     /// <summary>
     /// Sets up the required resources for testing route planning,
@@ -47,7 +47,7 @@ public class TestRoutePlanner
 
         _routeLoader = new RouteLoader(_validResourcesConfig, _importedStops);
         _routes = _routeLoader.ImportRoutes();
-        _routePlanner = new RoutePlanner(_routes);
+        _routePlanner = new JourneyPlanner(_routes);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class TestRoutePlanner
     {
         var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
         var saleStop = _importedStops?.First(stop => stop.StopName == "Sale");
-        var plannedJourney = _routePlanner?.FindRoute(altrinchamStop, saleStop);
+        var plannedJourney = _routePlanner?.PlanJourney(altrinchamStop, saleStop);
         //Should be two possible routes from the origin, purple and green
        Assert.IsNotNull(plannedJourney);
        Assert.IsFalse(plannedJourney?.RequiresInterchange);

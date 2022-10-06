@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TfGM_API_Wrapper.Models.Stops;
 
 namespace TfGM_API_Wrapper.Models.RoutePlanner;
@@ -5,7 +6,7 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 /// <summary>
 /// POCO object that details a planned route between an origin and destination stop.
 /// </summary>
-public class PlannedRoute
+public class PlannedJourney
 {
     /// <summary>
     /// Stop the route originates / starts at.
@@ -24,18 +25,18 @@ public class PlannedRoute
     public Stop InterchangeStop { get; set; }
     
     /// <summary>
-    /// Route taken from the origin destination
+    /// Routes taken from the origin destination
     /// to either the interchange stop or destination
     /// stop if no interchange is required
-    /// (Only require a single route) .
+    /// (Only require a single route).
     /// </summary>
-    public Route RouteFromOrigin { get; set; }
+    public List<Route> RoutesFromOrigin { get; set; }
     
     /// <summary>
     /// Route from the Interchange stop to the
     /// destination stop. This may be null.
     /// </summary>
-    public Route RouteFromInterchange { get; set; }
+    public List<Route> RoutesFromInterchange { get; set; }
     
     /// <summary>
     /// Boolean showing if the route requires an

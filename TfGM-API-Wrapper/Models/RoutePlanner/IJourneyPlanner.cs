@@ -6,7 +6,7 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 /// <summary>
 /// Interface that needs to be implemented for any RoutePlanner classes.
 /// </summary>
-public interface IRoutePlanner
+public interface IJourneyPlanner
 {
     /// <summary>
     /// Finds a route between an Origin and Destination Stop.
@@ -14,5 +14,5 @@ public interface IRoutePlanner
     /// <param name="origin">Start of journey Stop</param>
     /// <param name="destination">End of journey Stop</param>
     /// <returns></returns>
-    public List<PlannedRoute> FindRoute(Stop origin, Stop destination);
+    public PlannedJourney PlanJourney(Stop origin, Stop destination);
 }

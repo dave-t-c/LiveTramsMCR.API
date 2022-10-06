@@ -6,13 +6,13 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 /// <summary>
 /// Plans routes between Stop objects.
 /// </summary>
-public class RoutePlanner : IRoutePlanner
+public class JourneyPlanner : IJourneyPlanner
 {
     /// <summary>
     /// Create a new route planner with a list of available routes.
     /// </summary>
     /// <param name="routes">List of possible routes a journey can take</param>
-    public RoutePlanner(List<Route> routes)
+    public JourneyPlanner(List<Route> routes)
     {
         
     }
@@ -23,8 +23,14 @@ public class RoutePlanner : IRoutePlanner
     /// <param name="origin">Start of journey</param>
     /// <param name="destination">End of Journey</param>
     /// <returns>List of possible Planned Routes</returns>
-    public List<PlannedRoute> FindRoute(Stop origin, Stop destination)
+    public PlannedJourney PlanJourney(Stop origin, Stop destination)
     {
-        return new List<PlannedRoute>();
+        var purpleRoute = new Route("Purple", "", new List<Stop>());
+        var greenRoute = new Route("Green", "", new List<Stop>());
+        var routesFromOrigin = new List<Route> {purpleRoute, greenRoute};
+        return new PlannedJourney
+        {
+            RoutesFromOrigin = routesFromOrigin
+        };
     }
 }

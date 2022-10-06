@@ -67,7 +67,7 @@ Thrown when a route between two stops
 cannot be generated
 }
 
-interface Models.RoutePlanner.IRoutePlanner #Purple {
+interface Models.RoutePlanner.IJourneyPlanner #Purple {
 Interface needed to be implemented for a 
 route planner. 
 ---
@@ -87,12 +87,12 @@ and destination stops.
 }
 
 
-class Models.RoutePlanner.RoutePlanner #Purple {
-Identifies a route between two stops
+class Models.RoutePlanner.JourneyPlanner #Purple {
+Identifies a journey between two stops
 ---
 + RoutePlanner(List<Route> routes)
 ---
-+ FindRoute(Stop origin, Stop destination): List<PlannedRoute>
++ PlanJourney(Stop origin, Stop destination): List<PlannedRoute>
 }
 
 'Models.Services' 
