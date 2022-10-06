@@ -5,10 +5,18 @@ using TfGM_API_Wrapper.Models.Stops;
 
 namespace TfGM_API_Wrapper.Models.RoutePlanner;
 
+/// <summary>
+/// Identifies Route related features for journeys such as interchanges.
+/// </summary>
 public class RouteIdentifier
 {
     private readonly List<Route> _routes;
     
+    /// <summary>
+    /// Initialises a RouteIdentifier with the routes
+    /// to use for processing. 
+    /// </summary>
+    /// <param name="routes">Routes to use for processing.</param>
     public RouteIdentifier(List<Route> routes)
     {
         _routes = routes;
