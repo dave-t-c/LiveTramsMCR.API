@@ -408,4 +408,22 @@ public class TestRouteIdentifier
                     .IdentifyIntermediateStops(null, stretfordStop, purpleRoute);
             });
     }
+    
+    /// <summary>
+    /// Test to identify intermediate stops with a null destination.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyIntermediateRouteNullDestination()
+    {
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
+            delegate
+            {
+                var unused = _routeIdentifier?
+                    .IdentifyIntermediateStops(stretfordStop, null, purpleRoute);
+            });
+    }
 }
