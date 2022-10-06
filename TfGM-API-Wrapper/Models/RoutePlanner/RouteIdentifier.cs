@@ -110,6 +110,9 @@ public class RouteIdentifier
     /// <returns>List of intermediate stops between origin and destination on given route.</returns>
     public List<Stop> IdentifyIntermediateStops(Stop origin, Stop destination, Route route)
     {
+        if (origin is null)
+            throw new ArgumentNullException(nameof(origin));
+        
         if (!route.Stops.Contains(origin))
             throw new InvalidOperationException(origin.StopName + " does not exist on " + route.Name + " route");
         
