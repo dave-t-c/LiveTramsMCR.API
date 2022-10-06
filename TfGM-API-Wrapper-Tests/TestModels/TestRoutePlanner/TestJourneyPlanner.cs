@@ -23,7 +23,7 @@ public class TestRoutePlanner
     private List<Stop>? _importedStops;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
-    private JourneyPlanner? _routePlanner;
+    private JourneyPlanner? _journeyPlanner;
     
     /// <summary>
     /// Sets up the required resources for testing route planning,
@@ -47,7 +47,7 @@ public class TestRoutePlanner
 
         _routeLoader = new RouteLoader(_validResourcesConfig, _importedStops);
         _routes = _routeLoader.ImportRoutes();
-        _routePlanner = new JourneyPlanner(_routes);
+        _journeyPlanner = new JourneyPlanner(_routes);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class TestRoutePlanner
     {
         var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
         var saleStop = _importedStops?.First(stop => stop.StopName == "Sale");
-        var plannedJourney = _routePlanner?.PlanJourney(altrinchamStop, saleStop);
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, saleStop);
         //Should be two possible routes from the origin, purple and green
        Assert.IsNotNull(plannedJourney);
        Assert.IsFalse(plannedJourney?.RequiresInterchange);
@@ -78,5 +78,24 @@ public class TestRoutePlanner
        Assert.AreEqual(2, plannedJourney?.RoutesFromOrigin.Count);
        Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Green"));
        Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Purple"));
+    }
+
+
+    /// <summary>
+    /// Test to identify a route where an interchange is required.
+    /// This should be true.
+    /// </summary>
+    [Test]
+    public void TestPlanRouteInterchangeRequired()
+    {
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var plannedJourney = _journeyPlanner?.PlanJourney(airportStop, buryStop);
+        Assert.NotNull(plannedJourney);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        Assert.IsNotNull(plannedJourney?.RoutesFromInterchange);
+        Assert.AreEqual(2, plannedJourney?.RoutesFromInterchange.Count);
+        Assert.IsTrue(plannedJourney?.RoutesFromInterchange.Any(route => route.Name == "Green"));
+        Assert.IsTrue(plannedJourney?.RoutesFromInterchange.Any(route => route.Name == "Yellow"));
     }
 }
