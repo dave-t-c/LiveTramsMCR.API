@@ -98,4 +98,32 @@ public class TestRoutePlanner
         Assert.IsTrue(plannedJourney?.RoutesFromInterchange.Any(route => route.Name == "Green"));
         Assert.IsTrue(plannedJourney?.RoutesFromInterchange.Any(route => route.Name == "Yellow"));
     }
+    
+    /// <summary>
+    /// Test to identify a route between the airport and bury.
+    /// This should include the expected stops before and after the interchange.
+    /// </summary>
+    [Test]
+    public void TestIdentifyJourneyAirportBuryStops()
+    {
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var plannedJourney = _journeyPlanner?.PlanJourney(airportStop, buryStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsNotNull(plannedJourney?.StopsFromOrigin);
+        Assert.IsNotNull(plannedJourney?.StopsFromInterchange);
+        Assert.IsNotNull(plannedJourney?.InterchangeStop);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        var victoriaStop = _importedStops?.First(stop => stop.StopName == "Victoria");
+        Assert.AreEqual(victoriaStop, plannedJourney?.InterchangeStop);
+        var originStops = plannedJourney?.StopsFromOrigin;
+        var interchangeStops = plannedJourney?.StopsFromInterchange;
+        Assert.AreEqual(23, originStops?.Count);
+        Assert.AreEqual(9, interchangeStops?.Count);
+        var destinationsFromOrigin = plannedJourney?.TerminiFromOrigin;
+        var destinationsFromInterchange = plannedJourney?.TerminiFromInterchange;
+        Assert.AreEqual(1, destinationsFromOrigin?.Count);
+        Assert.AreEqual(1, destinationsFromInterchange?.Count);
+        
+    }
 }
