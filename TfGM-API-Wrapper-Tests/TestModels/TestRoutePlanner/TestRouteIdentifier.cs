@@ -461,5 +461,25 @@ public class TestRouteIdentifier
         var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
         Assert.IsNotNull(identifiedTerminus);
         Assert.AreEqual("Altrincham", identifiedTerminus?.StopName);
+        Assert.AreEqual(altrinchamStop, identifiedTerminus);
+    }
+
+    /// <summary>
+    /// Test to identify the terminus of the purple route when going in the
+    /// opposite direction.
+    /// This should return Piccadilly. 
+    /// </summary>
+    [Test]
+    public void TestIdentifyTramTerminusForReverseRoute()
+    {
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        var identifiedTerminus = _routeIdentifier?
+            .IdentifyRouteTerminus(brooklandsStop, stretfordStop, purpleRoute);
+        var piccadillyStop = _importedStops?.First(stop => stop.StopName == "Piccadilly");
+        Assert.IsNotNull(identifiedTerminus);
+        Assert.AreEqual("Piccadilly", identifiedTerminus?.StopName);
+        Assert.AreEqual(piccadillyStop, identifiedTerminus);
     }
 }
