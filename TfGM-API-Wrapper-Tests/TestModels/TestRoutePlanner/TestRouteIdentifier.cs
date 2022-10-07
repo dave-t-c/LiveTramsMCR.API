@@ -444,4 +444,22 @@ public class TestRouteIdentifier
                     .IdentifyIntermediateStops(stretfordStop, brooklandsStop, null);
             });
     }
+
+    /// <summary>
+    /// Test to identify the terminus stop of a tram.
+    /// This should return the stop not where the route ends, but the
+    /// route terminates in the direction of travel.
+    /// </summary>
+    [Test]
+    public void TestIdentifyTramTerminusForRoute()
+    {
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        var identifiedTerminus = _routeIdentifier?
+            .IdentifyRouteTerminus(stretfordStop, brooklandsStop, purpleRoute);
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        Assert.IsNotNull(identifiedTerminus);
+        Assert.AreEqual("Altrincham", identifiedTerminus?.StopName);
+    }
 }
