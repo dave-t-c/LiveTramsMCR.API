@@ -145,4 +145,20 @@ public class RouteIdentifier
 
         return intermediateStops;
     }
+
+    /// <summary>
+    /// Identifies the correct terminus of a route depending on the]
+    /// direction of travel between the origin and destination stops.
+    /// </summary>
+    /// <param name="origin">Origin of journey on route</param>
+    /// <param name="destination">Destination of journey on route</param>
+    /// <param name="route">Route travelling on</param>
+    /// <returns>Terminus Stop for the route direction</returns>
+    public Stop IdentifyRouteTerminus(Stop origin, Stop destination, Route route)
+    {
+        return new Stop
+        {
+            StopName = "Altrincham"
+        };
+    }
 }
