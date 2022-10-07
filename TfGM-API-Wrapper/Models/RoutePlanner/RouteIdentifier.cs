@@ -162,6 +162,9 @@ public class RouteIdentifier
             throw new ArgumentNullException(nameof(destination));
         if (route is null)
             throw new ArgumentNullException(nameof(route));
+        
+        if (!route.Stops.Contains(origin))
+            throw new InvalidOperationException(origin.StopName + " does not exist on " + route.Name + " route");
 
         var originIndex = route.Stops.IndexOf(origin);
         var destinationIndex = route.Stops.IndexOf(destination);
