@@ -537,4 +537,24 @@ public class TestRouteIdentifier
                     .IdentifyRouteTerminus(brooklandsStop, stretfordStop, null);
             });
     }
+
+    /// <summary>
+    /// Test to identify a terminus of a route when the origin
+    /// stop does not belong to the route.
+    /// This should throw an invalid operation exception. 
+    /// </summary>
+    [Test]
+    public void TestIdentifyTerminusOriginNotOnRoute()
+    {
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                .And.Message.EqualTo("Bury does not exist on Purple route"),
+            delegate
+            {
+                var unused = _routeIdentifier?
+                    .IdentifyRouteTerminus( buryStop, brooklandsStop, purpleRoute);
+            });
+    }
 }
