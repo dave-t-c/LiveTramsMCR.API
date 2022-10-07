@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TfGM_API_Wrapper.Models.Stops;
 
 namespace TfGM_API_Wrapper.Models.RoutePlanner;
@@ -29,17 +30,71 @@ public class JourneyPlanner : IJourneyPlanner
     /// <returns>List of possible Planned Routes</returns>
     public PlannedJourney PlanJourney(Stop origin, Stop destination)
     {
-        var purpleRoute = new Route("Purple", "", new List<Stop>());
-        var greenRoute = new Route("Green", "", new List<Stop>());
-        var yellowRoute = new Route("Yellow", "", new List<Stop>());
-        var routesFromOrigin = new List<Route> {purpleRoute, greenRoute};
-        var routesFromInterchange = new List<Route> {greenRoute, yellowRoute};
-        var isInterchangeRequired = _routeIdentifier.IsInterchangeRequired(origin, destination);
+        var interchangeIsRequired = _routeIdentifier.IsInterchangeRequired(origin, destination);
+        var plannedJourney = interchangeIsRequired
+            ? PlanJourneyWithInterchange(origin, destination)
+            : PlanJourneyWithoutInterchange(origin, destination);
+
+        plannedJourney.RequiresInterchange = interchangeIsRequired;
+        plannedJourney.OriginStop = origin;
+        plannedJourney.DestinationStop = destination;
+        return plannedJourney;
+    }
+
+
+    private PlannedJourney PlanJourneyWithoutInterchange(Stop origin, Stop destination)
+    {
+        var originRoutes = _routeIdentifier.IdentifyRoutesBetween(origin, destination);
+        var originStops = _routeIdentifier
+            .IdentifyIntermediateStops(origin, destination, originRoutes.First());
+        var terminiFromOrigin = new HashSet<Stop>();
+        foreach (var route in originRoutes)
+        {
+            terminiFromOrigin.Add(_routeIdentifier
+                .IdentifyRouteTerminus(origin, destination, route));
+        }
         return new PlannedJourney
         {
-            RoutesFromOrigin = routesFromOrigin,
-            RoutesFromInterchange = routesFromInterchange,
-            RequiresInterchange = isInterchangeRequired
+            RoutesFromOrigin = originRoutes,
+            StopsFromOrigin = originStops,
+            TerminiFromOrigin = terminiFromOrigin
+        };
+    }
+    
+    private PlannedJourney PlanJourneyWithInterchange(Stop origin, Stop destination)
+    {
+        var interchangeStop = _routeIdentifier.IdentifyInterchangeStop(origin, destination);
+        var originRoutes = _routeIdentifier.IdentifyRoutesBetween(origin, interchangeStop);
+        var originStops = _routeIdentifier
+            .IdentifyIntermediateStops(origin, interchangeStop, originRoutes.First());
+        var terminiFromOrigin = new HashSet<Stop>();
+        foreach (var route in originRoutes)
+        {
+            terminiFromOrigin.Add(_routeIdentifier
+                .IdentifyRouteTerminus(origin, interchangeStop, route));
+        }
+
+
+        var interchangeRoutes = _routeIdentifier.IdentifyRoutesBetween(interchangeStop, destination);
+        var interchangeStops = _routeIdentifier
+            .IdentifyIntermediateStops(interchangeStop, destination, interchangeRoutes.First());
+        var terminiFromInterchange = new HashSet<Stop>();
+        foreach (var route in interchangeRoutes)
+        {
+            terminiFromInterchange.Add(_routeIdentifier
+                .IdentifyRouteTerminus(interchangeStop, destination, route));
+        }
+
+        
+        return new PlannedJourney
+        {
+            InterchangeStop = interchangeStop,
+            RoutesFromOrigin = originRoutes,
+            RoutesFromInterchange = interchangeRoutes,
+            StopsFromOrigin = originStops,
+            StopsFromInterchange = interchangeStops,
+            TerminiFromOrigin = terminiFromOrigin,
+            TerminiFromInterchange = terminiFromInterchange
         };
     }
 }

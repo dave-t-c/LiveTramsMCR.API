@@ -33,11 +33,16 @@ public class PlannedJourney
     public List<Route> RoutesFromOrigin { get; set; }
     
     /// <summary>
+    /// Stops between the origin stop and interchange or destination for each route.
+    /// </summary>
+    public List<Stop> StopsFromOrigin { get; set; }
+    
+    /// <summary>
     /// Maps the route name to the destination of the Tram to the Interchange Stop or the Destination Stop
     /// E.g.Green line towards Bury (With the Stop value for Bury)
     /// </summary>
-    public Dictionary<string, Stop> DestinationsFromOrigin { get; set; }
-    
+    public HashSet<Stop> TerminiFromOrigin { get; set; }
+
     /// <summary>
     /// Route from the Interchange stop to the
     /// destination stop. This may be null.
@@ -45,10 +50,16 @@ public class PlannedJourney
     public List<Route> RoutesFromInterchange { get; set; }
     
     /// <summary>
+    /// Stops between the interchange and destination stop.
+    /// </summary>
+    public List<Stop> StopsFromInterchange { get; set; }
+    
+    /// <summary>
     /// Maps the route name to the destination of the Tram from the interchange stop.
     /// E.g.Green line towards Bury (With the Stop value for Bury)
     /// </summary>
-    public Dictionary<string, Stop> DestinationsFromInterchange { get; set; }
+    public HashSet<Stop> TerminiFromInterchange { get; set; }
+    
     
     /// <summary>
     /// Boolean showing if the route requires an
