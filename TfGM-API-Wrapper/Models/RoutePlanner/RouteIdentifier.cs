@@ -156,6 +156,13 @@ public class RouteIdentifier
     /// <returns>Terminus Stop for the route direction</returns>
     public Stop IdentifyRouteTerminus(Stop origin, Stop destination, Route route)
     {
+        if (origin is null)
+            throw new ArgumentNullException(nameof(origin));
+        if (destination is null)
+            throw new ArgumentNullException(nameof(destination));
+        if (route is null)
+            throw new ArgumentNullException(nameof(route));
+
         var originIndex = route.Stops.IndexOf(origin);
         var destinationIndex = route.Stops.IndexOf(destination);
         return destinationIndex > originIndex ? route.Stops.Last() : route.Stops.First();
