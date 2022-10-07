@@ -84,6 +84,7 @@ and destination stops.
 + IdentifyRoutesBetween(Stop origin, Stop destination): List<Route>
 + IdentifyIntermediateStops(Stop origin, Stop destination, Route route): List<Stop>
 + IsInterchangeRequired(Stop origin, Stop destination): bool
++ IdentifyRouteTerminus(Stop origin, Stop destination, Route route): Stop
 }
 
 
