@@ -156,9 +156,8 @@ public class RouteIdentifier
     /// <returns>Terminus Stop for the route direction</returns>
     public Stop IdentifyRouteTerminus(Stop origin, Stop destination, Route route)
     {
-        return new Stop
-        {
-            StopName = "Altrincham"
-        };
+        var originIndex = route.Stops.IndexOf(origin);
+        var destinationIndex = route.Stops.IndexOf(destination);
+        return destinationIndex > originIndex ? route.Stops.Last() : route.Stops.First();
     }
 }
