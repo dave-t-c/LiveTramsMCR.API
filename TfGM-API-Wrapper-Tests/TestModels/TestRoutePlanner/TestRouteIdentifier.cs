@@ -482,4 +482,59 @@ public class TestRouteIdentifier
         Assert.AreEqual("Piccadilly", identifiedTerminus?.StopName);
         Assert.AreEqual(piccadillyStop, identifiedTerminus);
     }
+
+
+    /// <summary>
+    /// Test to identify a terminus with a null origin stop.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyTerminusNullOrigin()
+    {
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
+            delegate
+            {
+                var unused = _routeIdentifier?
+                    .IdentifyRouteTerminus(null, brooklandsStop, purpleRoute);
+            });
+    }
+    
+    /// <summary>
+    /// Identify terminus with a null destination.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyTerminusNullDestination()
+    {
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
+            delegate
+            {
+                var unused = _routeIdentifier?
+                    .IdentifyRouteTerminus(brooklandsStop, null, purpleRoute);
+            });
+    }
+    
+    /// <summary>
+    /// Test to identify a terminus with a null route.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyTerminusNullRoute()
+    {
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'route')"),
+            delegate
+            {
+                var unused = _routeIdentifier?
+                    .IdentifyRouteTerminus(brooklandsStop, stretfordStop, null);
+            });
+    }
 }
