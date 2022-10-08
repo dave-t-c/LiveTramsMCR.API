@@ -9,8 +9,7 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 /// </summary>
 public class JourneyPlanner : IJourneyPlanner
 {
-    private List<Route> _routes;
-    private RouteIdentifier _routeIdentifier;
+    private readonly RouteIdentifier _routeIdentifier;
     
     /// <summary>
     /// Create a new route planner with a list of available routes.
@@ -18,8 +17,7 @@ public class JourneyPlanner : IJourneyPlanner
     /// <param name="routes">List of possible routes a journey can take</param>
     public JourneyPlanner(List<Route> routes)
     {
-        _routes = routes;
-        _routeIdentifier = new RouteIdentifier(_routes);
+        _routeIdentifier = new RouteIdentifier(routes);
     }
     
     /// <summary>
@@ -42,6 +40,12 @@ public class JourneyPlanner : IJourneyPlanner
     }
 
 
+    /// <summary>
+    /// Plans a journey where it is known an interchange is not required.
+    /// </summary>
+    /// <param name="origin">Start of journey</param>
+    /// <param name="destination">End of journey</param>
+    /// <returns>Planned journey without an interchange between origin and destination stops</returns>
     private PlannedJourney PlanJourneyWithoutInterchange(Stop origin, Stop destination)
     {
         var originRoutes = _routeIdentifier.IdentifyRoutesBetween(origin, destination);
@@ -61,6 +65,13 @@ public class JourneyPlanner : IJourneyPlanner
         };
     }
     
+    /// <summary>
+    /// Plans a journey where it is known an interchange is required.
+    /// This identifies and handles the interchange stop.
+    /// </summary>
+    /// <param name="origin">Start of journey</param>
+    /// <param name="destination">End of journey</param>
+    /// <returns>Journey information including relevant </returns>
     private PlannedJourney PlanJourneyWithInterchange(Stop origin, Stop destination)
     {
         var interchangeStop = _routeIdentifier.IdentifyInterchangeStop(origin, destination);
