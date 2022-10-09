@@ -197,4 +197,24 @@ public class TestRoutePlanner
         Assert.AreEqual("Market Street", plannedJourney?.StopsFromInterchange.First().StopName);
         Assert.AreEqual("Radcliffe", plannedJourney?.StopsFromInterchange.Last().StopName);
     }
+
+    /// <summary>
+    /// Test to identify a route between Didsbury and Rochdale.
+    /// This should identify an interchange is not required,
+    /// and there is only one possible route.
+    /// </summary>
+    [Test]
+    public void TestIdentifyDidsburyRochdale()
+    {
+        var didsburyStop =  _importedStops?.First(stop => stop.StopName == "East Didsbury");
+        var rochdaleStop = _importedStops?.First(stop => stop.StopName == "Rochdale Town Centre");
+        var plannedJourney = _journeyPlanner?.PlanJourney(didsburyStop, rochdaleStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsFalse(plannedJourney?.RequiresInterchange);
+        Assert.AreEqual(1, plannedJourney?.RoutesFromOrigin.Count);
+        Assert.AreEqual("Pink", plannedJourney?.RoutesFromOrigin.First().Name);
+        Assert.AreEqual(31, plannedJourney?.StopsFromOrigin.Count);
+        Assert.AreEqual("Didsbury Village", plannedJourney?.StopsFromOrigin.First().StopName);
+        Assert.AreEqual("Rochdale Railway Station", plannedJourney?.StopsFromOrigin.Last().StopName);
+    }
 }
