@@ -135,20 +135,7 @@ public class RouteIdentifier
     /// <returns>List of intermediate stops between origin and destination on given route.</returns>
     public List<Stop> IdentifyIntermediateStops(Stop origin, Stop destination, Route route)
     {
-        if (origin is null)
-            throw new ArgumentNullException(nameof(origin));
-
-        if (destination is null)
-            throw new ArgumentNullException(nameof(destination));
-
-        if (route is null)
-            throw new ArgumentNullException(nameof(route));
-        
-        if (!route.Stops.Contains(origin))
-            throw new InvalidOperationException(origin.StopName + " does not exist on " + route.Name + " route");
-        
-        if (!route.Stops.Contains(destination))
-            throw new InvalidOperationException(destination.StopName + " does not exist on " + route.Name + " route");
+        ValidateStopsOnRoute(origin, destination, route);
         
         var originIndex = route.Stops.IndexOf(origin);
         var destinationIndex = route.Stops.IndexOf(destination);
@@ -173,6 +160,25 @@ public class RouteIdentifier
     /// <returns>Terminus Stop for the route direction</returns>
     public Stop IdentifyRouteTerminus(Stop origin, Stop destination, Route route)
     {
+        ValidateStopsOnRoute(origin, destination, route);
+
+        var originIndex = route.Stops.IndexOf(origin);
+        var destinationIndex = route.Stops.IndexOf(destination);
+        return destinationIndex > originIndex ? route.Stops.Last() : route.Stops.First();
+    }
+
+    /// <summary>
+    /// Validates the stops being used on the given route.
+    /// This returns true if the stops are both valid and exist on the provided route.
+    /// </summary>
+    /// <param name="origin">Origin Stop to validate</param>
+    /// <param name="destination">Destination Stop to validate</param>
+    /// <param name="route">Route to validate the Stops exist on</param>
+    /// <returns>True if the Stops are valid with the given route</returns>
+    /// <exception cref="ArgumentNullException">Thrown if any argument is null</exception>
+    /// <exception cref="InvalidOperationException">Thrown if either of the stops do not exist on the provided route</exception>
+    private static bool ValidateStopsOnRoute(Stop origin, Stop destination, Route route)
+    {
         if (origin is null)
             throw new ArgumentNullException(nameof(origin));
         if (destination is null)
@@ -185,8 +191,6 @@ public class RouteIdentifier
         if (!route.Stops.Contains(destination))
             throw new InvalidOperationException(destination.StopName + " does not exist on " + route.Name + " route");
 
-        var originIndex = route.Stops.IndexOf(origin);
-        var destinationIndex = route.Stops.IndexOf(destination);
-        return destinationIndex > originIndex ? route.Stops.Last() : route.Stops.First();
+        return true;
     }
 }
