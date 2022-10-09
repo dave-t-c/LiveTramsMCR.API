@@ -217,4 +217,25 @@ public class TestRoutePlanner
         Assert.AreEqual("Didsbury Village", plannedJourney?.StopsFromOrigin.First().StopName);
         Assert.AreEqual("Rochdale Railway Station", plannedJourney?.StopsFromOrigin.Last().StopName);
     }
+
+
+    /// <summary>
+    /// Test to identify a journey between Didsbury and shaw and crompton.
+    /// This should identify that no interchange is required, 
+    /// </summary>
+    [Test]
+    public void TestIdentifyDidsburyShawAndCrompton()
+    {
+        var didsburyStop =  _importedStops?.First(stop => stop.StopName == "East Didsbury");
+        var shawStop =  _importedStops?.First(stop => stop.StopName == "Shaw and Crompton");
+        var plannedJourney = _journeyPlanner?.PlanJourney(didsburyStop, shawStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsFalse(plannedJourney?.RequiresInterchange);
+        Assert.AreEqual(2, plannedJourney?.RoutesFromOrigin.Count);
+        Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Pink"));
+        Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Grey"));
+        Assert.AreEqual(25, plannedJourney?.StopsFromOrigin.Count);
+        Assert.AreEqual("Didsbury Village", plannedJourney?.StopsFromOrigin.First().StopName);
+        Assert.AreEqual("Derker", plannedJourney?.StopsFromOrigin.Last().StopName);
+    }
 }
