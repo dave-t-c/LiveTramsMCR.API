@@ -71,6 +71,7 @@ public class RouteIdentifier
         // We need to identify stops that exist on both lines, and then select the 
         // stop closest to the dest stop.
         var stopDistanceFromDestination = new Dictionary<Stop, int>();
+        var stopDistanceFromOrigin = new Dictionary<Stop, int>();
         foreach (var originRoute in originRoutes)
         {
             foreach (var destRoute in destRoutes)
@@ -79,17 +80,33 @@ public class RouteIdentifier
                 if (!intersectingStops.Any())
                     continue;
 
+                // Identify the distance between the origin and the destination for each of the possible stops.
                 foreach (var stop in intersectingStops.Where(stop => !stopDistanceFromDestination.ContainsKey(stop)))
                 {
                     stopDistanceFromDestination[stop] = destRoute.GetStopsBetween(stop, destination).Count + 1;
+                }
+
+                foreach (var stop in intersectingStops.Where(stop => !stopDistanceFromOrigin.ContainsKey(stop)))
+                {
+                    stopDistanceFromOrigin[stop] = originRoute.GetStopsBetween(origin, stop).Count + 1;
                 }
             }
         }
         
         // When there are multiple routes, the interchange stop closest to the 
         // destination is selected.
-        var interchangeStop = stopDistanceFromDestination.MinBy(kvp => kvp.Value).Key;
-        return interchangeStop;
+        var interchangeEntry = stopDistanceFromDestination.MinBy(kvp => kvp.Value);
+        
+        //Identify all stops with the same distance.
+        var minDistanceStops = stopDistanceFromDestination
+            .Where(entry => entry.Value == interchangeEntry.Value)
+            .Select(entry => entry.Key).ToList();
+        
+        //If there is only a single entry, we do not need to identify the one the closest to the origin. 
+        return minDistanceStops.Count == 1 ? minDistanceStops.First() :
+            //Of these stops, identify the stop closest to the route start, to handle cases such as AHN -> BRY
+            // Where it can be via St Peters Square or Piccadilly Gardens, which is quicker. 
+            minDistanceStops.MinBy(stop => stopDistanceFromOrigin[stop]);
     }
 
     /// <summary>
