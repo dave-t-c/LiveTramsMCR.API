@@ -174,10 +174,9 @@ public class RouteIdentifier
     /// <param name="origin">Origin Stop to validate</param>
     /// <param name="destination">Destination Stop to validate</param>
     /// <param name="route">Route to validate the Stops exist on</param>
-    /// <returns>True if the Stops are valid with the given route</returns>
     /// <exception cref="ArgumentNullException">Thrown if any argument is null</exception>
     /// <exception cref="InvalidOperationException">Thrown if either of the stops do not exist on the provided route</exception>
-    private static bool ValidateStopsOnRoute(Stop origin, Stop destination, Route route)
+    private static void ValidateStopsOnRoute(Stop origin, Stop destination, Route route)
     {
         if (origin is null)
             throw new ArgumentNullException(nameof(origin));
@@ -190,7 +189,5 @@ public class RouteIdentifier
             throw new InvalidOperationException(origin.StopName + " does not exist on " + route.Name + " route");
         if (!route.Stops.Contains(destination))
             throw new InvalidOperationException(destination.StopName + " does not exist on " + route.Name + " route");
-
-        return true;
     }
 }
