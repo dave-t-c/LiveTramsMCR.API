@@ -126,4 +126,75 @@ public class TestRoutePlanner
         Assert.AreEqual(1, destinationsFromInterchange?.Count);
         
     }
+
+    /// <summary>
+    /// Test to identify the expected route between Altrincham and
+    /// Ashton.
+    /// This should identify Piccadilly as the interchange stop.
+    /// </summary>
+    [Test]
+    public void TestIdentifyAltrinchamAshton()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, ashtonStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        var piccadillyStop = _importedStops?.First(stop => stop.StopName == "Piccadilly");
+        Assert.IsNotNull(plannedJourney?.InterchangeStop);
+        Assert.AreEqual(piccadillyStop, plannedJourney?.InterchangeStop);
+        Assert.AreEqual(1, plannedJourney?.RoutesFromOrigin.Count);
+        Assert.AreEqual(1, plannedJourney?.RoutesFromInterchange.Count);
+        Assert.AreEqual(12, plannedJourney?.StopsFromOrigin.Count);
+        Assert.AreEqual(11, plannedJourney?.StopsFromInterchange.Count);
+    }
+
+
+    /// <summary>
+    /// Test to identify a route between Ashton and Altrincham.
+    /// This should identify Cornbrook as the interchange stop.
+    /// There should also be two routes from the interchange stop.
+    /// </summary>
+    [Test]
+    public void TestIdentifyAshtonAltrincham()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var plannedJourney = _journeyPlanner?.PlanJourney(ashtonStop, altrinchamStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        var cornbrookStop = _importedStops?.First(stop => stop.StopName == "Cornbrook");
+        Assert.AreEqual(cornbrookStop, plannedJourney?.InterchangeStop);
+        Assert.AreEqual(1, plannedJourney?.RoutesFromOrigin.Count);
+        Assert.AreEqual(2, plannedJourney?.RoutesFromInterchange.Count);
+        Assert.AreEqual(15, plannedJourney?.StopsFromOrigin.Count);
+        Assert.AreEqual("Ashton West", plannedJourney?.StopsFromOrigin.First().StopName);
+        Assert.AreEqual("Deansgate - Castlefield", plannedJourney?.StopsFromOrigin.Last().StopName);
+        Assert.AreEqual(8, plannedJourney?.StopsFromInterchange.Count);
+        Assert.AreEqual("Trafford Bar", plannedJourney?.StopsFromInterchange.First().StopName);
+        Assert.AreEqual("Navigation Road", plannedJourney?.StopsFromInterchange.Last().StopName);
+    }
+
+    /// <summary>
+    /// Test to identify a route between Ashton and Bury.
+    /// This should identify Piccadilly Gardens as the interchange, and the Yellow line.
+    /// </summary>
+    [Test]
+    public void TestIdentifyAshtonBury()
+    {
+        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var plannedJourney = _journeyPlanner?.PlanJourney(ashtonStop, buryStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        var piccadillyGardensStop = _importedStops?.First(stop => stop.StopName == "Piccadilly Gardens");
+        Assert.AreEqual(piccadillyGardensStop, plannedJourney?.InterchangeStop);
+        Assert.AreEqual(1, plannedJourney?.RoutesFromOrigin.Count);
+        Assert.AreEqual(12, plannedJourney?.StopsFromOrigin.Count);
+        Assert.AreEqual("Ashton West", plannedJourney?.StopsFromOrigin.First().StopName);
+        Assert.AreEqual("Piccadilly", plannedJourney?.StopsFromOrigin.Last().StopName);
+        Assert.AreEqual(12, plannedJourney?.StopsFromInterchange.Count);
+        Assert.AreEqual("Market Street", plannedJourney?.StopsFromInterchange.First().StopName);
+        Assert.AreEqual("Radcliffe", plannedJourney?.StopsFromInterchange.Last().StopName);
+    }
 }
