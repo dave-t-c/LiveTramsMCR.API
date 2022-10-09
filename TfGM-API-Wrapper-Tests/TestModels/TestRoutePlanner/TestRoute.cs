@@ -235,4 +235,26 @@ public class TestRoute
                 var unused = _validRoute?.GetStopsBetween(_importedStops?.First(), _exampleStop);
             });
     }
+
+    /// <summary>
+    /// Test to see if a route contains a stop,
+    /// this should return true, as the route contains the stop.
+    /// </summary>
+    [Test]
+    public void TestRouteContainsStop()
+    {
+        var exampleStop = _importedStops?.First(stop => stop.StopName == "Example-1");
+        Assert.IsTrue(_validRoute?.ContainsStop(exampleStop));
+    }
+
+    
+    /// <summary>
+    /// Test to see if a route contains a stop that is not a member of the route.
+    /// This should return false.
+    /// </summary>
+    [Test]
+    public void TestRouteDoesNotContainStop()
+    {
+        Assert.IsFalse(_validRoute?.ContainsStop(_exampleStop));
+    }
 }

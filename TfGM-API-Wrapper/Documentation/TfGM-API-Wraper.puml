@@ -7,6 +7,8 @@ Models.Resources.RouteLoader *-- Models.RoutePlanner.UnprocessedRoute
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.PlannedRoute
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteNotPossibleException
+Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteIdentifier
+Models.RoutePlanner.RouteIdentifier *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlannerDataModel *-- Models.Stops.StopLookup
 Models.RoutePlanner.RoutePlannerDataModel *-- Models.RoutePlanner.RoutePlanner
 Models.RoutePlanner.RoutePlanner "Implements" --|> Models.RoutePlanner.IRoutePlanner
@@ -26,6 +28,7 @@ Stores the information about a single Route
 + Route(string name, string colour, List<Stop> stops)
 ---
 + GetStopsBetween(Stop start, Stop destination): List<Stop>
++ ContainsStop(Stop stop): bool
 ---
 + Name: string
 + Colour: string
@@ -64,20 +67,33 @@ Thrown when a route between two stops
 cannot be generated
 }
 
-interface Models.RoutePlanner.IRoutePlanner #Purple {
+interface Models.RoutePlanner.IJourneyPlanner #Purple {
 Interface needed to be implemented for a 
 route planner. 
 ---
 + FindRoute(Stop origin, Stop destination): List<PlannedRoute>
 }
 
+class Models.RoutePlanner.RouteIdentifier #Purple {
+Identifies valid routes for a journey by identifying routes that include the start
+and destination stops. 
+---
++ RouteIdentifier(List<Route> routes)
+---
++ IdentifyInterchangeStop(Stop origin, Stop destination): Stop
++ IdentifyRoutesBetween(Stop origin, Stop destination): List<Route>
++ IdentifyIntermediateStops(Stop origin, Stop destination, Route route): List<Stop>
++ IsInterchangeRequired(Stop origin, Stop destination): bool
++ IdentifyRouteTerminus(Stop origin, Stop destination, Route route): Stop
+}
 
-class Models.RoutePlanner.RoutePlanner #Purple {
-Identifies a route between two stops
+
+class Models.RoutePlanner.JourneyPlanner #Purple {
+Identifies a journey between two stops
 ---
 + RoutePlanner(List<Route> routes)
 ---
-+ FindRoute(Stop origin, Stop destination): List<PlannedRoute>
++ PlanJourney(Stop origin, Stop destination): List<PlannedRoute>
 }
 
 'Models.Services' 
