@@ -24,7 +24,7 @@
       "Bowker Vale",
       "Heaton Park",
       "Prestwich",
-      "Besses o' th' Barn",
+      "Besses O' Th' Barn",
       "Whitefield",
       "Radcliffe",
       "Bury"
@@ -85,33 +85,13 @@
     ]
   },
   {
-    "RouteName": "Orange",
-    "Colour": "#F18800",
-    "Stops": [
-      "Etihad Campus",
-      "Holt Town",
-      "New Islington",
-      "Piccadilly",
-      "Piccadilly Gardens",
-      "St Peter's Square",
-      "Deansgate - Castlefield",
-      "Cornbrook",
-      "Pomona",
-      "Exchange Quay",
-      "Salford Quays",
-      "Anchorage",
-      "Harbour City",
-      "MediaCityUK"
-    ]
-  },
-  {
     "RouteName": "Yellow",
     "Colour": "#EFBB00",
     "Stops": [
       "Bury",
       "Radcliffe",
       "Whitefield",
-      "Besses o' th' Barn",
+      "Besses O' Th' Barn",
       "Prestwich",
       "Heaton Park",
       "Bowker Vale",
@@ -237,7 +217,8 @@
       "Cornbrook",
       "Deansgate - Castlefield",
       "St Peter's Square",
-      "Exchange Square",
+      "Market Street",
+      "Shudehill",
       "Victoria"
     ]
   }
