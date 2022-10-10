@@ -22,9 +22,10 @@ public class TestStopsController
     {
         _resourcesConfig = new ResourcesConfig
         {
-            StopResourcePath = "../../../Resources/ValidStopLoader.json",
+            StopResourcePath = "../../../Resources/TestRoutePlanner/Stops.json",
             StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json",
-            TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json"
+            TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json",
+            RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _stopsDataModel = new StopsDataModel(_importedResources);
@@ -62,8 +63,7 @@ public class TestStopsController
 
     /// <summary>
     ///     Test the length of the returned Stops list.
-    ///     This should be 1, as there is only a single Stop in the
-    ///     StopLoader file.
+    ///     This should be 99.
     /// </summary>
     [Test]
     public void TestGetExpectedStopsCount()
@@ -74,6 +74,6 @@ public class TestStopsController
         var okResult = result as OkObjectResult;
         Assert.IsNotNull(okResult);
         var retrievedStops = okResult!.Value as List<Stop> ?? new List<Stop>();
-        Assert.AreEqual(1, retrievedStops.Count);
+        Assert.AreEqual(99, retrievedStops.Count);
     }
 }

@@ -12,9 +12,10 @@ namespace TfGM_API_Wrapper_Tests.TestModels.TestStops;
 /// </summary>
 public class TestStopLookup
 {
-    private const string StopResourcePathConst = "../../../Resources/ValidStopLoader.json";
+    private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
+    private const string RoutePath = "../../../Resources/TestRoutePlanner/routes.json";
 
     private ImportedResources? _importedResources;
 
@@ -33,7 +34,8 @@ public class TestStopLookup
         {
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
-            TlarefsToIdsPath = TlarefsToIdsPath
+            TlarefsToIdsPath = TlarefsToIdsPath,
+            RoutesResourcePath = RoutePath
         };
 
         _resourceLoader = new ResourceLoader(_resourcesConfig);

@@ -6,9 +6,10 @@ namespace TfGM_API_Wrapper_Tests.TestModels.TestResources;
 
 public class TestResourceLoader
 {
-    private const string StopResourcePathConst = "../../../Resources/ValidStopLoader.json";
+    private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/Stops.json";
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
+    private const string RoutesPath = "../../../Resources/TestRoutePlanner/routes.json";
     private ResourceLoader? _resourceLoader;
     private ResourcesConfig? _validResourcesConfig;
 
@@ -22,7 +23,8 @@ public class TestResourceLoader
         {
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
-            TlarefsToIdsPath = TlarefsToIdsPath
+            TlarefsToIdsPath = TlarefsToIdsPath,
+            RoutesResourcePath = RoutesPath
         };
 
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
@@ -49,7 +51,7 @@ public class TestResourceLoader
         var importedResources = _resourceLoader?.ImportResources();
         Assert.NotNull(importedResources);
         Debug.Assert(importedResources != null, nameof(importedResources) + " != null");
-        Assert.AreEqual(1, importedResources.ImportedStops.Count);
+        Assert.AreEqual(99, importedResources.ImportedStops.Count);
     }
 
     /// <summary>
