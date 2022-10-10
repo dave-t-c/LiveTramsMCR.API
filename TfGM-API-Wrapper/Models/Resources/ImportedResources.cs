@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TfGM_API_Wrapper.Models.RoutePlanner;
 using TfGM_API_Wrapper.Models.Stops;
 
 namespace TfGM_API_Wrapper.Models.Resources;
@@ -16,6 +17,7 @@ public class ImportedResources
         ImportedStops = new List<Stop>();
         StationNamesToTlaref = new Dictionary<string, string>();
         TlarefsToIds = new Dictionary<string, List<int>>();
+        ImportedRoutes = new List<Route>();
     }
 
     /// <summary>
@@ -33,4 +35,9 @@ public class ImportedResources
     /// An ID here is usually associated with a passenger information display.
     /// </summary>
     public Dictionary<string, List<int>> TlarefsToIds { get; init; }
+    
+    /// <summary>
+    /// Stores routes imported into the application, used in route planning.
+    /// </summary>
+    public List<Route> ImportedRoutes { get; init; }
 }
