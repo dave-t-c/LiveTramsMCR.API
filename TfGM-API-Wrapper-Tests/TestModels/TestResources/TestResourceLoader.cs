@@ -79,4 +79,17 @@ public class TestResourceLoader
         Debug.Assert(importedResources != null, nameof(importedResources) + " != null");
         Assert.AreEqual(14, importedResources.TlarefsToIds.Count);
     }
+
+    /// <summary>
+    /// Test to import the routes using the resource loader.
+    /// This should be included in the ImportedResources,
+    /// which should contain 8 routes.
+    /// </summary>
+    [Test]
+    public void TestImportResourcesImportRoutes()
+    {
+        var importedResources = _resourceLoader?.ImportResources();
+        Assert.NotNull(importedResources);
+        Assert.AreEqual(8, importedResources?.ImportedRoutes.Count);
+    }
 }
