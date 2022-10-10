@@ -55,4 +55,16 @@ public class TestImportedResources
         Assert.IsNotNull(_importedResources?.TlarefsToIds);
         Assert.AreEqual(0, _importedResources?.TlarefsToIds.Count);
     }
+
+    /// <summary>
+    /// Test to create a new ImportedResources object
+    /// with an empty imported routes.
+    /// This should not be null and the routes list should be empty.
+    /// </summary>
+    [Test]
+    public void TestCreateEmptyImportedRoutes()
+    {
+        Assert.IsNotNull(_importedResources?.ImportedRoutes);
+        Assert.AreEqual(0, _importedResources?.ImportedRoutes.Count);
+    }
 }
