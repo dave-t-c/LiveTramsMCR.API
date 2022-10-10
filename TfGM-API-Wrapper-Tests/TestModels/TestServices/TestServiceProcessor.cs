@@ -11,7 +11,7 @@ namespace TfGM_API_Wrapper_Tests.TestModels.TestServices;
 /// </summary>
 public class TestServiceProcessor
 {
-    private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/Stops.json";
+    private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesPath = "../../../Resources/TestRoutePlanner/routes.json";
