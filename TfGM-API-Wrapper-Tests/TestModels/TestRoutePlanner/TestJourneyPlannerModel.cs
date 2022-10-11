@@ -99,4 +99,19 @@ public class TestJourneyPlannerModel
         Assert.AreEqual(1, plannedRoute?.RoutesFromInterchange.Count);
         Assert.AreEqual(blueRoute, plannedRoute?.RoutesFromInterchange.First());
     }
+
+    /// <summary>
+    /// Test to plan a journey with a null origin stop.
+    /// This should throw a null args exception.
+    /// </summary>
+    [Test]
+    public void TestJourneyPlannerModelNullOrigin()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
+            delegate
+            {
+                var unused = _journeyPlannerModel?.PlanJourney( null, "Altrincham");
+            });
+    }
 }
