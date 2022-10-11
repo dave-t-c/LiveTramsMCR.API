@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Security.Principal;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
 using TfGM_API_Wrapper.Models.Stops;
@@ -224,5 +226,18 @@ public class TestStopLookup
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'value')"),
             delegate { _stopLookup?.LookupIDs(null); });
+    }
+
+    /// <summary>
+    /// Test to lookup the Altrincham Stop.
+    /// This should return the expected stop with a matching stop name.
+    /// </summary>
+    [Test]
+    public void TestStopObjectLookupName()
+    {
+        var identifiedStop = _stopLookup?.LookupStop("Altrincham");
+        var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
+        Assert.IsNotNull(identifiedStop);
+        Assert.AreEqual(altrinchamStop, identifiedStop);
     }
 }
