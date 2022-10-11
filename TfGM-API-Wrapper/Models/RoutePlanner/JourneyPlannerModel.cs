@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TfGM_API_Wrapper.Models.Resources;
@@ -12,9 +13,9 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 /// </summary>
 public class JourneyPlannerModel: IJourneyPlannerModel
 {
-    private IJourneyPlanner _journeyPlanner;
+    private readonly IJourneyPlanner _journeyPlanner;
     private ImportedResources _importedResources;
-    private StopLookup _stopLookup;
+    private readonly StopLookup _stopLookup;
     
     /// <summary>
     /// Creates a journey planner model that can be used
@@ -36,17 +37,11 @@ public class JourneyPlannerModel: IJourneyPlannerModel
     /// </summary>
     /// <param name="origin">Journey start stop name or TLAREF</param>
     /// <param name="destination">Journey end stop name or TLAREF</param>
-    /// <returns>Planned journey including relevant interchange infomration</returns>
+    /// <returns>Planned journey including relevant interchange information</returns>
     public PlannedJourney PlanJourney(string origin, string destination)
     {
         var originStop = _stopLookup.LookupStop(origin);
         var destinationStop = _stopLookup.LookupStop(destination);
-        var purpleRoute = _importedResources.ImportedRoutes.First(route => route.Name == "Purple");
-        return new PlannedJourney
-        {
-            OriginStop = originStop,
-            DestinationStop = destinationStop,
-            RoutesFromOrigin = new List<Route> {purpleRoute}
-        };
+        return _journeyPlanner?.PlanJourney(originStop, destinationStop);
     }
 }
