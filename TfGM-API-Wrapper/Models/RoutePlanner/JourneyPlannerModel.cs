@@ -40,6 +40,8 @@ public class JourneyPlannerModel: IJourneyPlannerModel
     /// <returns>Planned journey including relevant interchange information</returns>
     public PlannedJourney PlanJourney(string origin, string destination)
     {
+        if (origin is null)
+            throw new ArgumentNullException(nameof(origin));
         var originStop = _stopLookup.LookupStop(origin);
         var destinationStop = _stopLookup.LookupStop(destination);
         return _journeyPlanner?.PlanJourney(originStop, destinationStop);
