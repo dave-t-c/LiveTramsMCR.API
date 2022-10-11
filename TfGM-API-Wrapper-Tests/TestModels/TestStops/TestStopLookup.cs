@@ -278,4 +278,16 @@ public class TestStopLookup
                 .And.Message.EqualTo("Sequence contains no matching element"),
             delegate { _stopLookup?.LookupStop("---"); });
     }
+
+    /// <summary>
+    /// Test to lookup a stop object using a null value.
+    /// This should throw a null args exception.
+    /// </summary>
+    [Test]
+    public void TestLookupStopObjectNullValue()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'value')"),
+            delegate { _stopLookup?.LookupStop(null); });
+    }
 }
