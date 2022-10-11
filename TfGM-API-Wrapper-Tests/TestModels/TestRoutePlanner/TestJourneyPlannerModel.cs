@@ -129,4 +129,18 @@ public class TestJourneyPlannerModel
                 var unused = _journeyPlannerModel?.PlanJourney( "Altrincham", null);
             });
     }
+    
+    /// <summary>
+    /// Test to plan a journey with an invalid origin.
+    /// This should throw an invalid operation exception.
+    /// </summary>
+    [Test]
+    public void TestJourneyPlannerModelInvalidOrigin()
+    {
+        Assert.Throws(Is.TypeOf<InvalidOperationException>(),
+            delegate
+            {
+                var unused = _journeyPlannerModel?.PlanJourney("---", "Altrincham");
+            });
+    }
 }
