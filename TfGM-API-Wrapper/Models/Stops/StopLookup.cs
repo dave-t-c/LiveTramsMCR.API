@@ -72,6 +72,6 @@ public class StopLookup
     /// <returns>Stop object with the associated name or TLAREF</returns>
     public Stop LookupStop(string value)
     {
-        return _importedResources.ImportedStops.First(stop => stop.StopName == "Altrincham");
+        return _importedResources.ImportedStops.First(stop => stop.StopName == value);
     }
 }
