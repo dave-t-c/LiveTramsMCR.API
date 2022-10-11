@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using TfGM_API_Wrapper.Models.Resources;
 using TfGM_API_Wrapper.Models.Stops;
 
@@ -12,6 +14,7 @@ public class JourneyPlannerModel: IJourneyPlannerModel
 {
     private IJourneyPlanner _journeyPlanner;
     private ImportedResources _importedResources;
+    private StopLookup _stopLookup;
     
     /// <summary>
     /// Creates a journey planner model that can be used
@@ -23,6 +26,7 @@ public class JourneyPlannerModel: IJourneyPlannerModel
     {
         _importedResources = importedResources;
         _journeyPlanner = journeyPlanner;
+        _stopLookup = new StopLookup(importedResources);
     }
     
     
@@ -35,6 +39,14 @@ public class JourneyPlannerModel: IJourneyPlannerModel
     /// <returns>Planned journey including relevant interchange infomration</returns>
     public PlannedJourney PlanJourney(string origin, string destination)
     {
-        return new PlannedJourney();
+        var originStop = _stopLookup.LookupStop(origin);
+        var destinationStop = _stopLookup.LookupStop(destination);
+        var purpleRoute = _importedResources.ImportedRoutes.First(route => route.Name == "Purple");
+        return new PlannedJourney
+        {
+            OriginStop = originStop,
+            DestinationStop = destinationStop,
+            RoutesFromOrigin = new List<Route> {purpleRoute}
+        };
     }
 }
