@@ -253,4 +253,17 @@ public class TestStopLookup
         Assert.IsNotNull(identifiedStop);
         Assert.AreEqual(piccadillyStop, identifiedStop);
     }
+
+    /// <summary>
+    /// Test to lookup a stop based on its tlaref.
+    /// This should return the Altrincham stop.
+    /// </summary>
+    [Test]
+    public void TestStopObjectLookupTlaref()
+    {
+        var identifiedStop = _stopLookup?.LookupStop("ALT");
+        var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
+        Assert.IsNotNull(identifiedStop);
+        Assert.AreEqual(identifiedStop, altrinchamStop);
+    }
 }
