@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TfGM_API_Wrapper.Models.Resources;
 
 namespace TfGM_API_Wrapper.Models.Stops;
@@ -62,5 +63,15 @@ public class StopLookup
         if (_importedResources.StationNamesToTlaref.ContainsKey(value)) return StationNameLookup(value);
 
         throw new ArgumentException("Value given is not a valid station name or TLAREF");
+    }
+
+    /// <summary>
+    /// Looks up a stop from either its stop name or TLAREF value.
+    /// </summary>
+    /// <param name="value">Stop name or TLAREF value for a stop.</param>
+    /// <returns>Stop object with the associated name or TLAREF</returns>
+    public Stop LookupStop(string value)
+    {
+        return _importedResources.ImportedStops.First(stop => stop.StopName == "Altrincham");
     }
 }
