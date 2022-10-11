@@ -114,4 +114,19 @@ public class TestJourneyPlannerModel
                 var unused = _journeyPlannerModel?.PlanJourney( null, "Altrincham");
             });
     }
+    
+    /// <summary>
+    /// Test to identify a journey with a null destination.
+    /// This should throw a null args exception.
+    /// </summary>
+    [Test]
+    public void TestJourneyPlannerModelNullDestination()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
+            delegate
+            {
+                var unused = _journeyPlannerModel?.PlanJourney( "Altrincham", null);
+            });
+    }
 }
