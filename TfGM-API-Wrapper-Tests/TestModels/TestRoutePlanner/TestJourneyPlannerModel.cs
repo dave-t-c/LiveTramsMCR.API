@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
 using TfGM_API_Wrapper.Models.RoutePlanner;
@@ -20,7 +23,6 @@ public class TestJourneyPlannerModel
     private ResourcesConfig? _validResourcesConfig;
     private ImportedResources? _importedResources;
     private ResourceLoader? _resourceLoader;
-    private List<Stop>? _importedStops;
     private List<Route>? _routes;
     private JourneyPlanner? _journeyPlanner;
     private JourneyPlannerModel? _journeyPlannerModel;
@@ -39,10 +41,8 @@ public class TestJourneyPlannerModel
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
 
-        _importedStops = _importedResources?.ImportedStops;
-
         _routes = _importedResources?.ImportedRoutes;
-        _journeyPlanner = new JourneyPlanner(_routes);
+        _journeyPlanner = new JourneyPlanner(_importedResources?.ImportedRoutes);
         _journeyPlannerModel = new JourneyPlannerModel(_importedResources, _journeyPlanner);
     }
 
@@ -50,8 +50,9 @@ public class TestJourneyPlannerModel
     public void TearDown()
     {
         _routes = null;
-        _importedStops = null;
         _resourceLoader = null;
+        _journeyPlanner = null;
+        _importedResources = null;
         _validResourcesConfig = null;
     }
 
@@ -66,13 +67,36 @@ public class TestJourneyPlannerModel
     {
         var plannedRoute = _journeyPlannerModel?.PlanJourney("Altrincham", "Piccadilly");
         Assert.IsNotNull(plannedRoute);
-        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
-        var piccadillyStop = _importedStops?.First(stop => stop.StopName == "Piccadilly");
+        var altrinchamStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Altrincham");
+        var piccadillyStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Piccadilly");
         Assert.AreEqual(altrinchamStop, plannedRoute?.OriginStop);
         Assert.AreEqual(piccadillyStop, plannedRoute?.DestinationStop);
         Assert.IsFalse(plannedRoute?.RequiresInterchange);
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         Assert.AreEqual(1, plannedRoute?.RoutesFromOrigin.Count);
         Assert.AreEqual(purpleRoute, plannedRoute?.RoutesFromOrigin.First());
+    }
+
+    /// <summary>
+    /// Test to identify a route between Altrincham and Ashton.
+    /// This should require an interchange and have a single route
+    /// from origin and from the interchange.
+    /// </summary>
+    [Test]
+    public void TestIdentifyAltrinchamAshtonRoute()
+    {
+        var plannedRoute = _journeyPlannerModel?.PlanJourney("Altrincham", "Ashton-Under-Lyne");
+        var altrinchamStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        Assert.IsNotNull(plannedRoute);
+        Assert.IsTrue(plannedRoute?.RequiresInterchange);
+        Assert.AreEqual(altrinchamStop, plannedRoute?.OriginStop);
+        Assert.AreEqual(ashtonStop, plannedRoute?.DestinationStop);
+        var purpleRoute = _routes?.First(route => route.Name == "Purple");
+        Assert.AreEqual(1, plannedRoute?.RoutesFromOrigin.Count);
+        Assert.AreEqual(purpleRoute, plannedRoute?.RoutesFromOrigin.First());
+        var blueRoute = _routes?.First(route => route.Name == "Blue");
+        Assert.AreEqual(1, plannedRoute?.RoutesFromInterchange.Count);
+        Assert.AreEqual(blueRoute, plannedRoute?.RoutesFromInterchange.First());
     }
 }
