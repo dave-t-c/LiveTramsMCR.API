@@ -42,6 +42,8 @@ public class JourneyPlannerModel: IJourneyPlannerModel
     {
         if (origin is null)
             throw new ArgumentNullException(nameof(origin));
+        if (destination is null)
+            throw new ArgumentNullException(nameof(destination));
         var originStop = _stopLookup.LookupStop(origin);
         var destinationStop = _stopLookup.LookupStop(destination);
         return _journeyPlanner?.PlanJourney(originStop, destinationStop);
