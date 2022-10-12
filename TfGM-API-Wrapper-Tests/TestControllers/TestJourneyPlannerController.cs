@@ -64,4 +64,18 @@ public class TestJourneyPlannerController
         Assert.AreEqual(altrinchamStop, plannedJourney?.OriginStop);
         Assert.AreEqual(piccadillyStop, plannedJourney?.DestinationStop);
     }
+
+    /// <summary>
+    /// Test to plan a journey with an invalid origin name.
+    /// This should return a 400 bad request
+    /// </summary>
+    [Test]
+    public void TestPlanJourneyInvalidOriginName()
+    {
+        var result = _journeyPlannerController?.PlanJourney("AAAA", "Piccadilly");
+        Assert.NotNull(result);
+        var resultObj = result as ObjectResult;
+        Assert.NotNull(resultObj);
+        Assert.AreEqual(400, resultObj?.StatusCode);
+    }
 }
