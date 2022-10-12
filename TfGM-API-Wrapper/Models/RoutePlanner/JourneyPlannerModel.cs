@@ -14,7 +14,6 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 public class JourneyPlannerModel: IJourneyPlannerModel
 {
     private readonly IJourneyPlanner _journeyPlanner;
-    private ImportedResources _importedResources;
     private readonly StopLookup _stopLookup;
     
     /// <summary>
@@ -25,7 +24,6 @@ public class JourneyPlannerModel: IJourneyPlannerModel
     /// <param name="journeyPlanner"></param>
     public JourneyPlannerModel(ImportedResources importedResources, IJourneyPlanner journeyPlanner)
     {
-        _importedResources = importedResources;
         _journeyPlanner = journeyPlanner;
         _stopLookup = new StopLookup(importedResources);
     }
