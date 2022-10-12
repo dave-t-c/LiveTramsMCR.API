@@ -47,6 +47,10 @@ public class JourneyPlannerController: Controller
         {
             return StatusCode(StatusCodes.Status400BadRequest, new {message = "Invalid Stop Name or TLAREF"});
         }
+        catch (Exception)
+        {
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        }
         return Ok(plannedJourney);
     }
 }
