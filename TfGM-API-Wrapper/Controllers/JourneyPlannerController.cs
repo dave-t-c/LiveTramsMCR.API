@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TfGM_API_Wrapper.Models.RoutePlanner;
@@ -37,6 +38,15 @@ public class JourneyPlannerController: Controller
     [HttpGet]
     public IActionResult PlanJourney(string origin, string destination)
     {
-        return Ok(_journeyPlannerModel.PlanJourney(origin, destination));
+        PlannedJourney plannedJourney;
+        try
+        {
+            plannedJourney = _journeyPlannerModel.PlanJourney(origin, destination);
+        }
+        catch (InvalidOperationException)
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, new {message = "Invalid Stop Name or TLAREF"});
+        }
+        return Ok(plannedJourney);
     }
 }
