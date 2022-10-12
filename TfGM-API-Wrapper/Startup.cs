@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using TfGM_API_Wrapper.Models.Resources;
+using TfGM_API_Wrapper.Models.RoutePlanner;
 using TfGM_API_Wrapper.Models.Services;
 using TfGM_API_Wrapper.Models.Stops;
 using static System.AppDomain;
@@ -69,7 +70,10 @@ public class Startup
         IRequester serviceRequester = new ServiceRequester(apiOptions);
         IServicesDataModel servicesDataModel = new ServicesDataModel(importedResources, serviceRequester);
         services.AddSingleton(servicesDataModel);
-        
+
+        IJourneyPlanner journeyPlanner = new JourneyPlanner(importedResources.ImportedRoutes);
+        IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(importedResources, journeyPlanner);
+        services.AddSingleton(journeyPlannerModel);
 
         services.AddControllers();
 
