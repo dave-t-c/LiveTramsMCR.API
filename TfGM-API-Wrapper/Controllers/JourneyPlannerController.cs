@@ -35,6 +35,8 @@ public class JourneyPlannerController: Controller
     [Route("/api/journey-planner/{origin}/{destination}")]
     [Produces("application/json")]
     [SwaggerResponse (type:typeof (PlannedJourney), statusCode: StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid Stop Name or TLAREF provided")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "An internal server error occured")]
     [HttpGet]
     public IActionResult PlanJourney(string origin, string destination)
     {
