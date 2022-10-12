@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Security.Principal;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
 using TfGM_API_Wrapper.Models.Stops;
@@ -63,7 +65,7 @@ public class TestStopLookup
     public void TestStopLookupTlarefIDs()
     {
         const string tlaref = "ALT";
-        var expectedResult = new List<int> { 728, 729 };
+        var expectedResult = new List<int> {728, 729};
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.TlarefLookup(tlaref);
         Assert.NotNull(result);
@@ -79,7 +81,7 @@ public class TestStopLookup
     public void TestStopLookupDifferentTlaref()
     {
         const string tlaref = "ASH";
-        var expectedResult = new List<int> { 783, 784, 785, 786 };
+        var expectedResult = new List<int> {783, 784, 785, 786};
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.TlarefLookup(tlaref);
         Assert.NotNull(result);
@@ -106,7 +108,7 @@ public class TestStopLookup
     public void TestStopLookupStopName()
     {
         const string stationName = "Altrincham";
-        var expectedResult = new List<int> { 728, 729 };
+        var expectedResult = new List<int> {728, 729};
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.StationNameLookup(stationName);
         Assert.NotNull(result);
@@ -121,7 +123,7 @@ public class TestStopLookup
     public void TestStopLookupDifferentStop()
     {
         const string stationName = "Ashton-Under-Lyne";
-        var expectedResult = new List<int> { 783, 784, 785, 786 };
+        var expectedResult = new List<int> {783, 784, 785, 786};
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.StationNameLookup(stationName);
         Assert.NotNull(result);
@@ -149,7 +151,7 @@ public class TestStopLookup
     public void TestLookupIDsTlaref()
     {
         const string tlaref = "ALT";
-        var expectedResult = new List<int> { 728, 729 };
+        var expectedResult = new List<int> {728, 729};
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.LookupIDs(tlaref);
         Assert.NotNull(result);
@@ -165,7 +167,7 @@ public class TestStopLookup
     public void TestLookupIDsDifferentTlaref()
     {
         const string tlaref = "ASH";
-        var expectedResult = new List<int> { 783, 784, 785, 786 };
+        var expectedResult = new List<int> {783, 784, 785, 786};
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.LookupIDs(tlaref);
         Assert.NotNull(result);
@@ -180,7 +182,7 @@ public class TestStopLookup
     public void TestLookupIDsStationName()
     {
         const string stationName = "Altrincham";
-        var expectedResult = new List<int> { 728, 729 };
+        var expectedResult = new List<int> {728, 729};
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.LookupIDs(stationName);
         Assert.NotNull(result);
@@ -195,7 +197,7 @@ public class TestStopLookup
     public void TestLookupIDsDifferentStationName()
     {
         const string stationName = "Ashton-Under-Lyne";
-        var expectedResult = new List<int> { 783, 784, 785, 786 };
+        var expectedResult = new List<int> {783, 784, 785, 786};
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.LookupIDs(stationName);
         Assert.NotNull(result);
@@ -224,5 +226,68 @@ public class TestStopLookup
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'value')"),
             delegate { _stopLookup?.LookupIDs(null); });
+    }
+
+    /// <summary>
+    /// Test to lookup the Altrincham Stop.
+    /// This should return the expected stop with a matching stop name.
+    /// </summary>
+    [Test]
+    public void TestStopObjectLookupName()
+    {
+        var identifiedStop = _stopLookup?.LookupStop("Altrincham");
+        var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
+        Assert.IsNotNull(identifiedStop);
+        Assert.AreEqual(altrinchamStop, identifiedStop);
+    }
+
+    /// <summary>
+    /// Test to lookup the Piccadilly stop based on its name.
+    /// This should return the expected stop object.
+    /// </summary>
+    [Test]
+    public void TestStopObjectLookupDifferentName()
+    {
+        var identifiedStop = _stopLookup?.LookupStop("Piccadilly");
+        var piccadillyStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Piccadilly");
+        Assert.IsNotNull(identifiedStop);
+        Assert.AreEqual(piccadillyStop, identifiedStop);
+    }
+
+    /// <summary>
+    /// Test to lookup a stop based on its tlaref.
+    /// This should return the Altrincham stop.
+    /// </summary>
+    [Test]
+    public void TestStopObjectLookupTlaref()
+    {
+        var identifiedStop = _stopLookup?.LookupStop("ALT");
+        var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
+        Assert.IsNotNull(identifiedStop);
+        Assert.AreEqual(identifiedStop, altrinchamStop);
+    }
+
+    /// <summary>
+    /// Test to lookup a stop with an invalid stop name.
+    /// This should throw an Invalid operation Exception.
+    /// </summary>
+    [Test]
+    public void TestLookupStopObjectInvalidName()
+    {
+        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                .And.Message.EqualTo("Sequence contains no matching element"),
+            delegate { _stopLookup?.LookupStop("---"); });
+    }
+
+    /// <summary>
+    /// Test to lookup a stop object using a null value.
+    /// This should throw a null args exception.
+    /// </summary>
+    [Test]
+    public void TestLookupStopObjectNullValue()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'value')"),
+            delegate { _stopLookup?.LookupStop(null); });
     }
 }

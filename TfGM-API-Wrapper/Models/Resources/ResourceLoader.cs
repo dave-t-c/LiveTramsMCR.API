@@ -33,7 +33,7 @@ public class ResourceLoader
         var routeLoader = new RouteLoader(_config, importedStops);
         return new ImportedResources
         {
-            ImportedStops = _stopLoader.ImportStops(),
+            ImportedStops = importedStops,
             StationNamesToTlaref = _stationNamesToTlarefLoader.ImportStationNamesToTlarefs(),
             TlarefsToIds = _tlarefToIdsLoader.ImportTlarefsToIds(),
             ImportedRoutes = routeLoader.ImportRoutes()
