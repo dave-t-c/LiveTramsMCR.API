@@ -9,6 +9,7 @@ Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteNotPossibleException
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteIdentifier
 Models.RoutePlanner.RouteIdentifier *-- Models.RoutePlanner.Route
+Models.RoutePlanner.JourneyTimeIdentifier *-- Models.RoutePlanner.RouteTimes
 Models.RoutePlanner.RoutePlannerDataModel *-- Models.Stops.StopLookup
 Models.RoutePlanner.RoutePlannerDataModel *-- Models.RoutePlanner.RoutePlanner
 Models.RoutePlanner.RoutePlannerDataModel *-- Models.RoutePlanner.JourneyTimeIdentifier
@@ -29,6 +30,18 @@ Identifies the times between stops for a journey.
 + JourneyTimeIdentifier(List<Route> routes, RouteTimes routeTimes)
 ---
 + IdentifyRouteTime(Stop origin, Stop destination, Route route): int
+}
+
+class Models.RoutePlanner.RouteTimes #Purple {
+Stores the between stop times for each route, which
+hides complexity and improves readability.
+---
++ RouteTimes(Dictionary<string, List<int>> routeTimesMap)
+---
++ AddRouteTimes(Route route, List<int> times): void
++ GetTimeBetween(string routeName, int originIndex, int destinationIndex): int 
+---
+- RouteTimesMap: Dictionary<string, List<int>
 }
 
 class Models.RoutePlanner.Route #Purple {
