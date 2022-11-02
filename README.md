@@ -21,7 +21,8 @@ C# ASP.NET API to retrieve live service data from TfGM Open Data API and adds mo
 This API is used in the [LiveTramsMCR](https://github.com/dave-t-c/LiveTramsMCR) app.
 
 ## Coming soon
-Route planning between stops is currently in the planning phase.
+- Expected journey time and stops for route planning
+- Ticketing prices for a given journey
 
 ## Project Goals
 - Create a wrapper for the TfGM API that adds additional data
