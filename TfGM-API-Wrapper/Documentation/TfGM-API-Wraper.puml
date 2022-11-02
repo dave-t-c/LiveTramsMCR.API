@@ -4,14 +4,15 @@ skinparam classFontColor automatic
 'Models.RoutePlanner'
 package Models.RoutePlanner {
 Models.Resources.RouteLoader *-- Models.RoutePlanner.UnprocessedRoute
-Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.PlannedRoute
+Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.PlannedJourney
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteNotPossibleException
 Models.RoutePlanner.RoutePlanner *-- Models.RoutePlanner.RouteIdentifier
 Models.RoutePlanner.RouteIdentifier *-- Models.RoutePlanner.Route
 Models.RoutePlanner.RoutePlannerDataModel *-- Models.Stops.StopLookup
 Models.RoutePlanner.RoutePlannerDataModel *-- Models.RoutePlanner.RoutePlanner
-Models.RoutePlanner.RoutePlanner "Implements" --|> Models.RoutePlanner.IRoutePlanner
+Models.RoutePlanner.RoutePlannerDataModel *-- Models.RoutePlanner.JourneyTimeIdentifier
+Models.RoutePlanner.RoutePlanner "Implements" --|> Models.RoutePlanner.IJourneyPlanner
 }
 
 class Models.RoutePlanner.RoutePlannerDataModel #Purple {
@@ -19,7 +20,15 @@ Data Model for Route planning requests
 ---
 + RoutePlannerDataModel(ImportedResources importedResources, IRoutePlanner routePlanner)
 ---
-+ FindRoute(string origin, string destination): List<PlannedRoute>
++ FindRoute(string origin, string destination): PlannedJourneyss
+}
+
+class Models.RoutePlanner.JourneyTimeIdentifier #Purple {
+Identifies the times between stops for a journey.
+--- 
++ JourneyTimeIdentifier(List<Route> routes, RouteTimes routeTimes)
+---
++ IdentifyRouteTime(Stop origin, Stop destination, Route route): int
 }
 
 class Models.RoutePlanner.Route #Purple {
@@ -48,7 +57,7 @@ when the resources are imported.
 + Stops: List<string>
 }
 
-class Models.RoutePlanner.PlannedRoute #Purple {
+class Models.RoutePlanner.PlannedJourney #Purple {
 Stores a possible route between an origin and destination
 ---
 + PlannedRoute()
@@ -57,7 +66,9 @@ Stores a possible route between an origin and destination
 + DestinationStop: Stop
 + InterchangeStop: Stop
 + RouteFromOrigin: Route
++ TimeFromOrigin: int
 + RouteFromInterchange: Route
++ TimeFromInterchange: int
 + RequiresInterchange: bool
 + RouteDetails: string
 }
