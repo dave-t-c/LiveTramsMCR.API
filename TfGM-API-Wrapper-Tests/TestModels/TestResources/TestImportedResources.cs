@@ -67,4 +67,15 @@ public class TestImportedResources
         Assert.IsNotNull(_importedResources?.ImportedRoutes);
         Assert.AreEqual(0, _importedResources?.ImportedRoutes.Count);
     }
+
+    /// <summary>
+    /// Test to create a new imported reousrces object with an empty imported route times Object.
+    /// This should not be null and the get  all should return 0 routes.
+    /// </summary>
+    [Test]
+    public void TestCreateEmptyImportedRouteTimes()
+    {
+        Assert.IsNotNull(_importedResources?.ImportedRouteTimes);
+        Assert.AreEqual(0, _importedResources?.ImportedRouteTimes.GetAllRoutes().Count);
+    }
 }
