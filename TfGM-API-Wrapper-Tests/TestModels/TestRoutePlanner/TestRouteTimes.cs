@@ -131,4 +131,21 @@ public class TestRouteTimes
                 _routeTimes?.GetRouteTimes("Example");
             });
     }
+
+    /// <summary>
+    /// Test to get all routes from the route times object.
+    /// This should return the entire dictionary.
+    /// </summary>
+    [Test]
+    public void TestGetAllRoutes()
+    {
+        _routeTimesDict!["Example"] = _initialRouteTime;
+        _routeTimes?.AddRoute("Purple", _routeTimesDict);
+        _routeTimes?.AddRoute("Yellow", _routeTimesDict);
+        var result = _routeTimes?.GetAllRoutes();
+        Assert.NotNull(result);
+        Assert.AreEqual(2, result?.Count);
+        Assert.True(result?.ContainsKey("Purple"));
+        Assert.True(result?.ContainsKey("Yellow"));
+    }
 }
