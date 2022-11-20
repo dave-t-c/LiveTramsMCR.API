@@ -81,4 +81,19 @@ public class TestRouteTimes
                 _routeTimes?.AddRoute(null, _routeTimesDict);
             });
     }
+
+    /// <summary>
+    /// Test to add a null route times dict.
+    /// This should thrown an args null exception.
+    /// </summary>
+    [Test]
+    public void TestAddNullRouteTimes()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'stopsDict')"),
+            delegate
+            { 
+                _routeTimes?.AddRoute("Purple", null);
+            });
+    }
 }
