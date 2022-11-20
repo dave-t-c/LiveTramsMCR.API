@@ -44,8 +44,10 @@ public class TestRouteTimes
         Assert.AreEqual(1, result?.Keys.Count);
         var resultEntry = result!.First();
         Assert.NotNull(resultEntry);
-        Assert.AreEqual("Purple", resultEntry.Key);
-        Assert.AreEqual(_routeTimesDict, resultEntry.Value);
+        var routeTimesEntry = _routeTimesDict.First();
+        Assert.NotNull(routeTimesEntry);
+        Assert.AreEqual(routeTimesEntry.Key, resultEntry.Key);
+        Assert.AreEqual(routeTimesEntry.Value, resultEntry.Value);
     }
     
     /// <summary>
@@ -62,8 +64,10 @@ public class TestRouteTimes
         Assert.AreEqual(1, result?.Keys.Count);
         var resultEntry = result!.First();
         Assert.NotNull(resultEntry);
-        Assert.AreEqual("Yellow", resultEntry.Key);
-        Assert.AreEqual(_routeTimesDict, resultEntry.Value);
+        var routeTimesEntry = _routeTimesDict.First();
+        Assert.NotNull(routeTimesEntry);
+        Assert.AreEqual(routeTimesEntry.Key, resultEntry.Key);
+        Assert.AreEqual(routeTimesEntry.Value, resultEntry.Value);
     }
 
     /// <summary>

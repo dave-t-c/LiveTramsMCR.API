@@ -39,8 +39,8 @@ public class RouteTimes
     /// </summary>
     /// <param name="routeName">Route to find a </param>
     /// <returns></returns>
-    public Dictionary<string, Dictionary<string, TimeSpan>> GetRouteTimes(string routeName)
+    public Dictionary<string, TimeSpan> GetRouteTimes(string routeName)
     {
-        return _routeDict;
+        return _routeDict[routeName];
     }
 }
