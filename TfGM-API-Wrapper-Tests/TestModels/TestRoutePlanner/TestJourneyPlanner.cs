@@ -260,5 +260,25 @@ public class TestRoutePlanner
         Assert.IsFalse(plannedJourney?.RequiresInterchange);
         Assert.AreEqual(32, plannedJourney?.MinutesFromOrigin);
     }
+
+    /// <summary>
+    /// Test to identify the route time between Altrincham and Asthon.
+    /// This requires an interchange so both minutes from origin and minutes
+    /// from interchange should not be 0.
+    /// </summary>
+    [Test]
+    public void TestIdentifyAltrinchamAshtonTimes()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, ashtonStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        var piccadillyStop = _importedStops?.First(stop => stop.StopName == "Piccadilly");
+        Assert.AreEqual(piccadillyStop, plannedJourney?.InterchangeStop);
+        Assert.AreEqual(32, plannedJourney?.MinutesFromOrigin);
+        Assert.AreEqual(28, plannedJourney?.MinutesFromInterchange);
+        Assert.AreEqual(60, plannedJourney?.TotalJourneyTimeMinutes);
+    }
     
 }
