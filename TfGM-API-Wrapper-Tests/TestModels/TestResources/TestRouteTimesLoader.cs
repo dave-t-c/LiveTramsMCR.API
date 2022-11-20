@@ -1,5 +1,7 @@
+using System.Linq;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
+using TfGM_API_Wrapper.Models.RoutePlanner;
 
 namespace TfGM_API_Wrapper_Tests.TestModels.TestResources;
 
@@ -11,6 +13,8 @@ public class TestRouteTimesLoader
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
+    private RouteTimesLoader? _validRouteTimesLoader;
+    private const int ExpectedStopsCount = 99;
 
     [SetUp]
     public void SetUp()
@@ -22,8 +26,27 @@ public class TestRouteTimesLoader
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
             TlarefsToIdsPath = TlarefsToIdsPath,
-            RoutesResourcePath = RoutesResourcePath
+            RoutesResourcePath = RoutesResourcePath,
+            RouteTimesPath = RouteTimesPath
         };
+
+        _validRouteTimesLoader = new RouteTimesLoader(_validResourcesConfig);
+
+    }
+
+    /// <summary>
+    /// Test to import the route times from the resources file
+    /// This should import the expected number of routes and stops.
+    /// </summary>
+    [Test]
+    public void TestImportRouteTimes()
+    {
+        var routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
+        var result = routeTimesLoader.ImportRouteTimes();
+        Assert.NotNull(result);
+        var allRoutes = result.GetAllRoutes();
+        Assert.NotNull(allRoutes);
+        Assert.AreEqual(8, allRoutes.Count);
     }
 
 }
