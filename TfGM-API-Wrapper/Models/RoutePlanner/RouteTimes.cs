@@ -43,6 +43,8 @@ public class RouteTimes
     {
         if (routeName is null)
             throw new ArgumentNullException(nameof(routeName));
+        if (!_routeDict.ContainsKey(routeName))
+            throw new InvalidOperationException($"The route '{routeName}' was not found");
         return _routeDict[routeName];
     }
 

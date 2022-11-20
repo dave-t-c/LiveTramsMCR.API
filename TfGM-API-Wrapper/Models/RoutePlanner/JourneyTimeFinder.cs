@@ -28,6 +28,7 @@ public class JourneyTimeFinder
     /// <returns></returns>
     public int FindJourneyTime(string routeName, string originStopName, string destStopName)
     {
+        
         var selectedRoute = _routeTimes.GetRouteTimes(routeName);
         var originTimeSpan = selectedRoute[originStopName];
         var destinationTimeSpan = selectedRoute[destStopName];
