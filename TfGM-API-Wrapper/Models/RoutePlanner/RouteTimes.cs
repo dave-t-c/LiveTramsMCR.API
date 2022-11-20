@@ -27,6 +27,8 @@ public class RouteTimes
     /// <param name="stopsDict">Map of stop names to their date-times from a timetable</param>
     public void AddRoute(string routeName, Dictionary<string, TimeSpan> stopsDict)
     {
+        if (routeName is null)
+            throw new ArgumentNullException(nameof(routeName));
         _routeDict[routeName] = stopsDict;
     }
 
