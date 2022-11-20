@@ -12,11 +12,21 @@ public class TestRouteTimes
 {
     private const string ExampleTimeString = "08:40:00";
     private readonly TimeSpan _initialRouteTime = TimeSpan.Parse(ExampleTimeString);
+    private RouteTimes? _routeTimes;
+    private Dictionary<string, TimeSpan>? _routeTimesDict;
     
     [SetUp]
     public void SetUp()
     {
-        
+        _routeTimes = new RouteTimes();
+        _routeTimesDict = new Dictionary<string, TimeSpan>();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        _routeTimes = null;
+        _routeTimesDict = null;
     }
 
     /// <summary>
@@ -27,19 +37,15 @@ public class TestRouteTimes
     [Test]
     public void TestAddExampleRoute()
     {
-        var routeTimes = new RouteTimes();
-        var routeTimesDict = new Dictionary<string, TimeSpan>
-        {
-            {"Example", _initialRouteTime}
-        };
-        routeTimes.AddRoute("Purple", routeTimesDict);
-        var result = routeTimes.GetRouteTimes("Purple");
+        _routeTimesDict!["Example"] = _initialRouteTime;
+        _routeTimes?.AddRoute("Purple", _routeTimesDict);
+        var result = _routeTimes?.GetRouteTimes("Purple");
         Assert.NotNull(result);
-        Assert.AreEqual(1, result.Keys.Count);
-        var resultEntry = result.First();
+        Assert.AreEqual(1, result?.Keys.Count);
+        var resultEntry = result!.First();
         Assert.NotNull(resultEntry);
         Assert.AreEqual("Purple", resultEntry.Key);
-        Assert.AreEqual(routeTimesDict, resultEntry.Value);
+        Assert.AreEqual(_routeTimesDict, resultEntry.Value);
     }
     
     /// <summary>
@@ -49,18 +55,30 @@ public class TestRouteTimes
     [Test]
     public void TestAddDifferentRoute()
     {
-        var routeTimes = new RouteTimes();
-        var routeTimesDict = new Dictionary<string, TimeSpan>
-        {
-            {"Different Example", _initialRouteTime}
-        };
-        routeTimes.AddRoute("Yellow", routeTimesDict);
-        var result = routeTimes.GetRouteTimes("Yellow");
+        _routeTimesDict!["Different Example"] = _initialRouteTime;
+        _routeTimes?.AddRoute("Yellow", _routeTimesDict);
+        var result = _routeTimes?.GetRouteTimes("Yellow");
         Assert.NotNull(result);
-        Assert.AreEqual(1, result.Keys.Count);
-        var resultEntry = result.First();
+        Assert.AreEqual(1, result?.Keys.Count);
+        var resultEntry = result!.First();
         Assert.NotNull(resultEntry);
         Assert.AreEqual("Yellow", resultEntry.Key);
-        Assert.AreEqual(routeTimesDict, resultEntry.Value);
+        Assert.AreEqual(_routeTimesDict, resultEntry.Value);
+    }
+
+    /// <summary>
+    /// Test to add a null route name.
+    /// This should throw an illegal args exception
+    /// </summary>
+    [Test]
+    public void TestAddNullRouteName()
+    {
+        _routeTimesDict!["Example"] = _initialRouteTime;
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'routeName')"),
+            delegate
+            { 
+                _routeTimes?.AddRoute(null, _routeTimesDict);
+            });
     }
 }
