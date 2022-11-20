@@ -16,11 +16,15 @@ public class TestJourneyTimeFinder
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
+    private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
     private StopLoader? _stopLoader;
     private List<Stop>? _importedStops;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
+    private RouteTimesLoader? _routeTimesLoader;
+    private RouteTimes? _routeTimes;
+    private JourneyTimeFinder? _journeyTimeFinder;
 
     /// <summary>
     /// Sets up required resources for tests
@@ -33,7 +37,8 @@ public class TestJourneyTimeFinder
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
             TlarefsToIdsPath = TlarefsToIdsPath,
-            RoutesResourcePath = RoutesResourcePath
+            RoutesResourcePath = RoutesResourcePath,
+            RouteTimesPath = RouteTimesPath
         };
 
         _stopLoader = new StopLoader(_validResourcesConfig);
@@ -41,6 +46,11 @@ public class TestJourneyTimeFinder
 
         _routeLoader = new RouteLoader(_validResourcesConfig, _importedStops);
         _routes = _routeLoader.ImportRoutes();
+
+        _routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
+        _routeTimes = _routeTimesLoader.ImportRouteTimes();
+
+        _journeyTimeFinder = new JourneyTimeFinder(_routeTimes);
     }
 
     /// <summary>
@@ -67,6 +77,8 @@ public class TestJourneyTimeFinder
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         var deansgateStop = _importedStops?.First(stop => stop.StopName == "Deansgate - Castlefield");
         var cornbrookStop = _importedStops?.First(stop => stop.StopName == "Cornbrook");
-        
+        var result = _journeyTimeFinder?.FindJourneyTime(purpleRoute?.Name,
+                deansgateStop?.StopName, cornbrookStop?.StopName);
+        Assert.AreEqual(3, result);
     }
 }
