@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
@@ -14,6 +15,7 @@ public class TestRouteTimesLoader
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
+    private ResourcesConfig? _invalidRouteTimesPathConfig;
     private RouteTimesLoader? _validRouteTimesLoader;
     private const int ExpectedStopsCount = 99;
 
@@ -32,6 +34,9 @@ public class TestRouteTimesLoader
         };
 
         _validRouteTimesLoader = new RouteTimesLoader(_validResourcesConfig);
+
+        _invalidRouteTimesPathConfig = _validResourcesConfig.DeepCopy();
+        _invalidRouteTimesPathConfig.RouteTimesPath = "../../../Resources/NonExistentFile.json";
 
     }
 
@@ -62,6 +67,24 @@ public class TestRouteTimesLoader
             delegate
             {
                 var unused = new RouteTimesLoader(null);
+            });
+    }
+
+    /// <summary>
+    /// Test to create a route times object with an invalid route times
+    /// file.
+    /// This should throw a file not found exception.
+    /// </summary>
+    [Test]
+    public void TestCreateRouteTimesInvalidRouteTimesResource()
+    {
+        Assert.Throws(Is.TypeOf<FileNotFoundException>()
+                .And.Message.Contains("Could not find file")
+                .And.Message.Contains("../../../Resources/NonExistentFile.json"),
+            delegate
+            {
+                var routeTimesLoader = new RouteTimesLoader(_invalidRouteTimesPathConfig);
+                routeTimesLoader.ImportRouteTimes();
             });
     }
 
