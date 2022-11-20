@@ -193,4 +193,16 @@ public class TestJourneyTimeFinder
                     "Bury", null);
             });
     }
+    
+    /// <summary>
+    /// Test to identify minutes between Altrincham and Bury.
+    /// This should return 62 mins.
+    /// </summary>
+    [Test]
+    public void TestIdentifyTimeAltBury()
+    {
+        var result = _journeyTimeFinder?.FindJourneyTime("Green",
+            "Altrincham", "Bury");
+        Assert.AreEqual(62, result);
+    }
 }
