@@ -45,4 +45,13 @@ public class RouteTimes
             throw new ArgumentNullException(nameof(routeName));
         return _routeDict[routeName];
     }
+
+    /// <summary>
+    /// Returns all added routes' times
+    /// </summary>
+    /// <returns>Returns a dict containing all added routes</returns>
+    public Dictionary<string, Dictionary<string, TimeSpan>> GetAllRoutes()
+    {
+        return _routeDict;
+    }
 }
