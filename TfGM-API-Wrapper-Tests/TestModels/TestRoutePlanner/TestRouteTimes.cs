@@ -38,7 +38,29 @@ public class TestRouteTimes
         Assert.AreEqual(1, result.Keys.Count);
         var resultEntry = result.First();
         Assert.NotNull(resultEntry);
-        Assert.AreEqual("Example", resultEntry.Key);
-        Assert.AreEqual(_initialRouteTime, resultEntry.Value);
+        Assert.AreEqual("Purple", resultEntry.Key);
+        Assert.AreEqual(routeTimesDict, resultEntry.Value);
+    }
+    
+    /// <summary>
+    /// Test to add a route with a different name to route times.
+    /// This should return the route with a different name.
+    /// </summary>
+    [Test]
+    public void TestAddDifferentRoute()
+    {
+        var routeTimes = new RouteTimes();
+        var routeTimesDict = new Dictionary<string, TimeSpan>
+        {
+            {"Different Example", _initialRouteTime}
+        };
+        routeTimes.AddRoute("Yellow", routeTimesDict);
+        var result = routeTimes.GetRouteTimes("Yellow");
+        Assert.NotNull(result);
+        Assert.AreEqual(1, result.Keys.Count);
+        var resultEntry = result.First();
+        Assert.NotNull(resultEntry);
+        Assert.AreEqual("Yellow", resultEntry.Key);
+        Assert.AreEqual(routeTimesDict, resultEntry.Value);
     }
 }
