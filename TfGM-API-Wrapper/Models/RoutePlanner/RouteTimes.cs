@@ -41,6 +41,8 @@ public class RouteTimes
     /// <returns></returns>
     public Dictionary<string, TimeSpan> GetRouteTimes(string routeName)
     {
+        if (routeName is null)
+            throw new ArgumentNullException(nameof(routeName));
         return _routeDict[routeName];
     }
 }
