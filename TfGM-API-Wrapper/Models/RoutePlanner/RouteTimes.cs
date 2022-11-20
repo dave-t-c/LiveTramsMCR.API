@@ -27,10 +27,7 @@ public class RouteTimes
     /// <param name="stopsDict">Map of stop names to their date-times from a timetable</param>
     public void AddRoute(string routeName, Dictionary<string, TimeSpan> stopsDict)
     {
-        _routeDict["Purple"] = new Dictionary<string, TimeSpan>
-        {
-            ["Example"] = TimeSpan.Parse("08:40:00")
-        };
+        _routeDict[routeName] = stopsDict;
     }
 
     /// <summary>
@@ -38,11 +35,8 @@ public class RouteTimes
     /// </summary>
     /// <param name="routeName">Route to find a </param>
     /// <returns></returns>
-    public Dictionary<string, TimeSpan> GetRouteTimes(string routeName)
+    public Dictionary<string, Dictionary<string, TimeSpan>> GetRouteTimes(string routeName)
     {
-        return new Dictionary<string, TimeSpan>
-        {
-            ["Example"] = TimeSpan.Parse("08:40:00")
-        };
+        return _routeDict;
     }
 }
