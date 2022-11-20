@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
@@ -47,6 +48,21 @@ public class TestRouteTimesLoader
         var allRoutes = result.GetAllRoutes();
         Assert.NotNull(allRoutes);
         Assert.AreEqual(8, allRoutes.Count);
+    }
+
+    /// <summary>
+    /// Test to create a route times loader with a null resources config file.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestImportRouteTimesNullConfig()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'resourcesConfig')"),
+            delegate
+            {
+                var unused = new RouteTimesLoader(null);
+            });
     }
 
 }
