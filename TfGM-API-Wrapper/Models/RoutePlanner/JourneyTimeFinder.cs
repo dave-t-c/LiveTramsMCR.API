@@ -43,7 +43,7 @@ public class JourneyTimeFinder
             throw new InvalidOperationException($"The destination stop '{destStopName}' was not " +
                                                 $"found on the '{routeName}' route");
         var destinationTimeSpan = selectedRoute[destStopName];
-        var minutesDifference = Math.Abs(originTimeSpan.Subtract(destinationTimeSpan).Minutes);
-        return minutesDifference;
+        var minutesDifference = Math.Abs(originTimeSpan.Subtract(destinationTimeSpan).TotalMinutes);
+        return Convert.ToInt32(minutesDifference);
     }
 }
