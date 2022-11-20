@@ -22,7 +22,11 @@ public class RouteTimesLoader
     /// <param name="resourcesConfig"></param>
     public RouteTimesLoader(ResourcesConfig resourcesConfig)
     {
+        var loaderHelper = new LoaderHelper();
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
+        
+        _resourcesConfig.RouteTimesPath = loaderHelper.CheckFileRequirements(resourcesConfig.RouteTimesPath,
+            nameof(resourcesConfig.RouteTimesPath));
     }
 
     /// <summary>
