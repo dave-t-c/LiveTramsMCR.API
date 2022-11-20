@@ -25,6 +25,11 @@ public class ResourcesConfig
     /// Path for the routes resource file that maps routes to their stop names.
     /// </summary>
     public string RoutesResourcePath { get; set; }
+    
+    /// <summary>
+    /// Path for the file that maps routes to an example timetable entry.
+    /// </summary>
+    public string RouteTimesPath { get; set; }
 
     /// <summary>
     ///     Creates a Deep Copy of this resource config object.
@@ -36,7 +41,9 @@ public class ResourcesConfig
         {
             StopResourcePath = StopResourcePath,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
-            TlarefsToIdsPath = TlarefsToIdsPath
+            TlarefsToIdsPath = TlarefsToIdsPath,
+            RoutesResourcePath = RoutesResourcePath,
+            RouteTimesPath = RouteTimesPath
         };
     }
 }

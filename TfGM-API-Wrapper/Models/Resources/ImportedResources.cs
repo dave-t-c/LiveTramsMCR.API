@@ -18,6 +18,7 @@ public class ImportedResources
         StationNamesToTlaref = new Dictionary<string, string>();
         TlarefsToIds = new Dictionary<string, List<int>>();
         ImportedRoutes = new List<Route>();
+        ImportedRouteTimes = new RouteTimes();
     }
 
     /// <summary>
@@ -40,4 +41,9 @@ public class ImportedResources
     /// Stores routes imported into the application, used in route planning.
     /// </summary>
     public List<Route> ImportedRoutes { get; init; }
+    
+    /// <summary>
+    /// Stores the imported route times, used for calculating journey times.
+    /// </summary>
+    public RouteTimes ImportedRouteTimes { get; init; }
 }

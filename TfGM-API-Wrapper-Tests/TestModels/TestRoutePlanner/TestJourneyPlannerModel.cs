@@ -20,6 +20,7 @@ public class TestJourneyPlannerModel
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
+    private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
     private ImportedResources? _importedResources;
     private ResourceLoader? _resourceLoader;
@@ -35,14 +36,15 @@ public class TestJourneyPlannerModel
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
             TlarefsToIdsPath = TlarefsToIdsPath,
-            RoutesResourcePath = RoutesResourcePath
+            RoutesResourcePath = RoutesResourcePath,
+            RouteTimesPath = RouteTimesPath
         };
 
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
 
         _routes = _importedResources?.ImportedRoutes;
-        _journeyPlanner = new JourneyPlanner(_importedResources?.ImportedRoutes);
+        _journeyPlanner = new JourneyPlanner(_importedResources?.ImportedRoutes, _importedResources?.ImportedRouteTimes);
         _journeyPlannerModel = new JourneyPlannerModel(_importedResources, _journeyPlanner);
     }
 

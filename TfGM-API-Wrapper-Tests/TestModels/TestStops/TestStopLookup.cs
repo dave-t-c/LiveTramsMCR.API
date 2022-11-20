@@ -18,7 +18,7 @@ public class TestStopLookup
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutePath = "../../../Resources/TestRoutePlanner/routes.json";
-
+    private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ImportedResources? _importedResources;
 
     private ResourceLoader? _resourceLoader;
@@ -37,7 +37,8 @@ public class TestStopLookup
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
             TlarefsToIdsPath = TlarefsToIdsPath,
-            RoutesResourcePath = RoutePath
+            RoutesResourcePath = RoutePath,
+            RouteTimesPath = RouteTimesPath
         };
 
         _resourceLoader = new ResourceLoader(_resourcesConfig);

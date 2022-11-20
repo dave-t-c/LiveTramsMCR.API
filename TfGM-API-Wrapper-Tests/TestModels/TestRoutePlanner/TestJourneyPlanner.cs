@@ -18,12 +18,15 @@ public class TestRoutePlanner
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
+    private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
     private StopLoader? _stopLoader;
     private List<Stop>? _importedStops;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
     private JourneyPlanner? _journeyPlanner;
+    private RouteTimes? _routeTimes;
+    private RouteTimesLoader? _routeTimesLoader;
     
     /// <summary>
     /// Sets up the required resources for testing route planning,
@@ -39,7 +42,8 @@ public class TestRoutePlanner
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
             TlarefsToIdsPath = TlarefsToIdsPath,
-            RoutesResourcePath = RoutesResourcePath
+            RoutesResourcePath = RoutesResourcePath,
+            RouteTimesPath = RouteTimesPath
         };
         
         _stopLoader = new StopLoader(_validResourcesConfig);
@@ -47,7 +51,10 @@ public class TestRoutePlanner
 
         _routeLoader = new RouteLoader(_validResourcesConfig, _importedStops);
         _routes = _routeLoader.ImportRoutes();
-        _journeyPlanner = new JourneyPlanner(_routes);
+
+        _routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
+        _routeTimes = _routeTimesLoader.ImportRouteTimes();
+        _journeyPlanner = new JourneyPlanner(_routes, _routeTimes);
     }
 
     /// <summary>
@@ -238,4 +245,40 @@ public class TestRoutePlanner
         Assert.AreEqual("Didsbury Village", plannedJourney?.StopsFromOrigin.First().StopName);
         Assert.AreEqual("Derker", plannedJourney?.StopsFromOrigin.Last().StopName);
     }
+
+    /// <summary>
+    /// Test to identify the route time between Altrincham and Piccadilly.
+    /// This does not require an interchange  
+    /// </summary>
+    [Test]
+    public void TestIdentifyAltrinchamPiccadillyTimes()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var piccadillyStop = _importedStops?.First(stop => stop.StopName == "Piccadilly");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, piccadillyStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsFalse(plannedJourney?.RequiresInterchange);
+        Assert.AreEqual(32, plannedJourney?.MinutesFromOrigin);
+    }
+
+    /// <summary>
+    /// Test to identify the route time between Altrincham and Asthon.
+    /// This requires an interchange so both minutes from origin and minutes
+    /// from interchange should not be 0.
+    /// </summary>
+    [Test]
+    public void TestIdentifyAltrinchamAshtonTimes()
+    {
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, ashtonStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        var piccadillyStop = _importedStops?.First(stop => stop.StopName == "Piccadilly");
+        Assert.AreEqual(piccadillyStop, plannedJourney?.InterchangeStop);
+        Assert.AreEqual(32, plannedJourney?.MinutesFromOrigin);
+        Assert.AreEqual(28, plannedJourney?.MinutesFromInterchange);
+        Assert.AreEqual(60, plannedJourney?.TotalJourneyTimeMinutes);
+    }
+    
 }

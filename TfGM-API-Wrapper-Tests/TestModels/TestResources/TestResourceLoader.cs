@@ -10,6 +10,7 @@ public class TestResourceLoader
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesPath = "../../../Resources/TestRoutePlanner/routes.json";
+    private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourceLoader? _resourceLoader;
     private ResourcesConfig? _validResourcesConfig;
 
@@ -24,7 +25,8 @@ public class TestResourceLoader
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
             TlarefsToIdsPath = TlarefsToIdsPath,
-            RoutesResourcePath = RoutesPath
+            RoutesResourcePath = RoutesPath,
+            RouteTimesPath = RouteTimesPath
         };
 
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
@@ -93,5 +95,13 @@ public class TestResourceLoader
         var importedResources = _resourceLoader?.ImportResources();
         Assert.NotNull(importedResources);
         Assert.AreEqual(8, importedResources?.ImportedRoutes.Count);
+    }
+
+    [Test]
+    public void TestImportResourcesImportRouteTimes()
+    {
+        var importedResources = _resourceLoader?.ImportResources();
+        Assert.NotNull(importedResources);
+        Assert.AreEqual(8, importedResources?.ImportedRouteTimes.GetAllRoutes().Count);
     }
 }
