@@ -26,7 +26,8 @@ public class TestJourneyPlannerController
             StopResourcePath = "../../../Resources/TestRoutePlanner/stops.json",
             StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json",
             TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json",
-            RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json"
+            RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json",
+            RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _journeyPlanner = new JourneyPlanner(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
