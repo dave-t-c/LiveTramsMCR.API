@@ -7,14 +7,22 @@ using TfGM_API_Wrapper.Models.RoutePlanner;
 
 namespace TfGM_API_Wrapper.Models.Resources;
 
+/// <summary>
+/// Loads route times information
+/// </summary>
 public class RouteTimesLoader
 {
 
     private ResourcesConfig _resourcesConfig;
     
+    /// <summary>
+    /// Creates a new route times loader using the resources config.
+    /// The resources config is used for the route times file location.
+    /// </summary>
+    /// <param name="resourcesConfig"></param>
     public RouteTimesLoader(ResourcesConfig resourcesConfig)
     {
-        _resourcesConfig = resourcesConfig;
+        _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
     }
 
     /// <summary>
