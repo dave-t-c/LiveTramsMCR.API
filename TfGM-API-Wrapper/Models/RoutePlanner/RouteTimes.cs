@@ -9,7 +9,7 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 /// </summary>
 public class RouteTimes
 {
-    private Dictionary<string, Dictionary<string, TimeSpan>> _routeDict;
+    private readonly Dictionary<string, Dictionary<string, TimeSpan>> _routeDict;
 
     /// <summary>
     /// Creates a new route times object without a dictionary of initial values.

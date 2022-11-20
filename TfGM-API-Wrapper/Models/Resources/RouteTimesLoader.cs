@@ -13,7 +13,7 @@ namespace TfGM_API_Wrapper.Models.Resources;
 public class RouteTimesLoader
 {
 
-    private ResourcesConfig _resourcesConfig;
+    private readonly ResourcesConfig _resourcesConfig;
     
     /// <summary>
     /// Creates a new route times loader using the resources config.
@@ -52,7 +52,7 @@ public class RouteTimesLoader
     /// </summary>
     /// <param name="unprocessedRoute">Unprocessed route times to convert to timestamps</param>
     /// <returns>A stop name, TimeStamp dict</returns>
-    private Dictionary<string, TimeSpan> ProcessesRoute(Dictionary<string, string> unprocessedRoute)
+    private static Dictionary<string, TimeSpan> ProcessesRoute(Dictionary<string, string> unprocessedRoute)
     {
         return unprocessedRoute.ToDictionary(
             kvp => kvp.Key, 
