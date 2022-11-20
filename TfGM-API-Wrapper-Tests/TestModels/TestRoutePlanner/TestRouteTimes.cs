@@ -100,4 +100,19 @@ public class TestRouteTimes
                 _routeTimes?.AddRoute("Purple", null);
             });
     }
+
+    /// <summary>
+    /// Test to get the route times for a null route name.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestGetRouteTimesNullName()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'routeName')"),
+            delegate
+            {
+                _routeTimes?.GetRouteTimes(null);
+            });
+    }
 }
