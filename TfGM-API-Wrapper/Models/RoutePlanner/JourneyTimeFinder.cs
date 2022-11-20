@@ -28,8 +28,10 @@ public class JourneyTimeFinder
     /// <returns></returns>
     public int FindJourneyTime(string routeName, string originStopName, string destStopName)
     {
-        
         var selectedRoute = _routeTimes.GetRouteTimes(routeName);
+        if (!selectedRoute.ContainsKey(originStopName))
+            throw new InvalidOperationException($"The origin stop '{originStopName}' was not " +
+                                                $"found on the '{routeName}' route");
         var originTimeSpan = selectedRoute[originStopName];
         var destinationTimeSpan = selectedRoute[destStopName];
         var minutesDifference = Math.Abs(originTimeSpan.Subtract(destinationTimeSpan).Minutes);
