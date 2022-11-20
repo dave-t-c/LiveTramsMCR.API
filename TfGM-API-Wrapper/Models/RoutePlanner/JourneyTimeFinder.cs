@@ -29,6 +29,11 @@ public class JourneyTimeFinder
     public int FindJourneyTime(string routeName, string originStopName, string destStopName)
     {
         var selectedRoute = _routeTimes.GetRouteTimes(routeName);
+        if (originStopName is null)
+            throw new ArgumentNullException(nameof(originStopName));
+        if (destStopName is null)
+            throw new ArgumentNullException(nameof(destStopName));
+        
         if (!selectedRoute.ContainsKey(originStopName))
             throw new InvalidOperationException($"The origin stop '{originStopName}' was not " +
                                                 $"found on the '{routeName}' route");
