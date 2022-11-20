@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -93,5 +94,21 @@ public class TestJourneyTimeFinder
         var result = _journeyTimeFinder?.FindJourneyTime("Yellow",
             "Bury", "Piccadilly");
         Assert.AreEqual(38, result);
+    }
+
+    /// <summary>
+    /// Test to find the route time between stops on a route that is invalid.
+    /// This should throw an invalid operation exception
+    /// </summary>
+    [Test]
+    public void TestIdentifyTimeInvalidRoute()
+    {
+        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                .And.Message.EqualTo("The route 'Invalid' was not found"),
+            delegate
+            {
+                var unused = _journeyTimeFinder?.FindJourneyTime("Invalid",
+                    "Bury", "Piccadilly");
+            });
     }
 }

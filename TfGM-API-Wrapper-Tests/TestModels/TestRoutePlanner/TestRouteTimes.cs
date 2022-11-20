@@ -124,8 +124,8 @@ public class TestRouteTimes
     [Test]
     public void TestGetRouteTimesInvalidRouteName()
     {
-        Assert.Throws(Is.TypeOf<KeyNotFoundException>()
-                .And.Message.EqualTo("The given key 'Example' was not present in the dictionary."),
+        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                .And.Message.EqualTo("The route 'Example' was not found"),
             delegate
             {
                 _routeTimes?.GetRouteTimes("Example");
