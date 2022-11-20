@@ -145,4 +145,52 @@ public class TestJourneyTimeFinder
                     "Bury", "Invalid");
             });
     }
+
+    /// <summary>
+    /// Test to identify a route time with a null route name.
+    /// This should throw a null args exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyTimeNullRoute()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'routeName')"),
+            delegate
+            {
+                var unused = _journeyTimeFinder?.FindJourneyTime(null,
+                    "Bury", "Invalid");
+            });
+    }
+
+    /// <summary>
+    /// Test to identify the route time with a null origin stop name.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyTimeNullOriginStop()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'originStopName')"),
+            delegate
+            {
+                var unused = _journeyTimeFinder?.FindJourneyTime("Yellow",
+                    null, "Piccadilly");
+            });
+    }
+
+    /// <summary>
+    /// Test to identify the route time with a null destination.
+    /// This should throw an args null exception.
+    /// </summary>
+    [Test]
+    public void TestIdentifyTimeNullDestination()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'destStopName')"),
+            delegate
+            {
+                var unused = _journeyTimeFinder?.FindJourneyTime("Yellow",
+                    "Bury", null);
+            });
+    }
 }
