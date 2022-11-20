@@ -10,14 +10,17 @@ namespace TfGM_API_Wrapper.Models.RoutePlanner;
 public class JourneyPlanner : IJourneyPlanner
 {
     private readonly RouteIdentifier _routeIdentifier;
-    
+    private readonly JourneyTimeFinder _journeyTimeFinder;
+
     /// <summary>
     /// Create a new route planner with a list of available routes.
     /// </summary>
     /// <param name="routes">List of possible routes a journey can take</param>
-    public JourneyPlanner(List<Route> routes)
+    /// <param name="routeTimes">Example timetables for each route</param>
+    public JourneyPlanner(List<Route> routes, RouteTimes routeTimes)
     {
         _routeIdentifier = new RouteIdentifier(routes);
+        _journeyTimeFinder = new JourneyTimeFinder(routeTimes);
     }
     
     /// <summary>
@@ -57,11 +60,14 @@ public class JourneyPlanner : IJourneyPlanner
             terminiFromOrigin.Add(_routeIdentifier
                 .IdentifyRouteTerminus(origin, destination, route));
         }
+
+        var minutesFromOrigin = IdentifyJourneyTime(originRoutes.First(), origin, destination);
         return new PlannedJourney
         {
             RoutesFromOrigin = originRoutes,
             StopsFromOrigin = originStops,
-            TerminiFromOrigin = terminiFromOrigin
+            TerminiFromOrigin = terminiFromOrigin,
+            MinutesFromOrigin = minutesFromOrigin
         };
     }
     
@@ -107,5 +113,18 @@ public class JourneyPlanner : IJourneyPlanner
             TerminiFromOrigin = terminiFromOrigin,
             TerminiFromInterchange = terminiFromInterchange
         };
+    }
+
+    /// <summary>
+    /// Identifies the journey time between an origin and interchange / destination stop.
+    /// </summary>
+    /// <param name="route">Route being taken</param>
+    /// <param name="origin">Start of journey</param>
+    /// <param name="destination">Destination / Interchange of journey</param>
+    /// <returns>Integer of minutes between origin and destination</returns>
+    private int IdentifyJourneyTime(Route route, Stop origin, Stop destination)
+    {
+        return _journeyTimeFinder.FindJourneyTime(route.Name,
+            origin.StopName, destination.StopName);
     }
 }

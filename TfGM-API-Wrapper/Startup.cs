@@ -71,7 +71,7 @@ public class Startup
         IServicesDataModel servicesDataModel = new ServicesDataModel(importedResources, serviceRequester);
         services.AddSingleton(servicesDataModel);
 
-        IJourneyPlanner journeyPlanner = new JourneyPlanner(importedResources.ImportedRoutes);
+        IJourneyPlanner journeyPlanner = new JourneyPlanner(importedResources.ImportedRoutes, importedResources.ImportedRouteTimes);
         IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(importedResources, journeyPlanner);
         services.AddSingleton(journeyPlannerModel);
 

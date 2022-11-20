@@ -74,4 +74,10 @@ public class PlannedJourney
     /// not covered by the other fields.
     /// </summary>
     public string RouteDetails { get; set; }
+    
+    /// <summary>
+    /// Journey time minutes from the origin stop to
+    /// interchange stop or end of journey if no interchange is required.
+    /// </summary>
+    public int MinutesFromOrigin { get; set; }
 }

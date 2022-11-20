@@ -42,7 +42,7 @@ public class TestJourneyPlannerModel
         _importedResources = _resourceLoader.ImportResources();
 
         _routes = _importedResources?.ImportedRoutes;
-        _journeyPlanner = new JourneyPlanner(_importedResources?.ImportedRoutes);
+        _journeyPlanner = new JourneyPlanner(_importedResources?.ImportedRoutes, _importedResources?.ImportedRouteTimes);
         _journeyPlannerModel = new JourneyPlannerModel(_importedResources, _journeyPlanner);
     }
 

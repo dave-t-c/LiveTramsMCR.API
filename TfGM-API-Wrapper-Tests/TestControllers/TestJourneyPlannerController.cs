@@ -29,7 +29,7 @@ public class TestJourneyPlannerController
             RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _journeyPlanner = new JourneyPlanner(_importedResources.ImportedRoutes);
+        _journeyPlanner = new JourneyPlanner(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
         _journeyPlannerModel = new JourneyPlannerModel(_importedResources, _journeyPlanner);
         _journeyPlannerController = new JourneyPlannerController(_journeyPlannerModel);
     }
