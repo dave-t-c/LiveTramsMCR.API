@@ -81,4 +81,17 @@ public class TestJourneyTimeFinder
                 deansgateStop?.StopName, cornbrookStop?.StopName);
         Assert.AreEqual(3, result);
     }
+
+    /// <summary>
+    /// Test to identify the time between Bury and Piccadilly on the
+    /// yellow route.
+    /// This should return 38 minutes.
+    /// </summary>
+    [Test]
+    public void TestIdentifyTimeBuryPiccadillyYellowRoute()
+    {
+        var result = _journeyTimeFinder?.FindJourneyTime("Yellow",
+            "Bury", "Piccadilly");
+        Assert.AreEqual(38, result);
+    }
 }
