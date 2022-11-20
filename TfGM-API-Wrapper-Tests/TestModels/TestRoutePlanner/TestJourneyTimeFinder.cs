@@ -111,4 +111,21 @@ public class TestJourneyTimeFinder
                     "Bury", "Piccadilly");
             });
     }
+
+    /// <summary>
+    /// Test to identify a route time with an origin stop that
+    /// does not exist on the route.
+    /// This should throw an invalid operation exception
+    /// </summary>
+    [Test]
+    public void TestIdentifyTimeInvalidOrigin()
+    {
+        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                .And.Message.EqualTo("The origin stop 'Invalid' was not found on the 'Yellow' route"),
+            delegate
+            {
+                var unused = _journeyTimeFinder?.FindJourneyTime("Yellow",
+                    "Invalid", "Piccadilly");
+            });
+    }
 }
