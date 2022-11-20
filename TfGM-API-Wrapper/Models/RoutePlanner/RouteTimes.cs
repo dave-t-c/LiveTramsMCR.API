@@ -29,6 +29,8 @@ public class RouteTimes
     {
         if (routeName is null)
             throw new ArgumentNullException(nameof(routeName));
+        if (stopsDict is null)
+            throw new ArgumentNullException(nameof(stopsDict));
         _routeDict[routeName] = stopsDict;
     }
 
