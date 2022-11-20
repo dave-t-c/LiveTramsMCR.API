@@ -39,6 +39,8 @@ public class JourneyPlanner : IJourneyPlanner
         plannedJourney.RequiresInterchange = interchangeIsRequired;
         plannedJourney.OriginStop = origin;
         plannedJourney.DestinationStop = destination;
+        plannedJourney.TotalJourneyTimeMinutes =
+            plannedJourney.MinutesFromOrigin + plannedJourney.MinutesFromInterchange;
         return plannedJourney;
     }
 
@@ -102,7 +104,9 @@ public class JourneyPlanner : IJourneyPlanner
                 .IdentifyRouteTerminus(interchangeStop, destination, route));
         }
 
-        
+        var minutesFromOrigin = IdentifyJourneyTime(originRoutes.First(), origin, interchangeStop);
+        var minutesFromInterchange = IdentifyJourneyTime(interchangeRoutes.First(),
+            interchangeStop, destination);
         return new PlannedJourney
         {
             InterchangeStop = interchangeStop,
@@ -111,7 +115,9 @@ public class JourneyPlanner : IJourneyPlanner
             StopsFromOrigin = originStops,
             StopsFromInterchange = interchangeStops,
             TerminiFromOrigin = terminiFromOrigin,
-            TerminiFromInterchange = terminiFromInterchange
+            TerminiFromInterchange = terminiFromInterchange,
+            MinutesFromOrigin = minutesFromOrigin,
+            MinutesFromInterchange = minutesFromInterchange
         };
     }
 

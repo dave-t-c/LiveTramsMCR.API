@@ -79,5 +79,18 @@ public class PlannedJourney
     /// Journey time minutes from the origin stop to
     /// interchange stop or end of journey if no interchange is required.
     /// </summary>
-    public int MinutesFromOrigin { get; set; }
+    public int MinutesFromOrigin { get; init; }
+    
+    /// <summary>
+    /// Journey time minutes from the interchange stop to the
+    /// destination stop. This is 0 if there is no interchange.
+    /// </summary>
+    public int MinutesFromInterchange { get; init; }
+    
+    /// <summary>
+    /// Total journey time from origin to destination in minutes.
+    /// If there is no interchange, this will be the same as the
+    /// MinutesFromOrigin
+    /// </summary>
+    public int TotalJourneyTimeMinutes { get; set; }
 }
