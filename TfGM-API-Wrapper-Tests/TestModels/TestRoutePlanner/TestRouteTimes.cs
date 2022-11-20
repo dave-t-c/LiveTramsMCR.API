@@ -115,4 +115,20 @@ public class TestRouteTimes
                 _routeTimes?.GetRouteTimes(null);
             });
     }
+
+    /// <summary>
+    /// Test to get route times for a route that
+    /// has not been added. This should throw an
+    /// KeyNotFound exception
+    /// </summary>
+    [Test]
+    public void TestGetRouteTimesInvalidRouteName()
+    {
+        Assert.Throws(Is.TypeOf<KeyNotFoundException>()
+                .And.Message.EqualTo("The given key 'Example' was not present in the dictionary."),
+            delegate
+            {
+                _routeTimes?.GetRouteTimes("Example");
+            });
+    }
 }
