@@ -13,7 +13,7 @@ public class FormattedDepartureBoardServices
     /// </summary>
     public FormattedDepartureBoardServices()
     {
-        Trams = new SortedSet<Tram>();
+        Trams = new SortedSet<Tram>(new TramComparer());
         Messages = new HashSet<string>();
     }
 

@@ -105,4 +105,22 @@ public class TestFormattedDepartureBoardServices
         Assert.IsNotNull(returnedServices);
         Assert.IsEmpty(returnedServices!);
     }
+
+    /// <summary>
+    /// Test to add multiple trams with different waits.
+    /// This should return a set ordered by the due time.
+    /// </summary>
+    [Test]
+    public void TestAddMultipleTrams()
+    {
+        _formattedDepartureBoardServices?.AddService(_tram);
+        _formattedDepartureBoardServices?.AddService(_tramSameDestinationDiffWait);
+        var returnedServices = _formattedDepartureBoardServices?.Trams;
+        Assert.IsNotNull(returnedServices);
+        Assert.AreEqual(2, returnedServices?.Count);
+        Assert.Contains(_tram, returnedServices);
+        Assert.Contains(_tramSameDestinationDiffWait, returnedServices);
+        Assert.IsTrue(returnedServices?.ElementAt(0).Equals(_tramSameDestinationDiffWait));
+        Assert.IsTrue(returnedServices?.ElementAt(1).Equals(_tram));
+    }
 }
