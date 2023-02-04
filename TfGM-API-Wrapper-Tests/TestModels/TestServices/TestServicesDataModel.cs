@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
 using TfGM_API_Wrapper.Models.Services;
@@ -66,4 +67,23 @@ public class TestServicesDataModel
                 _servicesDataModel.RequestServices(null);
             });
     }
+
+    /// <summary>
+    /// Request departure board services.
+    /// This should return 3 trams matching the destinations and wait times.
+    /// </summary>
+    [Test]
+    public void TestRequestDepartureBoardServices()
+    {
+        var result = _servicesDataModel?.RequestDepartureBoardServices("BMR");
+        Assert.IsNotNull(result);
+        var trams = result?.Trams;
+        Assert.AreEqual(3, trams?.Count);
+        Assert.AreEqual(3, trams?.Distinct().Count());
+        var firstTram = trams?.First();
+        Assert.AreEqual("0", firstTram?.Wait);
+        var finalTram = trams?.Last();
+        Assert.AreEqual("23", finalTram?.Wait);
+    }
+    
 }

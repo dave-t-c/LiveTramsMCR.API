@@ -29,4 +29,14 @@ public class ServicesDataModel: IServicesDataModel
     {
         return _serviceProcessor.RequestServices(stop);
     }
+
+    /// <summary>
+    /// Request services for a stop or tlaref formatted for a departure board
+    /// </summary>
+    /// <param name="stop">Stop name or tlaref</param>
+    /// <returns>Services for the given stop</returns>
+    public FormattedDepartureBoardServices RequestDepartureBoardServices(string stop)
+    {
+        return _serviceProcessor.RequestDepartureBoardServices(stop);
+    }
 }
