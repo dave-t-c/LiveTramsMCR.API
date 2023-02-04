@@ -1,10 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using TfGM_API_Wrapper.Models;
-using TfGM_API_Wrapper.Models.Resources;
 using TfGM_API_Wrapper.Models.Services;
 using Swashbuckle.AspNetCore.Annotations;
 
