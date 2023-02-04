@@ -99,7 +99,11 @@ public class ServiceFormatter
         if (string.IsNullOrEmpty(message) || message == "<no message>") return;
         //Replace the caret chars with spaces for the centre.
         //This could create an excess space at the start, so run TrimStart.
-        message = Regex.Replace(message, @"\^J\^F0|\^F0", " ").TrimStart();
+        message = Regex.Replace(message, 
+            @"\^J\^F0|\^F0",
+            " ",
+            RegexOptions.None,
+            TimeSpan.FromMilliseconds(100)).TrimStart();
         formattedServices.AddMessage(message);
     }
 
@@ -108,7 +112,11 @@ public class ServiceFormatter
         if (string.IsNullOrEmpty(message) || message == "<no message>") return;
         //Replace the caret chars with spaces for the centre.
         //This could create an excess space at the start, so run TrimStart.
-        message = Regex.Replace(message, @"\^J\^F0|\^F0", " ").TrimStart();
+        message = Regex.Replace(message, 
+            @"\^J\^F0|\^F0",
+            " ",
+            RegexOptions.None,
+            TimeSpan.FromMilliseconds(100)).TrimStart();
         formattedDepartureBoardServices.AddMessage(message);
     }
 }
