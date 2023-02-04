@@ -55,6 +55,8 @@ public class ServiceFormatter
                 service.Wait2));
             AddTram(formattedDepartureBoardServices, new Tram(service.Dest3, service.Carriages3, service.Status3,
                 service.Wait3));
+            
+            FormatDepartureBoardMessage(formattedDepartureBoardServices, service.MessageBoard);
         }
 
         return formattedDepartureBoardServices;
@@ -99,5 +101,14 @@ public class ServiceFormatter
         //This could create an excess space at the start, so run TrimStart.
         message = Regex.Replace(message, @"\^J\^F0|\^F0", " ").TrimStart();
         formattedServices.AddMessage(message);
+    }
+
+    private static void FormatDepartureBoardMessage(FormattedDepartureBoardServices formattedDepartureBoardServices, string message)
+    {
+        if (string.IsNullOrEmpty(message) || message == "<no message>") return;
+        //Replace the caret chars with spaces for the centre.
+        //This could create an excess space at the start, so run TrimStart.
+        message = Regex.Replace(message, @"\^J\^F0|\^F0", " ").TrimStart();
+        formattedDepartureBoardServices.AddMessage(message);
     }
 }

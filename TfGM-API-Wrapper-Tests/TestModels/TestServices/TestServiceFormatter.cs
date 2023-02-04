@@ -222,5 +222,9 @@ public class TestServiceFormatter
         
         // Check there are 3 distinct trams
         Assert.AreEqual(3, trams?.Distinct().Count());
+
+        var messages = result?.Messages;
+        Assert.IsNotNull(messages);
+        Assert.AreEqual(1, messages?.Count);
     }
 }
