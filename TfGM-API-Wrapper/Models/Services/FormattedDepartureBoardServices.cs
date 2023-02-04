@@ -44,6 +44,8 @@ public class FormattedDepartureBoardServices
     /// <param name="message"></param>
     public void AddMessage(string message)
     {
-        throw new NotImplementedException();
+        if (message == null)
+            return;
+        Messages.Add(message);
     }
 }

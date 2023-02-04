@@ -123,4 +123,29 @@ public class TestFormattedDepartureBoardServices
         Assert.IsTrue(returnedServices?.ElementAt(0).Equals(_tramSameDestinationDiffWait));
         Assert.IsTrue(returnedServices?.ElementAt(1).Equals(_tram));
     }
+    
+    /// <summary>
+    ///     Test to add a message to the formatted services.
+    ///     This should leave a set with size 1.
+    /// </summary>
+    [Test]
+    public void TestAddMessage()
+    {
+        _formattedDepartureBoardServices?.AddMessage("Example");
+        Assert.NotNull(_formattedDepartureBoardServices?.Messages);
+        Assert.AreEqual(1, _formattedDepartureBoardServices?.Messages.Count);
+        Assert.IsTrue(_formattedDepartureBoardServices?.Messages.Contains("Example"));
+    }
+
+    /// <summary>
+    ///     Test to add a null message to formatted services.
+    ///     This should not be added to the set, and the size should remain 0.
+    /// </summary>
+    [Test]
+    public void TestAddNullMessage()
+    {
+        _formattedDepartureBoardServices?.AddMessage(null);
+        Assert.NotNull(_formattedDepartureBoardServices?.Messages);
+        Assert.AreEqual(0, _formattedDepartureBoardServices?.Messages.Count);
+    }
 }
