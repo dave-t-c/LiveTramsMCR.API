@@ -17,6 +17,7 @@ public class TestFormattedDepartureBoardServices
     private FormattedDepartureBoardServices? _formattedDepartureBoardServices;
     private string? _status;
     private Tram? _tram;
+    private Tram? _diffTram;
     private Tram? _tramDiffDestination;
     private Tram? _tramSameDestinationDiffWait;
     private string? _wait;
@@ -35,6 +36,7 @@ public class TestFormattedDepartureBoardServices
         _tramDiffDestination = new Tram(_diffDestination, _carriages, _status, _wait);
         _tramSameDestinationDiffWait = new Tram(_destination, _diffCarriages, _status, _diffWait);
         _formattedDepartureBoardServices = new FormattedDepartureBoardServices();
+        _diffTram = new Tram(_diffDestination, _diffCarriages, _status, _diffWait);
     }
 
     [TearDown]
@@ -69,6 +71,25 @@ public class TestFormattedDepartureBoardServices
         Assert.AreEqual("Example Destination", returnedTram?.Destination);
         Assert.AreEqual("9", returnedTram?.Wait);
         Assert.AreEqual("Single", returnedTram?.Carriages);
+        Assert.AreEqual("Due", returnedTram?.Status);
+    }
+
+
+    /// <summary>
+    /// Test to add a different tram
+    /// This should match the added values.
+    /// </summary>
+    [Test]
+    public void TestAddDifferentTram()
+    {
+        _formattedDepartureBoardServices?.AddService(_diffTram);
+        var returnedServices = _formattedDepartureBoardServices?.Trams;
+        Assert.IsNotNull(returnedServices);
+        Assert.AreEqual(1, returnedServices?.Count);
+        var returnedTram = returnedServices?.First();
+        Assert.AreEqual(_diffDestination, returnedTram?.Destination);
+        Assert.AreEqual(_diffWait, returnedTram?.Wait);
+        Assert.AreEqual(_diffCarriages, returnedTram?.Carriages);
         Assert.AreEqual("Due", returnedTram?.Status);
     }
 }

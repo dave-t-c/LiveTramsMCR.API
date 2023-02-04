@@ -33,12 +33,7 @@ public class FormattedDepartureBoardServices
     /// <param name="tram">Tram service to add</param>
     public void AddService(Tram tram)
     {
-        this.Trams.Add(new Tram(
-            "Example Destination",
-            "Single",
-            "Due",
-            "9"
-            ));
+        Trams.Add(tram);
     }
 
     /// <summary>
