@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using TfGM_API_Wrapper_Tests.TestModels.TestServices;
@@ -85,6 +86,59 @@ public class TestServicesController
     public void TestRequestNullStopName()
     {
         var result = _serviceController?.GetService(null);
+        Assert.NotNull(result);
+        var requestObj = result as ObjectResult;
+        Assert.NotNull(requestObj);
+        Assert.AreEqual(400, requestObj?.StatusCode);
+    }
+    
+    /// <summary>
+    /// Test to request departure board services for BMR.
+    /// This should return 3 trams
+    /// This should also return an OK status code
+    /// </summary>
+    [Test]
+    public void TestRequestDepartureBoardServices()
+    {
+        var result = _serviceController?.GetDepartureBoardService("BMR");
+        Assert.NotNull(result);
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        Assert.AreEqual(200, okResult!.StatusCode);
+        var returnedServices = okResult.Value as FormattedDepartureBoardServices;
+        Assert.NotNull(returnedServices);
+        var trams = returnedServices?.Trams;
+        Assert.IsNotNull(trams);
+        Assert.AreEqual(3, trams?.Count);
+        Assert.AreEqual(3, trams?.Distinct().Count());
+        var firstTram = trams?.First();
+        Assert.AreEqual("0", firstTram?.Wait);
+        var finalTram = trams?.Last();
+        Assert.AreEqual("23", finalTram?.Wait);
+    }
+
+    /// <summary>
+    /// Requests departure board services for a non-existent stop name
+    /// This should return a 400 bad request code.
+    /// </summary>
+    [Test]
+    public void TestRequestDepartureBoardServicesInvalidName()
+    {
+        var result = _serviceController?.GetDepartureBoardService("AAA");
+        Assert.NotNull(result);
+        var requestObj = result as ObjectResult;
+        Assert.NotNull(requestObj);
+        Assert.AreEqual(400, requestObj?.StatusCode);
+    }
+
+    /// <summary>
+    /// Request departure board services with a null stop name.
+    /// This should return a 400 bad request
+    /// </summary>
+    [Test]
+    public void TestRequestDepartureBoardServicesNullStopName()
+    {
+        var result = _serviceController?.GetDepartureBoardService(null);
         Assert.NotNull(result);
         var requestObj = result as ObjectResult;
         Assert.NotNull(requestObj);
