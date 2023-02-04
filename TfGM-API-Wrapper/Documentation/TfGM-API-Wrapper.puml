@@ -124,9 +124,11 @@ Identifies a journey between two stops
 package Models.Services {
 Models.Services.FormattedServices *-- Models.Services.Tram 
 Models.Services.FormattedServices *-- Models.Services.TramComparer 
+Models.Services.FormattedDepartureBoardServices *-- Models.Services.Tram
 Models.Services.ServiceRequester "Implements" --|> Models.Services.IRequester
 Models.Services.ServiceRequester *-- Models.Services.UnformattedServices
 Models.Services.ServiceFormatter *-- Models.Services.FormattedServices
+Models.Services.ServiceFormatter *-- Models.Services.FormattedDepartureBoardServices
 Models.Services.ServiceProcessor *-- Models.Services.ServiceRequester
 Models.Services.ServiceProcessor *-- Models.Services.ServiceFormatter
 Models.Services.ServiceProcessor *-- Models.Stops.StopLookup
@@ -139,6 +141,7 @@ Data model that handles requests for service information.
 + ServicesDataModel(ImportedResources importedResources, IRequester requester)
 ---
 + RequestServices(string stop): FormattedServices
++ RequestDepartureBoardServices(string stop): FormattedDepartureBoardServices
 }
 
 class Models.Services.Tram #Yellow{
@@ -158,6 +161,14 @@ Formatted version of the services retrieved from the
 TfGM API.
 ---
 + Destinations: Dictionary<string, SortedSet<Tram>>
++ Messages: HashSet<string>
+}
+
+class Models.Services.FormattedDepartureBoardServices #Yellow{
+Formatted version of the services retrieved from the 
+TfGM API for replicating that of a departure board.
+---
++ Trams: SortedSet<Tram>>
 + Messages: HashSet<string>
 }
 
@@ -219,9 +230,12 @@ class Models.Services.ServiceFormatter #Yellow {
 Takes a list of unformatted services, and converts them into a 
 formatted object that is more useful for users
 ---
-+ FormatServices(List<UnformattedServices> unformattedServices): FormattedServices 
-- AddTram(FormattedServices formattedServices, Tram tram): void 
++ FormatServices(List<UnformattedServices> unformattedServices): FormattedServices
++ FormatDepartureBoardServices(List<UnformattedServices> unformattedServices): FormattedDepartureBoardServices 
+- AddTram(FormattedServices formattedServices, Tram tram): void
+- AddTram(FormattedDepartureBoardServices formattedServices, Tram tram): void 
 - FormatMessage(FormattedServices formattedServices, string message): void
+- FormatMessage(FormattedDepartureBoardServices formattedServices, string message): void
 }
 
 class Models.Services.ServiceProcessor #Yellow {
@@ -229,6 +243,7 @@ Handles the requesting and formatting of TfGM service information
 ---
 + ServiceProcessor(IRequester requester, ImportedResources resources)
 + RequestServices(string stop): FormattedServices 
++ RequestDepartureBoardServices(string stop): FormattedDepartureBoardServices
 } 
 
 'Models.Stops'
@@ -361,6 +376,7 @@ package Controllers {
 Controllers.StopsController "Uses" <-- Models.Stops.StopsDataModel
 Controllers.ServiceController "Uses" <-- Models.Services.ServicesDataModel
 Controllers.RoutePlannerController "Uses" <-- Models.RoutePlanner.RoutePlannerDataModel
+Controllers.DepartureBoardServiceController "Uses" <-- Models.Services.ServicesDataModel
 }
 
 class Controllers.RoutePlannerController #HoneyDew {
@@ -378,6 +394,15 @@ Controller for handling requests for service information
 ---
 + GetService(string stop): IActionResult 
 }
+
+class Controllers.DepartureBoardServiceController #HoneyDew{
+ Controller for handling requests for service information 
+ formatted for departure boards
+ ---
+ + DepartureBoardServiceController(IServiceDataModel serviceDataModel)
+ ---
+ + GetService(string stop): IActionResult 
+ }
 
 class Controllers.StopsController #HoneyDew {
 Controller for handling requests for stop information

@@ -38,6 +38,31 @@ public class ServiceFormatter
     }
 
     /// <summary>
+    /// Converts unformatted services to Departure board services
+    /// </summary>
+    /// <param name="unformattedServices"></param>
+    /// <returns></returns>
+    public FormattedDepartureBoardServices FormatDepartureBoardServices(List<UnformattedServices> unformattedServices)
+    {
+        var formattedDepartureBoardServices = new FormattedDepartureBoardServices();
+        foreach (var service in unformattedServices)
+        {
+            AddTram(formattedDepartureBoardServices, new Tram(service.Dest0, service.Carriages0, service.Status0,
+                service.Wait0));
+            AddTram(formattedDepartureBoardServices, new Tram(service.Dest1, service.Carriages1, service.Status1,
+                service.Wait1));
+            AddTram(formattedDepartureBoardServices, new Tram(service.Dest2, service.Carriages2, service.Status2,
+                service.Wait2));
+            AddTram(formattedDepartureBoardServices, new Tram(service.Dest3, service.Carriages3, service.Status3,
+                service.Wait3));
+            
+            FormatDepartureBoardMessage(formattedDepartureBoardServices, service.MessageBoard);
+        }
+
+        return formattedDepartureBoardServices;
+    }
+
+    /// <summary>
     ///     Adds a tram to the formatted services if the destination string is not null or empty.
     ///     This assumes that if the destination is null or empty, the other fields such as carriages will
     ///     also be null or empty.
@@ -45,6 +70,19 @@ public class ServiceFormatter
     /// <param name="formattedServices">Formatted service to add tram to</param>
     /// <param name="tram">Tram to add to formatted services</param>
     private static void AddTram(FormattedServices formattedServices, Tram tram)
+    {
+        if (string.IsNullOrEmpty(tram.Destination)) return;
+        formattedServices.AddService(tram);
+    }
+
+
+    /// <summary>
+    /// Adds a tram to the formatted departure board services if the tram is
+    /// not null and the destination is not null or empty
+    /// </summary>
+    /// <param name="formattedServices"></param>
+    /// <param name="tram"></param>
+    private static void AddTram(FormattedDepartureBoardServices formattedServices, Tram tram)
     {
         if (string.IsNullOrEmpty(tram.Destination)) return;
         formattedServices.AddService(tram);
@@ -61,7 +99,24 @@ public class ServiceFormatter
         if (string.IsNullOrEmpty(message) || message == "<no message>") return;
         //Replace the caret chars with spaces for the centre.
         //This could create an excess space at the start, so run TrimStart.
-        message = Regex.Replace(message, @"\^J\^F0|\^F0", " ").TrimStart();
+        message = Regex.Replace(message, 
+            @"\^J\^F0|\^F0",
+            " ",
+            RegexOptions.None,
+            TimeSpan.FromMilliseconds(100)).TrimStart();
         formattedServices.AddMessage(message);
+    }
+
+    private static void FormatDepartureBoardMessage(FormattedDepartureBoardServices formattedDepartureBoardServices, string message)
+    {
+        if (string.IsNullOrEmpty(message) || message == "<no message>") return;
+        //Replace the caret chars with spaces for the centre.
+        //This could create an excess space at the start, so run TrimStart.
+        message = Regex.Replace(message, 
+            @"\^J\^F0|\^F0",
+            " ",
+            RegexOptions.None,
+            TimeSpan.FromMilliseconds(100)).TrimStart();
+        formattedDepartureBoardServices.AddMessage(message);
     }
 }

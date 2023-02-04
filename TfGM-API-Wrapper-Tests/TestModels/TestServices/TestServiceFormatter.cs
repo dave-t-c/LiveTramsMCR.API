@@ -201,4 +201,30 @@ public class TestServiceFormatter
         var firstTram = trams.First();
         Assert.AreEqual("3", firstTram.Wait);
     }
+
+    /// <summary>
+    /// Test formatting departureBoardServices with valid unformatted services.
+    /// </summary>
+    [Test]
+    public void TestFormatDepartureBoardServices()
+    {
+        _unformattedServicesList?.Add(_unformattedServices);
+        var result = _serviceFormatter?.FormatDepartureBoardServices(_unformattedServicesList);
+        Assert.IsNotNull(result);
+        var trams = result?.Trams;
+        Assert.AreEqual(3, trams?.Count);
+        var firstTram = trams?.First();
+        Assert.AreEqual("Manchester Airport", firstTram?.Destination);
+        Assert.AreEqual("0", firstTram?.Wait);
+        var finalTram = trams?.Last();
+        Assert.AreEqual("Manchester Airport", finalTram?.Destination);
+        Assert.AreEqual("23", finalTram?.Wait);
+        
+        // Check there are 3 distinct trams
+        Assert.AreEqual(3, trams?.Distinct().Count());
+
+        var messages = result?.Messages;
+        Assert.IsNotNull(messages);
+        Assert.AreEqual(1, messages?.Count);
+    }
 }
