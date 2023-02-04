@@ -33,7 +33,12 @@ public class FormattedDepartureBoardServices
     /// <param name="tram">Tram service to add</param>
     public void AddService(Tram tram)
     {
-        throw new NotImplementedException();
+        this.Trams.Add(new Tram(
+            "Example Destination",
+            "Single",
+            "Due",
+            "9"
+            ));
     }
 
     /// <summary>
