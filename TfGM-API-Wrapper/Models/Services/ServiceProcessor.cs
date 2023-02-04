@@ -38,4 +38,17 @@ public class ServiceProcessor
         var unformattedServicesList = _requester.RequestServices(stopIds);
         return _serviceFormatter.FormatServices(unformattedServicesList);
     }
+
+    /// <summary>
+    /// Returns services formatted for a departure board
+    /// for a given stop name or Tlaref.
+    /// </summary>
+    /// <param name="stop">Stop identifier, either name or tlaref</param>
+    /// <returns>Service data formatted for use with a departure board</returns>
+    public FormattedDepartureBoardServices RequestDepartureBoardServices(string stop)
+    {
+        var stopIds = _stopLookup.LookupIDs(stop);
+        var unformattedServicesList = _requester.RequestServices(stopIds);
+        return _serviceFormatter.FormatDepartureBoardServices(unformattedServicesList);
+    }
 }

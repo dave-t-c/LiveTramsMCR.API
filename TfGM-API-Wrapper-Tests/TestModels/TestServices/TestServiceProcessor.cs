@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using NUnit.Framework;
 using TfGM_API_Wrapper.Models.Resources;
 using TfGM_API_Wrapper.Models.Services;
@@ -83,5 +84,23 @@ public class TestServiceProcessor
                 Debug.Assert(_serviceProcessor != null, nameof(_serviceProcessor) + " != null");
                 _serviceProcessor.RequestServices(null);
             });
+    }
+
+    /// <summary>
+    /// Test to request services in the format for a departure board.
+    /// </summary>
+    [Test]
+    public void TestServicesDepartureBoard()
+    {
+        var result = _serviceProcessor?.RequestDepartureBoardServices("BMR");
+        Assert.IsNotNull(result);
+        var trams = result?.Trams;
+        Assert.IsNotNull(trams);
+        Assert.AreEqual(3, trams?.Count);
+        var firstTram = trams?.First();
+        Assert.AreEqual("0", firstTram?.Wait);
+        Assert.AreEqual(3, trams?.Distinct().Count());
+        Assert.AreEqual("23", trams?.Last().Wait);
+
     }
 }
