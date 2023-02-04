@@ -101,6 +101,21 @@ public class TestServiceProcessor
         Assert.AreEqual("0", firstTram?.Wait);
         Assert.AreEqual(3, trams?.Distinct().Count());
         Assert.AreEqual("23", trams?.Last().Wait);
+    }
 
+    
+    /// <summary>
+    /// Test to try and request departure board services with a null stop name.
+    /// This should throw an arg null exception.
+    /// </summary>
+    [Test]
+    public void TestServicesDepartureBoardNullStop()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'stop')"),
+            delegate
+            {
+                _serviceProcessor?.RequestDepartureBoardServices(null);
+            });
     }
 }
