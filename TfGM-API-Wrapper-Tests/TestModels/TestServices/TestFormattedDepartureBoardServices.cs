@@ -92,4 +92,17 @@ public class TestFormattedDepartureBoardServices
         Assert.AreEqual(_diffCarriages, returnedTram?.Carriages);
         Assert.AreEqual("Due", returnedTram?.Status);
     }
+
+    /// <summary>
+    /// Test to add a null tram.
+    /// This should not be added to the set and the set size should remain zero.
+    /// </summary>
+    [Test]
+    public void TestAddNullTram()
+    {
+        _formattedDepartureBoardServices?.AddService(null);
+        var returnedServices = _formattedDepartureBoardServices?.Trams;
+        Assert.IsNotNull(returnedServices);
+        Assert.IsEmpty(returnedServices!);
+    }
 }
