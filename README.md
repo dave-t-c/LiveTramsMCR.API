@@ -10,15 +10,22 @@
 
 ## Contents
 1. [Introduction](#introduction)
-2. [Coming Soon](#coming-soon)
-3. [Project Status](#project-status)
-4. [Declaration](#declaration)
+2. [Using the API](#using-the-api)
+3. [Coming Soon](#coming-soon)
+4. [Project Status](#project-status)
+5. [Declaration](#declaration)
 
 
 ## Introduction
 C# ASP.NET API to retrieve live service data from TfGM Open Data API and adds more detailed stop information.
 
 This API is used in the [LiveTramsMCR](https://github.com/dave-t-c/LiveTramsMCR) app.
+
+## Using the API
+To use the API, you can sign up through [Azure](https://livetramsmcr-apim.developer.azure-api.net/).
+
+As the API is a side project, it will not support many requests over a short period of time and will return 429s.
+If you are expecting to make heavy usage, I would reccommend self hosting a version of the project. 
 
 ## Coming soon
 - Expected journey time and stops for route planning
