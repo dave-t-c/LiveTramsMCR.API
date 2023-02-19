@@ -1,0 +1,418 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "LiveTramsMCR",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/journey-planner/{origin}/{destination}": {
+      "get": {
+        "tags": [
+          "JourneyPlanner"
+        ],
+        "summary": "Plans a journey between an origin and destination stop.",
+        "parameters": [
+          {
+            "name": "origin",
+            "in": "path",
+            "description": "Origin stop name or tlaref",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destination",
+            "in": "path",
+            "description": "Destination stop name or tlaref",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedJourney"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Stop Name or TLAREF provided"
+          },
+          "500": {
+            "description": "An internal server error occured"
+          }
+        }
+      }
+    },
+    "/api/services/{stop}": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Retrieves the services for a given stop",
+        "parameters": [
+          {
+            "name": "stop",
+            "in": "path",
+            "description": "Stop name or Tlaref for stop",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FormattedServices"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Stop Name or TLAREF provided"
+          },
+          "500": {
+            "description": "An internal server error occured"
+          }
+        }
+      }
+    },
+    "/api/services/departure-boards/{stop}": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Retrieves services for a given stop in a departure board format.",
+        "parameters": [
+          {
+            "name": "stop",
+            "in": "path",
+            "description": "Stop name or Tlaref",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FormattedDepartureBoardServices"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Stop Name or TLAREF provided"
+          },
+          "500": {
+            "description": "An internal server error occured"
+          }
+        }
+      }
+    },
+    "/api/stops": {
+      "get": {
+        "tags": [
+          "Stops"
+        ],
+        "summary": "Returns a JSON List of all Stops.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Stop"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FormattedDepartureBoardServices": {
+        "type": "object",
+        "properties": {
+          "trams": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tram"
+            },
+            "description": "Set of trams ordered by increasing arrival time",
+            "nullable": true,
+            "readOnly": true
+          },
+          "messages": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Service messages for the",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Stores services by destination, ordered by ascending wait time."
+      },
+      "FormattedServices": {
+        "type": "object",
+        "properties": {
+          "destinations": {
+            "type": "object",
+            "additionalProperties": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Tram"
+              },
+              "nullable": true
+            },
+            "description": "Dict between destination and a sorted set of trams for that dest",
+            "nullable": true,
+            "readOnly": true
+          },
+          "messages": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Service messages for the",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Stores services by destination, ordered by ascending wait time."
+      },
+      "PlannedJourney": {
+        "type": "object",
+        "properties": {
+          "originStop": {
+            "$ref": "#/components/schemas/Stop"
+          },
+          "destinationStop": {
+            "$ref": "#/components/schemas/Stop"
+          },
+          "interchangeStop": {
+            "$ref": "#/components/schemas/Stop"
+          },
+          "routesFromOrigin": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Route"
+            },
+            "description": "Routes taken from the origin destination\r\nto either the interchange stop or destination\r\nstop if no interchange is required\r\n(Only require a single route).",
+            "nullable": true
+          },
+          "stopsFromOrigin": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stop"
+            },
+            "description": "Stops between the origin stop and interchange or destination for each route.",
+            "nullable": true
+          },
+          "terminiFromOrigin": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stop"
+            },
+            "description": "Maps the route name to the destination of the Tram to the Interchange Stop or the Destination Stop\r\nE.g.Green line towards Bury (With the Stop value for Bury)",
+            "nullable": true
+          },
+          "routesFromInterchange": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Route"
+            },
+            "description": "Route from the Interchange stop to the\r\ndestination stop. This may be null.",
+            "nullable": true
+          },
+          "stopsFromInterchange": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stop"
+            },
+            "description": "Stops between the interchange and destination stop.",
+            "nullable": true
+          },
+          "terminiFromInterchange": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stop"
+            },
+            "description": "Maps the route name to the destination of the Tram from the interchange stop.\r\nE.g.Green line towards Bury (With the Stop value for Bury)",
+            "nullable": true
+          },
+          "requiresInterchange": {
+            "type": "boolean",
+            "description": "Boolean showing if the route requires an\r\ninterchange. This can be used as a proxy\r\nto see if the RouteFromInterchange\r\nand InterchangeStop will be null."
+          },
+          "routeDetails": {
+            "type": "string",
+            "description": "Useful information about the route\r\nnot covered by the other fields.",
+            "nullable": true
+          },
+          "minutesFromOrigin": {
+            "type": "integer",
+            "description": "Journey time minutes from the origin stop to\r\ninterchange stop or end of journey if no interchange is required.",
+            "format": "int32"
+          },
+          "minutesFromInterchange": {
+            "type": "integer",
+            "description": "Journey time minutes from the interchange stop to the\r\ndestination stop. This is 0 if there is no interchange.",
+            "format": "int32"
+          },
+          "totalJourneyTimeMinutes": {
+            "type": "integer",
+            "description": "Total journey time from origin to destination in minutes.\r\nIf there is no interchange, this will be the same as the\r\nMinutesFromOrigin",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "POCO object that details a planned route between an origin and destination stop."
+      },
+      "Route": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the route, e.g. \"Purple\"",
+            "nullable": true
+          },
+          "colour": {
+            "type": "string",
+            "description": "Hex colour string for the route, e.g. #7B2082",
+            "nullable": true
+          },
+          "stops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stop"
+            },
+            "description": "Stops belonging to a route in the order they can be travelled between.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class that represents a tram route between two Stops.\r\nThe stops are included as the Stop class, so all relevant information is available."
+      },
+      "Stop": {
+        "type": "object",
+        "properties": {
+          "stopName": {
+            "type": "string",
+            "description": "Name of the stop, such as Piccadilly",
+            "nullable": true
+          },
+          "tlaref": {
+            "type": "string",
+            "description": "3 code ID for the stop, e.g. PIC for Piccadilly",
+            "nullable": true
+          },
+          "ids": {
+            "type": "array",
+            "items": { },
+            "description": "IDs associated with the stop. Larger stops will have more IDs.",
+            "nullable": true
+          },
+          "atcoCode": {
+            "type": "string",
+            "description": "Naptan ID for the stop. This can be used to look up more information\r\nin government transport data sets",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "description": "Stop Latitude. This may be different to that shown by apple or google maps.",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Stop Longitude. This may be different to that shown by apple or google maps.",
+            "format": "double"
+          },
+          "street": {
+            "type": "string",
+            "description": "Street the stop is on. If it is not directly on a street, it will be prefixed\r\nwith 'Off'.",
+            "nullable": true
+          },
+          "roadCrossing": {
+            "type": "string",
+            "description": "Closest road intersection to the stop. For stops where there is not a close intersection,\r\nthis will be blank.",
+            "nullable": true
+          },
+          "line": {
+            "type": "string",
+            "description": "Line the stop is on. This is a single value and does not contain all lines.\r\nThis will be a destination, such as Bury, and does not include the line colour(s).",
+            "nullable": true
+          },
+          "stopZone": {
+            "type": "string",
+            "description": "Ticket fare zone for the stop. If a stop is in multiple zones, it will\r\nbe shown as 'a/b', where a is the smaller of the two zones, e.g. '3/4'.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Stores information about a single stop."
+      },
+      "Tram": {
+        "type": "object",
+        "properties": {
+          "destination": {
+            "type": "string",
+            "description": "Destination for the tram, e.g. Piccadilly.",
+            "nullable": true,
+            "example": "Piccadilly"
+          },
+          "carriages": {
+            "type": "string",
+            "description": "Number of carriages the tram has, either 'Single' or 'Double'",
+            "nullable": true,
+            "example": "Double"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the Tram, e.g. 'Due'",
+            "nullable": true,
+            "example": "Due"
+          },
+          "wait": {
+            "type": "string",
+            "description": "Wait for the tram, an int of mins.\r\nThis is stored as a string as this is the format returned by the TfGM API.\r\nIt is not converted as no calculations are completed using it.",
+            "nullable": true,
+            "example": "10"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Stores service information about a single tram."
+      }
+    }
+  }
+}
