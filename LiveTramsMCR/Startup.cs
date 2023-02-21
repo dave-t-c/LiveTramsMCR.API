@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using System.Reflection;
-using LiveTramsMCR.Models.Resources;
-using LiveTramsMCR.Models.RoutePlanner;
-using LiveTramsMCR.Models.Services;
-using LiveTramsMCR.Models.Stops;
+using LiveTramsMCR.Models.V1.Resources;
+using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Models.V1.Stops;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -97,7 +97,7 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TfGM_API_Wrapper v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LiveTramsMCR v1"));
         }
 
         app.UseHttpsRedirection();
