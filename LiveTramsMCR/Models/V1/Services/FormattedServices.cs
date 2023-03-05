@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LiveTramsMCR.Models.V1.Services;
 
@@ -12,15 +14,29 @@ public class FormattedServices
     /// </summary>
     public FormattedServices()
     {
-        Destinations = new Dictionary<string, SortedSet<Tram>>();
+        InternalDestinations = new Dictionary<string, SortedSet<Tram>>();
         Messages = new HashSet<string>();
     }
 
     /// <summary>
     /// Dict between destination and a sorted set of trams for that dest
     /// </summary>
-    public Dictionary<string, SortedSet<Tram>> Destinations { get; }
-    
+    public Dictionary<string, SortedSet<Tram>> Destinations
+    {
+        get
+        {
+            return InternalDestinations.OrderBy(dest => int.Parse(dest.Value.First().Wait))
+                .ToDictionary(dest => dest.Key, dest => dest.Value);
+
+        }
+    }
+
+    /// <summary>
+    /// Destinations added internally to the class.
+    /// These are then ordered on the get of destinations
+    /// </summary>
+    private Dictionary<string, SortedSet<Tram>> InternalDestinations { get; set; }
+
     /// <summary>
     /// Service messages for the 
     /// </summary>
@@ -34,10 +50,10 @@ public class FormattedServices
     public void AddService(Tram tram)
     {
         if (tram == null) return;
-        if (!Destinations.ContainsKey(tram.Destination))
-            Destinations[tram.Destination] = new SortedSet<Tram>(new TramComparer());
+        if (!InternalDestinations.ContainsKey(tram.Destination))
+            InternalDestinations[tram.Destination] = new SortedSet<Tram>(new TramComparer());
 
-        Destinations[tram.Destination].Add(tram);
+        InternalDestinations[tram.Destination].Add(tram);
     }
 
     /// <summary>
