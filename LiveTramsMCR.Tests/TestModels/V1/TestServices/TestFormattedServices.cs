@@ -18,6 +18,7 @@ public class TestFormattedServices
     private Tram? _tram;
     private Tram? _tramDiffDestination;
     private Tram? _tramSameDestinationDiffWait;
+    private Tram? _tramDiffDestinationDiffWait;
     private string? _wait;
 
     [SetUp]
@@ -33,6 +34,7 @@ public class TestFormattedServices
         _tram = new Tram(_destination, _carriages, _status, _wait);
         _tramDiffDestination = new Tram(_diffDestination, _carriages, _status, _wait);
         _tramSameDestinationDiffWait = new Tram(_destination, _diffCarriages, _status, _diffWait);
+        _tramDiffDestinationDiffWait = new Tram(_diffDestination, _diffCarriages, _status, _diffWait);
         _formattedServices = new FormattedServices();
     }
 
@@ -132,6 +134,25 @@ public class TestFormattedServices
         Debug.Assert(second != null, nameof(second) + " != null");
         var secondWait = int.Parse(second.Wait);
         Assert.IsTrue(firstWait < secondWait);
+    }
+
+    /// <summary>
+    /// Test to add multiple trams to diff destinations.
+    /// The destination with the first tram should be displayed first
+    /// </summary>
+    [Test]
+    public void TestValidateDiffDestinationsDiffWait()
+    {
+        _formattedServices?.AddService(_tram);
+        _formattedServices?.AddService(_tramDiffDestinationDiffWait);
+        Dictionary<string, SortedSet<Tram?>?>? result = _formattedServices?.Destinations;
+        Assert.NotNull(result);
+        Debug.Assert(_destination != null, nameof(_destination) + " != null");
+        Assert.IsTrue(result?.ContainsKey(_destination));
+        Debug.Assert(_diffDestination != null, nameof(_diffDestination) + " != null");
+        Assert.IsTrue(result?.ContainsKey(_diffDestination));
+        var firstDestination = result?.Keys.First();
+        Assert.AreEqual(firstDestination, _diffDestination);
     }
 
     /// <summary>
