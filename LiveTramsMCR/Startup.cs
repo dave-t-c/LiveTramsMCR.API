@@ -3,8 +3,10 @@ using System.IO;
 using System.Reflection;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V1.Stops.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -58,20 +60,21 @@ public class Startup
             OcpApimSubscriptionKey = Configuration["OcpApimSubscriptionKey"]
         };
         services.AddSingleton(apiOptions);
-
-        ResourceLoader resourceLoader = new ResourceLoader(resourceConfig);
+        
         ImportedResources importedResources = resourceLoader.ImportResources();
         services.AddSingleton(importedResources);
 
+        IStopsRepository stopsRepository = new StopsRepository();
         IStopsDataModel stopsDataModel = new StopsDataModel(importedResources);
         services.AddSingleton(stopsDataModel);
 
         IRequester serviceRequester = new ServiceRequester(apiOptions);
-        IServicesDataModel servicesDataModel = new ServicesDataModel(importedResources, serviceRequester);
+        IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, serviceRequester);
         services.AddSingleton(servicesDataModel);
 
-        IJourneyPlanner journeyPlanner = new JourneyPlanner(importedResources.ImportedRoutes, importedResources.ImportedRouteTimes);
-        IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(importedResources, journeyPlanner);
+        IRouteRepository routeRepository = new RouteRepository();
+        IJourneyPlanner journeyPlanner = new JourneyPlanner(routeRepository);
+        IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(stopsRepository, journeyPlanner);
         services.AddSingleton(journeyPlannerModel);
 
         services.AddControllers();

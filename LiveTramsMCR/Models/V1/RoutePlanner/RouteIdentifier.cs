@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
@@ -10,16 +11,16 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 /// </summary>
 public class RouteIdentifier
 {
-    private readonly List<Route> _routes;
+    private readonly IRouteRepository _routeRepository;
     
     /// <summary>
     /// Initialises a RouteIdentifier with the routes
     /// to use for processing. 
     /// </summary>
-    /// <param name="routes">Routes to use for processing.</param>
-    public RouteIdentifier(List<Route> routes)
+    /// <param name="routeRepository">Routes to use for processing.</param>
+    public RouteIdentifier(IRouteRepository routeRepository)
     {
-        _routes = routes;
+        _routeRepository = routeRepository;
     }
 
     /// <summary>

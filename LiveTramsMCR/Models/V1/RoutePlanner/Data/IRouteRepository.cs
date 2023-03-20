@@ -2,6 +2,9 @@ using System.Threading.Tasks;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner.Data;
 
+/// <summary>
+/// Retrieves route data
+/// </summary>
 public interface IRouteRepository
 {
     /// <summary>

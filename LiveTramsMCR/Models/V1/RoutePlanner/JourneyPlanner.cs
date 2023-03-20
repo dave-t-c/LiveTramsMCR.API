@@ -17,11 +17,10 @@ public class JourneyPlanner : IJourneyPlanner
     /// <summary>
     /// Create a new route planner with a list of available routes.
     /// </summary>
-    /// <param name="routes">List of possible routes a journey can take</param>
     /// <param name="routeRepository">Repository for retrieving route times</param>
-    public JourneyPlanner(List<Route> routes, IRouteRepository routeRepository)
+    public JourneyPlanner(IRouteRepository routeRepository)
     {
-        _routeIdentifier = new RouteIdentifier(routes);
+        _routeIdentifier = new RouteIdentifier(routeRepository);
         _journeyTimeFinder = new JourneyTimeFinder(routeRepository);
     }
     

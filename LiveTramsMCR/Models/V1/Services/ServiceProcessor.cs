@@ -1,6 +1,7 @@
 using System;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V1.Stops.Data;
 
 namespace LiveTramsMCR.Models.V1.Services;
 
@@ -18,11 +19,11 @@ public class ServiceProcessor
     /// IRequest implementation.
     /// </summary>
     /// <param name="requester">IRequester implementation to use</param>
-    /// <param name="resources">Imported resources for the application</param>
-    public ServiceProcessor(IRequester requester, ImportedResources resources)
+    /// <param name="stopsRepository">Repository for retrieving stops</param>
+    public ServiceProcessor(IRequester requester, IStopsRepository stopsRepository)
     {
         _requester = requester;
-        _stopLookup = new StopLookup(resources);
+        _stopLookup = new StopLookup(stopsRepository);
         _serviceFormatter = new ServiceFormatter();
     }
 
