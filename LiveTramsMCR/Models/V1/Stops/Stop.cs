@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Text.Json.Serialization;
+using MongoDB.Bson;
 
 namespace LiveTramsMCR.Models.V1.Stops;
 
@@ -9,6 +11,9 @@ namespace LiveTramsMCR.Models.V1.Stops;
 // ReSharper disable UnusedMember.Global
 public class Stop
 {
+    [JsonIgnore]
+    public ObjectId _id { get; set; }
+    
     /// <summary>
     /// Name of the stop, such as Piccadilly
     /// </summary>
