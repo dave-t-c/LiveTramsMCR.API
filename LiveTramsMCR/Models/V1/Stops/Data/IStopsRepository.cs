@@ -24,5 +24,9 @@ public interface IStopsRepository
     /// <returns></returns>
     public Task<List<int>> GetStopIds(string searchTerm);
 
-
+    /// <summary>
+    /// Gets all stops
+    /// </summary>
+    /// <returns>A list of all stops</returns>
+    public Task<List<Stop>> GetAll();
 }

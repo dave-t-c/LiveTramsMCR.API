@@ -38,10 +38,11 @@ public class RouteIdentifier
         
         if (destination is null)
             throw new ArgumentNullException(nameof(destination));
-        
+
+        var routes = _routeRepository.GetAllRoutesAsync().Result;
         //Returns true if there is a route that contains both origin and dest stops.
         //Find returns null if there is not a match, so interchange is required if there is not a match
-        return _routes.Find(route => route.Stops.Contains(origin) && route.Stops.Contains(destination)) is null;
+        return routes.Find(route => route.Stops.Contains(origin) && route.Stops.Contains(destination)) is null;
     }
 
     /// <summary>
@@ -65,9 +66,11 @@ public class RouteIdentifier
         if (destination is null)
             throw new ArgumentNullException(nameof(destination));
 
+        var routes = _routeRepository.GetAllRoutesAsync().Result;
+        
         //Identify the routes for a stop.
-        var originRoutes = _routes.FindAll(route => route.ContainsStop(origin));
-        var destRoutes = _routes.FindAll(route => route.ContainsStop(destination));
+        var originRoutes = routes.FindAll(route => route.ContainsStop(origin));
+        var destRoutes = routes.FindAll(route => route.ContainsStop(destination));
 
         // We need to identify stops that exist on both lines, and then select the 
         // stop closest to the dest stop.
@@ -123,7 +126,10 @@ public class RouteIdentifier
             throw new ArgumentNullException(nameof(origin));
         if (destination is null)
             throw new ArgumentNullException(nameof(destination));
-        return _routes.FindAll(route => route.ContainsStop(origin) && route.ContainsStop(destination));
+        
+        var routes = _routeRepository.GetAllRoutesAsync().Result;
+        
+        return routes.FindAll(route => route.ContainsStop(origin) && route.ContainsStop(destination));
     }
 
     /// <summary>

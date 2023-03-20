@@ -60,12 +60,9 @@ public class Startup
             OcpApimSubscriptionKey = Configuration["OcpApimSubscriptionKey"]
         };
         services.AddSingleton(apiOptions);
-        
-        ImportedResources importedResources = resourceLoader.ImportResources();
-        services.AddSingleton(importedResources);
 
         IStopsRepository stopsRepository = new StopsRepository();
-        IStopsDataModel stopsDataModel = new StopsDataModel(importedResources);
+        IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
         services.AddSingleton(stopsDataModel);
 
         IRequester serviceRequester = new ServiceRequester(apiOptions);

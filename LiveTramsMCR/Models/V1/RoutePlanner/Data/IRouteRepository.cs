@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner.Data;
@@ -20,4 +21,10 @@ public interface IRouteRepository
     /// <param name="routeName">Name of the route</param>
     /// <returns></returns>
     public Task<RouteTimes> GetRouteTimesByNameAsync(string routeName);
+
+    /// <summary>
+    /// Gets all routes
+    /// </summary>
+    /// <returns>List of routes</returns>
+    public Task<List<Route>> GetAllRoutesAsync();
 }

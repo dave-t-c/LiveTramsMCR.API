@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner.Data;
@@ -13,6 +14,12 @@ public class RouteRepository : IRouteRepository
 
     /// <inheritdoc />
     public Task<RouteTimes> GetRouteTimesByNameAsync(string routeName)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public Task<List<Route>> GetAllRoutesAsync()
     {
         throw new System.NotImplementedException();
     }

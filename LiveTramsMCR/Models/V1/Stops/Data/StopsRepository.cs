@@ -17,4 +17,10 @@ public class StopsRepository : IStopsRepository
     {
         throw new System.NotImplementedException();
     }
+
+    /// <inheritdoc />
+    public Task<List<Stop>> GetAll()
+    {
+        throw new System.NotImplementedException();
+    }
 }
