@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
@@ -16,11 +18,11 @@ public class JourneyPlanner : IJourneyPlanner
     /// Create a new route planner with a list of available routes.
     /// </summary>
     /// <param name="routes">List of possible routes a journey can take</param>
-    /// <param name="routeTimes">Example timetables for each route</param>
-    public JourneyPlanner(List<Route> routes, RouteTimes routeTimes)
+    /// <param name="routeRepository">Repository for retrieving route times</param>
+    public JourneyPlanner(List<Route> routes, IRouteRepository routeRepository)
     {
         _routeIdentifier = new RouteIdentifier(routes);
-        _journeyTimeFinder = new JourneyTimeFinder(routeTimes);
+        _journeyTimeFinder = new JourneyTimeFinder(routeRepository);
     }
     
     /// <summary>
@@ -69,7 +71,7 @@ public class JourneyPlanner : IJourneyPlanner
             RoutesFromOrigin = originRoutes,
             StopsFromOrigin = originStops,
             TerminiFromOrigin = terminiFromOrigin,
-            MinutesFromOrigin = minutesFromOrigin
+            MinutesFromOrigin = minutesFromOrigin.Result
         };
     }
     
@@ -116,8 +118,8 @@ public class JourneyPlanner : IJourneyPlanner
             StopsFromInterchange = interchangeStops,
             TerminiFromOrigin = terminiFromOrigin,
             TerminiFromInterchange = terminiFromInterchange,
-            MinutesFromOrigin = minutesFromOrigin,
-            MinutesFromInterchange = minutesFromInterchange
+            MinutesFromOrigin = minutesFromOrigin.Result,
+            MinutesFromInterchange = minutesFromInterchange.Result
         };
     }
 
@@ -128,9 +130,9 @@ public class JourneyPlanner : IJourneyPlanner
     /// <param name="origin">Start of journey</param>
     /// <param name="destination">Destination / Interchange of journey</param>
     /// <returns>Integer of minutes between origin and destination</returns>
-    private int IdentifyJourneyTime(Route route, Stop origin, Stop destination)
+    private async Task<int> IdentifyJourneyTime(Route route, Stop origin, Stop destination)
     {
-        return _journeyTimeFinder.FindJourneyTime(route.Name,
+        return await _journeyTimeFinder.FindJourneyTime(route.Name,
             origin.StopName, destination.StopName);
     }
 }

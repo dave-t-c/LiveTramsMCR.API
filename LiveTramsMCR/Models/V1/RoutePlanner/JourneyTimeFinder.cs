@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
@@ -7,16 +9,16 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 /// </summary>
 public class JourneyTimeFinder
 {
-    private readonly RouteTimes _routeTimes;
+    private readonly IRouteRepository _routeRepository;
     
     /// <summary>
     /// Create a new journey time finder with the given route times.
     /// The route times are used to identify times between stops on routes.
     /// </summary>
-    /// <param name="routeTimes"></param>
-    public JourneyTimeFinder(RouteTimes routeTimes)
+    /// <param name="routeRepository"></param>
+    public JourneyTimeFinder(IRouteRepository routeRepository)
     {
-        _routeTimes = routeTimes;
+        _routeRepository = routeRepository;
     }
 
     /// <summary>
@@ -26,23 +28,24 @@ public class JourneyTimeFinder
     /// <param name="originStopName">Start of the journey on the route</param>
     /// <param name="destStopName">End of journey on the route.</param>
     /// <returns></returns>
-    public int FindJourneyTime(string routeName, string originStopName, string destStopName)
+    public async Task<int> FindJourneyTime(string routeName, string originStopName, string destStopName)
     {
-        var selectedRoute = _routeTimes.GetRouteTimes(routeName);
+        var selectedRoute = await _routeRepository.GetRouteTimesByNameAsync(routeName);
+        
         if (originStopName is null)
             throw new ArgumentNullException(nameof(originStopName));
         if (destStopName is null)
             throw new ArgumentNullException(nameof(destStopName));
         
-        if (!selectedRoute.ContainsKey(originStopName))
+        if (!selectedRoute.Times.ContainsKey(originStopName))
             throw new InvalidOperationException($"The origin stop '{originStopName}' was not " +
                                                 $"found on the '{routeName}' route");
-        var originTimeSpan = selectedRoute[originStopName];
+        var originTimeSpan = selectedRoute.Times[originStopName];
             
-        if(!selectedRoute.ContainsKey(destStopName))
+        if(!selectedRoute.Times.ContainsKey(destStopName))
             throw new InvalidOperationException($"The destination stop '{destStopName}' was not " +
                                                 $"found on the '{routeName}' route");
-        var destinationTimeSpan = selectedRoute[destStopName];
+        var destinationTimeSpan = selectedRoute.Times[destStopName];
         var minutesDifference = Math.Abs(originTimeSpan.Subtract(destinationTimeSpan).TotalMinutes);
         return Convert.ToInt32(minutesDifference);
     }
