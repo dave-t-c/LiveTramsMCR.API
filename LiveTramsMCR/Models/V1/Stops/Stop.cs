@@ -104,17 +104,7 @@ public class Stop : IEquatable<Stop>
     public override int GetHashCode()
     {
         var hashCode = new HashCode();
-        hashCode.Add(_id);
         hashCode.Add(StopName);
-        hashCode.Add(Tlaref);
-        hashCode.Add(Ids);
-        hashCode.Add(AtcoCode);
-        hashCode.Add(Latitude);
-        hashCode.Add(Longitude);
-        hashCode.Add(Street);
-        hashCode.Add(RoadCrossing);
-        hashCode.Add(Line);
-        hashCode.Add(StopZone);
         return hashCode.ToHashCode();
     }
 }
