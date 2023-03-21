@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
@@ -17,6 +18,7 @@ public class TestStopsController
 {
     private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
+    private MockStopsRepository? _mockStopsRepository;
     private IStopsDataModel? _stopsDataModel;
     private StopsController? _testStopController;
 
@@ -32,7 +34,9 @@ public class TestStopsController
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _stopsDataModel = new StopsDataModel(_importedResources);
+        _mockStopsRepository =
+            new MockStopsRepository(_importedResources.ImportedStops);
+        _stopsDataModel = new StopsDataModel(_mockStopsRepository);
         _testStopController = new StopsController(_stopsDataModel);
     }
 

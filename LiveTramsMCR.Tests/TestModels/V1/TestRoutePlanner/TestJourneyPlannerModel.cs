@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 using ImportedResources = LiveTramsMCR.Tests.Resources.ResourceLoaders.ImportedResources;
@@ -25,6 +26,8 @@ public class TestJourneyPlannerModel
     private ImportedResources? _importedResources;
     private ResourceLoader? _resourceLoader;
     private List<Route>? _routes;
+    private MockRouteRepository? _mockRouteRepository;
+    private MockStopsRepository? _mockStopsRepository;
     private JourneyPlanner? _journeyPlanner;
     private JourneyPlannerModel? _journeyPlannerModel;
     
@@ -44,8 +47,12 @@ public class TestJourneyPlannerModel
         _importedResources = _resourceLoader.ImportResources();
 
         _routes = _importedResources?.ImportedRoutes;
-        _journeyPlanner = new JourneyPlanner(_importedResources?.ImportedRoutes, _importedResources?.ImportedRouteTimes);
-        _journeyPlannerModel = new JourneyPlannerModel(_importedResources, _journeyPlanner);
+        _mockRouteRepository =
+            new MockRouteRepository(_importedResources?.ImportedRoutes!, _importedResources?.ImportedRouteTimes!);
+
+        _mockStopsRepository = new MockStopsRepository(_importedResources?.ImportedStops!);
+        _journeyPlanner = new JourneyPlanner(_mockRouteRepository);
+        _journeyPlannerModel = new JourneyPlannerModel(_mockStopsRepository, _journeyPlanner);
     }
 
     [TearDown]

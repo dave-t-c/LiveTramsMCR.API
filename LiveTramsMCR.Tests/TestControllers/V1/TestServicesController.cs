@@ -2,6 +2,7 @@ using System.Linq;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using LiveTramsMCR.Tests.TestModels.V1.TestServices;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ public class TestServicesController
     private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
     private IRequester? _requester;
+    private MockStopsRepository? _mockStopsRepository;
     private IServicesDataModel? _servicesDataModel;
     private ServiceController? _serviceController;
     
@@ -35,7 +37,8 @@ public class TestServicesController
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _requester = new MockServiceRequester();
-        _servicesDataModel = new ServicesDataModel(_importedResources, _requester);
+        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
+        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
         _serviceController = new ServiceController(_servicesDataModel);
     }
 

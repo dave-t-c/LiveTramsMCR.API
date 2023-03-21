@@ -4,6 +4,7 @@ using System.Linq;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
@@ -27,7 +28,8 @@ public class TestJourneyTimeFinder
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
     private RouteTimesLoader? _routeTimesLoader;
-    private RouteTimes? _routeTimes;
+    private List<RouteTimes>? _routeTimes;
+    private MockRouteRepository? _mockRouteRepository;
     private JourneyTimeFinder? _journeyTimeFinder;
 
     /// <summary>
@@ -54,7 +56,8 @@ public class TestJourneyTimeFinder
         _routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
         _routeTimes = _routeTimesLoader.ImportRouteTimes();
 
-        _journeyTimeFinder = new JourneyTimeFinder(_routeTimes);
+        _mockRouteRepository = new MockRouteRepository(_routes, _routeTimes);
+        _journeyTimeFinder = new JourneyTimeFinder(_mockRouteRepository);
     }
 
     /// <summary>

@@ -4,7 +4,10 @@ using System.Linq;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
+using ImportedResources = LiveTramsMCR.Tests.Resources.ResourceLoaders.ImportedResources;
 using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
 using StopLoader = LiveTramsMCR.Tests.Resources.ResourceLoaders.StopLoader;
 
@@ -25,6 +28,9 @@ public class TestRouteIdentifier
     private List<Stop>? _importedStops;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
+    private ResourceLoader? _resourceLoader;
+    private ImportedResources? _importedResources;
+    private MockRouteRepository? _mockRouteRepository;
     private RouteIdentifier? _routeIdentifier;
     
     /// <summary>
@@ -42,14 +48,12 @@ public class TestRouteIdentifier
             TlarefsToIdsPath = TlarefsToIdsPath,
             RoutesResourcePath = RoutesResourcePath
         };
-        
-        _stopLoader = new StopLoader(_validResourcesConfig);
-        _importedStops = _stopLoader.ImportStops();
 
-        _routeLoader = new RouteLoader(_validResourcesConfig, _importedStops);
-        _routes = _routeLoader.ImportRoutes();
-
-        _routeIdentifier = new RouteIdentifier(_routes);
+        _resourceLoader = new ResourceLoader(_validResourcesConfig);
+        _importedResources = _resourceLoader.ImportResources();
+        _mockRouteRepository =
+            new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
+        _routeIdentifier = new RouteIdentifier(_mockRouteRepository);
     }
 
     /// <summary>
