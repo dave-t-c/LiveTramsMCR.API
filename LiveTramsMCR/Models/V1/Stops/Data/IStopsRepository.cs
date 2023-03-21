@@ -28,5 +28,5 @@ public interface IStopsRepository
     /// Gets all stops
     /// </summary>
     /// <returns>A list of all stops</returns>
-    public Task<List<Stop>> GetAll();
+    public List<Stop> GetAll();
 }

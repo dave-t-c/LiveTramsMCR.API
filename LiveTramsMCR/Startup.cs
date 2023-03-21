@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using static System.AppDomain;
 
 namespace LiveTramsMCR;
@@ -45,9 +46,6 @@ public class Startup
     /// <param name="services">Services for the Container</param>
     public void ConfigureServices(IServiceCollection services)
     {
-
-        services.Configure<ApiOptions>(Configuration.GetSection("ApiOptions"));
-
         // ReSharper disable once SuspiciousTypeConversion.Global
         ResourcesConfig resourceConfig = new ResourcesConfig();
         Configuration.Bind("Resources", resourceConfig);
@@ -61,7 +59,10 @@ public class Startup
         };
         services.AddSingleton(apiOptions);
 
-        IStopsRepository stopsRepository = new StopsRepository();
+        var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
+        var db = mongoClient.GetDatabase("livetramsmcr");
+        var stopsMongoCollection = db.GetCollection<Stop>("stops");
+        IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
         IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
         services.AddSingleton(stopsDataModel);
 

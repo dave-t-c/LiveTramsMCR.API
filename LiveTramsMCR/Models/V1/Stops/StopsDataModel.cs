@@ -28,6 +28,6 @@ public class StopsDataModel: IStopsDataModel
     /// <returns></returns>
     public List<Stop> GetStops()
     {
-        return _stopsRepository.GetAll().Result;
+        return _stopsRepository.GetAll();
     }
 }
