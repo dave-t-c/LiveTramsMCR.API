@@ -5,6 +5,8 @@ using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
 using NUnit.Framework;
+using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
+using StopLoader = LiveTramsMCR.Tests.Resources.ResourceLoaders.StopLoader;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 

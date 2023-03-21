@@ -2,8 +2,11 @@ using System.Linq;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
+using ImportedResources = LiveTramsMCR.Tests.Resources.ResourceLoaders.ImportedResources;
+using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
 
 namespace LiveTramsMCR.Tests.TestControllers.V1;
 

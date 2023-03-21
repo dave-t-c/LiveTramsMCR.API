@@ -3,7 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
+using ImportedResources = LiveTramsMCR.Tests.Resources.ResourceLoaders.ImportedResources;
+using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 
@@ -13,6 +17,7 @@ public class TestServicesDataModel
     private ImportedResources? _importedResources;
     private IRequester? _requester;
     private ServicesDataModel? _servicesDataModel;
+    private MockStopsRepository? _mockStopsRepository;
 
     [SetUp]
     public void SetUp()
@@ -27,7 +32,8 @@ public class TestServicesDataModel
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _requester = new MockServiceRequester();
-        _servicesDataModel = new ServicesDataModel(_importedResources, _requester);
+        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
+        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
     }
 
     [TearDown]

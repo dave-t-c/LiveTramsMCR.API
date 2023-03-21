@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
+using ImportedResources = LiveTramsMCR.Tests.Resources.ResourceLoaders.ImportedResources;
+using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestStops;
 
@@ -23,6 +26,7 @@ public class TestStopLookup
     private ResourceLoader? _resourceLoader;
     private ResourcesConfig? _resourcesConfig;
     private StopLookup? _stopLookup;
+    private MockStopsRepository? _mockStopsRepository;
 
     /// <summary>
     ///     Set up the required resources for each test.
@@ -42,7 +46,8 @@ public class TestStopLookup
 
         _resourceLoader = new ResourceLoader(_resourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
-        _stopLookup = new StopLookup(_importedResources);
+        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
+        _stopLookup = new StopLookup(_mockStopsRepository);
     }
 
     /// <summary>
