@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using LiveTramsMCR.Models.V1.Stops;
+using MongoDB.Bson;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
@@ -12,19 +14,25 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 public class Route
 {
     /// <summary>
+    /// Object ID used by mongodb
+    /// </summary>
+    [JsonIgnore] 
+    public ObjectId Id { get; set; }
+    
+    /// <summary>
     /// Name of the route, e.g. "Purple"
     /// </summary>
-    public string Name { get; }
+    public string Name { get; private set; }
     
     /// <summary>
     /// Hex colour string for the route, e.g. #7B2082
     /// </summary>
-    public string Colour { get; }
+    public string Colour { get; private set; }
     
     /// <summary>
     /// Stops belonging to a route in the order they can be travelled between.
     /// </summary>
-    public List<Stop> Stops { get; }
+    public List<Stop> Stops { get; private set; }
     
     /// <summary>
     /// Creates a new route, the params are only null sanitised

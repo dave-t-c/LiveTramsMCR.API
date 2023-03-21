@@ -1,7 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
+// ReSharper disable NonReadonlyMemberInGetHashCode
 
 namespace LiveTramsMCR.Models.V1.Stops;
 
@@ -10,7 +11,7 @@ namespace LiveTramsMCR.Models.V1.Stops;
 /// </summary>
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Global
-public class Stop
+public class Stop : IEquatable<Stop>
 {
     [JsonIgnore]
     public ObjectId _id { get; set; }
@@ -69,4 +70,51 @@ public class Stop
     /// be shown as 'a/b', where a is the smaller of the two zones, e.g. '3/4'.
     /// </summary>
     public string StopZone { get; set; }
+
+    /// <summary>
+    /// Checks equality of stops by checking name or tlaref
+    /// </summary>
+    /// <param name="other">Stop to compare</param>
+    /// <returns></returns>
+    public bool Equals(Stop other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return StopName == other.StopName
+        || Tlaref == other.Tlaref; 
+
+    }
+
+    /// <summary>
+    /// Checks equality between this stop and another obj
+    /// </summary>
+    /// <param name="obj">Obj to compare</param>
+    /// <returns></returns>
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        return obj.GetType() == this.GetType() && Equals((Stop) obj);
+    }
+    
+    /// <summary>
+    /// Generates a hash code for a stop
+    /// </summary>
+    /// <returns></returns>
+    public override int GetHashCode()
+    {
+        var hashCode = new HashCode();
+        hashCode.Add(_id);
+        hashCode.Add(StopName);
+        hashCode.Add(Tlaref);
+        hashCode.Add(Ids);
+        hashCode.Add(AtcoCode);
+        hashCode.Add(Latitude);
+        hashCode.Add(Longitude);
+        hashCode.Add(Street);
+        hashCode.Add(RoadCrossing);
+        hashCode.Add(Line);
+        hashCode.Add(StopZone);
+        return hashCode.ToHashCode();
+    }
 }

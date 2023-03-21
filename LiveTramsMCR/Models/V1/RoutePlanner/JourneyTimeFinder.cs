@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
@@ -28,9 +27,9 @@ public class JourneyTimeFinder
     /// <param name="originStopName">Start of the journey on the route</param>
     /// <param name="destStopName">End of journey on the route.</param>
     /// <returns></returns>
-    public async Task<int> FindJourneyTime(string routeName, string originStopName, string destStopName)
+    public int FindJourneyTime(string routeName, string originStopName, string destStopName)
     {
-        var selectedRoute = await _routeRepository.GetRouteTimesByNameAsync(routeName);
+        var selectedRoute = _routeRepository.GetRouteTimesByNameAsync(routeName);
         
         if (originStopName is null)
             throw new ArgumentNullException(nameof(originStopName));

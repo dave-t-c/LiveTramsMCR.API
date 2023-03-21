@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
@@ -22,7 +23,9 @@ public class StopsRepository : IStopsRepository
     public Stop GetStop(string searchTerm)
     {
         return _stopsCollection.FindAsync(stop =>
-                stop.StopName == searchTerm || stop.Tlaref == searchTerm).Result.FirstOrDefault();
+                stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
+                || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
+                ).Result.FirstOrDefault();
     }
 
     /// <inheritdoc />

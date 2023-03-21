@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
 
@@ -70,7 +69,7 @@ public class JourneyPlanner : IJourneyPlanner
             RoutesFromOrigin = originRoutes,
             StopsFromOrigin = originStops,
             TerminiFromOrigin = terminiFromOrigin,
-            MinutesFromOrigin = minutesFromOrigin.Result
+            MinutesFromOrigin = minutesFromOrigin
         };
     }
     
@@ -117,8 +116,8 @@ public class JourneyPlanner : IJourneyPlanner
             StopsFromInterchange = interchangeStops,
             TerminiFromOrigin = terminiFromOrigin,
             TerminiFromInterchange = terminiFromInterchange,
-            MinutesFromOrigin = minutesFromOrigin.Result,
-            MinutesFromInterchange = minutesFromInterchange.Result
+            MinutesFromOrigin = minutesFromOrigin,
+            MinutesFromInterchange = minutesFromInterchange
         };
     }
 
@@ -129,9 +128,9 @@ public class JourneyPlanner : IJourneyPlanner
     /// <param name="origin">Start of journey</param>
     /// <param name="destination">Destination / Interchange of journey</param>
     /// <returns>Integer of minutes between origin and destination</returns>
-    private async Task<int> IdentifyJourneyTime(Route route, Stop origin, Stop destination)
+    private int IdentifyJourneyTime(Route route, Stop origin, Stop destination)
     {
-        return await _journeyTimeFinder.FindJourneyTime(route.Name,
+        return _journeyTimeFinder.FindJourneyTime(route.Name,
             origin.StopName, destination.StopName);
     }
 }

@@ -45,7 +45,7 @@ public class JourneyPlannerController: Controller
         {
             plannedJourney = _journeyPlannerModel.PlanJourney(origin, destination);
         }
-        catch (InvalidOperationException)
+        catch (Exception ex) when (ex is InvalidOperationException or ArgumentException)
         {
             return StatusCode(StatusCodes.Status400BadRequest, new {message = "Invalid Stop Name or TLAREF"});
         }

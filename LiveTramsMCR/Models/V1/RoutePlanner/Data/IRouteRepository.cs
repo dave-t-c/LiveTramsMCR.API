@@ -9,22 +9,15 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner.Data;
 public interface IRouteRepository
 {
     /// <summary>
-    /// Gets the route for a given route name
-    /// </summary>
-    /// <param name="routeName">Name of route</param>
-    /// <returns></returns>
-    public Task<Route> GetRouteByNameAsync(string routeName);
-
-    /// <summary>
     /// Gets the route times for a given route
     /// </summary>
     /// <param name="routeName">Name of the route</param>
     /// <returns></returns>
-    public Task<RouteTimes> GetRouteTimesByNameAsync(string routeName);
+    public RouteTimes GetRouteTimesByNameAsync(string routeName);
 
     /// <summary>
     /// Gets all routes
     /// </summary>
     /// <returns>List of routes</returns>
-    public Task<List<Route>> GetAllRoutesAsync();
+    public List<Route> GetAllRoutesAsync();
 }

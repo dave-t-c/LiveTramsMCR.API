@@ -62,6 +62,9 @@ public class Startup
         var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
         var db = mongoClient.GetDatabase("livetramsmcr");
         var stopsMongoCollection = db.GetCollection<Stop>("stops");
+        var routesMongoCollection = db.GetCollection<Route>("routes");
+        var routeTimesMongoCollection = db.GetCollection<RouteTimes>("route-times");
+        
         IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
         IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
         services.AddSingleton(stopsDataModel);
@@ -70,7 +73,7 @@ public class Startup
         IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, serviceRequester);
         services.AddSingleton(servicesDataModel);
 
-        IRouteRepository routeRepository = new RouteRepository();
+        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
         IJourneyPlanner journeyPlanner = new JourneyPlanner(routeRepository);
         IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(stopsRepository, journeyPlanner);
         services.AddSingleton(journeyPlannerModel);
