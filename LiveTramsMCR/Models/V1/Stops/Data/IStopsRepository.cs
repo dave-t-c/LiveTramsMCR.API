@@ -14,15 +14,7 @@ public interface IStopsRepository
     /// </summary>
     /// <param name="searchTerm">Stop name or tlaref</param>
     /// <returns></returns>
-    public Task<Stop> GetStop(string searchTerm);
-
-    /// <summary>
-    /// Gets the associated IDs for a given stop by stop name
-    /// or stop tlaref
-    /// </summary>
-    /// <param name="searchTerm">Stop name or tlaref</param>
-    /// <returns></returns>
-    public Task<List<int>> GetStopIds(string searchTerm);
+    public Stop GetStop(string searchTerm);
 
     /// <summary>
     /// Gets all stops

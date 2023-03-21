@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
 
@@ -27,7 +28,7 @@ public class Stop
     /// <summary>
     /// IDs associated with the stop. Larger stops will have more IDs.
     /// </summary>
-    public ArrayList Ids { get; set; }
+    public List<int> Ids { get; set; }
     
     /// <summary>
     /// Naptan ID for the stop. This can be used to look up more information

@@ -19,15 +19,10 @@ public class StopsRepository : IStopsRepository
     }
     
     /// <inheritdoc />
-    public Task<Stop> GetStop(string searchTerm)
+    public Stop GetStop(string searchTerm)
     {
-        throw new System.NotImplementedException();
-    }
-
-    /// <inheritdoc />
-    public Task<List<int>> GetStopIds(string searchTerm)
-    {
-        throw new System.NotImplementedException();
+        return _stopsCollection.FindAsync(stop =>
+                stop.StopName == searchTerm || stop.Tlaref == searchTerm).Result.FirstOrDefault();
     }
 
     /// <inheritdoc />

@@ -32,7 +32,7 @@ public class StopLookup
     public List<int> TlarefLookup(string tlaref)
     {
         if (tlaref == null) throw new ArgumentNullException(nameof(tlaref));
-        return _stopsRepository.GetStopIds(tlaref).Result;
+        return _stopsRepository.GetStop(tlaref).Ids;
     }
 
     /// <summary>
@@ -43,7 +43,13 @@ public class StopLookup
     public List<int> StationNameLookup(string stationName)
     {
         if (stationName == null) throw new ArgumentNullException(nameof(stationName));
-        return _stopsRepository.GetStopIds(stationName).Result;
+        var stop =  _stopsRepository.GetStop(stationName);
+        if (stop == null)
+        {
+            throw new ArgumentException("Value given is not a valid station name or TLAREF");    
+        }
+
+        return stop.Ids;
     }
 
     /// <summary>
@@ -56,13 +62,13 @@ public class StopLookup
     {
         if (value == null) throw new ArgumentNullException(nameof(value));
 
-        var ids = _stopsRepository.GetStopIds(value).Result;
-        if (ids == null)
+        var stop = _stopsRepository.GetStop(value);
+        if (stop == null)
         {
             throw new ArgumentException("Value given is not a valid station name or TLAREF");    
         }
 
-        return ids;
+        return stop.Ids;
     }
 
     /// <summary>
@@ -74,6 +80,13 @@ public class StopLookup
     {
         if (value is null)
             throw new ArgumentNullException(nameof(value));
-        return _stopsRepository.GetStop(value).Result;
+        
+        var stop = _stopsRepository.GetStop(value);
+        if (stop == null)
+        {
+            throw new ArgumentException("Value given is not a valid station name or TLAREF");    
+        }
+
+        return stop;
     }
 }
