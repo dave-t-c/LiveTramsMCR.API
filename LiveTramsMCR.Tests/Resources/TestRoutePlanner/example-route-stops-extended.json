@@ -11,7 +11,7 @@
     "RoadCrossing": "",
     "StopName": "Example-1",
     "Street": "Off Crescent Road",
-    "Tlaref": "ABM",
+    "Tlaref": "EXA",
     "Zone": 2,
     "StopZone": "2"
   },
@@ -27,7 +27,7 @@
     "RoadCrossing": "",
     "StopName": "Example-2",
     "Street": "Off Crescent Road",
-    "Tlaref": "ABM",
+    "Tlaref": "EXB",
     "Zone": 2,
     "StopZone": "2"
   },
@@ -43,7 +43,7 @@
     "RoadCrossing": "",
     "StopName": "Example-3",
     "Street": "Off Crescent Road",
-    "Tlaref": "ABM",
+    "Tlaref": "EX3",
     "Zone": 2,
     "StopZone": "2"
   },

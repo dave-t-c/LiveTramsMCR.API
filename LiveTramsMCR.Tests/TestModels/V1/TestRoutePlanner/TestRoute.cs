@@ -52,7 +52,7 @@ public class TestRoute
         
         _exampleStop = new Stop()
         {
-            StopName = "Example"
+            StopName = "Example",
         };
 
         _validRoute = new Route("Example route", "#0044cc", _importedStops);
