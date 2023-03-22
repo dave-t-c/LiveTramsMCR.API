@@ -145,7 +145,7 @@ public class TestJourneyPlannerModel
     [Test]
     public void TestJourneyPlannerModelInvalidOrigin()
     {
-        Assert.Throws(Is.TypeOf<InvalidOperationException>(),
+        Assert.Throws(Is.TypeOf<ArgumentException>(),
             delegate
             {
                 var unused = _journeyPlannerModel?.PlanJourney("---", "Altrincham");
@@ -159,7 +159,7 @@ public class TestJourneyPlannerModel
     [Test]
     public void TestJourneyPlannerModelInvalidDestination()
     {
-        Assert.Throws(Is.TypeOf<InvalidOperationException>(),
+        Assert.Throws(Is.TypeOf<ArgumentException>(),
             delegate
             {
                 var unused = _journeyPlannerModel?.PlanJourney("Altrincham", "---");
