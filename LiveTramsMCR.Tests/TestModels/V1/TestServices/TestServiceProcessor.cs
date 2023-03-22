@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
@@ -22,6 +22,7 @@ public class TestServiceProcessor
     private const string RoutesPath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ImportedResources? _importedResources;
+    private List<int> _bmrIds;
     private MockServiceRequester? _mockServiceRequester;
 
     private ResourceLoader? _resourceLoader;
@@ -44,7 +45,9 @@ public class TestServiceProcessor
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
 
-        _mockServiceRequester = new MockServiceRequester();
+        _bmrIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "BMR").Ids;
+        
+        _mockServiceRequester = new MockServiceRequester(_bmrIds);
 
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         

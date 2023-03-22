@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
@@ -31,7 +30,8 @@ public class TestServicesDataModel
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _requester = new MockServiceRequester();
+        var bmrIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "BMR").Ids;
+        _requester = new MockServiceRequester(bmrIds);
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
     }

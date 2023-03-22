@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Stops.Data;
 
 namespace LiveTramsMCR.Models.V1.Stops;

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using LiveTramsMCR.Controllers.V1;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
