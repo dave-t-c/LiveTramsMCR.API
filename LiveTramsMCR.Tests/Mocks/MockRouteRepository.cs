@@ -16,9 +16,9 @@ public class MockRouteRepository : IRouteRepository
         _routeTimes = routeTimes;
     }
     
-    public RouteTimes GetRouteTimesByNameAsync(string routeName)
+    public RouteTimes? GetRouteTimesByNameAsync(string routeName)
     {
-        return _routeTimes.First(route => route.Route == routeName);
+        return _routeTimes.FirstOrDefault(route => route.Route == routeName);
     }
 
     public List<Route> GetAllRoutesAsync()

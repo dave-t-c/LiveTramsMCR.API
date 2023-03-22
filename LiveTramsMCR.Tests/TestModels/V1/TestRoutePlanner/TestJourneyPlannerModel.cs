@@ -5,8 +5,6 @@ using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
-using ImportedResources = LiveTramsMCR.Tests.Resources.ResourceLoaders.ImportedResources;
-using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 
@@ -75,8 +73,8 @@ public class TestJourneyPlannerModel
     {
         var plannedRoute = _journeyPlannerModel?.PlanJourney("Altrincham", "Piccadilly");
         Assert.IsNotNull(plannedRoute);
-        var altrinchamStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Altrincham");
-        var piccadillyStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Piccadilly");
+        var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
+        var piccadillyStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Piccadilly");
         Assert.AreEqual(altrinchamStop, plannedRoute?.OriginStop);
         Assert.AreEqual(piccadillyStop, plannedRoute?.DestinationStop);
         Assert.IsFalse(plannedRoute?.RequiresInterchange);
@@ -94,8 +92,8 @@ public class TestJourneyPlannerModel
     public void TestIdentifyAltrinchamAshtonRoute()
     {
         var plannedRoute = _journeyPlannerModel?.PlanJourney("Altrincham", "Ashton-Under-Lyne");
-        var altrinchamStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Altrincham");
-        var ashtonStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Ashton-Under-Lyne");
         Assert.IsNotNull(plannedRoute);
         Assert.IsTrue(plannedRoute?.RequiresInterchange);
         Assert.AreEqual(altrinchamStop, plannedRoute?.OriginStop);

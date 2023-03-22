@@ -35,16 +35,16 @@ public class RouteTimesLoader
     /// <returns>Imported Times for Routes</returns>
     public List<RouteTimes> ImportRouteTimes()
     {
-        using var reader = new StreamReader(_resourcesConfig.RouteTimesPath);
+        using var reader = new StreamReader(_resourcesConfig.RouteTimesPath!);
         var jsonString = reader.ReadToEnd();
         var unprocessedRouteTimes = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>> (jsonString);
         var createdRouteTimes = new List<RouteTimes>();
         foreach (var routeName in unprocessedRouteTimes!.Keys)
         {
-            createdRouteTimes.Add((new RouteTimes()
+            createdRouteTimes.Add((new RouteTimes
             {
                 Route = routeName,
-                Times = ProcessesRoute(unprocessedRouteTimes![routeName])
+                Times = ProcessesRoute(unprocessedRouteTimes[routeName])
             }));
         }
         return createdRouteTimes;

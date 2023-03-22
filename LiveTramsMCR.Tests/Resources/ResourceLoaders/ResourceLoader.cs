@@ -1,5 +1,3 @@
-using LiveTramsMCR.Models.V1.Resources;
-
 namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 
 /// <summary>

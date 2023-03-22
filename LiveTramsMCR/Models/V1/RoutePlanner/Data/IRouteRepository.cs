@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections.Generic;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner.Data;
@@ -12,7 +13,7 @@ public interface IRouteRepository
     /// </summary>
     /// <param name="routeName">Name of the route</param>
     /// <returns></returns>
-    public RouteTimes GetRouteTimesByNameAsync(string routeName);
+    public RouteTimes? GetRouteTimesByNameAsync(string routeName);
 
     /// <summary>
     /// Gets all routes

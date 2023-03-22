@@ -29,14 +29,20 @@ public class JourneyTimeFinder
     /// <returns></returns>
     public int FindJourneyTime(string routeName, string originStopName, string destStopName)
     {
+        if (routeName is null)
+            throw new ArgumentNullException(nameof(routeName));
+        
         var selectedRoute = _routeRepository.GetRouteTimesByNameAsync(routeName);
+
+        if (selectedRoute is null)
+            throw new ArgumentException($"The route '{routeName}' was not found");
         
         if (originStopName is null)
             throw new ArgumentNullException(nameof(originStopName));
         if (destStopName is null)
             throw new ArgumentNullException(nameof(destStopName));
         
-        if (!selectedRoute.Times.ContainsKey(originStopName))
+        if (!selectedRoute!.Times.ContainsKey(originStopName))
             throw new InvalidOperationException($"The origin stop '{originStopName}' was not " +
                                                 $"found on the '{routeName}' route");
         var originTimeSpan = selectedRoute.Times[originStopName];

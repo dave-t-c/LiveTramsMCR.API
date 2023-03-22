@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
+
 // ReSharper disable NonReadonlyMemberInGetHashCode
 
 namespace LiveTramsMCR.Models.V1.Stops;
@@ -13,8 +14,11 @@ namespace LiveTramsMCR.Models.V1.Stops;
 // ReSharper disable UnusedMember.Global
 public class Stop : IEquatable<Stop>
 {
+    /// <summary>
+    /// Object Id used internally by mongodb.
+    /// </summary>
     [JsonIgnore]
-    public ObjectId _id { get; set; }
+    public ObjectId Id { get; set; }
     
     /// <summary>
     /// Name of the stop, such as Piccadilly
@@ -94,7 +98,7 @@ public class Stop : IEquatable<Stop>
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
-        return obj.GetType() == this.GetType() && Equals((Stop) obj);
+        return obj.GetType() == GetType() && Equals((Stop) obj);
     }
     
     /// <summary>

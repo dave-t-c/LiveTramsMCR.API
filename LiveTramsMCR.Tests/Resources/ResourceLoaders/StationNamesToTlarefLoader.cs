@@ -10,7 +10,7 @@ namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 /// </summary>
 public class StationNamesToTlarefLoader
 {
-    private readonly Tests.Resources.ResourceLoaders.ResourcesConfig _resourcesConfig;
+    private readonly ResourcesConfig _resourcesConfig;
 
     /// <summary>
     ///     Creates a new loader. Checks the ResourceConfig values provided are valid using
@@ -18,9 +18,9 @@ public class StationNamesToTlarefLoader
     /// </summary>
     /// <param name="resourcesConfig">ResourceConfig created at startup. Injected as a service.</param>
     /// <exception cref="ArgumentNullException">Thrown if the ResourceConfig is null.</exception>
-    public StationNamesToTlarefLoader(Tests.Resources.ResourceLoaders.ResourcesConfig resourcesConfig)
+    public StationNamesToTlarefLoader(ResourcesConfig resourcesConfig)
     {
-        var loaderHelper = new Tests.Resources.ResourceLoaders.LoaderHelper();
+        var loaderHelper = new LoaderHelper();
 
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
 
@@ -35,8 +35,8 @@ public class StationNamesToTlarefLoader
     /// <returns>StationNames to Tlarefs dict. Key is the station name.</returns>
     public Dictionary<string, string> ImportStationNamesToTlarefs()
     {
-        using var reader = new StreamReader(_resourcesConfig.StationNamesToTlarefsPath);
+        using var reader = new StreamReader(_resourcesConfig.StationNamesToTlarefsPath!);
         var jsonString = reader.ReadToEnd();
-        return JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString);
+        return JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString)!;
     }
 }

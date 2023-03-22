@@ -6,8 +6,6 @@ using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
-using ImportedResources = LiveTramsMCR.Tests.Resources.ResourceLoaders.ImportedResources;
-using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 
@@ -22,7 +20,7 @@ public class TestServiceProcessor
     private const string RoutesPath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ImportedResources? _importedResources;
-    private List<int> _bmrIds;
+    private List<int>? _bmrIds;
     private MockServiceRequester? _mockServiceRequester;
 
     private ResourceLoader? _resourceLoader;

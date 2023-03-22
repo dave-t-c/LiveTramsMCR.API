@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
-using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
-using StopLoader = LiveTramsMCR.Tests.Resources.ResourceLoaders.StopLoader;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 
@@ -50,7 +49,7 @@ public class TestRoute
         _stopLoader = new StopLoader(_validResourcesConfig);
         _extendedImportedStops = _stopLoader.ImportStops();
         
-        _exampleStop = new Stop()
+        _exampleStop = new Stop
         {
             StopName = "Example",
         };

@@ -5,8 +5,6 @@ using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
-using ImportedResources = LiveTramsMCR.Tests.Resources.ResourceLoaders.ImportedResources;
-using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 

@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
-using ResourcesConfig = LiveTramsMCR.Tests.Resources.ResourceLoaders.ResourcesConfig;
-using StopLoader = LiveTramsMCR.Tests.Resources.ResourceLoaders.StopLoader;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 
@@ -109,7 +106,7 @@ public class TestJourneyTimeFinder
     [Test]
     public void TestIdentifyTimeInvalidRoute()
     {
-        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+        Assert.Throws(Is.TypeOf<ArgumentException>()
                 .And.Message.EqualTo("The route 'Invalid' was not found"),
             delegate
             {

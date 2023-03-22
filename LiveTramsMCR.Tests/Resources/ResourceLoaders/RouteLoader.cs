@@ -7,16 +7,16 @@ using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
 using Newtonsoft.Json;
 
-namespace LiveTramsMCR.Models.V1.Resources;
+namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 
 /// <summary>
 /// Imports the routes from the routes file and attaches the Stops. 
 /// </summary>
 public class RouteLoader
 {
-    private readonly Tests.Resources.ResourceLoaders.ResourcesConfig _resourcesConfig;
+    private readonly ResourcesConfig _resourcesConfig;
     private readonly List<Stop> _importedStops;
-    private Dictionary<string, Stop> _stopsDictionary;
+    private Dictionary<string, Stop> _stopsDictionary = new();
 
     /// <summary>
     /// Loads routes from the resources configuration and assigns the imported
@@ -24,9 +24,9 @@ public class RouteLoader
     /// </summary>
     /// <param name="resourcesConfig">Configuration location of routes file</param>
     /// <param name="importedStops">Imported Stops to assign to Routes</param>
-    public RouteLoader(Tests.Resources.ResourceLoaders.ResourcesConfig resourcesConfig, List<Stop> importedStops)
+    public RouteLoader(ResourcesConfig resourcesConfig, List<Stop> importedStops)
     {
-        var loaderHelper = new Tests.Resources.ResourceLoaders.LoaderHelper();
+        var loaderHelper = new LoaderHelper();
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
         _importedStops = importedStops ?? throw new ArgumentNullException(nameof(importedStops));
 
@@ -41,7 +41,7 @@ public class RouteLoader
     /// <returns>List of Imported Routes</returns>
     public List<Route> ImportRoutes()
     {
-        using var reader = new StreamReader(_resourcesConfig.RoutesResourcePath);
+        using var reader = new StreamReader(_resourcesConfig.RoutesResourcePath!);
         var jsonString = reader.ReadToEnd();
         var unprocessedRoutes = JsonConvert.DeserializeObject<List<UnprocessedRoute>> (jsonString);
         var importedRoutes = new List<Route>();

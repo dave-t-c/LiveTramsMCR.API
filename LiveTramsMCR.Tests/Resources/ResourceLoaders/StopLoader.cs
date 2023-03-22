@@ -11,15 +11,15 @@ namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 /// </summary>
 public class StopLoader
 {
-    private readonly Tests.Resources.ResourceLoaders.ResourcesConfig _resourcesConfig;
+    private readonly ResourcesConfig _resourcesConfig;
 
     /// <summary>
     ///     Create a new StopLoader Object, which can import the required Stops.
     /// </summary>
     /// <param name="resourcesConfig"></param>
-    public StopLoader(Tests.Resources.ResourceLoaders.ResourcesConfig resourcesConfig)
+    public StopLoader(ResourcesConfig resourcesConfig)
     {
-        var loaderHelper = new Tests.Resources.ResourceLoaders.LoaderHelper();
+        var loaderHelper = new LoaderHelper();
 
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
 
@@ -33,8 +33,8 @@ public class StopLoader
     /// </summary>
     public List<Stop> ImportStops()
     {
-        using var reader = new StreamReader(_resourcesConfig.StopResourcePath);
+        using var reader = new StreamReader(_resourcesConfig.StopResourcePath!);
         var jsonString = reader.ReadToEnd();
-        return JsonConvert.DeserializeObject<List<Stop>>(jsonString);
+        return JsonConvert.DeserializeObject<List<Stop>>(jsonString)!;
     }
 }
