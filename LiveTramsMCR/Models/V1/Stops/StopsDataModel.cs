@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using LiveTramsMCR.Models.V1.Resources;
+using LiveTramsMCR.Models.V1.Stops.Data;
 
 namespace LiveTramsMCR.Models.V1.Stops;
 
@@ -9,15 +9,15 @@ namespace LiveTramsMCR.Models.V1.Stops;
 /// </summary>
 public class StopsDataModel: IStopsDataModel
 {
-    private readonly ImportedResources _importedResources;
+    private readonly IStopsRepository _stopsRepository;
 
     /// <summary>
     /// Creates a new StopsDataModel using the Injected Imported Resources
     /// </summary>
-    /// <param name="importedResources">Resources Injected on Program Startup</param>
-    public StopsDataModel(ImportedResources importedResources)
+    /// <param name="stopsRepository">Stops repository for retrieving stop info</param>
+    public StopsDataModel(IStopsRepository stopsRepository)
     {
-        _importedResources = importedResources;
+        _stopsRepository = stopsRepository;
     }
     
     /// <summary>
@@ -27,6 +27,6 @@ public class StopsDataModel: IStopsDataModel
     /// <returns></returns>
     public List<Stop> GetStops()
     {
-        return _importedResources.ImportedStops;
+        return _stopsRepository.GetAll();
     }
 }

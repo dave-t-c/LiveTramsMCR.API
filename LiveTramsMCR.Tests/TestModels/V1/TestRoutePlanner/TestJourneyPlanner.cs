@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
@@ -24,7 +25,8 @@ public class TestRoutePlanner
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
     private JourneyPlanner? _journeyPlanner;
-    private RouteTimes? _routeTimes;
+    private List<RouteTimes>? _routeTimes;
+    private MockRouteRepository? _mockRouteRepository;
     private RouteTimesLoader? _routeTimesLoader;
     
     /// <summary>
@@ -53,7 +55,8 @@ public class TestRoutePlanner
 
         _routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
         _routeTimes = _routeTimesLoader.ImportRouteTimes();
-        _journeyPlanner = new JourneyPlanner(_routes, _routeTimes);
+        _mockRouteRepository = new MockRouteRepository(_routes, _routeTimes);
+        _journeyPlanner = new JourneyPlanner(_mockRouteRepository);
     }
 
     /// <summary>

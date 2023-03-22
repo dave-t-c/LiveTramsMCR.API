@@ -5,7 +5,7 @@ using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using Newtonsoft.Json;
 
-namespace LiveTramsMCR.Models.V1.Resources;
+namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 
 /// <summary>
 /// Loads route times information
@@ -25,7 +25,7 @@ public class RouteTimesLoader
         var loaderHelper = new LoaderHelper();
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
         
-        _resourcesConfig.RouteTimesPath = loaderHelper.CheckFileRequirements(resourcesConfig.RouteTimesPath,
+        _resourcesConfig.RouteTimesPath = LoaderHelper.CheckFileRequirements(resourcesConfig.RouteTimesPath,
             nameof(resourcesConfig.RouteTimesPath));
     }
 
@@ -33,15 +33,19 @@ public class RouteTimesLoader
     /// Imports route times using the resources config given to the constructor
     /// </summary>
     /// <returns>Imported Times for Routes</returns>
-    public RouteTimes ImportRouteTimes()
+    public List<RouteTimes> ImportRouteTimes()
     {
-        using var reader = new StreamReader(_resourcesConfig.RouteTimesPath);
+        using var reader = new StreamReader(_resourcesConfig.RouteTimesPath!);
         var jsonString = reader.ReadToEnd();
         var unprocessedRouteTimes = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>> (jsonString);
-        var createdRouteTimes = new RouteTimes();
+        var createdRouteTimes = new List<RouteTimes>();
         foreach (var routeName in unprocessedRouteTimes!.Keys)
         {
-            createdRouteTimes.AddRoute(routeName, ProcessesRoute(unprocessedRouteTimes![routeName]));
+            createdRouteTimes.Add((new RouteTimes
+            {
+                Route = routeName,
+                Times = ProcessesRoute(unprocessedRouteTimes[routeName])
+            }));
         }
         return createdRouteTimes;
     }

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
@@ -18,11 +19,13 @@ public class TestRouteIdentifier
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
+    private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
-    private StopLoader? _stopLoader;
     private List<Stop>? _importedStops;
-    private RouteLoader? _routeLoader;
     private List<Route>? _routes;
+    private ResourceLoader? _resourceLoader;
+    private ImportedResources? _importedResources;
+    private MockRouteRepository? _mockRouteRepository;
     private RouteIdentifier? _routeIdentifier;
     
     /// <summary>
@@ -38,16 +41,17 @@ public class TestRouteIdentifier
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
             TlarefsToIdsPath = TlarefsToIdsPath,
-            RoutesResourcePath = RoutesResourcePath
+            RoutesResourcePath = RoutesResourcePath,
+            RouteTimesPath = RouteTimesPath
         };
-        
-        _stopLoader = new StopLoader(_validResourcesConfig);
-        _importedStops = _stopLoader.ImportStops();
 
-        _routeLoader = new RouteLoader(_validResourcesConfig, _importedStops);
-        _routes = _routeLoader.ImportRoutes();
-
-        _routeIdentifier = new RouteIdentifier(_routes);
+        _resourceLoader = new ResourceLoader(_validResourcesConfig);
+        _importedResources = _resourceLoader.ImportResources();
+        _mockRouteRepository =
+            new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
+        _importedStops = _importedResources.ImportedStops;
+        _routes = _importedResources.ImportedRoutes;
+        _routeIdentifier = new RouteIdentifier(_mockRouteRepository);
     }
 
     /// <summary>
@@ -59,9 +63,7 @@ public class TestRouteIdentifier
     {
         _validResourcesConfig = null;
         _importedStops = null;
-        _stopLoader = null;
         _routes = null;
-        _routeLoader = null;
         _routeIdentifier = null;
     }
 

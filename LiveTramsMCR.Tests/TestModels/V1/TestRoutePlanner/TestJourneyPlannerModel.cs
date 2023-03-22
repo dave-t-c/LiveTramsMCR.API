@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
@@ -22,6 +23,8 @@ public class TestJourneyPlannerModel
     private ImportedResources? _importedResources;
     private ResourceLoader? _resourceLoader;
     private List<Route>? _routes;
+    private MockRouteRepository? _mockRouteRepository;
+    private MockStopsRepository? _mockStopsRepository;
     private JourneyPlanner? _journeyPlanner;
     private JourneyPlannerModel? _journeyPlannerModel;
     
@@ -41,8 +44,12 @@ public class TestJourneyPlannerModel
         _importedResources = _resourceLoader.ImportResources();
 
         _routes = _importedResources?.ImportedRoutes;
-        _journeyPlanner = new JourneyPlanner(_importedResources?.ImportedRoutes, _importedResources?.ImportedRouteTimes);
-        _journeyPlannerModel = new JourneyPlannerModel(_importedResources, _journeyPlanner);
+        _mockRouteRepository =
+            new MockRouteRepository(_importedResources?.ImportedRoutes!, _importedResources?.ImportedRouteTimes!);
+
+        _mockStopsRepository = new MockStopsRepository(_importedResources?.ImportedStops!);
+        _journeyPlanner = new JourneyPlanner(_mockRouteRepository);
+        _journeyPlannerModel = new JourneyPlannerModel(_mockStopsRepository, _journeyPlanner);
     }
 
     [TearDown]
@@ -66,8 +73,8 @@ public class TestJourneyPlannerModel
     {
         var plannedRoute = _journeyPlannerModel?.PlanJourney("Altrincham", "Piccadilly");
         Assert.IsNotNull(plannedRoute);
-        var altrinchamStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Altrincham");
-        var piccadillyStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Piccadilly");
+        var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
+        var piccadillyStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Piccadilly");
         Assert.AreEqual(altrinchamStop, plannedRoute?.OriginStop);
         Assert.AreEqual(piccadillyStop, plannedRoute?.DestinationStop);
         Assert.IsFalse(plannedRoute?.RequiresInterchange);
@@ -85,8 +92,8 @@ public class TestJourneyPlannerModel
     public void TestIdentifyAltrinchamAshtonRoute()
     {
         var plannedRoute = _journeyPlannerModel?.PlanJourney("Altrincham", "Ashton-Under-Lyne");
-        var altrinchamStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Altrincham");
-        var ashtonStop = _importedResources?.ImportedStops?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Ashton-Under-Lyne");
         Assert.IsNotNull(plannedRoute);
         Assert.IsTrue(plannedRoute?.RequiresInterchange);
         Assert.AreEqual(altrinchamStop, plannedRoute?.OriginStop);
@@ -136,7 +143,7 @@ public class TestJourneyPlannerModel
     [Test]
     public void TestJourneyPlannerModelInvalidOrigin()
     {
-        Assert.Throws(Is.TypeOf<InvalidOperationException>(),
+        Assert.Throws(Is.TypeOf<ArgumentException>(),
             delegate
             {
                 var unused = _journeyPlannerModel?.PlanJourney("---", "Altrincham");
@@ -150,7 +157,7 @@ public class TestJourneyPlannerModel
     [Test]
     public void TestJourneyPlannerModelInvalidDestination()
     {
-        Assert.Throws(Is.TypeOf<InvalidOperationException>(),
+        Assert.Throws(Is.TypeOf<ArgumentException>(),
             delegate
             {
                 var unused = _journeyPlannerModel?.PlanJourney("Altrincham", "---");

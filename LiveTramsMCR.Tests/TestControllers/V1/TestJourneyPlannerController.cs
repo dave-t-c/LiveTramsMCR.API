@@ -1,7 +1,8 @@
 using System.Linq;
 using LiveTramsMCR.Controllers.V1;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 
@@ -15,6 +16,8 @@ public class TestJourneyPlannerController
     private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
     private IJourneyPlanner? _journeyPlanner;
+    private MockStopsRepository? _mockStopsRepository;
+    private MockRouteRepository? _mockRouteRepository;
     private IJourneyPlannerModel? _journeyPlannerModel;
     private JourneyPlannerController? _journeyPlannerController;
     
@@ -30,8 +33,11 @@ public class TestJourneyPlannerController
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _journeyPlanner = new JourneyPlanner(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
-        _journeyPlannerModel = new JourneyPlannerModel(_importedResources, _journeyPlanner);
+        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
+        _mockRouteRepository =
+            new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
+        _journeyPlanner = new JourneyPlanner(_mockRouteRepository);
+        _journeyPlannerModel = new JourneyPlannerModel(_mockStopsRepository, _journeyPlanner);
         _journeyPlannerController = new JourneyPlannerController(_journeyPlannerModel);
     }
     

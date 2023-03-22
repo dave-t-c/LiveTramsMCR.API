@@ -1,7 +1,8 @@
 using System.Linq;
 using LiveTramsMCR.Controllers.V1;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using LiveTramsMCR.Tests.TestModels.V1.TestServices;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
@@ -16,6 +17,7 @@ public class TestServicesController
     private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
     private IRequester? _requester;
+    private MockStopsRepository? _mockStopsRepository;
     private IServicesDataModel? _servicesDataModel;
     private ServiceController? _serviceController;
     
@@ -31,8 +33,10 @@ public class TestServicesController
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _requester = new MockServiceRequester();
-        _servicesDataModel = new ServicesDataModel(_importedResources, _requester);
+        var bmrIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "BMR").Ids;
+        _requester = new MockServiceRequester(bmrIds);
+        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
+        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
         _serviceController = new ServiceController(_servicesDataModel);
     }
 

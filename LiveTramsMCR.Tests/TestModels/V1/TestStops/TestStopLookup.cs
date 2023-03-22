@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestStops;
@@ -23,6 +24,10 @@ public class TestStopLookup
     private ResourceLoader? _resourceLoader;
     private ResourcesConfig? _resourcesConfig;
     private StopLookup? _stopLookup;
+    private MockStopsRepository? _mockStopsRepository;
+
+    private List<int>? _altrinchamIds;
+    private List<int>? _ashtonIds;
 
     /// <summary>
     ///     Set up the required resources for each test.
@@ -42,7 +47,10 @@ public class TestStopLookup
 
         _resourceLoader = new ResourceLoader(_resourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
-        _stopLookup = new StopLookup(_importedResources);
+        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
+        _stopLookup = new StopLookup(_mockStopsRepository);
+        _altrinchamIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "ALT").Ids;
+        _ashtonIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "ASH").Ids;
     }
 
     /// <summary>
@@ -65,7 +73,7 @@ public class TestStopLookup
     public void TestStopLookupTlarefIDs()
     {
         const string tlaref = "ALT";
-        var expectedResult = new List<int> {728, 729};
+        var expectedResult = _altrinchamIds;
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.TlarefLookup(tlaref);
         Assert.NotNull(result);
@@ -81,7 +89,7 @@ public class TestStopLookup
     public void TestStopLookupDifferentTlaref()
     {
         const string tlaref = "ASH";
-        var expectedResult = new List<int> {783, 784, 785, 786};
+        var expectedResult = _ashtonIds;
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.TlarefLookup(tlaref);
         Assert.NotNull(result);
@@ -108,7 +116,7 @@ public class TestStopLookup
     public void TestStopLookupStopName()
     {
         const string stationName = "Altrincham";
-        var expectedResult = new List<int> {728, 729};
+        var expectedResult = _altrinchamIds;
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.StationNameLookup(stationName);
         Assert.NotNull(result);
@@ -123,7 +131,7 @@ public class TestStopLookup
     public void TestStopLookupDifferentStop()
     {
         const string stationName = "Ashton-Under-Lyne";
-        var expectedResult = new List<int> {783, 784, 785, 786};
+        var expectedResult = _ashtonIds;
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.StationNameLookup(stationName);
         Assert.NotNull(result);
@@ -151,7 +159,7 @@ public class TestStopLookup
     public void TestLookupIDsTlaref()
     {
         const string tlaref = "ALT";
-        var expectedResult = new List<int> {728, 729};
+        var expectedResult = _altrinchamIds;
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.LookupIDs(tlaref);
         Assert.NotNull(result);
@@ -167,7 +175,7 @@ public class TestStopLookup
     public void TestLookupIDsDifferentTlaref()
     {
         const string tlaref = "ASH";
-        var expectedResult = new List<int> {783, 784, 785, 786};
+        var expectedResult = _ashtonIds;
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.LookupIDs(tlaref);
         Assert.NotNull(result);
@@ -182,7 +190,7 @@ public class TestStopLookup
     public void TestLookupIDsStationName()
     {
         const string stationName = "Altrincham";
-        var expectedResult = new List<int> {728, 729};
+        var expectedResult = _altrinchamIds;
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.LookupIDs(stationName);
         Assert.NotNull(result);
@@ -197,7 +205,7 @@ public class TestStopLookup
     public void TestLookupIDsDifferentStationName()
     {
         const string stationName = "Ashton-Under-Lyne";
-        var expectedResult = new List<int> {783, 784, 785, 786};
+        var expectedResult = _ashtonIds;
         Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
         var result = _stopLookup.LookupIDs(stationName);
         Assert.NotNull(result);
@@ -274,8 +282,8 @@ public class TestStopLookup
     [Test]
     public void TestLookupStopObjectInvalidName()
     {
-        Assert.Throws(Is.TypeOf<InvalidOperationException>()
-                .And.Message.EqualTo("Sequence contains no matching element"),
+        Assert.Throws(Is.TypeOf<ArgumentException>()
+                .And.Message.EqualTo("Value given is not a valid station name or TLAREF"),
             delegate { _stopLookup?.LookupStop("---"); });
     }
 

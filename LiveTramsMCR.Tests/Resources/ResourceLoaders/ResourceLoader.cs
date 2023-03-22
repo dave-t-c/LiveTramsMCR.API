@@ -1,4 +1,4 @@
-namespace LiveTramsMCR.Models.V1.Resources;
+namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 
 /// <summary>
 ///     Loads the file resources for the system using the file loaders.

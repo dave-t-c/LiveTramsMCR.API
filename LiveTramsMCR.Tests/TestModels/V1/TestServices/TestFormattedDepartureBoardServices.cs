@@ -18,7 +18,6 @@ public class TestFormattedDepartureBoardServices
     private string? _status;
     private Tram? _tram;
     private Tram? _diffTram;
-    private Tram? _tramDiffDestination;
     private Tram? _tramSameDestinationDiffWait;
     private string? _wait;
     
@@ -33,7 +32,6 @@ public class TestFormattedDepartureBoardServices
         _wait = "9";
         _diffWait = "1";
         _tram = new Tram(_destination, _carriages, _status, _wait);
-        _tramDiffDestination = new Tram(_diffDestination, _carriages, _status, _wait);
         _tramSameDestinationDiffWait = new Tram(_destination, _diffCarriages, _status, _diffWait);
         _formattedDepartureBoardServices = new FormattedDepartureBoardServices();
         _diffTram = new Tram(_diffDestination, _diffCarriages, _status, _diffWait);
@@ -50,7 +48,6 @@ public class TestFormattedDepartureBoardServices
         _wait = null;
         _diffWait = null;
         _tram = null;
-        _tramDiffDestination = null;
         _tramSameDestinationDiffWait = null;
         _formattedDepartureBoardServices = null;
     }

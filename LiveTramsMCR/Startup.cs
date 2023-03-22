@@ -3,14 +3,17 @@ using System.IO;
 using System.Reflection;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V1.Stops.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using static System.AppDomain;
 
 namespace LiveTramsMCR;
@@ -43,9 +46,6 @@ public class Startup
     /// <param name="services">Services for the Container</param>
     public void ConfigureServices(IServiceCollection services)
     {
-
-        services.Configure<ApiOptions>(Configuration.GetSection("ApiOptions"));
-
         // ReSharper disable once SuspiciousTypeConversion.Global
         ResourcesConfig resourceConfig = new ResourcesConfig();
         Configuration.Bind("Resources", resourceConfig);
@@ -59,19 +59,23 @@ public class Startup
         };
         services.AddSingleton(apiOptions);
 
-        ResourceLoader resourceLoader = new ResourceLoader(resourceConfig);
-        ImportedResources importedResources = resourceLoader.ImportResources();
-        services.AddSingleton(importedResources);
-
-        IStopsDataModel stopsDataModel = new StopsDataModel(importedResources);
+        var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
+        var db = mongoClient.GetDatabase("livetramsmcr");
+        var stopsMongoCollection = db.GetCollection<Stop>("stops");
+        var routesMongoCollection = db.GetCollection<Route>("routes");
+        var routeTimesMongoCollection = db.GetCollection<RouteTimes>("route-times");
+        
+        IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
+        IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
         services.AddSingleton(stopsDataModel);
 
         IRequester serviceRequester = new ServiceRequester(apiOptions);
-        IServicesDataModel servicesDataModel = new ServicesDataModel(importedResources, serviceRequester);
+        IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, serviceRequester);
         services.AddSingleton(servicesDataModel);
 
-        IJourneyPlanner journeyPlanner = new JourneyPlanner(importedResources.ImportedRoutes, importedResources.ImportedRouteTimes);
-        IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(importedResources, journeyPlanner);
+        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
+        IJourneyPlanner journeyPlanner = new JourneyPlanner(routeRepository);
+        IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(stopsRepository, journeyPlanner);
         services.AddSingleton(journeyPlannerModel);
 
         services.AddControllers();

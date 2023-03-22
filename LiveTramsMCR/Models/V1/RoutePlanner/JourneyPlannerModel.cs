@@ -1,6 +1,6 @@
 using System;
-using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V1.Stops.Data;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
@@ -18,12 +18,12 @@ public class JourneyPlannerModel: IJourneyPlannerModel
     /// Creates a journey planner model that can be used
     /// for planning journeys between stops.
     /// </summary>
-    /// <param name="importedResources"></param>
+    /// <param name="stopsRepository"></param>
     /// <param name="journeyPlanner"></param>
-    public JourneyPlannerModel(ImportedResources importedResources, IJourneyPlanner journeyPlanner)
+    public JourneyPlannerModel(IStopsRepository stopsRepository, IJourneyPlanner journeyPlanner)
     {
         _journeyPlanner = journeyPlanner;
-        _stopLookup = new StopLookup(importedResources);
+        _stopLookup = new StopLookup(stopsRepository);
     }
     
     

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
@@ -15,12 +16,11 @@ public class JourneyPlanner : IJourneyPlanner
     /// <summary>
     /// Create a new route planner with a list of available routes.
     /// </summary>
-    /// <param name="routes">List of possible routes a journey can take</param>
-    /// <param name="routeTimes">Example timetables for each route</param>
-    public JourneyPlanner(List<Route> routes, RouteTimes routeTimes)
+    /// <param name="routeRepository">Repository for retrieving route times</param>
+    public JourneyPlanner(IRouteRepository routeRepository)
     {
-        _routeIdentifier = new RouteIdentifier(routes);
-        _journeyTimeFinder = new JourneyTimeFinder(routeTimes);
+        _routeIdentifier = new RouteIdentifier(routeRepository);
+        _journeyTimeFinder = new JourneyTimeFinder(routeRepository);
     }
     
     /// <summary>

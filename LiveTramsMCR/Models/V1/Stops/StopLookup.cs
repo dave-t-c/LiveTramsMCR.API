@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using LiveTramsMCR.Models.V1.Resources;
+using LiveTramsMCR.Models.V1.Stops.Data;
 
 namespace LiveTramsMCR.Models.V1.Stops;
 
@@ -13,16 +12,16 @@ namespace LiveTramsMCR.Models.V1.Stops;
 /// </summary>
 public class StopLookup
 {
-    private readonly ImportedResources _importedResources;
+    private readonly IStopsRepository _stopsRepository;
 
     /// <summary>
     /// Generates a new StopLookup using the imported resources.
     /// Imported resources may be null here.
     /// </summary>
-    /// <param name="importedResources">ImportedResources loaded at program start</param>
-    public StopLookup(ImportedResources importedResources)
+    /// <param name="stopsRepository"></param>
+    public StopLookup(IStopsRepository stopsRepository)
     {
-        _importedResources = importedResources;
+        _stopsRepository = stopsRepository;
     }
 
     /// <summary>
@@ -33,7 +32,7 @@ public class StopLookup
     public List<int> TlarefLookup(string tlaref)
     {
         if (tlaref == null) throw new ArgumentNullException(nameof(tlaref));
-        return _importedResources.TlarefsToIds[tlaref];
+        return _stopsRepository.GetStop(tlaref).Ids;
     }
 
     /// <summary>
@@ -44,8 +43,13 @@ public class StopLookup
     public List<int> StationNameLookup(string stationName)
     {
         if (stationName == null) throw new ArgumentNullException(nameof(stationName));
-        var tlaref = _importedResources.StationNamesToTlaref[stationName];
-        return TlarefLookup(tlaref);
+        var stop =  _stopsRepository.GetStop(stationName);
+        if (stop == null)
+        {
+            throw new ArgumentException("Value given is not a valid station name or TLAREF");    
+        }
+
+        return stop.Ids;
     }
 
     /// <summary>
@@ -58,11 +62,13 @@ public class StopLookup
     {
         if (value == null) throw new ArgumentNullException(nameof(value));
 
-        if (_importedResources.TlarefsToIds.ContainsKey(value)) return TlarefLookup(value);
+        var stop = _stopsRepository.GetStop(value);
+        if (stop == null)
+        {
+            throw new ArgumentException("Value given is not a valid station name or TLAREF");    
+        }
 
-        if (_importedResources.StationNamesToTlaref.ContainsKey(value)) return StationNameLookup(value);
-
-        throw new ArgumentException("Value given is not a valid station name or TLAREF");
+        return stop.Ids;
     }
 
     /// <summary>
@@ -74,7 +80,13 @@ public class StopLookup
     {
         if (value is null)
             throw new ArgumentNullException(nameof(value));
-        return _importedResources.ImportedStops
-            .First(stop => stop.StopName == value || stop.Tlaref == value);
+        
+        var stop = _stopsRepository.GetStop(value);
+        if (stop == null)
+        {
+            throw new ArgumentException("Value given is not a valid station name or TLAREF");    
+        }
+
+        return stop;
     }
 }
