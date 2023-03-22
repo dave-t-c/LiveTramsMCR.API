@@ -30,7 +30,7 @@ public class RouteLoader
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
         _importedStops = importedStops ?? throw new ArgumentNullException(nameof(importedStops));
 
-        _resourcesConfig.RoutesResourcePath = loaderHelper.CheckFileRequirements(resourcesConfig.RoutesResourcePath,
+        _resourcesConfig.RoutesResourcePath = LoaderHelper.CheckFileRequirements(resourcesConfig.RoutesResourcePath,
             nameof(resourcesConfig.RoutesResourcePath));
     }
 

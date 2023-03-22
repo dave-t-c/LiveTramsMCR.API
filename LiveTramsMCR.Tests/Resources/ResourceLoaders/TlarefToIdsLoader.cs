@@ -23,7 +23,7 @@ public class TlarefToIdsLoader
 
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
 
-        _resourcesConfig.TlarefsToIdsPath = loaderHelper.CheckFileRequirements(resourcesConfig.TlarefsToIdsPath,
+        _resourcesConfig.TlarefsToIdsPath = LoaderHelper.CheckFileRequirements(resourcesConfig.TlarefsToIdsPath,
             nameof(resourcesConfig.TlarefsToIdsPath));
     }
 

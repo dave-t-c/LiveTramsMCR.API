@@ -23,7 +23,7 @@ public class StopLoader
 
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
 
-        _resourcesConfig.StopResourcePath = loaderHelper.CheckFileRequirements(resourcesConfig.StopResourcePath,
+        _resourcesConfig.StopResourcePath = LoaderHelper.CheckFileRequirements(resourcesConfig.StopResourcePath,
             nameof(resourcesConfig.StopResourcePath));
     }
 

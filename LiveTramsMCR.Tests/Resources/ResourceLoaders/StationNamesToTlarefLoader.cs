@@ -24,7 +24,7 @@ public class StationNamesToTlarefLoader
 
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
 
-        _resourcesConfig.StationNamesToTlarefsPath = loaderHelper.CheckFileRequirements(
+        _resourcesConfig.StationNamesToTlarefsPath = LoaderHelper.CheckFileRequirements(
             resourcesConfig.StationNamesToTlarefsPath,
             nameof(resourcesConfig.StationNamesToTlarefsPath));
     }

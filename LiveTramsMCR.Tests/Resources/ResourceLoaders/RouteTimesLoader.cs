@@ -25,7 +25,7 @@ public class RouteTimesLoader
         var loaderHelper = new LoaderHelper();
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
         
-        _resourcesConfig.RouteTimesPath = loaderHelper.CheckFileRequirements(resourcesConfig.RouteTimesPath,
+        _resourcesConfig.RouteTimesPath = LoaderHelper.CheckFileRequirements(resourcesConfig.RouteTimesPath,
             nameof(resourcesConfig.RouteTimesPath));
     }
 
