@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 
@@ -17,11 +18,11 @@ public class MockRouteRepository : IRouteRepository
     
     public RouteTimes GetRouteTimesByNameAsync(string routeName)
     {
-        throw new System.NotImplementedException();
+        return _routeTimes.First(route => route.Route == routeName);
     }
 
     public List<Route> GetAllRoutesAsync()
     {
-        throw new System.NotImplementedException();
+        return _routes;
     }
 }

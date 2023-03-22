@@ -23,10 +23,9 @@ public class TestRouteIdentifier
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
+    private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
-    private StopLoader? _stopLoader;
     private List<Stop>? _importedStops;
-    private RouteLoader? _routeLoader;
     private List<Route>? _routes;
     private ResourceLoader? _resourceLoader;
     private ImportedResources? _importedResources;
@@ -46,13 +45,16 @@ public class TestRouteIdentifier
             StopResourcePath = StopResourcePathConst,
             StationNamesToTlarefsPath = StationNamesToTlarefsPath,
             TlarefsToIdsPath = TlarefsToIdsPath,
-            RoutesResourcePath = RoutesResourcePath
+            RoutesResourcePath = RoutesResourcePath,
+            RouteTimesPath = RouteTimesPath
         };
 
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
         _mockRouteRepository =
             new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
+        _importedStops = _importedResources.ImportedStops;
+        _routes = _importedResources.ImportedRoutes;
         _routeIdentifier = new RouteIdentifier(_mockRouteRepository);
     }
 
@@ -65,9 +67,7 @@ public class TestRouteIdentifier
     {
         _validResourcesConfig = null;
         _importedStops = null;
-        _stopLoader = null;
         _routes = null;
-        _routeLoader = null;
         _routeIdentifier = null;
     }
 
