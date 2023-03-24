@@ -23,4 +23,14 @@ public class MockStopsRepository : IStopsRepository
     {
         return _stops;
     }
+
+    public void UpdateStops(List<Stop> stops)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateStop(Stop stop)
+    {
+        throw new NotImplementedException();
+    }
 }

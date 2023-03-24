@@ -25,4 +25,14 @@ public class MockRouteRepository : IRouteRepository
     {
         return _routes;
     }
+
+    public void UpdateRoutes(List<Route> routes)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void UpdateRoute(Route route)
+    {
+        throw new System.NotImplementedException();
+    }
 }

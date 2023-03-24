@@ -20,4 +20,16 @@ public interface IRouteRepository
     /// </summary>
     /// <returns>List of routes</returns>
     public List<Route> GetAllRoutesAsync();
+
+    /// <summary>
+    /// Updates a list of routes
+    /// </summary>
+    /// <param name="routes"></param>
+    public void UpdateRoutes(List<Route> routes);
+
+    /// <summary>
+    /// Updates a single route with a matching name
+    /// </summary>
+    /// <param name="route"></param>
+    public void UpdateRoute(Route route);
 }

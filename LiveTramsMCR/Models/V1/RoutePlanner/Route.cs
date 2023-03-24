@@ -32,7 +32,7 @@ public class Route
     /// <summary>
     /// Stops belonging to a route in the order they can be travelled between.
     /// </summary>
-    public List<Stop> Stops { get; private set; }
+    public List<Stop> Stops { get; internal set; }
     
     /// <summary>
     /// Creates a new route, the params are only null sanitised

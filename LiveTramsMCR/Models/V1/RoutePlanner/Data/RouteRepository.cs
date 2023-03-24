@@ -32,4 +32,19 @@ public class RouteRepository : IRouteRepository
     {
         return _routeCollection.FindAsync(_ => true).Result.ToList();
     }
+
+    /// <inheritdoc />
+    public void UpdateRoutes(List<Route> routes)
+    {
+        foreach (var route in routes)
+        {
+            UpdateRoute(route);
+        }
+    }
+
+    /// <inheritdoc />
+    public void UpdateRoute(Route route)
+    {
+        _routeCollection.ReplaceOne(r => r.Name == route.Name, route);
+    }
 }

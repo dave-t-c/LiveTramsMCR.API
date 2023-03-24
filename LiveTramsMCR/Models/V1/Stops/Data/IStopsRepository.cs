@@ -20,4 +20,18 @@ public interface IStopsRepository
     /// </summary>
     /// <returns>A list of all stops</returns>
     public List<Stop> GetAll();
+
+    /// <summary>
+    /// Updates a list of stops in the db.
+    /// </summary>
+    /// <param name="stops"></param>
+    public void UpdateStops(List<Stop> stops);
+
+    /// <summary>
+    /// Updates a single stop in the DB.
+    /// This will replace the stop with a matching tlraef to the stop given.
+    /// </summary>
+    /// <param name="stop"></param>
+    public void UpdateStop(Stop stop);
+
 }
