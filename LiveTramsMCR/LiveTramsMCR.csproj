@@ -17,12 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="Resources\route-times.json" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Folder Include="Models\V1" />
-      <Folder Include="Resources" />
     </ItemGroup>
 
 </Project>
