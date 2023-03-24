@@ -99,4 +99,42 @@ public class TestStopUpdater
         var expectedExampleThreeIds = new List<int>() {15593, 15594};
         Assert.AreEqual(expectedExampleThreeIds, updatedStops?.Find(s => s.StopName == "Example 3")!.Ids);
     }
+
+    /// <summary>
+    /// Test to update the stops in the imported routes.
+    /// This should update the IDs for all of the stops in each route.
+    /// </summary>
+    [Test]
+    public void TestUpdateStopsInRoutes()
+    {
+        // Expected IDs:
+        // Example 1: 15588, 15589, 15590
+        // Example 2: 15591, 15592
+        // Example 3: 15593, 15594
+        _stopUpdater?.UpdateStopIdsFromServices(_multipleUnformattedServices?.Value);
+
+        var updatedRoutes = _routeRepository?.GetAllRoutesAsync();
+        Assert.NotNull(updatedRoutes);
+        Assert.AreEqual(2, updatedRoutes?.Count);
+        
+        var expectedExampleOneIds = new List<int>() {15588, 15589, 15590};
+        var expectedExampleTwoIds = new List<int>() {15591, 15592};
+        var expectedExampleThreeIds = new List<int>() {15593, 15594};
+        
+        var greenRoute = updatedRoutes?.Find(r => r.Name == "Green");
+        Assert.NotNull(greenRoute);
+        Assert.AreEqual(2, greenRoute?.Stops.Count);
+        var expectedExampleOne = greenRoute?.Stops.Find(s => s.StopName == "Example 1");
+        var expectedExampleThree = greenRoute?.Stops.Find(s => s.StopName == "Example 3");
+        Assert.AreEqual(expectedExampleOneIds, expectedExampleOne?.Ids);
+        Assert.AreEqual(expectedExampleThreeIds, expectedExampleThree?.Ids);
+
+        var purpleRoute = updatedRoutes?.Find(r => r.Name == "Purple");
+        Assert.AreEqual(2, purpleRoute?.Stops.Count);
+        expectedExampleOne = purpleRoute?.Stops.Find(s => s.StopName == "Example 1");
+        var expectedExampleTwo = purpleRoute?.Stops.Find(s => s.StopName == "Example 2");
+        Assert.AreEqual(expectedExampleOneIds, expectedExampleOne?.Ids);
+        Assert.AreEqual(expectedExampleTwoIds, expectedExampleTwo?.Ids);
+
+    }
 }
