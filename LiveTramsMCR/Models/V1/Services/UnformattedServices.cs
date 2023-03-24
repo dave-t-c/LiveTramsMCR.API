@@ -1,5 +1,9 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMember.Global
+
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
 namespace LiveTramsMCR.Models.V1.Services;
 
 /// <summary>
@@ -148,4 +152,18 @@ public class UnformattedServices
     /// String DateTime of when the request was made.
     /// </summary>
     public string LastUpdated { get; set; }
+}
+
+/// <summary>
+/// Stores multiple unformatted services together.
+/// This can be used when the unformatted services for more than one ID is requested, e.g. for
+/// when no ID is specified.
+/// </summary>
+public class MultipleUnformattedServices
+{
+    /// <summary>
+    /// List of unformatted services returned
+    /// </summary>
+    [JsonPropertyName("value")]
+    public List<UnformattedServices> Value { get; set; }
 }

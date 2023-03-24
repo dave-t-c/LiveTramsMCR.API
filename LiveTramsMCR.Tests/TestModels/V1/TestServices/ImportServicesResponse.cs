@@ -20,4 +20,17 @@ public static class ImportServicesResponse
         var jsonString = reader.ReadToEnd();
         return JsonConvert.DeserializeObject<UnformattedServices>(jsonString);
     }
+
+    /// <summary>
+    /// Reads a json file and returns the MultipleUnformattedServices obj for that file.
+    /// Used for mocking endpoint response when requesting all services.
+    /// </summary>
+    /// <param name="path">Path to json file</param>
+    /// <returns>Multiple unformatted services object created from json</returns>
+    public static MultipleUnformattedServices? ImportMultipleUnformattedServices(string path)
+    {
+        using var reader = new StreamReader(path);
+        var jsonString = reader.ReadToEnd();
+        return JsonConvert.DeserializeObject<MultipleUnformattedServices>(jsonString);
+    }
 }

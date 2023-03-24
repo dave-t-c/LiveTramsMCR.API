@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
@@ -28,11 +29,16 @@ public class MockRouteRepository : IRouteRepository
 
     public void UpdateRoutes(List<Route> routes)
     {
-        throw new System.NotImplementedException();
+        foreach (var route in routes.ToList())
+        {
+            UpdateRoute(route);
+        }
     }
 
     public void UpdateRoute(Route route)
     {
-        throw new System.NotImplementedException();
+        var existing = _routes.Find(s => s.Name == route.Name);
+        var existingIndex = _routes.IndexOf(existing!);
+        _routes[existingIndex] = route;
     }
 }
