@@ -12,7 +12,6 @@ public class ServiceProcessor
     private readonly IRequester _requester;
     private readonly ServiceFormatter _serviceFormatter;
     private readonly StopLookup _stopLookup;
-    private readonly ServiceValidator _serviceValidator;
 
     /// <summary>
     /// Creates a new service processor using the imported resources and
@@ -25,7 +24,6 @@ public class ServiceProcessor
         _requester = requester;
         _stopLookup = new StopLookup(stopsRepository);
         _serviceFormatter = new ServiceFormatter();
-        _serviceValidator = new ServiceValidator();
     }
 
     /// <summary>
@@ -38,7 +36,7 @@ public class ServiceProcessor
         if (stop == null) throw new ArgumentNullException(nameof(stop));
         var stopIds = _stopLookup.LookupIDs(stop);
         var serviceResponses = _requester.RequestServices(stopIds);
-        var unformattedServices = _serviceValidator.ValidateServiceResponse(serviceResponses);
+        var unformattedServices = ServiceValidator.ValidateServiceResponse(serviceResponses);
         return _serviceFormatter.FormatServices(unformattedServices);
     }
 
@@ -53,7 +51,7 @@ public class ServiceProcessor
         if (stop == null) throw new ArgumentNullException(nameof(stop));
         var stopIds = _stopLookup.LookupIDs(stop);
         var serviceResponses = _requester.RequestServices(stopIds);
-        var unformattedServices = _serviceValidator.ValidateServiceResponse(serviceResponses);
+        var unformattedServices = ServiceValidator.ValidateServiceResponse(serviceResponses);
         return _serviceFormatter.FormatDepartureBoardServices(unformattedServices);
     }
 }

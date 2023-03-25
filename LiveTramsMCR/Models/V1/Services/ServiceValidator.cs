@@ -8,14 +8,14 @@ namespace LiveTramsMCR.Models.V1.Services;
 /// Validates service information from
 /// the HTTP responses from the service requester
 /// </summary>
-public class ServiceValidator
+public static class ServiceValidator
 {
     /// <summary>
     /// Validates service response messages and returns each monitor as an unformatted service
     /// </summary>
     /// <param name="responseMessages">Http response messages from service requester</param>
     /// <returns>List of unformatted services</returns>
-    public List<UnformattedServices> ValidateServiceResponse(List<HttpResponseMessage> responseMessages)
+    public static List<UnformattedServices> ValidateServiceResponse(List<HttpResponseMessage> responseMessages)
     {
         var unformattedServices = new List<UnformattedServices>();
         foreach (var httpResponse in responseMessages)
