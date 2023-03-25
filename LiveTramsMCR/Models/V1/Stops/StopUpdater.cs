@@ -66,12 +66,12 @@ public class StopUpdater
         // Create a new list 
         var updatedRouteStops = new List<Stop>();
         var existingStops = route.Stops;
-        foreach (var stop in existingStops)
+        foreach (var tlaref in existingStops.Select(s => s.Tlaref))
         {
-            var updatedStop = updatedStops.FirstOrDefault(s => s.Tlaref == stop.Tlaref);
+            var updatedStop = updatedStops.FirstOrDefault(s => s.Tlaref == tlaref);
             if (updatedStop is null)
             {
-                throw new InvalidOperationException($"Updated stop for tlaref '{stop.Tlaref}' not found");
+                throw new InvalidOperationException($"Updated stop for tlaref '{tlaref}' not found");
             }
         
             updatedRouteStops.Add(updatedStop);
