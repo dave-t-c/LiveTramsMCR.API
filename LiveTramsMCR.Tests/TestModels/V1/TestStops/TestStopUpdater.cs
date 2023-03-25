@@ -113,7 +113,7 @@ public class TestStopUpdater
         // Example 3: 15593, 15594
         _stopUpdater?.UpdateStopIdsFromServices(_multipleUnformattedServices?.Value);
 
-        var updatedRoutes = _routeRepository?.GetAllRoutesAsync();
+        var updatedRoutes = _routeRepository?.GetAllRoutes();
         Assert.NotNull(updatedRoutes);
         Assert.AreEqual(2, updatedRoutes?.Count);
         

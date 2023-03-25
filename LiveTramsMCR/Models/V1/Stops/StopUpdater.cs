@@ -42,7 +42,7 @@ public class StopUpdater
         
         _stopsRepository.UpdateStops(stops);
 
-        var routes = _routeRepository.GetAllRoutesAsync();
+        var routes = _routeRepository.GetAllRoutes();
         foreach (var route in routes)
         {
             UpdateRouteStops(route, stops);

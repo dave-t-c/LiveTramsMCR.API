@@ -19,7 +19,7 @@ public interface IRouteRepository
     /// Gets all routes
     /// </summary>
     /// <returns>List of routes</returns>
-    public List<Route> GetAllRoutesAsync();
+    public List<Route> GetAllRoutes();
 
     /// <summary>
     /// Updates a list of routes

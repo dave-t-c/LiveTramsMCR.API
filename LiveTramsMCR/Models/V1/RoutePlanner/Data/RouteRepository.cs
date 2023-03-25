@@ -28,7 +28,7 @@ public class RouteRepository : IRouteRepository
     }
 
     /// <inheritdoc />
-    public List<Route> GetAllRoutesAsync()
+    public List<Route> GetAllRoutes()
     {
         return _routeCollection.FindAsync(_ => true).Result.ToList();
     }

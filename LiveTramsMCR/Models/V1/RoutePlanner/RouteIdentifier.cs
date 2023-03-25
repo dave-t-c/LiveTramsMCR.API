@@ -39,7 +39,7 @@ public class RouteIdentifier
         if (destination is null)
             throw new ArgumentNullException(nameof(destination));
 
-        var routes = _routeRepository.GetAllRoutesAsync();
+        var routes = _routeRepository.GetAllRoutes();
         //Returns true if there is a route that contains both origin and dest stops.
         //Find returns null if there is not a match, so interchange is required if there is not a match
         return routes.Find(route => route.Stops.Contains(origin) && route.Stops.Contains(destination)) is null;
@@ -66,7 +66,7 @@ public class RouteIdentifier
         if (destination is null)
             throw new ArgumentNullException(nameof(destination));
 
-        var routes = _routeRepository.GetAllRoutesAsync();
+        var routes = _routeRepository.GetAllRoutes();
         
         //Identify the routes for a stop.
         var originRoutes = routes.FindAll(route => route.ContainsStop(origin));
@@ -127,7 +127,7 @@ public class RouteIdentifier
         if (destination is null)
             throw new ArgumentNullException(nameof(destination));
         
-        var routes = _routeRepository.GetAllRoutesAsync();
+        var routes = _routeRepository.GetAllRoutes();
         
         return routes.FindAll(route => route.ContainsStop(origin) && route.ContainsStop(destination));
     }

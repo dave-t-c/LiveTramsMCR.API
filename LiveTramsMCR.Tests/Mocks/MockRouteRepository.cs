@@ -22,7 +22,7 @@ public class MockRouteRepository : IRouteRepository
         return _routeTimes.FirstOrDefault(route => route.Route == routeName);
     }
 
-    public List<Route> GetAllRoutesAsync()
+    public List<Route> GetAllRoutes()
     {
         return _routes;
     }
