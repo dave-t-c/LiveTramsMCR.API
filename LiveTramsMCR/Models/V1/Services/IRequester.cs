@@ -16,4 +16,10 @@ public interface IRequester
     /// <param name="ids">IDs to request services for</param>
     /// <returns></returns>
     public List<HttpResponseMessage> RequestServices(List<int> ids);
+
+    /// <summary>
+    /// Requests services for all IDs
+    /// </summary>
+    /// <returns></returns>
+    public HttpResponseMessage RequestAllServices();
 }

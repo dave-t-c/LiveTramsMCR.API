@@ -36,7 +36,7 @@ public static class ImportServicesResponse
         return JsonConvert.DeserializeObject<MultipleUnformattedServices>(jsonString);
     }
 
-    public static HttpResponseMessage? ImportHttpResponseMessageUnformattedServices(HttpStatusCode statusCode, string contentPath)
+    public static HttpResponseMessage? ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode statusCode, string contentPath)
     {
         using var reader = new StreamReader(contentPath);
         var jsonString = reader.ReadToEnd();

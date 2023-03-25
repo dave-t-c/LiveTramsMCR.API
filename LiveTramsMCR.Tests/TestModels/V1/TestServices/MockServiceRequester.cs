@@ -9,10 +9,12 @@ namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 public class MockServiceRequester : IRequester
 {
     private readonly HttpResponseMessage? _httpResponseMessage;
+    private readonly HttpResponseMessage? _httpResponseMessageAllServices;
     
-    public MockServiceRequester(HttpResponseMessage httpResponseMessage)
+    public MockServiceRequester(HttpResponseMessage httpResponseMessage, HttpResponseMessage? httpResponseMessageAllServices = null)
     {
         _httpResponseMessage = httpResponseMessage;
+        _httpResponseMessageAllServices = httpResponseMessageAllServices;
     }
 
     public List<HttpResponseMessage> RequestServices(List<int> ids)
@@ -22,4 +24,10 @@ public class MockServiceRequester : IRequester
             _httpResponseMessage!
         };
     }
+    public HttpResponseMessage RequestAllServices()
+    {
+        return _httpResponseMessageAllServices!;
+    }
+
+
 }

@@ -20,6 +20,7 @@ public class TestServicesController
     private ImportedResources? _importedResources;
     private IRequester? _requester;
     private MockStopsRepository? _mockStopsRepository;
+    private MockRouteRepository? _mockRouteRepository;
     private IServicesDataModel? _servicesDataModel;
     private ServiceController? _serviceController;
     
@@ -36,11 +37,12 @@ public class TestServicesController
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         var mockHttpResponse =
-            ImportServicesResponse.ImportHttpResponseMessageUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
+            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
         
         _requester = new MockServiceRequester(mockHttpResponse!);
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
-        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
+        _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
+        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _mockRouteRepository, _requester);
         _serviceController = new ServiceController(_servicesDataModel);
     }
 

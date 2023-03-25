@@ -53,4 +53,17 @@ public class ServiceRequester : IRequester
         var response = await client.GetAsync(uri);
         return response;
     }
+    
+    /// <inheritdoc />
+    public HttpResponseMessage RequestAllServices()
+    {
+        var client = new HttpClient();
+        
+        // Request headers
+        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiOptions.OcpApimSubscriptionKey);
+        const string uri = "https://api.tfgm.com/odata/Metrolinks";
+
+        var response = client.GetAsync(uri).Result;
+        return response;
+    }
 }
