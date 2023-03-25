@@ -20,7 +20,6 @@ public class TestServicesController
     private const string UpdateStopsApiResponsePath = "../../../Resources/TestStopUpdater/ApiResponse.json";
     private ResourcesConfig? _resourcesConfig;
     private ResourcesConfig? _updateStopsResourceConfig;
-    private ResourcesConfig? _invalidIds;
     private ImportedResources? _importedResources;
     private ImportedResources? _updateStopsImportedResources;
     private IRequester? _requester;
