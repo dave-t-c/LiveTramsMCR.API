@@ -1,4 +1,6 @@
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using LiveTramsMCR.Models.V1.Services;
 using Newtonsoft.Json;
 
@@ -32,5 +34,14 @@ public static class ImportServicesResponse
         using var reader = new StreamReader(path);
         var jsonString = reader.ReadToEnd();
         return JsonConvert.DeserializeObject<MultipleUnformattedServices>(jsonString);
+    }
+
+    public static HttpResponseMessage? ImportHttpResponseMessageUnformattedServices(HttpStatusCode statusCode, string contentPath)
+    {
+        using var reader = new StreamReader(contentPath);
+        var jsonString = reader.ReadToEnd();
+        var httpResponse = new HttpResponseMessage(statusCode);
+        httpResponse.Content = new StringContent(jsonString);
+        return httpResponse;
     }
 }

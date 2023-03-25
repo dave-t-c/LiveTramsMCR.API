@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Net;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Tests.Mocks;
@@ -14,6 +15,7 @@ namespace LiveTramsMCR.Tests.TestControllers.V1;
 /// </summary>
 public class TestServicesController
 {
+    private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
     private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
     private IRequester? _requester;
@@ -33,8 +35,10 @@ public class TestServicesController
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        var bmrIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "BMR").Ids;
-        _requester = new MockServiceRequester(bmrIds);
+        var mockHttpResponse =
+            ImportServicesResponse.ImportHttpResponseMessageUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
+        
+        _requester = new MockServiceRequester(mockHttpResponse!);
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
         _serviceController = new ServiceController(_servicesDataModel);

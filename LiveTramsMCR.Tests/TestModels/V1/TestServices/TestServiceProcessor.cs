@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
@@ -19,8 +20,8 @@ public class TestServiceProcessor
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesPath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
+    private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
     private ImportedResources? _importedResources;
-    private List<int>? _bmrIds;
     private MockServiceRequester? _mockServiceRequester;
 
     private ResourceLoader? _resourceLoader;
@@ -43,9 +44,10 @@ public class TestServiceProcessor
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
 
-        _bmrIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "BMR").Ids;
+        var mockHttpResponse =
+            ImportServicesResponse.ImportHttpResponseMessageUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
         
-        _mockServiceRequester = new MockServiceRequester(_bmrIds);
+        _mockServiceRequester = new MockServiceRequester(mockHttpResponse!);
 
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         

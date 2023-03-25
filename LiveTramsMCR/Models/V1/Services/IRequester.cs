@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace LiveTramsMCR.Models.V1.Services;
 
@@ -14,5 +15,5 @@ public interface IRequester
     /// </summary>
     /// <param name="ids">IDs to request services for</param>
     /// <returns></returns>
-    public List<UnformattedServices> RequestServices(List<int> ids);
+    public List<HttpResponseMessage> RequestServices(List<int> ids);
 }
