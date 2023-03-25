@@ -66,14 +66,15 @@ public class Startup
         var routeTimesMongoCollection = db.GetCollection<RouteTimes>("route-times");
         
         IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
+        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
+        
         IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
         services.AddSingleton(stopsDataModel);
 
         IRequester serviceRequester = new ServiceRequester(apiOptions);
-        IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, serviceRequester);
+        IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, routeRepository, serviceRequester);
         services.AddSingleton(servicesDataModel);
-
-        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
+        
         IJourneyPlanner journeyPlanner = new JourneyPlanner(routeRepository);
         IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(stopsRepository, journeyPlanner);
         services.AddSingleton(journeyPlannerModel);

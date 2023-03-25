@@ -46,6 +46,13 @@ public class ServiceController : Controller
         {
             return StatusCode(StatusCodes.Status400BadRequest, new { message = "Invalid Stop Name or TLAREF" });
         }
+        catch (InvalidOperationException)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
+            {
+                message = "Updating, retry in 5s"
+            });
+        }
         catch (Exception)
         {
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
@@ -74,7 +81,17 @@ public class ServiceController : Controller
         }
         catch (ArgumentException)
         {
-            return StatusCode(StatusCodes.Status400BadRequest, new { message = "Invalid Stop Name or TLAREF" });
+            return StatusCode(StatusCodes.Status400BadRequest, new
+            {
+                message = "Invalid Stop Name or TLAREF"
+            });
+        }
+        catch (InvalidOperationException)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
+            {
+                message = "Updating, retry in 5s"
+            });
         }
         catch (Exception)
         {

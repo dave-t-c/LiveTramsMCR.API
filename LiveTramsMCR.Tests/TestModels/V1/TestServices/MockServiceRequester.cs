@@ -1,27 +1,33 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using LiveTramsMCR.Models.V1.Services;
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 
 public class MockServiceRequester : IRequester
 {
-    private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
-
-    private List<int>? _expectedIds;
-    public MockServiceRequester(List<int>? expectedIds)
+    private readonly HttpResponseMessage? _httpResponseMessage;
+    private readonly HttpResponseMessage? _httpResponseMessageAllServices;
+    
+    public MockServiceRequester(HttpResponseMessage httpResponseMessage, HttpResponseMessage? httpResponseMessageAllServices = null)
     {
-        _expectedIds = expectedIds;
+        _httpResponseMessage = httpResponseMessage;
+        _httpResponseMessageAllServices = httpResponseMessageAllServices;
     }
 
-    public List<UnformattedServices> RequestServices(List<int> ids)
+    public List<HttpResponseMessage> RequestServices(List<int> ids)
     {
-        if (ids.Any(id => _expectedIds!.Any(exId => exId == id)))
-            return new List<UnformattedServices>
-            {
-                ImportServicesResponse.ImportUnformattedServices(ValidApiResponsePath) ?? new UnformattedServices()
-            };
-
-        return new List<UnformattedServices>();
+        return new List<HttpResponseMessage>()
+        {
+            _httpResponseMessage!
+        };
     }
+    public HttpResponseMessage RequestAllServices()
+    {
+        return _httpResponseMessageAllServices!;
+    }
+
+
 }

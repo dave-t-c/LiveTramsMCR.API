@@ -1,4 +1,5 @@
 using System;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
 
@@ -12,6 +13,7 @@ public class ServiceProcessor
     private readonly IRequester _requester;
     private readonly ServiceFormatter _serviceFormatter;
     private readonly StopLookup _stopLookup;
+    private readonly ServiceValidator _serviceValidator;
 
     /// <summary>
     /// Creates a new service processor using the imported resources and
@@ -19,9 +21,11 @@ public class ServiceProcessor
     /// </summary>
     /// <param name="requester">IRequester implementation to use</param>
     /// <param name="stopsRepository">Repository for retrieving stops</param>
-    public ServiceProcessor(IRequester requester, IStopsRepository stopsRepository)
+    /// <param name="routeRepository">Repository for updating routes</param>
+    public ServiceProcessor(IRequester requester, IStopsRepository stopsRepository, IRouteRepository routeRepository)
     {
         _requester = requester;
+        _serviceValidator = new ServiceValidator(stopsRepository, routeRepository, requester);
         _stopLookup = new StopLookup(stopsRepository);
         _serviceFormatter = new ServiceFormatter();
     }
@@ -35,8 +39,9 @@ public class ServiceProcessor
     {
         if (stop == null) throw new ArgumentNullException(nameof(stop));
         var stopIds = _stopLookup.LookupIDs(stop);
-        var unformattedServicesList = _requester.RequestServices(stopIds);
-        return _serviceFormatter.FormatServices(unformattedServicesList);
+        var serviceResponses = _requester.RequestServices(stopIds);
+        var unformattedServices = _serviceValidator.ValidateServiceResponse(serviceResponses);
+        return _serviceFormatter.FormatServices(unformattedServices);
     }
 
     /// <summary>
@@ -49,7 +54,8 @@ public class ServiceProcessor
     {
         if (stop == null) throw new ArgumentNullException(nameof(stop));
         var stopIds = _stopLookup.LookupIDs(stop);
-        var unformattedServicesList = _requester.RequestServices(stopIds);
-        return _serviceFormatter.FormatDepartureBoardServices(unformattedServicesList);
+        var serviceResponses = _requester.RequestServices(stopIds);
+        var unformattedServices = _serviceValidator.ValidateServiceResponse(serviceResponses);
+        return _serviceFormatter.FormatDepartureBoardServices(unformattedServices);
     }
 }

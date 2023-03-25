@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Net;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Tests.Mocks;
@@ -14,12 +15,23 @@ namespace LiveTramsMCR.Tests.TestControllers.V1;
 /// </summary>
 public class TestServicesController
 {
+    private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
+    private const string InternalServerErrorResponsePath = "../../../Resources/ExampleApiInternalServerErrorResponse.json";
+    private const string UpdateStopsApiResponsePath = "../../../Resources/TestStopUpdater/ApiResponse.json";
     private ResourcesConfig? _resourcesConfig;
+    private ResourcesConfig? _updateStopsResourceConfig;
     private ImportedResources? _importedResources;
+    private ImportedResources? _updateStopsImportedResources;
     private IRequester? _requester;
+    private IRequester? _mockServiceRequesterInternalServerError;
     private MockStopsRepository? _mockStopsRepository;
+    private MockRouteRepository? _mockRouteRepository;
+    private MockStopsRepository? _mockStopsRepositoryUpdateStops;
+    private MockRouteRepository? _mockRouteRepositoryUpdateStops;
     private IServicesDataModel? _servicesDataModel;
+    private IServicesDataModel? _servicesDataModelUpdateStops;
     private ServiceController? _serviceController;
+    private ServiceController? _serviceControllerUpdateStops;
     
     [SetUp]
     public void SetUp()
@@ -32,12 +44,48 @@ public class TestServicesController
             RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json",
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
+        
+        _updateStopsResourceConfig = new ResourcesConfig
+        {
+            StopResourcePath = "../../../Resources/TestStopUpdater/stops.json",
+            StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json",
+            TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json",
+            RoutesResourcePath = "../../../Resources/TestStopUpdater/routes.json",
+            RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
+        };
+        
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        var bmrIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "BMR").Ids;
-        _requester = new MockServiceRequester(bmrIds);
+        _updateStopsImportedResources = new ResourceLoader(_updateStopsResourceConfig).ImportResources();
+        
+        var mockHttpResponse =
+            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
+        
+        var mockHttpResponseInternalServerError =
+            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.InternalServerError,
+                InternalServerErrorResponsePath);
+        
+        var mockHttpResponseGetAllStops = 
+            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK,
+                UpdateStopsApiResponsePath);
+        
+        _requester = new MockServiceRequester(mockHttpResponse!);
+        _mockServiceRequesterInternalServerError = new MockServiceRequester(
+            mockHttpResponseInternalServerError!, 
+            mockHttpResponseGetAllStops!);
+        
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
-        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
+        _mockStopsRepositoryUpdateStops = new MockStopsRepository(_updateStopsImportedResources.ImportedStops);
+        
+        _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
+        _mockRouteRepositoryUpdateStops = new MockRouteRepository(_updateStopsImportedResources.ImportedRoutes,
+            _updateStopsImportedResources.ImportedRouteTimes);
+        
+        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _mockRouteRepository, _requester);
+        _servicesDataModelUpdateStops = new ServicesDataModel(_mockStopsRepositoryUpdateStops,
+            _mockRouteRepositoryUpdateStops, _mockServiceRequesterInternalServerError);
+        
         _serviceController = new ServiceController(_servicesDataModel);
+        _serviceControllerUpdateStops = new ServiceController(_servicesDataModelUpdateStops);
     }
 
     [TearDown]
@@ -147,5 +195,19 @@ public class TestServicesController
         var requestObj = result as ObjectResult;
         Assert.NotNull(requestObj);
         Assert.AreEqual(400, requestObj?.StatusCode);
+    }
+
+    /// <summary>
+    /// Request services when the IDs are outdated.
+    /// This should return a 503 Service unavailable
+    /// </summary>
+    [Test]
+    public void TestRequestServicesOutOfDateIds()
+    {
+        var result = _serviceControllerUpdateStops?.GetService("Example 1");
+        Assert.NotNull(result);
+        var requestObj = result as ObjectResult;
+        Assert.NotNull(requestObj);
+        Assert.AreEqual(503, requestObj?.StatusCode);
     }
 }

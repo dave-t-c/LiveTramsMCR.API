@@ -1,4 +1,6 @@
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using LiveTramsMCR.Models.V1.Services;
 using Newtonsoft.Json;
 
@@ -19,5 +21,27 @@ public static class ImportServicesResponse
         using var reader = new StreamReader(path);
         var jsonString = reader.ReadToEnd();
         return JsonConvert.DeserializeObject<UnformattedServices>(jsonString);
+    }
+
+    /// <summary>
+    /// Reads a json file and returns the MultipleUnformattedServices obj for that file.
+    /// Used for mocking endpoint response when requesting all services.
+    /// </summary>
+    /// <param name="path">Path to json file</param>
+    /// <returns>Multiple unformatted services object created from json</returns>
+    public static MultipleUnformattedServices? ImportMultipleUnformattedServices(string path)
+    {
+        using var reader = new StreamReader(path);
+        var jsonString = reader.ReadToEnd();
+        return JsonConvert.DeserializeObject<MultipleUnformattedServices>(jsonString);
+    }
+
+    public static HttpResponseMessage? ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode statusCode, string contentPath)
+    {
+        using var reader = new StreamReader(contentPath);
+        var jsonString = reader.ReadToEnd();
+        var httpResponse = new HttpResponseMessage(statusCode);
+        httpResponse.Content = new StringContent(jsonString);
+        return httpResponse;
     }
 }

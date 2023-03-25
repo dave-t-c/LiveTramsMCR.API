@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
@@ -19,14 +20,26 @@ public class TestServiceProcessor
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesPath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
+    private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
+    private const string InternalServerErrorResponsePath = "../../../Resources/ExampleApiInternalServerErrorResponse.json";
+    private const string UpdateStopsStopResourcePathConst = "../../../Resources/TestStopUpdater/stops.json";
+    private const string UpdateStopsRoutesResourcePath = "../../../Resources/TestStopUpdater/routes.json";
+    private const string UpdateStopsRouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
+    private const string UpdateStopsApiResponsePath = "../../../Resources/TestStopUpdater/ApiResponse.json";
     private ImportedResources? _importedResources;
-    private List<int>? _bmrIds;
+    private ImportedResources? _updateStopsImportedResources;
     private MockServiceRequester? _mockServiceRequester;
-
+    private MockServiceRequester? _mockServiceRequesterInternalServerError;
     private ResourceLoader? _resourceLoader;
+    private ResourceLoader? _updateStopsResourceLoader;
     private ServiceProcessor? _serviceProcessor;
+    private ServiceProcessor? _serviceProcessorInternalServerError;
     private ResourcesConfig? _validResourcesConfig;
+    private ResourcesConfig? _updateStopsResourceConfig;
     private MockStopsRepository? _mockStopsRepository;
+    private MockStopsRepository? _mockStopsRepositoryUpdateStops;
+    private MockRouteRepository? _mockRouteRepositoryUpdateStops;
+    private MockRouteRepository? _mockRouteRepository;
 
     [SetUp]
     public void SetUp()
@@ -40,16 +53,50 @@ public class TestServiceProcessor
             RouteTimesPath = RouteTimesPath
         };
 
+        _updateStopsResourceConfig = new ResourcesConfig
+        {
+            StopResourcePath = UpdateStopsStopResourcePathConst,
+            StationNamesToTlarefsPath = StationNamesToTlarefsPath,
+            TlarefsToIdsPath = TlarefsToIdsPath,
+            RoutesResourcePath = UpdateStopsRoutesResourcePath,
+            RouteTimesPath = UpdateStopsRouteTimesPath
+        };
+
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
+        _updateStopsResourceLoader = new ResourceLoader(_updateStopsResourceConfig);
         _importedResources = _resourceLoader.ImportResources();
+        _updateStopsImportedResources = _updateStopsResourceLoader.ImportResources();
 
-        _bmrIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "BMR").Ids;
+        var mockHttpResponse =
+            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
+
+        var mockHttpResponseInternalServerError =
+            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.InternalServerError,
+                InternalServerErrorResponsePath);
         
-        _mockServiceRequester = new MockServiceRequester(_bmrIds);
+        var mockHttpResponseGetAllStops = 
+            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK,
+                UpdateStopsApiResponsePath);
+        
+        _mockServiceRequester = new MockServiceRequester(mockHttpResponse!);
 
+        _mockServiceRequesterInternalServerError = new MockServiceRequester(
+            mockHttpResponseInternalServerError!, 
+            mockHttpResponseGetAllStops!);
+            
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
+        _mockStopsRepositoryUpdateStops = new MockStopsRepository(_updateStopsImportedResources.ImportedStops);
+
+        _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
+        _mockRouteRepositoryUpdateStops = new MockRouteRepository(_updateStopsImportedResources.ImportedRoutes,
+            _updateStopsImportedResources.ImportedRouteTimes);
         
-        _serviceProcessor = new ServiceProcessor(_mockServiceRequester, _mockStopsRepository);
+        _serviceProcessor = new ServiceProcessor(_mockServiceRequester, _mockStopsRepository, _mockRouteRepository);
+
+        _serviceProcessorInternalServerError = new ServiceProcessor(
+            _mockServiceRequesterInternalServerError, 
+            _mockStopsRepositoryUpdateStops, 
+            _mockRouteRepositoryUpdateStops);
     }
 
     [TearDown]
@@ -61,6 +108,7 @@ public class TestServiceProcessor
         _importedResources = null;
         _mockServiceRequester = null;
         _serviceProcessor = null;
+        _serviceProcessorInternalServerError = null;
     }
 
 
@@ -126,5 +174,50 @@ public class TestServiceProcessor
             {
                 _serviceProcessor?.RequestDepartureBoardServices(null);
             });
+    }
+
+    /// <summary>
+    /// Test to try and retrieve live services when the IDs are outdated.
+    /// This should update the IDs to that given in the mock response
+    /// This should throw an invalid operation exception
+    /// </summary>
+    [Test]
+    public void TestServiceIDsOutdated()
+    {
+        Assert.Throws(Is.TypeOf<InvalidOperationException>()
+            .And.Message.EqualTo("Retry in 5s"), delegate
+        {
+            _serviceProcessorInternalServerError?.RequestServices("Example 1");
+        });
+        
+        var updatedStops = _mockStopsRepositoryUpdateStops?.GetAll();
+        Assert.NotNull(updatedStops);
+        Assert.AreEqual(3, updatedStops?.Count);
+        var expectedExampleOneIds = new List<int>() {15588, 15589, 15590};
+        Assert.AreEqual(expectedExampleOneIds, updatedStops?.Find(s => s.StopName == "Example 1")!.Ids);
+        
+        var expectedExampleTwoIds = new List<int>() {15591, 15592};
+        Assert.AreEqual(expectedExampleTwoIds, updatedStops?.Find(s => s.StopName == "Example 2")!.Ids);
+        
+        var expectedExampleThreeIds = new List<int>() {15593, 15594};
+        Assert.AreEqual(expectedExampleThreeIds, updatedStops?.Find(s => s.StopName == "Example 3")!.Ids);
+        
+        var updatedRoutes = _mockRouteRepositoryUpdateStops?.GetAllRoutes();
+        Assert.AreEqual(2, updatedRoutes?.Count);
+        
+        var greenRoute = updatedRoutes?.Find(r => r.Name == "Green");
+        Assert.NotNull(greenRoute);
+        Assert.AreEqual(2, greenRoute?.Stops.Count);
+        var expectedExampleOne = greenRoute?.Stops.Find(s => s.StopName == "Example 1");
+        var expectedExampleThree = greenRoute?.Stops.Find(s => s.StopName == "Example 3");
+        Assert.AreEqual(expectedExampleOneIds, expectedExampleOne?.Ids);
+        Assert.AreEqual(expectedExampleThreeIds, expectedExampleThree?.Ids);
+
+        var purpleRoute = updatedRoutes?.Find(r => r.Name == "Purple");
+        Assert.AreEqual(2, purpleRoute?.Stops.Count);
+        expectedExampleOne = purpleRoute?.Stops.Find(s => s.StopName == "Example 1");
+        var expectedExampleTwo = purpleRoute?.Stops.Find(s => s.StopName == "Example 2");
+        Assert.AreEqual(expectedExampleOneIds, expectedExampleOne?.Ids);
+        Assert.AreEqual(expectedExampleTwoIds, expectedExampleTwo?.Ids);
     }
 }

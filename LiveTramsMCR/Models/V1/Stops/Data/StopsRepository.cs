@@ -22,14 +22,29 @@ public class StopsRepository : IStopsRepository
     public Stop GetStop(string searchTerm)
     {
         return _stopsCollection.FindAsync(stop =>
-                stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-                || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-                ).Result.FirstOrDefault();
+            stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
+            || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
+        ).Result.FirstOrDefault();
     }
 
     /// <inheritdoc />
     public List<Stop> GetAll()
     {
         return _stopsCollection.FindAsync(_ => true).Result.ToList();
+    }
+
+    /// <inheritdoc />
+    public void UpdateStops(List<Stop> stops)
+    {
+        foreach (var stop in stops)
+        {
+            UpdateStop(stop);
+        }
+    }
+
+    /// <inheritdoc />
+    public void UpdateStop(Stop stop)
+    {
+        _stopsCollection.ReplaceOne(s => s.Tlaref == stop.Tlaref, stop);
     }
 }

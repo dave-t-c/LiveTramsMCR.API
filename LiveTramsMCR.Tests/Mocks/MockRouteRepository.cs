@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
@@ -21,8 +22,23 @@ public class MockRouteRepository : IRouteRepository
         return _routeTimes.FirstOrDefault(route => route.Route == routeName);
     }
 
-    public List<Route> GetAllRoutesAsync()
+    public List<Route> GetAllRoutes()
     {
         return _routes;
+    }
+
+    public void UpdateRoutes(List<Route> routes)
+    {
+        foreach (var route in routes.ToList())
+        {
+            UpdateRoute(route);
+        }
+    }
+
+    public void UpdateRoute(Route route)
+    {
+        var existing = _routes.Find(s => s.Name == route.Name);
+        var existingIndex = _routes.IndexOf(existing!);
+        _routes[existingIndex] = route;
     }
 }

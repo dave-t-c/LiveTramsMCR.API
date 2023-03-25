@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
@@ -10,11 +11,13 @@ namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 
 public class TestServicesDataModel
 {
+    private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
     private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
     private IRequester? _requester;
     private ServicesDataModel? _servicesDataModel;
     private MockStopsRepository? _mockStopsRepository;
+    private MockRouteRepository? _mockRouteRepository;
 
     [SetUp]
     public void SetUp()
@@ -28,10 +31,13 @@ public class TestServicesDataModel
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        var bmrIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "BMR").Ids;
-        _requester = new MockServiceRequester(bmrIds);
+        var mockHttpResponse =
+            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
+        
+        _requester = new MockServiceRequester(mockHttpResponse!);
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
-        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
+        _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
+        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _mockRouteRepository, _requester);
     }
 
     [TearDown]

@@ -28,8 +28,23 @@ public class RouteRepository : IRouteRepository
     }
 
     /// <inheritdoc />
-    public List<Route> GetAllRoutesAsync()
+    public List<Route> GetAllRoutes()
     {
         return _routeCollection.FindAsync(_ => true).Result.ToList();
+    }
+
+    /// <inheritdoc />
+    public void UpdateRoutes(List<Route> routes)
+    {
+        foreach (var route in routes)
+        {
+            UpdateRoute(route);
+        }
+    }
+
+    /// <inheritdoc />
+    public void UpdateRoute(Route route)
+    {
+        _routeCollection.ReplaceOne(r => r.Name == route.Name, route);
     }
 }

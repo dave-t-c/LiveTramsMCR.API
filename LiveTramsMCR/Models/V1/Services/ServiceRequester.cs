@@ -28,12 +28,12 @@ public class ServiceRequester : IRequester
     /// </summary>
     /// <param name="ids">List of IDs for a stop</param>
     /// <returns>List of Unformatted Services returned from the request</returns>
-    public List<UnformattedServices> RequestServices(List<int> ids)
+    public List<HttpResponseMessage> RequestServices(List<int> ids)
     {
-        var unformattedServices = new List<UnformattedServices>();
-        foreach (var id in ids) unformattedServices.Add(RequestId(id).Result);
+        var unformattedServicesResponses = new List<HttpResponseMessage>();
+        foreach (var id in ids) unformattedServicesResponses.Add(RequestId(id).Result);
 
-        return unformattedServices;
+        return unformattedServicesResponses;
     }
 
     /// <summary>
@@ -41,7 +41,7 @@ public class ServiceRequester : IRequester
     /// </summary>
     /// <param name="id">ID to request service info for</param>
     /// <returns>Unformatted Service for the given ID</returns>
-    private async Task<UnformattedServices> RequestId(int id)
+    private async Task<HttpResponseMessage> RequestId(int id)
     {
         var client = new HttpClient();
         
@@ -51,8 +51,19 @@ public class ServiceRequester : IRequester
         var uri = $"https://api.tfgm.com/odata/Metrolinks({id})";
 
         var response = await client.GetAsync(uri);
-        response.EnsureSuccessStatusCode();
-        var responseJson = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<UnformattedServices>(responseJson);
+        return response;
+    }
+    
+    /// <inheritdoc />
+    public HttpResponseMessage RequestAllServices()
+    {
+        var client = new HttpClient();
+        
+        // Request headers
+        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiOptions.OcpApimSubscriptionKey);
+        const string uri = "https://api.tfgm.com/odata/Metrolinks";
+
+        var response = client.GetAsync(uri).Result;
+        return response;
     }
 }

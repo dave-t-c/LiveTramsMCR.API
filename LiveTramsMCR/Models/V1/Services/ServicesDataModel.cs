@@ -1,3 +1,4 @@
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops.Data;
 
 namespace LiveTramsMCR.Models.V1.Services;
@@ -14,10 +15,11 @@ public class ServicesDataModel: IServicesDataModel
     /// Creates a new Services model using provided resources and requester
     /// </summary>
     /// <param name="stopsRepository">Repository for retrieving stops</param>
+    /// <param name="routeRepository">Repository for updating routes</param>
     /// <param name="requester">Requester responsible for live service requests.</param>
-    public ServicesDataModel(IStopsRepository stopsRepository, IRequester requester)
+    public ServicesDataModel(IStopsRepository stopsRepository, IRouteRepository routeRepository, IRequester requester)
     {
-        _serviceProcessor = new ServiceProcessor(requester, stopsRepository);
+        _serviceProcessor = new ServiceProcessor(requester, stopsRepository, routeRepository);
     }
     
     /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
 
@@ -22,5 +23,20 @@ public class MockStopsRepository : IStopsRepository
     public List<Stop> GetAll()
     {
         return _stops;
+    }
+
+    public void UpdateStops(List<Stop> stops)
+    {
+        foreach (var stop in stops.ToList())
+        {
+            UpdateStop(stop);
+        }
+    }
+
+    public void UpdateStop(Stop stop)
+    {
+        var existing = _stops.Find(s => s.Tlaref == stop.Tlaref);
+        var existingIndex = _stops.IndexOf(existing!);
+        _stops[existingIndex] = stop;
     }
 }

@@ -1,0 +1,18 @@
+[
+  {
+    "RouteName": "Green",
+    "Colour": "#318C2C",
+    "Stops": [
+      "Example 1",
+      "Example 3"
+    ]
+  },
+  {
+    "RouteName": "Purple",
+    "Colour": "#7B2082",
+    "Stops": [
+      "Example 1",
+      "Example 2"
+    ]
+  }
+]
