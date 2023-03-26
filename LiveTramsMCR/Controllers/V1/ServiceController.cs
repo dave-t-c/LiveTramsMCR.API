@@ -34,6 +34,7 @@ public class ServiceController : Controller
     [SwaggerResponse (type:typeof (FormattedServices), statusCode: StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid Stop Name or TLAREF provided")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "An internal server error occured")]
+    [SwaggerResponse(StatusCodes.Status503ServiceUnavailable, "Updating, retry in 5s")]
     [HttpGet]
     public IActionResult GetService(string stop)
     {
@@ -71,6 +72,7 @@ public class ServiceController : Controller
     [SwaggerResponse (type:typeof (FormattedDepartureBoardServices), statusCode: StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid Stop Name or TLAREF provided")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "An internal server error occured")]
+    [SwaggerResponse(StatusCodes.Status503ServiceUnavailable, "Updating, retry in 5s")]
     [HttpGet]
     public IActionResult GetDepartureBoardService(string stop)
     {
