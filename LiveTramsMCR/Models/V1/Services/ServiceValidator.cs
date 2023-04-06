@@ -40,7 +40,8 @@ public class ServiceValidator
     public List<UnformattedServices> ValidateServiceResponse(List<HttpResponseMessage> responseMessages)
     {
         var unformattedServices = new List<UnformattedServices>();
-        var requiresIdUpdate = responseMessages.Any(msg => msg.StatusCode == HttpStatusCode.InternalServerError);
+        var requiresIdUpdate = !responseMessages.Any() || 
+                               responseMessages.Any(msg => msg.StatusCode == HttpStatusCode.InternalServerError);
         if (requiresIdUpdate)
         {
             UpdateStopIds();
@@ -62,6 +63,13 @@ public class ServiceValidator
         updatedServicesResponse.EnsureSuccessStatusCode();
         var responseJson = updatedServicesResponse.Content.ReadAsStringAsync().Result;
         var updatedIds = JsonConvert.DeserializeObject<MultipleUnformattedServices>(responseJson);
+        
+        // When the IDs are being updated, there is potential that the value section will be empty. 
+        // In this case tell the user to retry 
+        if (!updatedIds.Value.Any())
+        {
+            throw new InvalidOperationException();
+        }
         stopUpdater.UpdateStopIdsFromServices(updatedIds.Value);
     }
 }
