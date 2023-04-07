@@ -5,7 +5,7 @@
     "version": "v1"
   },
   "paths": {
-    "/api/journey-planner/{origin}/{destination}": {
+    "/v1/journey-planner/{origin}/{destination}": {
       "get": {
         "tags": [
           "JourneyPlanner"
@@ -51,7 +51,7 @@
         }
       }
     },
-    "/api/services/{stop}": {
+    "/v1/services/{stop}": {
       "get": {
         "tags": [
           "Service"
@@ -84,11 +84,14 @@
           },
           "500": {
             "description": "An internal server error occured"
+          },
+          "503": {
+            "description": "Updating, retry in 5s"
           }
         }
       }
     },
-    "/api/services/departure-boards/{stop}": {
+    "/v1/services/departure-boards/{stop}": {
       "get": {
         "tags": [
           "Service"
@@ -121,11 +124,14 @@
           },
           "500": {
             "description": "An internal server error occured"
+          },
+          "503": {
+            "description": "Updating, retry in 5s"
           }
         }
       }
     },
-    "/api/stops": {
+    "/v1/stops": {
       "get": {
         "tags": [
           "Stops"
@@ -339,7 +345,10 @@
           },
           "ids": {
             "type": "array",
-            "items": { },
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
             "description": "IDs associated with the stop. Larger stops will have more IDs.",
             "nullable": true
           },
