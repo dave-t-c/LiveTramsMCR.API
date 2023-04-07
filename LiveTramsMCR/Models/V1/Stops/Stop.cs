@@ -33,6 +33,7 @@ public sealed class Stop : IEquatable<Stop>, IEqualityComparer<Stop>
     /// <summary>
     /// IDs associated with the stop. Larger stops will have more IDs.
     /// </summary>
+    [Obsolete("A list of IDs for each stop is no longer maintained. Data will likely be out of date")]
     public List<int> Ids { get; set; }
     
     /// <summary>

@@ -25,53 +25,6 @@ public class StopLookup
     }
 
     /// <summary>
-    ///     Returns API IDs for a given Tlaref.
-    /// </summary>
-    /// <param name="tlaref">Stop Tlaref, e.g. 'ALT'.</param>
-    /// <returns>Int list of IDs for the stop</returns>
-    public List<int> TlarefLookup(string tlaref)
-    {
-        if (tlaref == null) throw new ArgumentNullException(nameof(tlaref));
-        return _stopsRepository.GetStop(tlaref).Ids;
-    }
-
-    /// <summary>
-    ///     Retrieves the IDs for a stop from a given stop name.
-    /// </summary>
-    /// <param name="stationName">Station name to retrieve, e.g. 'Ashton-Under-Lyne'</param>
-    /// <returns>Int list of IDs to use with the Metrolink API.</returns>
-    public List<int> StationNameLookup(string stationName)
-    {
-        if (stationName == null) throw new ArgumentNullException(nameof(stationName));
-        var stop =  _stopsRepository.GetStop(stationName);
-        if (stop == null)
-        {
-            throw new ArgumentException("Value given is not a valid station name or TLAREF");    
-        }
-
-        return stop.Ids;
-    }
-
-    /// <summary>
-    ///     Looks up either a tlaref or station name to find the Ids.
-    ///     The function determines if it is a tlaref or station name.
-    /// </summary>
-    /// <param name="value">Needs to be either a Tlaref or Station name</param>
-    /// <returns></returns>
-    public List<int> LookupIDs(string value)
-    {
-        if (value == null) throw new ArgumentNullException(nameof(value));
-
-        var stop = _stopsRepository.GetStop(value);
-        if (stop == null)
-        {
-            throw new ArgumentException("Value given is not a valid station name or TLAREF");    
-        }
-
-        return stop.Ids;
-    }
-
-    /// <summary>
     /// Looks up a stop from either its stop name or TLAREF value.
     /// </summary>
     /// <param name="value">Stop name or TLAREF value for a stop.</param>
