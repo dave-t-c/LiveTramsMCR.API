@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using LiveTramsMCR.Models.V1.Resources;
-using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
 
 namespace LiveTramsMCR.Models.V1.Services;
 
@@ -42,11 +38,10 @@ public class ServiceRequester : IRequester
         
         // Request headers
         client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiOptions.OcpApimSubscriptionKey);
-
-        const string url = "https://api.tfgm.com/odata/Metrolinks";
+        
         var filter = $"?$filter=TLAREF eq '{tlaref}'";
 
-        var generatedUrl = url + filter;
+        var generatedUrl = _apiOptions.BaseRequestUrls.BaseLiveServicesUrl + filter;
         
         var response = await client.GetAsync(generatedUrl);
         return response;
@@ -59,9 +54,8 @@ public class ServiceRequester : IRequester
         
         // Request headers
         client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiOptions.OcpApimSubscriptionKey);
-        const string uri = "https://api.tfgm.com/odata/Metrolinks";
 
-        var response = client.GetAsync(uri).Result;
+        var response = client.GetAsync(_apiOptions.BaseRequestUrls.BaseLiveServicesUrl).Result;
         return response;
     }
 }
