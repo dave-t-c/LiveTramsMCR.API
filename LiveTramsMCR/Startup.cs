@@ -72,7 +72,7 @@ public class Startup
         services.AddSingleton(stopsDataModel);
 
         IRequester serviceRequester = new ServiceRequester(apiOptions);
-        IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, routeRepository, serviceRequester);
+        IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, serviceRequester);
         services.AddSingleton(servicesDataModel);
         
         IJourneyPlanner journeyPlanner = new JourneyPlanner(routeRepository);

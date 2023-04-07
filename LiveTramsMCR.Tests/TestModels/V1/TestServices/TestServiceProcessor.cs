@@ -91,12 +91,11 @@ public class TestServiceProcessor
         _mockRouteRepositoryUpdateStops = new MockRouteRepository(_updateStopsImportedResources.ImportedRoutes,
             _updateStopsImportedResources.ImportedRouteTimes);
         
-        _serviceProcessor = new ServiceProcessor(_mockServiceRequester, _mockStopsRepository, _mockRouteRepository);
+        _serviceProcessor = new ServiceProcessor(_mockServiceRequester, _mockStopsRepository);
 
         _serviceProcessorInternalServerError = new ServiceProcessor(
             _mockServiceRequesterInternalServerError, 
-            _mockStopsRepositoryUpdateStops, 
-            _mockRouteRepositoryUpdateStops);
+            _mockStopsRepositoryUpdateStops);
     }
 
     [TearDown]

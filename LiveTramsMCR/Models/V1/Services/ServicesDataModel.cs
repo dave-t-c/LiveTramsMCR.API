@@ -15,11 +15,10 @@ public class ServicesDataModel: IServicesDataModel
     /// Creates a new Services model using provided resources and requester
     /// </summary>
     /// <param name="stopsRepository">Repository for retrieving stops</param>
-    /// <param name="routeRepository">Repository for updating routes</param>
     /// <param name="requester">Requester responsible for live service requests.</param>
-    public ServicesDataModel(IStopsRepository stopsRepository, IRouteRepository routeRepository, IRequester requester)
+    public ServicesDataModel(IStopsRepository stopsRepository, IRequester requester)
     {
-        _serviceProcessor = new ServiceProcessor(requester, stopsRepository, routeRepository);
+        _serviceProcessor = new ServiceProcessor(requester, stopsRepository);
     }
     
     /// <summary>

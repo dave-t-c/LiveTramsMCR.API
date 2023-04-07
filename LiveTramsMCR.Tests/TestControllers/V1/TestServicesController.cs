@@ -80,9 +80,9 @@ public class TestServicesController
         _mockRouteRepositoryUpdateStops = new MockRouteRepository(_updateStopsImportedResources.ImportedRoutes,
             _updateStopsImportedResources.ImportedRouteTimes);
         
-        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _mockRouteRepository, _requester);
+        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
         _servicesDataModelUpdateStops = new ServicesDataModel(_mockStopsRepositoryUpdateStops,
-            _mockRouteRepositoryUpdateStops, _mockServiceRequesterInternalServerError);
+            _mockServiceRequesterInternalServerError);
         
         _serviceController = new ServiceController(_servicesDataModel);
         _serviceControllerUpdateStops = new ServiceController(_servicesDataModelUpdateStops);

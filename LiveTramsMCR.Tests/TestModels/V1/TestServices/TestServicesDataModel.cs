@@ -37,7 +37,7 @@ public class TestServicesDataModel
         _requester = new MockServiceRequester(mockHttpResponse!);
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
-        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _mockRouteRepository, _requester);
+        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
     }
 
     [TearDown]

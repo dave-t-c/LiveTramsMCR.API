@@ -17,12 +17,9 @@ public class MockServiceRequester : IRequester
         _httpResponseMessageAllServices = httpResponseMessageAllServices;
     }
 
-    public List<HttpResponseMessage> RequestServices(List<int> ids)
+    public HttpResponseMessage RequestServices(string tlaref)
     {
-        return new List<HttpResponseMessage>()
-        {
-            _httpResponseMessage!
-        };
+        return _httpResponseMessage!;
     }
     public HttpResponseMessage RequestAllServices()
     {
