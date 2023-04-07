@@ -70,7 +70,7 @@ public class TestServicesDataModel
     public void TestNullServiceLocationName()
     {
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'stop')"),
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'stopIdentifier')"),
             delegate
             {
                 Debug.Assert(_servicesDataModel != null, nameof(_servicesDataModel) + " != null");

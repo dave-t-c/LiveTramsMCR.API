@@ -38,8 +38,6 @@ public class TestServiceProcessor
     private ResourcesConfig? _updateStopsResourceConfig;
     private MockStopsRepository? _mockStopsRepository;
     private MockStopsRepository? _mockStopsRepositoryUpdateStops;
-    private MockRouteRepository? _mockRouteRepositoryUpdateStops;
-    private MockRouteRepository? _mockRouteRepository;
 
     [SetUp]
     public void SetUp()
@@ -87,10 +85,6 @@ public class TestServiceProcessor
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         _mockStopsRepositoryUpdateStops = new MockStopsRepository(_updateStopsImportedResources.ImportedStops);
 
-        _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
-        _mockRouteRepositoryUpdateStops = new MockRouteRepository(_updateStopsImportedResources.ImportedRoutes,
-            _updateStopsImportedResources.ImportedRouteTimes);
-        
         _serviceProcessor = new ServiceProcessor(_mockServiceRequester, _mockStopsRepository);
 
         _serviceProcessorInternalServerError = new ServiceProcessor(
@@ -134,7 +128,7 @@ public class TestServiceProcessor
     public void TestServiceProcessorNullName()
     {
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'stop')"),
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'stopIdentifier')"),
             delegate
             {
                 Debug.Assert(_serviceProcessor != null, nameof(_serviceProcessor) + " != null");
@@ -168,7 +162,7 @@ public class TestServiceProcessor
     public void TestServicesDepartureBoardNullStop()
     {
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'stop')"),
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'stopIdentifier')"),
             delegate
             {
                 _serviceProcessor?.RequestDepartureBoardServices(null);
