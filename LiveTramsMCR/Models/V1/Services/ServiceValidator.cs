@@ -40,11 +40,10 @@ public class ServiceValidator
     public List<UnformattedServices> ValidateServiceResponse(List<HttpResponseMessage> responseMessages)
     {
         var unformattedServices = new List<UnformattedServices>();
-        var requiresIdUpdate = !responseMessages.Any() || 
+        var invalidResponseReturned = !responseMessages.Any() || 
                                responseMessages.Any(msg => msg.StatusCode == HttpStatusCode.InternalServerError);
-        if (requiresIdUpdate)
+        if (invalidResponseReturned)
         {
-            UpdateStopIds();
             throw new InvalidOperationException("Retry in 5s");
         }
         foreach (var httpResponse in responseMessages)
@@ -54,22 +53,5 @@ public class ServiceValidator
             unformattedServices.Add(JsonConvert.DeserializeObject<UnformattedServices>(responseJson));
         }
         return unformattedServices;
-    }
-
-    private void UpdateStopIds()
-    {
-        var stopUpdater = new StopUpdater(_stopsRepository, _routeRepository);
-        var updatedServicesResponse = _requester.RequestAllServices();
-        updatedServicesResponse.EnsureSuccessStatusCode();
-        var responseJson = updatedServicesResponse.Content.ReadAsStringAsync().Result;
-        var updatedIds = JsonConvert.DeserializeObject<MultipleUnformattedServices>(responseJson);
-        
-        // When the IDs are being updated, there is potential that the value section will be empty. 
-        // In this case tell the user to retry 
-        if (!updatedIds.Value.Any())
-        {
-            throw new InvalidOperationException();
-        }
-        stopUpdater.UpdateStopIdsFromServices(updatedIds.Value);
     }
 }

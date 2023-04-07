@@ -189,35 +189,5 @@ public class TestServiceProcessor
         {
             _serviceProcessorInternalServerError?.RequestServices("Example 1");
         });
-        
-        var updatedStops = _mockStopsRepositoryUpdateStops?.GetAll();
-        Assert.NotNull(updatedStops);
-        Assert.AreEqual(3, updatedStops?.Count);
-        var expectedExampleOneIds = new List<int>() {15588, 15589, 15590};
-        Assert.AreEqual(expectedExampleOneIds, updatedStops?.Find(s => s.StopName == "Example 1")!.Ids);
-        
-        var expectedExampleTwoIds = new List<int>() {15591, 15592};
-        Assert.AreEqual(expectedExampleTwoIds, updatedStops?.Find(s => s.StopName == "Example 2")!.Ids);
-        
-        var expectedExampleThreeIds = new List<int>() {15593, 15594};
-        Assert.AreEqual(expectedExampleThreeIds, updatedStops?.Find(s => s.StopName == "Example 3")!.Ids);
-        
-        var updatedRoutes = _mockRouteRepositoryUpdateStops?.GetAllRoutes();
-        Assert.AreEqual(2, updatedRoutes?.Count);
-        
-        var greenRoute = updatedRoutes?.Find(r => r.Name == "Green");
-        Assert.NotNull(greenRoute);
-        Assert.AreEqual(2, greenRoute?.Stops.Count);
-        var expectedExampleOne = greenRoute?.Stops.Find(s => s.StopName == "Example 1");
-        var expectedExampleThree = greenRoute?.Stops.Find(s => s.StopName == "Example 3");
-        Assert.AreEqual(expectedExampleOneIds, expectedExampleOne?.Ids);
-        Assert.AreEqual(expectedExampleThreeIds, expectedExampleThree?.Ids);
-
-        var purpleRoute = updatedRoutes?.Find(r => r.Name == "Purple");
-        Assert.AreEqual(2, purpleRoute?.Stops.Count);
-        expectedExampleOne = purpleRoute?.Stops.Find(s => s.StopName == "Example 1");
-        var expectedExampleTwo = purpleRoute?.Stops.Find(s => s.StopName == "Example 2");
-        Assert.AreEqual(expectedExampleOneIds, expectedExampleOne?.Ids);
-        Assert.AreEqual(expectedExampleTwoIds, expectedExampleTwo?.Ids);
     }
 }
