@@ -26,9 +26,6 @@ public class TestStopLookup
     private StopLookup? _stopLookup;
     private MockStopsRepository? _mockStopsRepository;
 
-    private List<int>? _altrinchamIds;
-    private List<int>? _ashtonIds;
-
     /// <summary>
     ///     Set up the required resources for each test.
     ///     This uses the resource loader to load the test resources.
@@ -49,8 +46,6 @@ public class TestStopLookup
         _importedResources = _resourceLoader.ImportResources();
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         _stopLookup = new StopLookup(_mockStopsRepository);
-        _altrinchamIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "ALT").Ids;
-        _ashtonIds = _importedResources.ImportedStops.First(stop => stop.Tlaref == "ASH").Ids;
     }
 
     /// <summary>
@@ -63,177 +58,6 @@ public class TestStopLookup
         _importedResources = null;
         _resourceLoader = null;
         _resourcesConfig = null;
-    }
-
-    /// <summary>
-    ///     Test to look up the Tlaref 'ALT'
-    ///     and check the IDs returned are an array of list of [728, 729]
-    /// </summary>
-    [Test]
-    public void TestStopLookupTlarefIDs()
-    {
-        const string tlaref = "ALT";
-        var expectedResult = _altrinchamIds;
-        Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
-        var result = _stopLookup.TlarefLookup(tlaref);
-        Assert.NotNull(result);
-        Assert.AreEqual(expectedResult, result);
-    }
-
-    /// <summary>
-    ///     Test to get IDs for a different tlaref.
-    ///     This should return an array of length 4
-    ///     instead of length 2.
-    /// </summary>
-    [Test]
-    public void TestStopLookupDifferentTlaref()
-    {
-        const string tlaref = "ASH";
-        var expectedResult = _ashtonIds;
-        Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
-        var result = _stopLookup.TlarefLookup(tlaref);
-        Assert.NotNull(result);
-        Assert.AreEqual(expectedResult, result);
-    }
-
-    /// <summary>
-    ///     Test to try and get the tlaref for a null value.
-    ///     This should throw an illegal argument exception
-    /// </summary>
-    [Test]
-    public void TestStopLookupNullTlaref()
-    {
-        Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'tlaref')"),
-            delegate { _stopLookup?.TlarefLookup(null); });
-    }
-
-    /// <summary>
-    ///     Test to try and get the stops IDs from a given stop name.
-    ///     This should return the expected IDs.
-    /// </summary>
-    [Test]
-    public void TestStopLookupStopName()
-    {
-        const string stationName = "Altrincham";
-        var expectedResult = _altrinchamIds;
-        Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
-        var result = _stopLookup.StationNameLookup(stationName);
-        Assert.NotNull(result);
-        Assert.AreEqual(expectedResult, result);
-    }
-
-    /// <summary>
-    ///     Test to try and retrieve the IDs for a different station name.
-    ///     This should return 4 IDs instead of the existing 2.
-    /// </summary>
-    [Test]
-    public void TestStopLookupDifferentStop()
-    {
-        const string stationName = "Ashton-Under-Lyne";
-        var expectedResult = _ashtonIds;
-        Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
-        var result = _stopLookup.StationNameLookup(stationName);
-        Assert.NotNull(result);
-        Assert.AreEqual(expectedResult, result);
-    }
-
-
-    /// <summary>
-    ///     Test to try and lookup a null stop name.
-    ///     This should through a null argument exception.
-    /// </summary>
-    [Test]
-    public void TestNullStopLookup()
-    {
-        Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'stationName')"),
-            delegate { _stopLookup?.StationNameLookup(null); });
-    }
-
-    /// <summary>
-    ///     Test to use the lookup Ids method with a tlaref.
-    ///     This should return the expected IDs of length 2.
-    /// </summary>
-    [Test]
-    public void TestLookupIDsTlaref()
-    {
-        const string tlaref = "ALT";
-        var expectedResult = _altrinchamIds;
-        Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
-        var result = _stopLookup.LookupIDs(tlaref);
-        Assert.NotNull(result);
-        Assert.AreEqual(expectedResult, result);
-    }
-
-
-    /// <summary>
-    ///     Test to lookup the IDs for a different tlaref.
-    ///     This should return a different list of length 4.
-    /// </summary>
-    [Test]
-    public void TestLookupIDsDifferentTlaref()
-    {
-        const string tlaref = "ASH";
-        var expectedResult = _ashtonIds;
-        Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
-        var result = _stopLookup.LookupIDs(tlaref);
-        Assert.NotNull(result);
-        Assert.AreEqual(expectedResult, result);
-    }
-
-    /// <summary>
-    ///     Test to look up a station name using the LookUpIDs method.
-    ///     This should return the values for the station name.
-    /// </summary>
-    [Test]
-    public void TestLookupIDsStationName()
-    {
-        const string stationName = "Altrincham";
-        var expectedResult = _altrinchamIds;
-        Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
-        var result = _stopLookup.LookupIDs(stationName);
-        Assert.NotNull(result);
-        Assert.AreEqual(expectedResult, result);
-    }
-
-    /// <summary>
-    ///     Test to lookup the IDs for a different station name.
-    ///     This should return a different ID list of length 4.
-    /// </summary>
-    [Test]
-    public void TestLookupIDsDifferentStationName()
-    {
-        const string stationName = "Ashton-Under-Lyne";
-        var expectedResult = _ashtonIds;
-        Debug.Assert(_stopLookup != null, nameof(_stopLookup) + " != null");
-        var result = _stopLookup.LookupIDs(stationName);
-        Assert.NotNull(result);
-        Assert.AreEqual(expectedResult, result);
-    }
-
-    /// <summary>
-    ///     Test to lookup a value that is not either a valid tlaref or station name.
-    ///     This should throw an argument exception.
-    /// </summary>
-    [Test]
-    public void TestLookupNonExistentValue()
-    {
-        Assert.Throws(Is.TypeOf<ArgumentException>()
-                .And.Message.EqualTo("Value given is not a valid station name or TLAREF"),
-            delegate { _stopLookup?.LookupIDs("Invalid"); });
-    }
-
-    /// <summary>
-    ///     Test to lookup the IDs for the value null.
-    ///     This should throw a argument null exception.
-    /// </summary>
-    [Test]
-    public void TestLookupIDsNull()
-    {
-        Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'value')"),
-            delegate { _stopLookup?.LookupIDs(null); });
     }
 
     /// <summary>

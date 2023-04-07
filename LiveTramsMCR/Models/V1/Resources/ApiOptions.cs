@@ -11,4 +11,9 @@ public class ApiOptions
     /// TfGM API Subscription key
     /// </summary>
     public string OcpApimSubscriptionKey { get; set; }
+    
+    /// <summary>
+    /// Base request URLs for live service information
+    /// </summary>
+    public BaseUrls BaseRequestUrls { get; set; }
 }

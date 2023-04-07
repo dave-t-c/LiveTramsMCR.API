@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using LiveTramsMCR.Models.V1.Services;
@@ -20,7 +21,8 @@ public static class ImportServicesResponse
     {
         using var reader = new StreamReader(path);
         var jsonString = reader.ReadToEnd();
-        return JsonConvert.DeserializeObject<UnformattedServices>(jsonString);
+        var deserializedServices = JsonConvert.DeserializeObject<MultipleUnformattedServices>(jsonString);
+        return deserializedServices?.Value.First();
     }
 
     /// <summary>

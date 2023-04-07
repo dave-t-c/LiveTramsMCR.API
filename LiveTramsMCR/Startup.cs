@@ -47,15 +47,19 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         // ReSharper disable once SuspiciousTypeConversion.Global
-        ResourcesConfig resourceConfig = new ResourcesConfig();
+        var resourceConfig = new ResourcesConfig();
         Configuration.Bind("Resources", resourceConfig);
+
+        var baseUrls = new BaseUrls();
+        Configuration.Bind("BaseUrls", baseUrls);
 
         // This is currently imported and set manually due to problems with it
         // working with Linux on Azure App Service, as it did not want to work
         // with a structured json.
-        ApiOptions apiOptions = new ApiOptions
+        var apiOptions = new ApiOptions
         {
-            OcpApimSubscriptionKey = Configuration["OcpApimSubscriptionKey"]
+            OcpApimSubscriptionKey = Configuration["OcpApimSubscriptionKey"],
+            BaseRequestUrls = baseUrls
         };
         services.AddSingleton(apiOptions);
 
@@ -72,7 +76,7 @@ public class Startup
         services.AddSingleton(stopsDataModel);
 
         IRequester serviceRequester = new ServiceRequester(apiOptions);
-        IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, routeRepository, serviceRequester);
+        IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, serviceRequester);
         services.AddSingleton(servicesDataModel);
         
         IJourneyPlanner journeyPlanner = new JourneyPlanner(routeRepository);

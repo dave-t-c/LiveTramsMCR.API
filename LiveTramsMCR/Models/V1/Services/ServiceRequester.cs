@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using LiveTramsMCR.Models.V1.Resources;
-using Newtonsoft.Json;
 
 namespace LiveTramsMCR.Models.V1.Services;
 
@@ -23,34 +21,29 @@ public class ServiceRequester : IRequester
         _apiOptions = apiOptions;
     }
 
-    /// <summary>
-    /// Requests services for a list of given IDs.
-    /// </summary>
-    /// <param name="ids">List of IDs for a stop</param>
-    /// <returns>List of Unformatted Services returned from the request</returns>
-    public List<HttpResponseMessage> RequestServices(List<int> ids)
+    /// <inheritdoc />
+    public HttpResponseMessage RequestServices(string tlaref)
     {
-        var unformattedServicesResponses = new List<HttpResponseMessage>();
-        foreach (var id in ids) unformattedServicesResponses.Add(RequestId(id).Result);
-
-        return unformattedServicesResponses;
+        return RequestStopTlaref(tlaref).Result;
     }
 
     /// <summary>
     /// Requests the service information from a given ID using the TfGM API.
     /// </summary>
-    /// <param name="id">ID to request service info for</param>
+    /// <param name="tlaref">tlaref of stop being searched for</param>
     /// <returns>Unformatted Service for the given ID</returns>
-    private async Task<HttpResponseMessage> RequestId(int id)
+    private async Task<HttpResponseMessage> RequestStopTlaref(string tlaref)
     {
         var client = new HttpClient();
         
         // Request headers
         client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiOptions.OcpApimSubscriptionKey);
+        
+        var filter = $"?$filter=TLAREF eq '{tlaref}'";
 
-        var uri = $"https://api.tfgm.com/odata/Metrolinks({id})";
-
-        var response = await client.GetAsync(uri);
+        var generatedUrl = _apiOptions.BaseRequestUrls.BaseLiveServicesUrl + filter;
+        
+        var response = await client.GetAsync(generatedUrl);
         return response;
     }
     
@@ -61,9 +54,8 @@ public class ServiceRequester : IRequester
         
         // Request headers
         client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiOptions.OcpApimSubscriptionKey);
-        const string uri = "https://api.tfgm.com/odata/Metrolinks";
 
-        var response = client.GetAsync(uri).Result;
+        var response = client.GetAsync(_apiOptions.BaseRequestUrls.BaseLiveServicesUrl).Result;
         return response;
     }
 }

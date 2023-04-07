@@ -124,9 +124,6 @@
           },
           "500": {
             "description": "An internal server error occured"
-          },
-          "503": {
-            "description": "Updating, retry in 5s"
           }
         }
       }

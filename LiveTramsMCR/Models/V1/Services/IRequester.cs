@@ -13,9 +13,9 @@ public interface IRequester
     /// Requests the services for a given list of IDs.
     /// These IDs should be retrieved from an associated tlaref.
     /// </summary>
-    /// <param name="ids">IDs to request services for</param>
+    /// <param name="tlaref">Tlaref of the stop being requested</param>
     /// <returns></returns>
-    public List<HttpResponseMessage> RequestServices(List<int> ids);
+    public HttpResponseMessage RequestServices(string tlaref);
 
     /// <summary>
     /// Requests services for all IDs
