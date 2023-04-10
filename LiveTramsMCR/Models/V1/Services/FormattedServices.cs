@@ -34,7 +34,7 @@ public class FormattedServices
     /// Destinations added internally to the class.
     /// These are then ordered on the get of destinations
     /// </summary>
-    private Dictionary<string, SortedSet<Tram>> InternalDestinations { get; set; }
+    private Dictionary<string, SortedSet<Tram>> InternalDestinations { get; }
 
     /// <summary>
     /// Service messages for the 

@@ -12,7 +12,7 @@ namespace LiveTramsMCR.Models.V1.Stops;
 /// </summary>
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Global
-public sealed class Stop : IEquatable<Stop>, IEqualityComparer<Stop>
+public sealed class Stop: IEquatable<Stop>
 {
     /// <summary>
     /// Object Id used internally by mongodb.
@@ -111,30 +111,5 @@ public sealed class Stop : IEquatable<Stop>, IEqualityComparer<Stop>
         var hashCode = new HashCode();
         hashCode.Add(StopName);
         return hashCode.ToHashCode();
-    }
-
-    /// <summary>
-    /// Compares two stop objects
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <returns></returns>
-    public bool Equals(Stop x, Stop y)
-    {
-        if (ReferenceEquals(x, y)) return true;
-        if (ReferenceEquals(x, null)) return false;
-        if (ReferenceEquals(y, null)) return false;
-        if (x.GetType() != y.GetType()) return false;
-        return x.StopName == y.StopName && x.Tlaref == y.Tlaref;
-    }
-
-    /// <summary>
-    /// Generates a hash code for a stop obj
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public int GetHashCode(Stop obj)
-    {
-        return HashCode.Combine(obj.StopName, obj.Tlaref);
     }
 }
