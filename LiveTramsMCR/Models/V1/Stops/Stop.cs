@@ -112,14 +112,4 @@ public sealed class Stop
         hashCode.Add(StopName);
         return hashCode.ToHashCode();
     }
-    
-    /// <summary>
-    /// Generates a hash code for a stop obj
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public int GetHashCode(Stop obj)
-    {
-        return HashCode.Combine(obj.StopName, obj.Tlaref);
-    }
 }
