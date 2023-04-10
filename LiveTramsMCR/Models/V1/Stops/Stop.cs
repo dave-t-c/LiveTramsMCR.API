@@ -12,7 +12,7 @@ namespace LiveTramsMCR.Models.V1.Stops;
 /// </summary>
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Global
-public sealed class Stop
+public sealed class Stop: IEquatable<Stop>
 {
     /// <summary>
     /// Object Id used internally by mongodb.
