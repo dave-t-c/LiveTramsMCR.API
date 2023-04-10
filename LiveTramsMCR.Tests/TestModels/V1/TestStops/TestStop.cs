@@ -82,6 +82,16 @@ public class TestStop
     }
 
     /// <summary>
+    /// Test to get the hash code for the same stop twice.
+    /// This should return the same value.
+    /// </summary>
+    [Test]
+    public void TestGetHashCodeSameStop()
+    {
+        Assert.AreEqual(_altrinchamStop!.GetHashCode(), _altrinchamStop!.GetHashCode());
+    }
+    
+    /// <summary>
     /// Test to get the hash code of different stops.
     /// These should be unequal
     /// </summary>
