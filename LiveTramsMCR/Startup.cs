@@ -46,10 +46,6 @@ public class Startup
     /// <param name="services">Services for the Container</param>
     public void ConfigureServices(IServiceCollection services)
     {
-        // ReSharper disable once SuspiciousTypeConversion.Global
-        var resourceConfig = new ResourcesConfig();
-        Configuration.Bind("Resources", resourceConfig);
-
         var baseUrls = new BaseUrls();
         Configuration.Bind("BaseUrls", baseUrls);
 
