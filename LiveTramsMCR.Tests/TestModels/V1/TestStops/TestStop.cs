@@ -80,4 +80,14 @@ public class TestStop
     {
         Assert.IsFalse(_altrinchamStop!.Equals(null));
     }
+
+    /// <summary>
+    /// Test to get the hash code of different stops.
+    /// These should be unequal
+    /// </summary>
+    [Test]
+    public void TestGetHashCodeDifferentStops()
+    {
+        Assert.AreNotEqual(_altrinchamStop!.GetHashCode(), _piccadillyStop!.GetHashCode());
+    }
 }
