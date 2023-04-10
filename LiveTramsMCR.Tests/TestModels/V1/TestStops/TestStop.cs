@@ -18,6 +18,7 @@ public class TestStop
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ImportedResources? _importedResources;
     private Stop? _altrinchamStop;
+    private Stop? _picadillyStop;
 
     private ResourceLoader? _resourceLoader;
     private ResourcesConfig? _resourcesConfig;
@@ -37,11 +38,14 @@ public class TestStop
         _resourceLoader = new ResourceLoader(_resourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
         _altrinchamStop = _importedResources.ImportedStops.First(stop => stop.Tlaref == "ALT");
+        _picadillyStop = _importedResources.ImportedStops.First(stop => stop.Tlaref == "PIC");
+        
     }
 
     [TearDown]
     public void TearDown()
     {
+        _altrinchamStop = null;
         _importedResources = null;
         _resourceLoader = null;
         _resourcesConfig = null;
@@ -55,5 +59,15 @@ public class TestStop
     public void TestIdenticalReferencesEqual()
     {
         Assert.IsTrue(_altrinchamStop!.Equals(_altrinchamStop));
+    }
+
+    /// <summary>
+    /// Test to see if different stops are unequal.
+    /// This should return false
+    /// </summary>
+    [Test]
+    public void TestDifferentStopsUnequal()
+    {
+        Assert.IsFalse(_altrinchamStop!.Equals(_picadillyStop));
     }
 }
