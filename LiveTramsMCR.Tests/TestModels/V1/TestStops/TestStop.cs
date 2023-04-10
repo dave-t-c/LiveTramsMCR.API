@@ -18,7 +18,7 @@ public class TestStop
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ImportedResources? _importedResources;
     private Stop? _altrinchamStop;
-    private Stop? _picadillyStop;
+    private Stop? _piccadillyStop;
 
     private ResourceLoader? _resourceLoader;
     private ResourcesConfig? _resourcesConfig;
@@ -38,7 +38,7 @@ public class TestStop
         _resourceLoader = new ResourceLoader(_resourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
         _altrinchamStop = _importedResources.ImportedStops.First(stop => stop.Tlaref == "ALT");
-        _picadillyStop = _importedResources.ImportedStops.First(stop => stop.Tlaref == "PIC");
+        _piccadillyStop = _importedResources.ImportedStops.First(stop => stop.Tlaref == "PIC");
         
     }
 
@@ -68,6 +68,16 @@ public class TestStop
     [Test]
     public void TestDifferentStopsUnequal()
     {
-        Assert.IsFalse(_altrinchamStop!.Equals(_picadillyStop));
+        Assert.IsFalse(_altrinchamStop!.Equals(_piccadillyStop));
+    }
+    
+    /// <summary>
+    /// Test to check if a stop is equal to null.
+    /// This should return false
+    /// </summary>
+    [Test]
+    public void TestNullEquals()
+    {
+        Assert.IsFalse(_altrinchamStop!.Equals(null));
     }
 }
