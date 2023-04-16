@@ -1,19 +1,19 @@
 using System.Collections.Generic;
-using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V2.Stops;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace LiveTramsMCR.Controllers.V1;
+namespace LiveTramsMCR.Controllers.V2;
 
 /// <summary>
 /// Controller for Stops related information
 /// </summary>
-[Route("/v1/stops")]
+[Route("/v2/stops")]
 [ApiController]
-public class StopsController : Controller
+public class StopsControllerV2 : Controller
 {
-    private readonly IStopsDataModel _stopsDataModel;
+    private readonly IStopsDataModelV2 _stopsDataModel;
 
     /// <summary>
     ///     Controller Constructor that allows for custom stops path file location.
@@ -22,7 +22,7 @@ public class StopsController : Controller
     ///     extracted to the properties file.
     /// </summary>
     /// <param name="stopsDataModel">Data Model used for processing stops information</param>
-    public StopsController(IStopsDataModel stopsDataModel)
+    public StopsControllerV2(IStopsDataModelV2 stopsDataModel)
     {
         _stopsDataModel = stopsDataModel;
     }
@@ -31,10 +31,10 @@ public class StopsController : Controller
     ///     Returns a JSON List of all Stops.
     /// </summary>
     /// <returns>JSON List -> Stop</returns>
-    [Route("/v1/stops")]
+    [Route("/v2/stops")]
     [Produces("application/json")]
+    [SwaggerResponse (type:typeof (List<StopV2>), statusCode: StatusCodes.Status200OK)]
     [Tags("Stops")]
-    [SwaggerResponse (type:typeof (List<Stop>), statusCode: StatusCodes.Status200OK)]
     [HttpGet]
     public IActionResult GetAllStops()
     {
