@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
-using LiveTramsMCR.Models.V2.Stops;
 
 namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 
@@ -16,7 +15,6 @@ public class ImportedResources
     public ImportedResources()
     {
         ImportedStops = new List<Stop>();
-        ImportedStopsV2 = new List<StopV2>();
         StationNamesToTlaref = new Dictionary<string, string>();
         TlarefsToIds = new Dictionary<string, List<int>>();
         ImportedRoutes = new List<Route>();
@@ -27,11 +25,6 @@ public class ImportedResources
     /// Stores the stops imported into the application
     /// </summary>
     public List<Stop> ImportedStops { get; init; }
-    
-    /// <summary>
-    /// Stores the stop v2s imported.
-    /// </summary>
-    public List<StopV2> ImportedStopsV2 { get; init; }
     
     /// <summary>
     /// Stores a dict from the station name to it's associated tlaref

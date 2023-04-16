@@ -18,7 +18,6 @@
 
     <ItemGroup>
       <Folder Include="Models\V1" />
-      <Folder Include="Models\V2\" />
     </ItemGroup>
 
 </Project>
