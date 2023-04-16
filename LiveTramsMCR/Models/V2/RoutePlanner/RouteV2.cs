@@ -47,42 +47,4 @@ public class RouteV2
         Colour = colour ?? throw new ArgumentNullException(nameof(colour));
         Stops = stops ?? throw new ArgumentNullException(nameof(stops));
     }
-
-    /// <summary>
-    /// Identifies a list of stops that occur between two stops
-    /// E.g. for the route A -> B -> C -> D, stops between A and D 
-    /// this will return B then C.
-    /// </summary>
-    /// <param name="start">Stop in list to start</param>
-    /// <param name="end">Stop in list to end at</param>
-    /// <returns>List of Interim Stops</returns>
-    public List<StopKeysV2> GetStopsBetween(StopKeysV2 start, StopKeysV2 end)
-    {
-        _ = start ?? throw new ArgumentNullException(nameof(start));
-        _ = end ?? throw new ArgumentNullException(nameof(end));
-        if (!Stops.Contains(start))
-            throw new InvalidOperationException("Route does not contain stop " + start.StopName);
-        if (!Stops.Contains(end))
-            throw new InvalidOperationException("Route does not contain stop " + end.StopName);
-        var startIndex = Stops.IndexOf(start);
-        var endIndex = Stops.IndexOf(end);
-        // Use the differences in index to identify if we will be going up or down the list.
-        var increment = endIndex > startIndex ? 1 : -1;
-        var identifiedStops = new List<StopKeysV2>();
-        for (int i = startIndex + increment; i != endIndex; i += increment)
-        {
-            identifiedStops.Add(Stops.ElementAt(i));
-        }
-        return identifiedStops;
-    }
-
-    /// <summary>
-    /// Determines if this route contains a given Stop.
-    /// </summary>
-    /// <param name="stop">Stop to check membership of</param>
-    /// <returns>True if route contains Stop, else false.</returns>
-    public bool ContainsStop(StopKeysV2 stop)
-    {
-        return Stops.Contains(stop);
-    }
 }
