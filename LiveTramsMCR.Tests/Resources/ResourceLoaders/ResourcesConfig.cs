@@ -12,11 +12,6 @@ public class ResourcesConfig
     public string? StopResourcePath { get; set; }
     
     /// <summary>
-    /// Path for the json file contains stops for stops v2.
-    /// </summary>
-    public string? StopV2ResourcePath { get; set; }
-    
-    /// <summary>
     /// Path for file that maps the station names to their associated tlaref.
     /// </summary>
     public string? StationNamesToTlarefsPath { get; set; }

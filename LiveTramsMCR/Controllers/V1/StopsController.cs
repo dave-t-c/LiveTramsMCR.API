@@ -33,7 +33,6 @@ public class StopsController : Controller
     /// <returns>JSON List -> Stop</returns>
     [Route("/v1/stops")]
     [Produces("application/json")]
-    [Tags("Stops")]
     [SwaggerResponse (type:typeof (List<Stop>), statusCode: StatusCodes.Status200OK)]
     [HttpGet]
     public IActionResult GetAllStops()

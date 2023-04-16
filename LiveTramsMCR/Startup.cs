@@ -7,8 +7,6 @@ using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
-using LiveTramsMCR.Models.V2.Stops;
-using LiveTramsMCR.Models.V2.Stops.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -64,19 +62,14 @@ public class Startup
         var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
         var db = mongoClient.GetDatabase("livetramsmcr");
         var stopsMongoCollection = db.GetCollection<Stop>("stops");
-        var stopsV2MongoCollection = db.GetCollection<StopV2>("stopsV2");
         var routesMongoCollection = db.GetCollection<Route>("routes");
         var routeTimesMongoCollection = db.GetCollection<RouteTimes>("route-times");
         
         IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
-        IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection);
         IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
         
         IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
         services.AddSingleton(stopsDataModel);
-
-        IStopsDataModelV2 stopsDataModelV2 = new StopsDataModelV2(stopsRepositoryV2);
-        services.AddSingleton(stopsDataModelV2);
 
         IRequester serviceRequester = new ServiceRequester(apiOptions);
         IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, serviceRequester);

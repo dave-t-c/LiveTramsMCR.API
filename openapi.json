@@ -128,29 +128,6 @@
         }
       }
     },
-    "/v2/stops": {
-      "get": {
-        "tags": [
-          "Stops"
-        ],
-        "summary": "Returns a JSON List of all Stops.",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StopV2"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/stops": {
       "get": {
         "tags": [
@@ -350,31 +327,6 @@
         "additionalProperties": false,
         "description": "Class that represents a tram route between two Stops.\r\nThe stops are included as the Stop class, so all relevant information is available."
       },
-      "RouteV2": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the route, e.g. \"Purple\"",
-            "nullable": true
-          },
-          "colour": {
-            "type": "string",
-            "description": "Hex colour string for the route, e.g. #7B2082",
-            "nullable": true
-          },
-          "stops": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StopKeysV2"
-            },
-            "description": "Stops belonging to a route in the order they can be travelled between.",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Class that represents a tram route between two Stops.\r\nThe stops are included as the Stop class, so all relevant information is available."
-      },
       "Stop": {
         "type": "object",
         "properties": {
@@ -395,84 +347,6 @@
               "format": "int32"
             },
             "description": "IDs associated with the stop. Larger stops will have more IDs.",
-            "nullable": true,
-            "deprecated": true
-          },
-          "atcoCode": {
-            "type": "string",
-            "description": "Naptan ID for the stop. This can be used to look up more information\r\nin government transport data sets",
-            "nullable": true
-          },
-          "latitude": {
-            "type": "number",
-            "description": "Stop Latitude. This may be different to that shown by apple or google maps.",
-            "format": "double"
-          },
-          "longitude": {
-            "type": "number",
-            "description": "Stop Longitude. This may be different to that shown by apple or google maps.",
-            "format": "double"
-          },
-          "street": {
-            "type": "string",
-            "description": "Street the stop is on. If it is not directly on a street, it will be prefixed\r\nwith 'Off'.",
-            "nullable": true
-          },
-          "roadCrossing": {
-            "type": "string",
-            "description": "Closest road intersection to the stop. For stops where there is not a close intersection,\r\nthis will be blank.",
-            "nullable": true
-          },
-          "line": {
-            "type": "string",
-            "description": "Line the stop is on. This is a single value and does not contain all lines.\r\nThis will be a destination, such as Bury, and does not include the line colour(s).",
-            "nullable": true
-          },
-          "stopZone": {
-            "type": "string",
-            "description": "Ticket fare zone for the stop. If a stop is in multiple zones, it will\r\nbe shown as 'a/b', where a is the smaller of the two zones, e.g. '3/4'.",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Stores information about a single stop."
-      },
-      "StopKeysV2": {
-        "type": "object",
-        "properties": {
-          "stopName": {
-            "type": "string",
-            "description": "Name of the stop, such as Piccadilly",
-            "nullable": true
-          },
-          "tlaref": {
-            "type": "string",
-            "description": "3 code ID for the stop, e.g. PIC for Piccadilly",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Stores keys required to uniquely identify a stop"
-      },
-      "StopV2": {
-        "type": "object",
-        "properties": {
-          "stopName": {
-            "type": "string",
-            "description": "Name of the stop, such as Piccadilly",
-            "nullable": true
-          },
-          "tlaref": {
-            "type": "string",
-            "description": "3 code ID for the stop, e.g. PIC for Piccadilly",
-            "nullable": true
-          },
-          "routes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RouteV2"
-            },
-            "description": "Routes the stop is on.",
             "nullable": true
           },
           "atcoCode": {
