@@ -7,6 +7,7 @@ public class ResourceLoader
 {
     private readonly StationNamesToTlarefLoader _stationNamesToTlarefLoader;
     private readonly StopLoader _stopLoader;
+    private readonly StopV2Loader _stopV2Loader;
     private readonly TlarefToIdsLoader _tlarefToIdsLoader;
     private readonly ResourcesConfig _config;
     private readonly RouteTimesLoader _routeTimesLoader;
@@ -20,6 +21,7 @@ public class ResourceLoader
     {
         _config = resourcesConfig;
         _stopLoader = new StopLoader(resourcesConfig);
+        _stopV2Loader = new StopV2Loader(resourcesConfig);
         _stationNamesToTlarefLoader = new StationNamesToTlarefLoader(resourcesConfig);
         _tlarefToIdsLoader = new TlarefToIdsLoader(resourcesConfig);
         _routeTimesLoader = new RouteTimesLoader(resourcesConfig);
@@ -36,6 +38,7 @@ public class ResourceLoader
         return new ImportedResources
         {
             ImportedStops = importedStops,
+            ImportedStopsV2 = _stopV2Loader.ImportStops(),
             StationNamesToTlaref = _stationNamesToTlarefLoader.ImportStationNamesToTlarefs(),
             TlarefsToIds = _tlarefToIdsLoader.ImportTlarefsToIds(),
             ImportedRoutes = routeLoader.ImportRoutes(),
