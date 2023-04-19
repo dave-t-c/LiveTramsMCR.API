@@ -217,4 +217,14 @@ public class TestFormattedServices
         Assert.NotNull(_formattedServices?.LastUpdated);
         Assert.IsEmpty(_formattedServices?.LastUpdated);
     }
+
+    [Test]
+    public void TestSetLastUpdatedEmpty()
+    {
+        const string exampleString = "2023-04-19T19:34:03Z";
+        _formattedServices?.SetLastUpdated(exampleString);
+        _formattedServices?.SetLastUpdated("");
+        Assert.NotNull(_formattedServices?.LastUpdated);
+        Assert.IsNotEmpty(_formattedServices?.LastUpdated);
+    }
 }
