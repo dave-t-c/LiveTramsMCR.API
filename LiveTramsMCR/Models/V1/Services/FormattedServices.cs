@@ -78,6 +78,7 @@ public class FormattedServices
     /// <param name="lastUpdated"></param>
     public void SetLastUpdated(string lastUpdated)
     {
+        if (lastUpdated == null) return;
         LastUpdated = lastUpdated;
     }
 }

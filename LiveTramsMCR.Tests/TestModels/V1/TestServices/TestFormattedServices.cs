@@ -206,4 +206,15 @@ public class TestFormattedServices
         Assert.IsNotEmpty(_formattedServices?.LastUpdated);
         Assert.AreEqual(exampleString, _formattedServices?.LastUpdated);
     }
+
+    /// <summary>
+    /// Test to check that last updated is not set when null is passed.
+    /// </summary>
+    [Test]
+    public void TestSetLastUpdatedNull()
+    {
+        _formattedServices?.SetLastUpdated(null);
+        Assert.NotNull(_formattedServices?.LastUpdated);
+        Assert.IsEmpty(_formattedServices?.LastUpdated);
+    }
 }
