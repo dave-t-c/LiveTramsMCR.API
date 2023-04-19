@@ -15,6 +15,7 @@ public class FormattedServices
     {
         InternalDestinations = new Dictionary<string, SortedSet<Tram>>();
         Messages = new HashSet<string>();
+        LastUpdated = "";
     }
 
     /// <summary>
@@ -40,6 +41,11 @@ public class FormattedServices
     /// Service messages for the 
     /// </summary>
     public HashSet<string> Messages { get; }
+    
+    /// <summary>
+    /// UTC Time string of when the service information was last updated
+    /// </summary>
+    public string LastUpdated { get; private set; }
 
     /// <summary>
     ///     Adds a tram to the formatted services.
@@ -63,5 +69,15 @@ public class FormattedServices
     {
         if (message == null) return;
         Messages.Add(message);
+    }
+
+    /// <summary>
+    /// Update the last updated value
+    /// This is not updated after initially being set
+    /// </summary>
+    /// <param name="lastUpdated"></param>
+    public void SetLastUpdated(string lastUpdated)
+    {
+        LastUpdated = lastUpdated;
     }
 }

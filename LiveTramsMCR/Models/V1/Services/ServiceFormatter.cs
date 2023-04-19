@@ -32,6 +32,8 @@ public class ServiceFormatter
                 service.Wait3));
 
             FormatMessage(formattedServices, service.MessageBoard);
+            
+            SetLastUpdated(formattedServices, service.LastUpdated);
         }
 
         return formattedServices;
@@ -118,5 +120,11 @@ public class ServiceFormatter
             RegexOptions.None,
             TimeSpan.FromMilliseconds(100)).TrimStart();
         formattedDepartureBoardServices.AddMessage(message);
+    }
+
+    private static void SetLastUpdated(FormattedServices formattedServices, string lastUpdated)
+    {
+        if (string.IsNullOrEmpty(lastUpdated)) return;
+        formattedServices.SetLastUpdated(lastUpdated);
     }
 }

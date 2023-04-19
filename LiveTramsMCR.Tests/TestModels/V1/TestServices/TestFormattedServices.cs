@@ -192,4 +192,18 @@ public class TestFormattedServices
         Assert.NotNull(_formattedServices?.Messages);
         Assert.AreEqual(0, _formattedServices?.Messages.Count);
     }
+
+    /// <summary>
+    /// Test to check that last updated is set.
+    /// This should be set to match the value given.
+    /// </summary>
+    [Test]
+    public void TestSetLastUpdated()
+    {
+        const string exampleString = "2023-04-19T19:34:03Z";
+        _formattedServices?.SetLastUpdated(exampleString);
+        Assert.NotNull(_formattedServices?.LastUpdated);
+        Assert.IsNotEmpty(_formattedServices?.LastUpdated);
+        Assert.AreEqual(exampleString, _formattedServices?.LastUpdated);
+    }
 }

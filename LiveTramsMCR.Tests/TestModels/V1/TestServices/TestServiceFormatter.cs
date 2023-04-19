@@ -203,6 +203,22 @@ public class TestServiceFormatter
     }
 
     /// <summary>
+    /// Test to check the last updated value is set.
+    /// This should be set to that from the first service
+    /// </summary>
+    [Test]
+    public void TestSetLastUpdated()
+    {
+        _unformattedServicesList?.Add(_unformattedServices);
+        var result = _serviceFormatter?.FormatServices(_unformattedServicesList);
+        Assert.NotNull(result);
+        Assert.NotNull(result?.LastUpdated);
+        Assert.IsNotEmpty(result?.LastUpdated);
+        Assert.AreEqual(_unformattedServices?.LastUpdated, result?.LastUpdated);
+    }
+    
+
+    /// <summary>
     /// Test formatting departureBoardServices with valid unformatted services.
     /// </summary>
     [Test]
