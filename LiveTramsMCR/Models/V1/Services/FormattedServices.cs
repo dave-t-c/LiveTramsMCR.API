@@ -15,7 +15,7 @@ public class FormattedServices
     {
         InternalDestinations = new Dictionary<string, SortedSet<Tram>>();
         Messages = new HashSet<string>();
-        LastUpdated = "";
+        LastUpdated = null;
     }
 
     /// <summary>
@@ -79,6 +79,7 @@ public class FormattedServices
     public void SetLastUpdated(string lastUpdated)
     {
         if (string.IsNullOrEmpty(lastUpdated)) return;
+        if (LastUpdated != null) return;
         LastUpdated = lastUpdated;
     }
 }

@@ -20,6 +20,8 @@ public class TestFormattedServices
     private Tram? _tramSameDestinationDiffWait;
     private Tram? _tramDiffDestinationDiffWait;
     private string? _wait;
+    private const string ExampleLastUpdated = "2023-04-19T19:34:03Z";
+    private const string DiffExampleLastUpdated = "2023-04-19T11:34:03Z";
 
     [SetUp]
     public void SetUp()
@@ -200,11 +202,10 @@ public class TestFormattedServices
     [Test]
     public void TestSetLastUpdated()
     {
-        const string exampleString = "2023-04-19T19:34:03Z";
-        _formattedServices?.SetLastUpdated(exampleString);
+        _formattedServices?.SetLastUpdated(ExampleLastUpdated);
         Assert.NotNull(_formattedServices?.LastUpdated);
         Assert.IsNotEmpty(_formattedServices?.LastUpdated);
-        Assert.AreEqual(exampleString, _formattedServices?.LastUpdated);
+        Assert.AreEqual(ExampleLastUpdated, _formattedServices?.LastUpdated);
     }
 
     /// <summary>
@@ -213,18 +214,28 @@ public class TestFormattedServices
     [Test]
     public void TestSetLastUpdatedNull()
     {
+        _formattedServices?.SetLastUpdated(ExampleLastUpdated);
         _formattedServices?.SetLastUpdated(null);
         Assert.NotNull(_formattedServices?.LastUpdated);
-        Assert.IsEmpty(_formattedServices?.LastUpdated);
+        Assert.AreEqual(ExampleLastUpdated, _formattedServices?.LastUpdated);
     }
 
     [Test]
     public void TestSetLastUpdatedEmpty()
     {
-        const string exampleString = "2023-04-19T19:34:03Z";
-        _formattedServices?.SetLastUpdated(exampleString);
+        _formattedServices?.SetLastUpdated(ExampleLastUpdated);
         _formattedServices?.SetLastUpdated("");
         Assert.NotNull(_formattedServices?.LastUpdated);
         Assert.IsNotEmpty(_formattedServices?.LastUpdated);
+    }
+
+    [Test]
+    public void TestDoNotUpdateLastUpdatedWhenSet()
+    {
+        _formattedServices?.SetLastUpdated(ExampleLastUpdated);
+        _formattedServices?.SetLastUpdated(DiffExampleLastUpdated);
+        Assert.NotNull(_formattedServices?.LastUpdated);
+        Assert.IsNotEmpty(_formattedServices?.LastUpdated);
+        Assert.AreEqual(ExampleLastUpdated, _formattedServices?.LastUpdated);
     }
 }
