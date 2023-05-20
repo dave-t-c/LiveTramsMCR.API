@@ -10,7 +10,7 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner;
 /// Class that represents a tram route between two Stops.
 /// The stops are included as the Stop class, so all relevant information is available.
 /// </summary>
-public class RouteV2
+public class SimpleRouteV2
 {
     /// <summary>
     /// Object ID used by mongodb
@@ -40,7 +40,7 @@ public class RouteV2
     /// <param name="colour">Route hex colour, e.g. #7B2082</param>
     /// <param name="stops"></param>
     ///
-    public RouteV2(string name, string colour, List<StopKeysV2> stops)
+    public SimpleRouteV2(string name, string colour, List<StopKeysV2> stops)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Colour = colour ?? throw new ArgumentNullException(nameof(colour));
