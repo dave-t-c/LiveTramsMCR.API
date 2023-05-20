@@ -34,7 +34,7 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>
     /// <summary>
     /// Routes the stop is on.
     /// </summary>
-    public List<RouteV2> Routes { get; set; }
+    public List<SimpleRouteV2> Routes { get; set; }
     
     /// <summary>
     /// Naptan ID for the stop. This can be used to look up more information
