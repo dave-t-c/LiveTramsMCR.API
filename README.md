@@ -50,3 +50,5 @@ This program is in no way associated with TfGM.
 The data in this application is used under the Open Government Licence v3.0
 
 Contains Transport for Greater Manchester data
+
+This project uses the [Geolocation](https://www.nuget.org/packages/Geolocation/1.2.1) package under the M.I.T license. A copy of this license has been included [here](./Licenses/Geolocation.md)
