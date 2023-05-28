@@ -10,7 +10,7 @@ namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 /// </summary>
 public class StationNamesToTlarefLoader
 {
-    private readonly ResourcesConfig _resourcesConfig;
+    private readonly ResourcesConfig? _resourcesConfig;
 
     /// <summary>
     ///     Creates a new loader. Checks the ResourceConfig values provided are valid using
@@ -21,7 +21,10 @@ public class StationNamesToTlarefLoader
     public StationNamesToTlarefLoader(ResourcesConfig resourcesConfig)
     {
         var loaderHelper = new LoaderHelper();
-
+        
+        if (resourcesConfig.StationNamesToTlarefsPath == null)
+            return;
+        
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
 
         _resourcesConfig.StationNamesToTlarefsPath = LoaderHelper.CheckFileRequirements(
@@ -35,6 +38,9 @@ public class StationNamesToTlarefLoader
     /// <returns>StationNames to Tlarefs dict. Key is the station name.</returns>
     public Dictionary<string, string> ImportStationNamesToTlarefs()
     {
+        if (_resourcesConfig?.StationNamesToTlarefsPath == null)
+            return new Dictionary<string, string>();
+        
         using var reader = new StreamReader(_resourcesConfig.StationNamesToTlarefsPath!);
         var jsonString = reader.ReadToEnd();
         return JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString)!;

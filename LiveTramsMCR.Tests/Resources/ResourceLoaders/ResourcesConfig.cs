@@ -35,6 +35,11 @@ public class ResourcesConfig
     /// Path for the file that maps routes to an example timetable entry.
     /// </summary>
     public string? RouteTimesPath { get; set; }
+    
+    /// <summary>
+    /// Path for the file that contains the routes V2 information.
+    /// </summary>
+    public string? RoutesV2ResourcePath { get; set; }
 
     /// <summary>
     ///     Creates a Deep Copy of this resource config object.

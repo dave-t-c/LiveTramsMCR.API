@@ -11,6 +11,7 @@ public class ResourceLoader
     private readonly TlarefToIdsLoader _tlarefToIdsLoader;
     private readonly ResourcesConfig _config;
     private readonly RouteTimesLoader _routeTimesLoader;
+    private readonly RouteV2Loader _routeV2Loader;
 
     /// <summary>
     /// Creates a new resources loader using the given resources configuration.
@@ -25,6 +26,7 @@ public class ResourceLoader
         _stationNamesToTlarefLoader = new StationNamesToTlarefLoader(resourcesConfig);
         _tlarefToIdsLoader = new TlarefToIdsLoader(resourcesConfig);
         _routeTimesLoader = new RouteTimesLoader(resourcesConfig);
+        _routeV2Loader = new RouteV2Loader(resourcesConfig);
     }
 
     /// <summary>
@@ -42,7 +44,8 @@ public class ResourceLoader
             StationNamesToTlaref = _stationNamesToTlarefLoader.ImportStationNamesToTlarefs(),
             TlarefsToIds = _tlarefToIdsLoader.ImportTlarefsToIds(),
             ImportedRoutes = routeLoader.ImportRoutes(),
-            ImportedRouteTimes = _routeTimesLoader.ImportRouteTimes()
+            ImportedRouteTimes = _routeTimesLoader.ImportRouteTimes(),
+            ImportedRoutesV2 = _routeV2Loader.ImportRoutes()
         };
     }
 }

@@ -13,7 +13,7 @@ namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 public class RouteTimesLoader
 {
 
-    private readonly ResourcesConfig _resourcesConfig;
+    private readonly ResourcesConfig? _resourcesConfig;
     
     /// <summary>
     /// Creates a new route times loader using the resources config.
@@ -23,6 +23,9 @@ public class RouteTimesLoader
     public RouteTimesLoader(ResourcesConfig resourcesConfig)
     {
         var loaderHelper = new LoaderHelper();
+        if (resourcesConfig.RouteTimesPath == null)
+            return;
+        
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
         
         _resourcesConfig.RouteTimesPath = LoaderHelper.CheckFileRequirements(resourcesConfig.RouteTimesPath,
@@ -35,6 +38,8 @@ public class RouteTimesLoader
     /// <returns>Imported Times for Routes</returns>
     public List<RouteTimes> ImportRouteTimes()
     {
+        if (_resourcesConfig == null)
+            return new List<RouteTimes>();
         using var reader = new StreamReader(_resourcesConfig.RouteTimesPath!);
         var jsonString = reader.ReadToEnd();
         var unprocessedRouteTimes = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>> (jsonString);
