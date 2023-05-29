@@ -31,7 +31,7 @@ public class RouteRepositoryV2 : IRouteRepositoryV2
         return routes;
     }
 
-    private void PopulateRoutes(List<RouteV2> routes, List<StopV2> stops)
+    private static void PopulateRoutes(List<RouteV2> routes, List<StopV2> stops)
     {
         routes.ForEach(route => PopulateRoute(route, stops));
     }
