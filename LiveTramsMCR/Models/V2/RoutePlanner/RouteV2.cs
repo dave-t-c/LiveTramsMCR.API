@@ -42,6 +42,7 @@ public class RouteV2 {
     /// <summary>
     /// List of co-ordinates to create a polyline for the route.
     /// This follows the same direction as the stops.
+    /// In the format longitude, latitude
     /// </summary>
     public List<List<double>> PolylineCoordinates { get; set; }
 }
