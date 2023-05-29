@@ -5,7 +5,7 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner;
 /// <summary>
 /// Data model for processing route related requests
 /// </summary>
-public interface IRoutesDataModel
+public interface IRoutesDataModelV2
 {
     /// <summary>
     /// Returns all routes
