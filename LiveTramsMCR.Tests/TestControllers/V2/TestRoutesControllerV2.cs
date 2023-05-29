@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using LiveTramsMCR.Controllers.V2;
 using LiveTramsMCR.Models.V2.RoutePlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
@@ -55,4 +56,22 @@ public class TestRoutesControllerV2
         Assert.IsNotNull(okResult);
         Assert.AreEqual(200, okResult?.StatusCode);
     }
+
+    /// <summary>
+    /// Test to get all routes from the mock stops repository.
+    /// This should return the expected count of 8.
+    /// </summary>
+    [Test]
+    public void TestGetAllRoutesExpectedCount()
+    {
+        var result = _routesControllerV2?.GetRoutes();
+        Assert.IsNotNull(result);
+        
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        var retrievedStops = okResult!.Value as List<RouteV2> ?? new List<RouteV2>();
+        Assert.AreEqual(8, retrievedStops.Count);
+    }
+    
+    
 }
