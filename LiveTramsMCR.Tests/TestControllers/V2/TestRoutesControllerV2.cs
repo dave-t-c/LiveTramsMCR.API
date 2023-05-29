@@ -1,4 +1,6 @@
 
+using LiveTramsMCR.Models.V2.RoutePlanner.Data;
+using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
@@ -9,6 +11,7 @@ public class TestRoutesControllerV2
 
     private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
+    private IRouteRepositoryV2? _routeRepositoryV2;
 
     [SetUp]
     public void Setup()
@@ -18,6 +21,7 @@ public class TestRoutesControllerV2
             RoutesV2ResourcePath = "../../../Resources/RoutesV2.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
+        _routeRepositoryV2 = new MockRouteRepositoryV2(_importedResources.ImportedRoutesV2);
     }
 
     [TearDown]
