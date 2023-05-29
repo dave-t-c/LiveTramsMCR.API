@@ -30,6 +30,14 @@ public class RouteV2 {
     /// Stops belonging to a route in the order they can be travelled between.
     /// </summary>
     public List<StopKeysV2> Stops { get; set; }
+    
+    #nullable enable
+    /// <summary>
+    /// Stop detail generated using the Stop keys
+    /// Contains the full detail for all stops on the route.
+    /// </summary>
+    public List<StopV2>? StopsDetail { get; set; }
+    #nullable disable
 
     /// <summary>
     /// List of co-ordinates to create a polyline for the route.
