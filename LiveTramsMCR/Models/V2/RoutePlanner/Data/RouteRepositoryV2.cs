@@ -36,7 +36,7 @@ public class RouteRepositoryV2 : IRouteRepositoryV2
         routes.ForEach(route => PopulateRoute(route, stops));
     }
 
-    private void PopulateRoute(RouteV2 route, List<StopV2> stops)
+    private static void PopulateRoute(RouteV2 route, List<StopV2> stops)
     {
         route.StopsDetail = new List<StopV2>();
         foreach (var stopKey in route.Stops)
