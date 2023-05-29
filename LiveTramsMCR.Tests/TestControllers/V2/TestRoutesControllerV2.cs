@@ -1,4 +1,5 @@
 
+using LiveTramsMCR.Models.V2.RoutePlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
@@ -12,6 +13,7 @@ public class TestRoutesControllerV2
     private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
     private IRouteRepositoryV2? _routeRepositoryV2;
+    private IRoutesDataModel? _routesDataModel;
 
     [SetUp]
     public void Setup()
@@ -22,6 +24,7 @@ public class TestRoutesControllerV2
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _routeRepositoryV2 = new MockRouteRepositoryV2(_importedResources.ImportedRoutesV2);
+        _routesDataModel = new RoutesDataModel(_routeRepositoryV2);
     }
 
     [TearDown]
