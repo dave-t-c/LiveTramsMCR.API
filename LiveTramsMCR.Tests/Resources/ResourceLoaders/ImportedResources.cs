@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V2.RoutePlanner;
 using LiveTramsMCR.Models.V2.Stops;
 
 namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
@@ -21,6 +22,7 @@ public class ImportedResources
         TlarefsToIds = new Dictionary<string, List<int>>();
         ImportedRoutes = new List<Route>();
         ImportedRouteTimes = new List<RouteTimes>();
+        ImportedRoutesV2 = new List<RouteV2>();
     }
 
     /// <summary>
@@ -53,4 +55,9 @@ public class ImportedResources
     /// Stores the imported route times, used for calculating journey times.
     /// </summary>
     public List<RouteTimes> ImportedRouteTimes { get; init; }
+    
+    /// <summary>
+    /// Stores the imported RouteV2s
+    /// </summary>
+    public List<RouteV2> ImportedRoutesV2 { get; init; }
 }

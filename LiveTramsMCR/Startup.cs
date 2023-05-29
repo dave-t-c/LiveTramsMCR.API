@@ -7,6 +7,8 @@ using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Models.V2.RoutePlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Models.V2.Stops.Data;
 using Microsoft.AspNetCore.Builder;
@@ -66,11 +68,13 @@ public class Startup
         var stopsMongoCollection = db.GetCollection<Stop>("stops");
         var stopsV2MongoCollection = db.GetCollection<StopV2>("stopsV2");
         var routesMongoCollection = db.GetCollection<Route>("routes");
+        var routesV2MongoCollection = db.GetCollection<RouteV2>("routesV2");
         var routeTimesMongoCollection = db.GetCollection<RouteTimes>("route-times");
         
         IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
         IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection);
         IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
+        IRouteRepositoryV2 routeRepositoryV2 = new RouteRepositoryV2(routesV2MongoCollection, stopsRepositoryV2);
         
         IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
         services.AddSingleton(stopsDataModel);
@@ -85,6 +89,9 @@ public class Startup
         IJourneyPlanner journeyPlanner = new JourneyPlanner(routeRepository);
         IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(stopsRepository, journeyPlanner);
         services.AddSingleton(journeyPlannerModel);
+
+        IRoutesDataModelV2 routesDataModelV2 = new RoutesDataModelV2(routeRepositoryV2);
+        services.AddSingleton(routesDataModelV2);
 
         services.AddControllers();
 

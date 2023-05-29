@@ -14,8 +14,8 @@ namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 /// </summary>
 public class RouteLoader
 {
-    private readonly ResourcesConfig _resourcesConfig;
-    private readonly List<Stop> _importedStops;
+    private readonly ResourcesConfig? _resourcesConfig;
+    private readonly List<Stop>? _importedStops;
     private Dictionary<string, Stop> _stopsDictionary = new();
 
     /// <summary>
@@ -27,6 +27,9 @@ public class RouteLoader
     public RouteLoader(ResourcesConfig resourcesConfig, List<Stop> importedStops)
     {
         var loaderHelper = new LoaderHelper();
+        if (resourcesConfig.RoutesResourcePath == null)
+            return;
+        
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
         _importedStops = importedStops ?? throw new ArgumentNullException(nameof(importedStops));
 
@@ -41,6 +44,9 @@ public class RouteLoader
     /// <returns>List of Imported Routes</returns>
     public List<Route> ImportRoutes()
     {
+        if (_resourcesConfig == null)
+            return new List<Route>();
+        
         using var reader = new StreamReader(_resourcesConfig.RoutesResourcePath!);
         var jsonString = reader.ReadToEnd();
         var unprocessedRoutes = JsonConvert.DeserializeObject<List<UnprocessedRoute>> (jsonString);
@@ -48,7 +54,7 @@ public class RouteLoader
         
         //Create a Stops Dictionary for faster lookup instead of having to through the list
         _stopsDictionary = new Dictionary<string, Stop>();
-        foreach (var stop in _importedStops)
+        foreach (var stop in _importedStops!)
         {
             _stopsDictionary[stop.StopName] = stop;
         }
