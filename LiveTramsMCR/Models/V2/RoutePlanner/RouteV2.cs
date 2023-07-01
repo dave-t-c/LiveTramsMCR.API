@@ -9,7 +9,7 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner;
 /// <summary>
 /// Represents route information. 
 /// </summary>
-public abstract class RouteV2 {
+public class RouteV2 {
 
     /// <summary>
     /// Object ID used by mongodb
