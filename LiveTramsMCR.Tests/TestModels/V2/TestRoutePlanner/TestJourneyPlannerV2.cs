@@ -22,20 +22,24 @@ public class TestJourneyPlannerV2
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
     private StopLoader? _stopLoader;
-    private List<Stop>? _importedStopsV1s;
+    private List<Stop>? _importedStopsV1S;
     private StopV2Loader? _stopV2Loader;
-    private List<StopV2>? _importedStopsV2s;
+    private List<StopV2>? _importedStopsV2S;
     private RouteLoader? _routeLoader;
     private RouteV2Loader? _routeV2Loader;
     private List<Route>? _routes;
-    private List<RouteV2>? _routesV2s;
+    private List<RouteV2>? _routesV2S;
     private JourneyPlannerV2? _journeyPlanner;
     private List<RouteTimes>? _routeTimes;
     private MockRouteRepository? _mockRouteRepository;
     private MockRouteRepositoryV2? _mockRouteRepositoryV2;
     private MockStopsRepositoryV2? _mockStopsRepositoryV2;
     private RouteTimesLoader? _routeTimesLoader;
-    
+    public TestJourneyPlannerV2(List<Route>? routes)
+    {
+        _routes = routes;
+    }
+
     /// <summary>
     /// Sets up the required resources for testing route planning,
     /// such as importing stops and routes.
@@ -54,23 +58,22 @@ public class TestJourneyPlannerV2
         };
 
         _stopLoader = new StopLoader(_validResourcesConfig);
-        _importedStopsV1s = _stopLoader.ImportStops();
+        _importedStopsV1S = _stopLoader.ImportStops();
         
         _stopV2Loader = new StopV2Loader(_validResourcesConfig);
-        _importedStopsV2s = _stopV2Loader.ImportStops();
-
-        
-        
-        _routeLoader = new RouteLoader(_validResourcesConfig, _importedStopsV1s);
+        _importedStopsV2S = _stopV2Loader.ImportStops();
         
         _routeV2Loader = new RouteV2Loader(_validResourcesConfig);
-        _routesV2s = _routeV2Loader.ImportRoutes();
+        _routesV2S = _routeV2Loader.ImportRoutes();
+
+        _routeLoader = new RouteLoader(_validResourcesConfig, _importedStopsV1S);
+        _routes = _routeLoader.ImportRoutes();
 
         _routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
         _routeTimes = _routeTimesLoader.ImportRouteTimes();
-        _mockStopsRepositoryV2 = new MockStopsRepositoryV2(_importedStopsV2s);
+        _mockStopsRepositoryV2 = new MockStopsRepositoryV2(_importedStopsV2S);
         _mockRouteRepository = new MockRouteRepository(_routes, _routeTimes);
-        _mockRouteRepositoryV2 = new MockRouteRepositoryV2(_routesV2s, _mockStopsRepositoryV2);
+        _mockRouteRepositoryV2 = new MockRouteRepositoryV2(_routesV2S, _mockStopsRepositoryV2);
         _journeyPlanner = new JourneyPlannerV2(_mockRouteRepository, _mockRouteRepositoryV2);
     }
 
@@ -92,8 +95,8 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestIdentifyRouteOnSameLine()
     {
-        var altrinchamStop = _importedStopsV2s?.First(stop => stop.StopName == "Altrincham");
-        var saleStop = _importedStopsV2s?.First(stop => stop.StopName == "Sale");
+        var altrinchamStop = _importedStopsV2S?.First(stop => stop.StopName == "Altrincham");
+        var saleStop = _importedStopsV2S?.First(stop => stop.StopName == "Sale");
         var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, saleStop);
         //Should be two possible routes from the origin, purple and green
        Assert.IsNotNull(plannedJourney);
@@ -112,8 +115,8 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestPlanRouteInterchangeRequired()
     {
-        var airportStop = _importedStopsV2s?.First(stop => stop.StopName == "Manchester Airport");
-        var buryStop = _importedStopsV2s?.First(stop => stop.StopName == "Bury");
+        var airportStop = _importedStopsV2S?.First(stop => stop.StopName == "Manchester Airport");
+        var buryStop = _importedStopsV2S?.First(stop => stop.StopName == "Bury");
         var plannedJourney = _journeyPlanner?.PlanJourney(airportStop, buryStop);
         Assert.NotNull(plannedJourney);
         Assert.IsTrue(plannedJourney?.RequiresInterchange);
@@ -130,15 +133,15 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestIdentifyJourneyAirportBuryStops()
     {
-        var airportStop = _importedStopsV2s?.First(stop => stop.StopName == "Manchester Airport");
-        var buryStop = _importedStopsV2s?.First(stop => stop.StopName == "Bury");
+        var airportStop = _importedStopsV2S?.First(stop => stop.StopName == "Manchester Airport");
+        var buryStop = _importedStopsV2S?.First(stop => stop.StopName == "Bury");
         var plannedJourney = _journeyPlanner?.PlanJourney(airportStop, buryStop);
         Assert.IsNotNull(plannedJourney);
         Assert.IsNotNull(plannedJourney?.StopsFromOrigin);
         Assert.IsNotNull(plannedJourney?.StopsFromInterchange);
         Assert.IsNotNull(plannedJourney?.InterchangeStop);
         Assert.IsTrue(plannedJourney?.RequiresInterchange);
-        var victoriaStop = _importedStopsV2s?.First(stop => stop.StopName == "Victoria");
+        var victoriaStop = _importedStopsV2S?.First(stop => stop.StopName == "Victoria");
         Assert.AreEqual(victoriaStop, plannedJourney?.InterchangeStop);
         var originStops = plannedJourney?.StopsFromOrigin;
         var interchangeStops = plannedJourney?.StopsFromInterchange;
@@ -159,12 +162,12 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestIdentifyAltrinchamAshton()
     {
-        var altrinchamStop = _importedStopsV2s?.First(stop => stop.StopName == "Altrincham");
-        var ashtonStop = _importedStopsV2s?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var altrinchamStop = _importedStopsV2S?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStopsV2S?.First(stop => stop.StopName == "Ashton-Under-Lyne");
         var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, ashtonStop);
         Assert.IsNotNull(plannedJourney);
         Assert.IsTrue(plannedJourney?.RequiresInterchange);
-        var piccadillyStop = _importedStopsV2s?.First(stop => stop.StopName == "Piccadilly");
+        var piccadillyStop = _importedStopsV2S?.First(stop => stop.StopName == "Piccadilly");
         Assert.IsNotNull(plannedJourney?.InterchangeStop);
         Assert.AreEqual(piccadillyStop, plannedJourney?.InterchangeStop);
         Assert.AreEqual(1, plannedJourney?.RoutesFromOrigin.Count);
@@ -182,12 +185,12 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestIdentifyAshtonAltrincham()
     {
-        var altrinchamStop = _importedStopsV2s?.First(stop => stop.StopName == "Altrincham");
-        var ashtonStop = _importedStopsV2s?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var altrinchamStop = _importedStopsV2S?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStopsV2S?.First(stop => stop.StopName == "Ashton-Under-Lyne");
         var plannedJourney = _journeyPlanner?.PlanJourney(ashtonStop, altrinchamStop);
         Assert.IsNotNull(plannedJourney);
         Assert.IsTrue(plannedJourney?.RequiresInterchange);
-        var cornbrookStop = _importedStopsV2s?.First(stop => stop.StopName == "Cornbrook");
+        var cornbrookStop = _importedStopsV2S?.First(stop => stop.StopName == "Cornbrook");
         Assert.AreEqual(cornbrookStop, plannedJourney?.InterchangeStop);
         Assert.AreEqual(1, plannedJourney?.RoutesFromOrigin.Count);
         Assert.AreEqual(2, plannedJourney?.RoutesFromInterchange.Count);
@@ -206,12 +209,12 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestIdentifyAshtonBury()
     {
-        var ashtonStop = _importedStopsV2s?.First(stop => stop.StopName == "Ashton-Under-Lyne");
-        var buryStop = _importedStopsV2s?.First(stop => stop.StopName == "Bury");
+        var ashtonStop = _importedStopsV2S?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var buryStop = _importedStopsV2S?.First(stop => stop.StopName == "Bury");
         var plannedJourney = _journeyPlanner?.PlanJourney(ashtonStop, buryStop);
         Assert.IsNotNull(plannedJourney);
         Assert.IsTrue(plannedJourney?.RequiresInterchange);
-        var piccadillyGardensStop = _importedStopsV2s?.First(stop => stop.StopName == "Piccadilly Gardens");
+        var piccadillyGardensStop = _importedStopsV2S?.First(stop => stop.StopName == "Piccadilly Gardens");
         Assert.AreEqual(piccadillyGardensStop, plannedJourney?.InterchangeStop);
         Assert.AreEqual(1, plannedJourney?.RoutesFromOrigin.Count);
         Assert.AreEqual(12, plannedJourney?.StopsFromOrigin.Count);
@@ -230,8 +233,8 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestIdentifyDidsburyRochdale()
     {
-        var didsburyStop =  _importedStopsV2s?.First(stop => stop.StopName == "East Didsbury");
-        var rochdaleStop = _importedStopsV2s?.First(stop => stop.StopName == "Rochdale Town Centre");
+        var didsburyStop =  _importedStopsV2S?.First(stop => stop.StopName == "East Didsbury");
+        var rochdaleStop = _importedStopsV2S?.First(stop => stop.StopName == "Rochdale Town Centre");
         var plannedJourney = _journeyPlanner?.PlanJourney(didsburyStop, rochdaleStop);
         Assert.IsNotNull(plannedJourney);
         Assert.IsFalse(plannedJourney?.RequiresInterchange);
@@ -250,8 +253,8 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestIdentifyDidsburyShawAndCrompton()
     {
-        var didsburyStop =  _importedStopsV2s?.First(stop => stop.StopName == "East Didsbury");
-        var shawStop =  _importedStopsV2s?.First(stop => stop.StopName == "Shaw and Crompton");
+        var didsburyStop =  _importedStopsV2S?.First(stop => stop.StopName == "East Didsbury");
+        var shawStop =  _importedStopsV2S?.First(stop => stop.StopName == "Shaw and Crompton");
         var plannedJourney = _journeyPlanner?.PlanJourney(didsburyStop, shawStop);
         Assert.IsNotNull(plannedJourney);
         Assert.IsFalse(plannedJourney?.RequiresInterchange);
@@ -270,8 +273,8 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestIdentifyAltrinchamPiccadillyTimes()
     {
-        var altrinchamStop = _importedStopsV2s?.First(stop => stop.StopName == "Altrincham");
-        var piccadillyStop = _importedStopsV2s?.First(stop => stop.StopName == "Piccadilly");
+        var altrinchamStop = _importedStopsV2S?.First(stop => stop.StopName == "Altrincham");
+        var piccadillyStop = _importedStopsV2S?.First(stop => stop.StopName == "Piccadilly");
         var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, piccadillyStop);
         Assert.IsNotNull(plannedJourney);
         Assert.IsFalse(plannedJourney?.RequiresInterchange);
@@ -286,12 +289,12 @@ public class TestJourneyPlannerV2
     [Test]
     public void TestIdentifyAltrinchamAshtonTimes()
     {
-        var altrinchamStop = _importedStopsV2s?.First(stop => stop.StopName == "Altrincham");
-        var ashtonStop = _importedStopsV2s?.First(stop => stop.StopName == "Ashton-Under-Lyne");
+        var altrinchamStop = _importedStopsV2S?.First(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStopsV2S?.First(stop => stop.StopName == "Ashton-Under-Lyne");
         var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, ashtonStop);
         Assert.IsNotNull(plannedJourney);
         Assert.IsTrue(plannedJourney?.RequiresInterchange);
-        var piccadillyStop = _importedStopsV2s?.First(stop => stop.StopName == "Piccadilly");
+        var piccadillyStop = _importedStopsV2S?.First(stop => stop.StopName == "Piccadilly");
         Assert.AreEqual(piccadillyStop, plannedJourney?.InterchangeStop);
         Assert.AreEqual(32, plannedJourney?.MinutesFromOrigin);
         Assert.AreEqual(28, plannedJourney?.MinutesFromInterchange);

@@ -71,7 +71,7 @@ public class JourneyPlannerV2 : IJourneyPlannerV2
         var terminiFromOrigin = new HashSet<StopKeysV2>();
         foreach (var route in originRoutes)
         {
-            terminiFromOrigin.Add(RouteIdentifierV2.IdentifyRouteTerminus(origin, destination, route));
+            terminiFromOrigin.Add(_routeIdentifierV2.IdentifyRouteTerminus(origin, destination, route));
         }
 
         var minutesFromOrigin = IdentifyJourneyTime(originRoutes.First(), origin, destination);
@@ -100,7 +100,7 @@ public class JourneyPlannerV2 : IJourneyPlannerV2
         var terminiFromOrigin = new HashSet<StopKeysV2>();
         foreach (var route in originRoutes)
         {
-            terminiFromOrigin.Add(RouteIdentifierV2.IdentifyRouteTerminus(origin, interchangeStopKeys, route));
+            terminiFromOrigin.Add(_routeIdentifierV2.IdentifyRouteTerminus(origin, interchangeStopKeys, route));
         }
 
 
@@ -112,7 +112,7 @@ public class JourneyPlannerV2 : IJourneyPlannerV2
         foreach (var route in interchangeRoutes)
         {
             terminiFromInterchange.Add(
-                RouteIdentifierV2.IdentifyRouteTerminus(
+                _routeIdentifierV2.IdentifyRouteTerminus(
                     interchangeStopKeys, 
                     destination, 
                     route)

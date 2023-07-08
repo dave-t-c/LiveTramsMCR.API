@@ -143,7 +143,7 @@ public class RouteIdentifierV2
     /// <param name="destination">Destination of journey on route</param>
     /// <param name="route">Route travelling on</param>
     /// <returns>Terminus Stop for the route direction</returns>
-    public static StopKeysV2 IdentifyRouteTerminus(StopKeysV2 origin, StopKeysV2 destination, RouteV2 route)
+    public StopKeysV2 IdentifyRouteTerminus(StopKeysV2 origin, StopKeysV2 destination, RouteV2 route)
     {
         route.ValidateStopsOnRoute(origin, destination);
 
@@ -164,6 +164,4 @@ public class RouteIdentifierV2
             stop.StopName == stopKeys.StopName &&
             stop.Tlaref == stopKeys.Tlaref);
     }
-
-    
 }

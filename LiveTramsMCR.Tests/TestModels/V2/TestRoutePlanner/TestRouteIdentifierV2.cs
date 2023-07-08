@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Models.V2.RoutePlanner;
+using LiveTramsMCR.Models.V2.Stops;
+using LiveTramsMCR.Tests.Extensions;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
@@ -12,19 +15,17 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 /// </summary>
 public class TestRouteIdentifierV2
 {
-    
-    private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
-    private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
-    private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
-    private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
+    private const string RoutesResourcePath = "../../../Resources/RoutesV2.json";
+    private const string StopResourcePathConst = "../../../Resources/StopsV2.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
-    private List<Stop>? _importedStops;
-    private List<Route>? _routes;
-    private ResourceLoader? _resourceLoader;
-    private ImportedResources? _importedResources;
-    private MockRouteRepository? _mockRouteRepository;
-    private RouteIdentifier? _routeIdentifier;
+    private List<StopV2>? _importedStops;
+    private List<RouteV2>? _routes;
+    private StopV2Loader? _stopV2Loader;
+    private RouteV2Loader? _routeV2Loader;
+    private MockRouteRepositoryV2? _mockRouteRepositoryV2;
+    private MockStopsRepositoryV2? _mockStopsRepositoryV2;
+    private RouteIdentifierV2? _routeIdentifier;
     
     /// <summary>
     /// Import routes / stops before each test.
@@ -36,20 +37,24 @@ public class TestRouteIdentifierV2
         //Stops are imported and then selected instead of created.
         _validResourcesConfig = new ResourcesConfig
         {
-            StopResourcePath = StopResourcePathConst,
-            StationNamesToTlarefsPath = StationNamesToTlarefsPath,
-            TlarefsToIdsPath = TlarefsToIdsPath,
-            RoutesResourcePath = RoutesResourcePath,
-            RouteTimesPath = RouteTimesPath
+            RouteTimesPath = RouteTimesPath,
+            RoutesV2ResourcePath = RoutesResourcePath,
+            StopV2ResourcePath = StopResourcePathConst,
         };
 
-        _resourceLoader = new ResourceLoader(_validResourcesConfig);
-        _importedResources = _resourceLoader.ImportResources();
-        _mockRouteRepository =
-            new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
-        _importedStops = _importedResources.ImportedStops;
-        _routes = _importedResources.ImportedRoutes;
-        _routeIdentifier = new RouteIdentifier(_mockRouteRepository);
+        _stopV2Loader = new StopV2Loader(_validResourcesConfig);
+        _importedStops = _stopV2Loader.ImportStops();
+
+        _mockStopsRepositoryV2 = new MockStopsRepositoryV2(_importedStops);
+
+        _routeV2Loader = new RouteV2Loader(_validResourcesConfig);
+        _routes = _routeV2Loader.ImportRoutes();
+        
+        _mockRouteRepositoryV2 = new MockRouteRepositoryV2(
+            _routes,
+            _mockStopsRepositoryV2);
+        
+        _routeIdentifier = new RouteIdentifierV2(_mockRouteRepositoryV2);
     }
 
     /// <summary>
@@ -73,8 +78,12 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIsInterchangeRequired()
     {
-        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
-        var saleStop = _importedStops?.First(stop => stop.StopName == "Sale");
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham")
+            .ConvertToStopKeysV2();
+        
+        var saleStop = _importedStops?.First(stop => stop.StopName == "Sale")
+            .ConvertToStopKeysV2();
+        
         Assert.IsFalse(_routeIdentifier?.IsInterchangeRequired(altrinchamStop, saleStop));
     }
 
@@ -85,8 +94,12 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestInterchangeShouldBeRequired()
     {
-        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
-        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton Moss");
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham")
+            .ConvertToStopKeysV2();
+        
+        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton Moss")
+            .ConvertToStopKeysV2();
+        
         Assert.IsTrue(_routeIdentifier?.IsInterchangeRequired(altrinchamStop, ashtonStop));
     }
 
@@ -98,7 +111,8 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestInterchangeNullOrigin()
     {
-        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham")
+            .ConvertToStopKeysV2();
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
             delegate
@@ -115,7 +129,9 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestInterchangeNullDest()
     {
-        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham")
+            .ConvertToStopKeysV2();
+        
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
             delegate
@@ -131,8 +147,12 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyInterChange()
     {
-        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
-        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton Moss");
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham")
+            .ConvertToStopKeysV2();
+        
+        var ashtonStop = _importedStops?.First(stop => stop.StopName == "Ashton Moss")
+            .ConvertToStopKeysV2();
+        
         var interchangeStop = _routeIdentifier?.IdentifyInterchangeStop(altrinchamStop, ashtonStop);
         Assert.NotNull(interchangeStop);
         Assert.AreEqual("Piccadilly", interchangeStop?.StopName);
@@ -146,8 +166,10 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyEcclesTraffordCentreInterchange()
     {
-        var ecclesStop = _importedStops?.First(stop => stop.StopName == "Eccles");
-        var traffordStop = _importedStops?.First(stop => stop.StopName == "The Trafford Centre");
+        var ecclesStop = _importedStops?.First(stop => stop.StopName == "Eccles")
+            .ConvertToStopKeysV2();
+        var traffordStop = _importedStops?.First(stop => stop.StopName == "The Trafford Centre")
+            .ConvertToStopKeysV2();
         var interchangeStop = _routeIdentifier?.IdentifyInterchangeStop(ecclesStop, traffordStop);
         Assert.IsNotNull(interchangeStop);
         Assert.AreEqual("Pomona", interchangeStop?.StopName);
@@ -160,8 +182,10 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyInterchangeAirportBury()
     {
-        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
-        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport")
+            .ConvertToStopKeysV2();
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury")
+            .ConvertToStopKeysV2();
         var interchangeStop = _routeIdentifier?.IdentifyInterchangeStop(airportStop, buryStop);
         Assert.IsNotNull(interchangeStop);
         Assert.AreEqual("Victoria", interchangeStop?.StopName);
@@ -175,8 +199,10 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyInterchangeAirportDidsbury()
     {
-        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
-        var didsburyStop = _importedStops?.First(stop => stop.StopName == "East Didsbury");
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport")
+            .ConvertToStopKeysV2();
+        var didsburyStop = _importedStops?.First(stop => stop.StopName == "East Didsbury")
+            .ConvertToStopKeysV2();
         var interchangeStop = _routeIdentifier?.IdentifyInterchangeStop(airportStop, didsburyStop);
         Assert.IsNotNull(interchangeStop);
         Assert.AreEqual("St Werburgh's Road", interchangeStop?.StopName);
@@ -189,7 +215,9 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyInterchangeNullOrigin()
     {
-        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport")
+            .ConvertToStopKeysV2();
+        
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
             delegate
@@ -205,7 +233,8 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyInterchangeNullDestination()
     {
-        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport");
+        var airportStop = _importedStops?.First(stop => stop.StopName == "Manchester Airport")
+            .ConvertToStopKeysV2();
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
             delegate
@@ -221,12 +250,14 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyRoutesBetweenStops()
     {
-        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
-        var cornbrookStop = _importedStops?.First(stop => stop.StopName == "Cornbrook");
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham")
+            .ConvertToStopKeysV2();
+        var cornbrookStop = _importedStops?.First(stop => stop.StopName == "Cornbrook")
+            .ConvertToStopKeysV2();
 
         var identifiedRoutes = _routeIdentifier?.IdentifyRoutesBetween(altrinchamStop, cornbrookStop);
         Assert.IsNotNull(identifiedRoutes);
-        Assert.IsNotEmpty(identifiedRoutes ?? new List<Route>());
+        Assert.IsNotEmpty(identifiedRoutes ?? new List<RouteV2>());
         Assert.AreEqual(2, identifiedRoutes?.Count);
         Assert.That(identifiedRoutes!.Any(route => route.Name == "Purple"));
         Assert.That(identifiedRoutes!.Any(route => route.Name == "Green"));
@@ -240,11 +271,13 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyRoutesBetweenBuryMarketStreet()
     {
-        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
-        var marketStreetStop = _importedStops?.First(stop => stop.StopName == "Market Street");
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury")
+            .ConvertToStopKeysV2();
+        var marketStreetStop = _importedStops?.First(stop => stop.StopName == "Market Street")
+            .ConvertToStopKeysV2();
         var identifiedRoutes = _routeIdentifier?.IdentifyRoutesBetween(buryStop, marketStreetStop);
         Assert.IsNotNull(identifiedRoutes);
-        Assert.IsNotEmpty(identifiedRoutes ?? new List<Route>());
+        Assert.IsNotEmpty(identifiedRoutes ?? new List<RouteV2>());
         Assert.AreEqual(2, identifiedRoutes?.Count);
         Assert.That(identifiedRoutes!.Any(route => route.Name == "Green"));
         Assert.That(identifiedRoutes!.Any(route => route.Name == "Yellow"));
@@ -258,7 +291,8 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyRoutesBetweenNullOrigin()
     {
-        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury")
+            .ConvertToStopKeysV2();
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
             delegate
@@ -274,173 +308,13 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyRoutesBetweenNullDestination()
     {
-        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury")
+            .ConvertToStopKeysV2();
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
             delegate
             {
                 var unused = _routeIdentifier?.IdentifyRoutesBetween(buryStop, null);
-            });
-    }
-
-    /// <summary>
-    /// Test to identify the stops between an
-    /// origin and a destination on a given route.
-    /// This should identify a single stop, and not include the origin or destination Stop.
-    /// </summary>
-    [Test]
-    public void TestIdentifyIntermediateStops()
-    {
-        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
-        var timperleyStop = _importedStops?.First(stop => stop.StopName == "Timperley");
-        var purpleRoute = _routes?.First(route => route.Name == "Purple");
-        var intermediateStops = _routeIdentifier?
-            .IdentifyIntermediateStops(altrinchamStop, timperleyStop, purpleRoute);
-        Assert.IsNotNull(intermediateStops);
-        Assert.IsNotEmpty(intermediateStops!);
-        Assert.AreEqual(1, intermediateStops?.Count);
-        Assert.IsTrue(intermediateStops?.Any(stop => stop.StopName == "Navigation Road"));
-    }
-
-    /// <summary>
-    /// Test to identify intermediate stops for a different journey.
-    /// This should return the stops between Stretford and Brooklands
-    /// starting with Dane Road.
-    /// This should match the order they would be traversed in if travelled between.
-    /// </summary>
-    [Test]
-    public void TestIdentifyIntermediateStopsDifferentRoute()
-    {
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
-        var purpleRoute = _routes?.First(route => route.Name == "Purple");
-        var intermediateStops = _routeIdentifier?
-            .IdentifyIntermediateStops(stretfordStop, brooklandsStop, purpleRoute);
-        Assert.IsNotNull(intermediateStops);
-        Assert.IsNotEmpty(intermediateStops!);
-        Assert.AreEqual(2, intermediateStops?.Count);
-        Assert.AreEqual(0, intermediateStops?.IndexOf(
-            intermediateStops.First(stop => stop.StopName == "Dane Road"))
-        );
-        Assert.AreEqual(1, intermediateStops?.IndexOf(
-            intermediateStops.First(stop => stop.StopName == "Sale"))
-        );
-    }
-
-    /// <summary>
-    /// Test to identify the same intermediate stops as the previous test,
-    /// but as the origin and destination have been swapped, they should be in the
-    /// opposite order.
-    /// </summary>
-    [Test]
-    public void TestIdentifyIntermediateStopsReverse()
-    {
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
-        var purpleRoute = _routes?.First(route => route.Name == "Purple");
-        var intermediateStops = _routeIdentifier?
-            .IdentifyIntermediateStops(brooklandsStop, stretfordStop, purpleRoute);
-        Assert.IsNotNull(intermediateStops);
-        Assert.IsNotEmpty(intermediateStops!);
-        Assert.AreEqual(2, intermediateStops?.Count);
-        Assert.AreEqual(1, intermediateStops?.IndexOf(
-            intermediateStops.First(stop => stop.StopName == "Dane Road"))
-        );
-        Assert.AreEqual(0, intermediateStops?.IndexOf(
-            intermediateStops.First(stop => stop.StopName == "Sale"))
-        );
-    }
-
-    /// <summary>
-    /// Test to identify an intermediate stops with an origin Stop not on the route.
-    /// This should throw an InvalidOperationException.
-    /// </summary>
-    [Test]
-    public void TestIdentifyIntermediateStopsWithInvalidStop()
-    {
-        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var purpleRoute = _routes?.First(route => route.Name == "Purple");
-        Assert.Throws(Is.TypeOf<InvalidOperationException>()
-                .And.Message.EqualTo("Bury does not exist on Purple route"),
-            delegate
-            {
-                var unused = _routeIdentifier?
-                    .IdentifyIntermediateStops(buryStop, stretfordStop, purpleRoute);
-            });
-    }
-
-    /// <summary>
-    /// Test to identify intermediate stops where the destination stop
-    /// does not belong to the route.
-    /// This should throw an invalid op exception.
-    /// </summary>
-    [Test]
-    public void TestIdentifyIntermediateStopsWithInvalidDestinationStop()
-    {
-        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var purpleRoute = _routes?.First(route => route.Name == "Purple");
-        Assert.Throws(Is.TypeOf<InvalidOperationException>()
-                .And.Message.EqualTo("Bury does not exist on Purple route"),
-            delegate
-            {
-                var unused = _routeIdentifier?
-                    .IdentifyIntermediateStops(stretfordStop, buryStop, purpleRoute);
-            });
-    }
-
-    /// <summary>
-    /// Test to identify intermediate stops with a null origin.
-    /// This should throw an args null exception.
-    /// </summary>
-    [Test]
-    public void TestIdentifyIntermediateRouteNullOrigin()
-    {
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var purpleRoute = _routes?.First(route => route.Name == "Purple");
-        Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
-            delegate
-            {
-                var unused = _routeIdentifier?
-                    .IdentifyIntermediateStops(null, stretfordStop, purpleRoute);
-            });
-    }
-    
-    /// <summary>
-    /// Test to identify intermediate stops with a null destination.
-    /// This should throw an args null exception.
-    /// </summary>
-    [Test]
-    public void TestIdentifyIntermediateRouteNullDestination()
-    {
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var purpleRoute = _routes?.First(route => route.Name == "Purple");
-        Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
-            delegate
-            {
-                var unused = _routeIdentifier?
-                    .IdentifyIntermediateStops(stretfordStop, null, purpleRoute);
-            });
-    }
-    
-    /// <summary>
-    /// Test to identify intermediate stops with a null route.
-    /// This should throw an args null exception.
-    /// </summary>
-    [Test]
-    public void TestIdentifyIntermediateRouteNullRoute()
-    {
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
-        Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'route')"),
-            delegate
-            {
-                var unused = _routeIdentifier?
-                    .IdentifyIntermediateStops(stretfordStop, brooklandsStop, null);
             });
     }
 
@@ -452,8 +326,10 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyTramTerminusForRoute()
     {
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford")
+            .ConvertToStopKeysV2();
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands")
+            .ConvertToStopKeysV2();
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         var identifiedTerminus = _routeIdentifier?
             .IdentifyRouteTerminus(stretfordStop, brooklandsStop, purpleRoute);
@@ -471,8 +347,10 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyTramTerminusForReverseRoute()
     {
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford")
+            .ConvertToStopKeysV2();
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands")
+            .ConvertToStopKeysV2();
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         var identifiedTerminus = _routeIdentifier?
             .IdentifyRouteTerminus(brooklandsStop, stretfordStop, purpleRoute);
@@ -490,7 +368,8 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyTerminusNullOrigin()
     {
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands")
+            .ConvertToStopKeysV2();
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
@@ -508,7 +387,8 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyTerminusNullDestination()
     {
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands")
+            .ConvertToStopKeysV2();
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
@@ -526,8 +406,10 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyTerminusNullRoute()
     {
-        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford");
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var stretfordStop = _importedStops?.First(stop => stop.StopName == "Stretford")
+            .ConvertToStopKeysV2();
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands")
+            .ConvertToStopKeysV2();
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'route')"),
             delegate
@@ -545,8 +427,12 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyTerminusOriginNotOnRoute()
     {
-        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury")
+            .ConvertToStopKeysV2();
+        
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands")
+            .ConvertToStopKeysV2();
+        
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         Assert.Throws(Is.TypeOf<InvalidOperationException>()
                 .And.Message.EqualTo("Bury does not exist on Purple route"),
@@ -565,8 +451,10 @@ public class TestRouteIdentifierV2
     [Test]
     public void TestIdentifyTerminusDestinationNotOnRoute()
     {
-        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury");
-        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands");
+        var buryStop = _importedStops?.First(stop => stop.StopName == "Bury")
+            .ConvertToStopKeysV2();
+        var brooklandsStop = _importedStops?.First(stop => stop.StopName == "Brooklands")
+            .ConvertToStopKeysV2();
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         Assert.Throws(Is.TypeOf<InvalidOperationException>()
                 .And.Message.EqualTo("Bury does not exist on Purple route"),
