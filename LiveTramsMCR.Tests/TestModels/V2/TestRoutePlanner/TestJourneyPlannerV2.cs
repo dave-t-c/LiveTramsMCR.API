@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
-using LiveTramsMCR.Models.V2.RoutePlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
@@ -13,8 +12,8 @@ using NUnit.Framework;
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 
 /// <summary>
-/// Test class for the route planner, a class for
-/// identifying routes between given stops
+///     Test class for the route planner, a class for
+///     identifying routes between given stops
 /// </summary>
 public class TestJourneyPlannerV2
 {
@@ -22,25 +21,25 @@ public class TestJourneyPlannerV2
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
-    private ResourcesConfig? _validResourcesConfig;
-    private StopLoader? _stopLoader;
     private List<Stop>? _importedStopsV1S;
-    private StopV2Loader? _stopV2Loader;
     private List<StopV2>? _importedStopsV2S;
-    private RouteLoader? _routeLoader;
-    private RouteV2Loader? _routeV2Loader;
-    private List<Route>? _routes;
-    private List<RouteV2>? _routesV2S;
     private JourneyPlannerV2? _journeyPlanner;
-    private List<RouteTimes>? _routeTimes;
     private MockRouteRepository? _mockRouteRepository;
     private MockRouteRepositoryV2? _mockRouteRepositoryV2;
     private MockStopsRepositoryV2? _mockStopsRepositoryV2;
+    private RouteLoader? _routeLoader;
+    private List<Route>? _routes;
+    private List<RouteV2>? _routesV2S;
+    private List<RouteTimes>? _routeTimes;
     private RouteTimesLoader? _routeTimesLoader;
+    private RouteV2Loader? _routeV2Loader;
+    private StopLoader? _stopLoader;
+    private StopV2Loader? _stopV2Loader;
+    private ResourcesConfig? _validResourcesConfig;
 
     /// <summary>
-    /// Sets up the required resources for testing route planning,
-    /// such as importing stops and routes.
+    ///     Sets up the required resources for testing route planning,
+    ///     such as importing stops and routes.
     /// </summary>
     [SetUp]
     public void SetUp()
@@ -57,10 +56,10 @@ public class TestJourneyPlannerV2
 
         _stopLoader = new StopLoader(_validResourcesConfig);
         _importedStopsV1S = _stopLoader.ImportStops();
-        
+
         _stopV2Loader = new StopV2Loader(_validResourcesConfig);
         _importedStopsV2S = _stopV2Loader.ImportStops();
-        
+
         _routeV2Loader = new RouteV2Loader(_validResourcesConfig);
         _routesV2S = _routeV2Loader.ImportRoutes();
 
@@ -76,7 +75,7 @@ public class TestJourneyPlannerV2
     }
 
     /// <summary>
-    /// Clear configs after each test to avoid cross-test bugs.
+    ///     Clear configs after each test to avoid cross-test bugs.
     /// </summary>
     [TearDown]
     public void TearDown()
@@ -85,10 +84,10 @@ public class TestJourneyPlannerV2
     }
 
     /// <summary>
-    /// Test to plan a route on a single line between Altrincham and Sale
-    /// This should return a planned route POCO with the expected origin and destination stops.
-    /// This should return that the journey does not require an interchange
-    /// and has two possible routes from the origin.
+    ///     Test to plan a route on a single line between Altrincham and Sale
+    ///     This should return a planned route POCO with the expected origin and destination stops.
+    ///     This should return that the journey does not require an interchange
+    ///     and has two possible routes from the origin.
     /// </summary>
     [Test]
     public void TestIdentifyRouteOnSameLine()
@@ -97,18 +96,18 @@ public class TestJourneyPlannerV2
         var saleStop = _importedStopsV2S?.First(stop => stop.StopName == "Sale");
         var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, saleStop);
         //Should be two possible routes from the origin, purple and green
-       Assert.IsNotNull(plannedJourney);
-       Assert.IsFalse(plannedJourney?.RequiresInterchange);
-       Assert.IsNotNull(plannedJourney?.RoutesFromOrigin);
-       Assert.AreEqual(2, plannedJourney?.RoutesFromOrigin.Count);
-       Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Green"));
-       Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Purple"));
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsFalse(plannedJourney?.RequiresInterchange);
+        Assert.IsNotNull(plannedJourney?.RoutesFromOrigin);
+        Assert.AreEqual(2, plannedJourney?.RoutesFromOrigin.Count);
+        Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Green"));
+        Assert.IsTrue(plannedJourney?.RoutesFromOrigin.Any(route => route.Name == "Purple"));
     }
 
 
     /// <summary>
-    /// Test to identify a route where an interchange is required.
-    /// This should be true.
+    ///     Test to identify a route where an interchange is required.
+    ///     This should be true.
     /// </summary>
     [Test]
     public void TestPlanRouteInterchangeRequired()
@@ -123,10 +122,10 @@ public class TestJourneyPlannerV2
         Assert.IsTrue(plannedJourney?.RoutesFromInterchange.Any(route => route.Name == "Green"));
         Assert.IsTrue(plannedJourney?.RoutesFromInterchange.Any(route => route.Name == "Yellow"));
     }
-    
+
     /// <summary>
-    /// Test to identify a route between the airport and bury.
-    /// This should include the expected stops before and after the interchange.
+    ///     Test to identify a route between the airport and bury.
+    ///     This should include the expected stops before and after the interchange.
     /// </summary>
     [Test]
     public void TestIdentifyJourneyAirportBuryStops()
@@ -149,13 +148,13 @@ public class TestJourneyPlannerV2
         var destinationsFromInterchange = plannedJourney?.TerminiFromInterchange;
         Assert.AreEqual(1, destinationsFromOrigin?.Count);
         Assert.AreEqual(1, destinationsFromInterchange?.Count);
-        
+
     }
 
     /// <summary>
-    /// Test to identify the expected route between Altrincham and
-    /// Ashton.
-    /// This should identify Piccadilly as the interchange stop.
+    ///     Test to identify the expected route between Altrincham and
+    ///     Ashton.
+    ///     This should identify Piccadilly as the interchange stop.
     /// </summary>
     [Test]
     public void TestIdentifyAltrinchamAshton()
@@ -176,9 +175,9 @@ public class TestJourneyPlannerV2
 
 
     /// <summary>
-    /// Test to identify a route between Ashton and Altrincham.
-    /// This should identify Cornbrook as the interchange stop.
-    /// There should also be two routes from the interchange stop.
+    ///     Test to identify a route between Ashton and Altrincham.
+    ///     This should identify Cornbrook as the interchange stop.
+    ///     There should also be two routes from the interchange stop.
     /// </summary>
     [Test]
     public void TestIdentifyAshtonAltrincham()
@@ -201,8 +200,8 @@ public class TestJourneyPlannerV2
     }
 
     /// <summary>
-    /// Test to identify a route between Ashton and Bury.
-    /// This should identify Piccadilly Gardens as the interchange, and the Yellow line.
+    ///     Test to identify a route between Ashton and Bury.
+    ///     This should identify Piccadilly Gardens as the interchange, and the Yellow line.
     /// </summary>
     [Test]
     public void TestIdentifyAshtonBury()
@@ -224,14 +223,14 @@ public class TestJourneyPlannerV2
     }
 
     /// <summary>
-    /// Test to identify a route between Didsbury and Rochdale.
-    /// This should identify an interchange is not required,
-    /// and there is only one possible route.
+    ///     Test to identify a route between Didsbury and Rochdale.
+    ///     This should identify an interchange is not required,
+    ///     and there is only one possible route.
     /// </summary>
     [Test]
     public void TestIdentifyDidsburyRochdale()
     {
-        var didsburyStop =  _importedStopsV2S?.First(stop => stop.StopName == "East Didsbury");
+        var didsburyStop = _importedStopsV2S?.First(stop => stop.StopName == "East Didsbury");
         var rochdaleStop = _importedStopsV2S?.First(stop => stop.StopName == "Rochdale Town Centre");
         var plannedJourney = _journeyPlanner?.PlanJourney(didsburyStop, rochdaleStop);
         Assert.IsNotNull(plannedJourney);
@@ -245,14 +244,14 @@ public class TestJourneyPlannerV2
 
 
     /// <summary>
-    /// Test to identify a journey between Didsbury and shaw and crompton.
-    /// This should identify that no interchange is required, 
+    ///     Test to identify a journey between Didsbury and shaw and crompton.
+    ///     This should identify that no interchange is required,
     /// </summary>
     [Test]
     public void TestIdentifyDidsburyShawAndCrompton()
     {
-        var didsburyStop =  _importedStopsV2S?.First(stop => stop.StopName == "East Didsbury");
-        var shawStop =  _importedStopsV2S?.First(stop => stop.StopName == "Shaw and Crompton");
+        var didsburyStop = _importedStopsV2S?.First(stop => stop.StopName == "East Didsbury");
+        var shawStop = _importedStopsV2S?.First(stop => stop.StopName == "Shaw and Crompton");
         var plannedJourney = _journeyPlanner?.PlanJourney(didsburyStop, shawStop);
         Assert.IsNotNull(plannedJourney);
         Assert.IsFalse(plannedJourney?.RequiresInterchange);
@@ -265,8 +264,8 @@ public class TestJourneyPlannerV2
     }
 
     /// <summary>
-    /// Test to identify the route time between Altrincham and Piccadilly.
-    /// This does not require an interchange  
+    ///     Test to identify the route time between Altrincham and Piccadilly.
+    ///     This does not require an interchange
     /// </summary>
     [Test]
     public void TestIdentifyAltrinchamPiccadillyTimes()
@@ -280,9 +279,9 @@ public class TestJourneyPlannerV2
     }
 
     /// <summary>
-    /// Test to identify the route time between Altrincham and Asthon.
-    /// This requires an interchange so both minutes from origin and minutes
-    /// from interchange should not be 0.
+    ///     Test to identify the route time between Altrincham and Asthon.
+    ///     This requires an interchange so both minutes from origin and minutes
+    ///     from interchange should not be 0.
     /// </summary>
     [Test]
     public void TestIdentifyAltrinchamAshtonTimes()
@@ -298,5 +297,4 @@ public class TestJourneyPlannerV2
         Assert.AreEqual(28, plannedJourney?.MinutesFromInterchange);
         Assert.AreEqual(60, plannedJourney?.TotalJourneyTimeMinutes);
     }
-    
 }

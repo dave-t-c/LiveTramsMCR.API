@@ -12,7 +12,7 @@ public static class TestExtensions
             throw new InvalidOperationException("Unable to convert null stop to stop keys");
         }
 
-        return new StopKeysV2()
+        return new StopKeysV2
         {
             StopName = source.StopName, Tlaref = source.Tlaref
         };

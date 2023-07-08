@@ -4,14 +4,14 @@ using LiveTramsMCR.Models.V2.Stops.Data;
 namespace LiveTramsMCR.Models.V2.Stops;
 
 /// <summary>
-/// Looks up a 
+///     Looks up a
 /// </summary>
 public class StopLookupV2
 {
     private readonly IStopsRepositoryV2 _stopsRepositoryV2;
-    
+
     /// <summary>
-    /// Creates a new stop lookup. The stops repository is used to lookup stops.
+    ///     Creates a new stop lookup. The stops repository is used to lookup stops.
     /// </summary>
     /// <param name="stopsRepositoryV2"></param>
     public StopLookupV2(IStopsRepositoryV2 stopsRepositoryV2)
@@ -20,18 +20,18 @@ public class StopLookupV2
     }
 
     /// <summary>
-    /// Looks up a stop tlaref or name from a value string.
+    ///     Looks up a stop tlaref or name from a value string.
     /// </summary>
     public StopV2 LookupStop(string value)
     {
         if (value is null)
-            throw new ArgumentNullException(paramName: nameof(value));
-        
+            throw new ArgumentNullException(nameof(value));
+
         var stop = _stopsRepositoryV2.GetStop(value);
 
         if (stop is null)
             throw new ArgumentException("Value given is not a valid station name or TLAREF");
-        
+
         return stop;
     }
 }

@@ -7,37 +7,37 @@ namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 public class ResourcesConfig
 {
     /// <summary>
-    /// Path for the json file containing stops.
+    ///     Path for the json file containing stops.
     /// </summary>
     public string? StopResourcePath { get; set; }
-    
+
     /// <summary>
-    /// Path for the json file contains stops for stops v2.
+    ///     Path for the json file contains stops for stops v2.
     /// </summary>
     public string? StopV2ResourcePath { get; set; }
-    
+
     /// <summary>
-    /// Path for file that maps the station names to their associated tlaref.
+    ///     Path for file that maps the station names to their associated tlaref.
     /// </summary>
     public string? StationNamesToTlarefsPath { get; set; }
-    
+
     /// <summary>
-    /// Path for file that maps a stations tlaref to it's associated IDs.
+    ///     Path for file that maps a stations tlaref to it's associated IDs.
     /// </summary>
     public string? TlarefsToIdsPath { get; set; }
-    
+
     /// <summary>
-    /// Path for the routes resource file that maps routes to their stop names.
+    ///     Path for the routes resource file that maps routes to their stop names.
     /// </summary>
     public string? RoutesResourcePath { get; set; }
-    
+
     /// <summary>
-    /// Path for the file that maps routes to an example timetable entry.
+    ///     Path for the file that maps routes to an example timetable entry.
     /// </summary>
     public string? RouteTimesPath { get; set; }
-    
+
     /// <summary>
-    /// Path for the file that contains the routes V2 information.
+    ///     Path for the file that contains the routes V2 information.
     /// </summary>
     public string? RoutesV2ResourcePath { get; set; }
 

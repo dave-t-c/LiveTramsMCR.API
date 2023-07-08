@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using LiveTramsMCR.Models.V2.RoutePlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
 using Newtonsoft.Json;
@@ -17,7 +16,7 @@ public class RouteV2Loader
     {
         if (resourcesConfig.RoutesV2ResourcePath == null)
             return;
-        
+
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
         _resourcesConfig.RoutesV2ResourcePath = LoaderHelper.CheckFileRequirements(
             resourcesConfig.RoutesV2ResourcePath,
@@ -34,8 +33,8 @@ public class RouteV2Loader
         var jsonString = routesReader.ReadToEnd();
         if (jsonString == null) throw new FileLoadException("Json could not be parsed to RouteV2");
 
-        var routes =  JsonConvert.DeserializeObject<List<RouteV2>> (jsonString)!;
-        
+        var routes = JsonConvert.DeserializeObject<List<RouteV2>>(jsonString)!;
+
         using var stopsReader = new StreamReader(_resourcesConfig.StopV2ResourcePath!);
         var stopsJson = stopsReader.ReadToEnd();
         if (stopsJson == null) throw new FileLoadException("Json could not be parsed to StopsV2");
@@ -49,8 +48,8 @@ public class RouteV2Loader
                 route.StopsDetail.Add(stops!.Single(s => s.Tlaref == stop.Tlaref));
             }
         }
-        
-        
+
+
         return routes;
     }
 }

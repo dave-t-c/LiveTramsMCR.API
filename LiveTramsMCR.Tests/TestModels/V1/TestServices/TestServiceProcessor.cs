@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -27,17 +26,17 @@ public class TestServiceProcessor
     private const string UpdateStopsRouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private const string UpdateStopsApiResponsePath = "../../../Resources/TestStopUpdater/ApiResponse.json";
     private ImportedResources? _importedResources;
-    private ImportedResources? _updateStopsImportedResources;
     private MockServiceRequester? _mockServiceRequester;
     private MockServiceRequester? _mockServiceRequesterInternalServerError;
-    private ResourceLoader? _resourceLoader;
-    private ResourceLoader? _updateStopsResourceLoader;
-    private ServiceProcessor? _serviceProcessor;
-    private ServiceProcessor? _serviceProcessorInternalServerError;
-    private ResourcesConfig? _validResourcesConfig;
-    private ResourcesConfig? _updateStopsResourceConfig;
     private MockStopsRepository? _mockStopsRepository;
     private MockStopsRepository? _mockStopsRepositoryUpdateStops;
+    private ResourceLoader? _resourceLoader;
+    private ServiceProcessor? _serviceProcessor;
+    private ServiceProcessor? _serviceProcessorInternalServerError;
+    private ImportedResources? _updateStopsImportedResources;
+    private ResourcesConfig? _updateStopsResourceConfig;
+    private ResourceLoader? _updateStopsResourceLoader;
+    private ResourcesConfig? _validResourcesConfig;
 
     [SetUp]
     public void SetUp()
@@ -71,24 +70,24 @@ public class TestServiceProcessor
         var mockHttpResponseInternalServerError =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.InternalServerError,
                 InternalServerErrorResponsePath);
-        
-        var mockHttpResponseGetAllStops = 
+
+        var mockHttpResponseGetAllStops =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK,
                 UpdateStopsApiResponsePath);
-        
+
         _mockServiceRequester = new MockServiceRequester(mockHttpResponse!);
 
         _mockServiceRequesterInternalServerError = new MockServiceRequester(
-            mockHttpResponseInternalServerError!, 
+            mockHttpResponseInternalServerError!,
             mockHttpResponseGetAllStops!);
-            
+
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         _mockStopsRepositoryUpdateStops = new MockStopsRepository(_updateStopsImportedResources.ImportedStops);
 
         _serviceProcessor = new ServiceProcessor(_mockServiceRequester, _mockStopsRepository);
 
         _serviceProcessorInternalServerError = new ServiceProcessor(
-            _mockServiceRequesterInternalServerError, 
+            _mockServiceRequesterInternalServerError,
             _mockStopsRepositoryUpdateStops);
     }
 
@@ -137,7 +136,7 @@ public class TestServiceProcessor
     }
 
     /// <summary>
-    /// Test to request services in the format for a departure board.
+    ///     Test to request services in the format for a departure board.
     /// </summary>
     [Test]
     public void TestServicesDepartureBoard()
@@ -153,10 +152,10 @@ public class TestServiceProcessor
         Assert.AreEqual("23", trams?.Last().Wait);
     }
 
-    
+
     /// <summary>
-    /// Test to try and request departure board services with a null stop name.
-    /// This should throw an arg null exception.
+    ///     Test to try and request departure board services with a null stop name.
+    ///     This should throw an arg null exception.
     /// </summary>
     [Test]
     public void TestServicesDepartureBoardNullStop()
@@ -170,9 +169,9 @@ public class TestServiceProcessor
     }
 
     /// <summary>
-    /// Test to try and retrieve live services when the IDs are outdated.
-    /// This should update the IDs to that given in the mock response
-    /// This should throw an invalid operation exception
+    ///     Test to try and retrieve live services when the IDs are outdated.
+    ///     This should update the IDs to that given in the mock response
+    ///     This should throw an invalid operation exception
     /// </summary>
     [Test]
     public void TestServiceIDsOutdated()

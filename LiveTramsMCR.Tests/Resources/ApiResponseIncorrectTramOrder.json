@@ -1,31 +1,32 @@
 {
-    "@odata.context": "https://opendataclientapi.azurewebsites.net/odata/$metadata#Metrolinks/$entity",
-    "value": [{
-        "Id": 728,
-        "Line": "Altrincham",
-        "TLAREF": "ALT",
-        "PIDREF": "ALT-TPTD01",
-        "StationLocation": "Altrincham",
-        "AtcoCode": "9400ZZMAALT1",
-        "Direction": "Incoming",
-        "Dest0": "Piccadilly",
-        "Carriages0": "Single",
-        "Status0": "Due",
-        "Wait0": "3",
-        "Dest1": "Piccadilly",
-        "Carriages1": "Double",
-        "Status1": "Due",
-        "Wait1": "13",
-        "Dest2": "Piccadilly",
-        "Carriages2": "Single",
-        "Status2": "Due",
-        "Wait2": "25",
-        "Dest3": "",
-        "Carriages3": "",
-        "Status3": "",
-        "MessageBoard":
-        "ENGINEERING WORKS: On Sunday 6th February we have a number of service changes on the network. Replacement buses will be in operation on some lines. Please see TfGM.com for more information",
-        "Wait3": "",
-        "LastUpdated": "2022-02-05T22:00:30Z"
-    }]
+  "@odata.context": "https://opendataclientapi.azurewebsites.net/odata/$metadata#Metrolinks/$entity",
+  "value": [
+    {
+      "Id": 728,
+      "Line": "Altrincham",
+      "TLAREF": "ALT",
+      "PIDREF": "ALT-TPTD01",
+      "StationLocation": "Altrincham",
+      "AtcoCode": "9400ZZMAALT1",
+      "Direction": "Incoming",
+      "Dest0": "Piccadilly",
+      "Carriages0": "Single",
+      "Status0": "Due",
+      "Wait0": "3",
+      "Dest1": "Piccadilly",
+      "Carriages1": "Double",
+      "Status1": "Due",
+      "Wait1": "13",
+      "Dest2": "Piccadilly",
+      "Carriages2": "Single",
+      "Status2": "Due",
+      "Wait2": "25",
+      "Dest3": "",
+      "Carriages3": "",
+      "Status3": "",
+      "MessageBoard": "ENGINEERING WORKS: On Sunday 6th February we have a number of service changes on the network. Replacement buses will be in operation on some lines. Please see TfGM.com for more information",
+      "Wait3": "",
+      "LastUpdated": "2022-02-05T22:00:30Z"
+    }
+  ]
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using LiveTramsMCR.Models.V1.Stops.Data;
 
 namespace LiveTramsMCR.Models.V1.Stops;
@@ -15,8 +14,8 @@ public class StopLookup
     private readonly IStopsRepository _stopsRepository;
 
     /// <summary>
-    /// Generates a new StopLookup using the imported resources.
-    /// Imported resources may be null here.
+    ///     Generates a new StopLookup using the imported resources.
+    ///     Imported resources may be null here.
     /// </summary>
     /// <param name="stopsRepository"></param>
     public StopLookup(IStopsRepository stopsRepository)
@@ -25,7 +24,7 @@ public class StopLookup
     }
 
     /// <summary>
-    /// Looks up a stop from either its stop name or TLAREF value.
+    ///     Looks up a stop from either its stop name or TLAREF value.
     /// </summary>
     /// <param name="value">Stop name or TLAREF value for a stop.</param>
     /// <returns>Stop object with the associated name or TLAREF</returns>
@@ -33,11 +32,11 @@ public class StopLookup
     {
         if (value is null)
             throw new ArgumentNullException(nameof(value));
-        
+
         var stop = _stopsRepository.GetStop(value);
         if (stop == null)
         {
-            throw new ArgumentException("Value given is not a valid station name or TLAREF");    
+            throw new ArgumentException("Value given is not a valid station name or TLAREF");
         }
 
         return stop;

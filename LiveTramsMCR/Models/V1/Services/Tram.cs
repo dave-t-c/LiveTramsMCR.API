@@ -8,8 +8,8 @@ namespace LiveTramsMCR.Models.V1.Services;
 public class Tram
 {
     /// <summary>
-    /// Constructs a new tram, throws arg null exception if any of the given
-    /// values are null. 
+    ///     Constructs a new tram, throws arg null exception if any of the given
+    ///     values are null.
     /// </summary>
     /// <param name="destination">Tram destination</param>
     /// <param name="carriages">Num of carriages, either 'Single' or 'Double'</param>
@@ -25,29 +25,29 @@ public class Tram
     }
 
     /// <summary>
-    /// Destination for the tram, e.g. Piccadilly.
+    ///     Destination for the tram, e.g. Piccadilly.
     /// </summary>
     /// <example>Piccadilly</example>
     public string Destination { get; }
 
     /// <summary>
-    /// Number of carriages the tram has, either 'Single' or 'Double'
+    ///     Number of carriages the tram has, either 'Single' or 'Double'
     /// </summary>
     /// <example>Double</example>
     // The carriages could be a good candidate for an enum, but given there are only
     // two possible values, but this may be unnecessary. 
     public string Carriages { get; }
-    
+
     /// <summary>
-    /// Status of the Tram, e.g. 'Due'
+    ///     Status of the Tram, e.g. 'Due'
     /// </summary>
     /// <example>Due</example>
     public string Status { get; }
-    
+
     /// <summary>
-    /// Wait for the tram, an int of mins.
-    /// This is stored as a string as this is the format returned by the TfGM API.
-    /// It is not converted as no calculations are completed using it.
+    ///     Wait for the tram, an int of mins.
+    ///     This is stored as a string as this is the format returned by the TfGM API.
+    ///     It is not converted as no calculations are completed using it.
     /// </summary>
     /// <example>10</example>
     public string Wait { get; }

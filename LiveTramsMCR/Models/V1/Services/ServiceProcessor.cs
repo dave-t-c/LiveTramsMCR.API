@@ -5,7 +5,7 @@ using LiveTramsMCR.Models.V1.Stops.Data;
 namespace LiveTramsMCR.Models.V1.Services;
 
 /// <summary>
-/// Processes service requests
+///     Processes service requests
 /// </summary>
 public class ServiceProcessor
 {
@@ -14,8 +14,8 @@ public class ServiceProcessor
     private readonly StopLookup _stopLookup;
 
     /// <summary>
-    /// Creates a new service processor using the imported resources and
-    /// IRequest implementation.
+    ///     Creates a new service processor using the imported resources and
+    ///     IRequest implementation.
     /// </summary>
     /// <param name="requester">IRequester implementation to use</param>
     /// <param name="stopsRepository">Repository for retrieving stops</param>
@@ -41,8 +41,8 @@ public class ServiceProcessor
     }
 
     /// <summary>
-    /// Returns services formatted for a departure board
-    /// for a given stop name or Tlaref.
+    ///     Returns services formatted for a departure board
+    ///     for a given stop name or Tlaref.
     /// </summary>
     /// <param name="stopIdentifier">Stop identifier, either name or tlaref</param>
     /// <returns>Service data formatted for use with a departure board</returns>

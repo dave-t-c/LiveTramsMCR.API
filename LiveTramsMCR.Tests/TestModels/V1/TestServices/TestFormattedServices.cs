@@ -8,6 +8,8 @@ namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 
 public class TestFormattedServices
 {
+    private const string ExampleLastUpdated = "2023-04-19T19:34:03Z";
+    private const string DiffExampleLastUpdated = "2023-04-19T11:34:03Z";
     private string? _carriages;
     private string? _destination;
     private string? _diffCarriages;
@@ -17,11 +19,9 @@ public class TestFormattedServices
     private string? _status;
     private Tram? _tram;
     private Tram? _tramDiffDestination;
-    private Tram? _tramSameDestinationDiffWait;
     private Tram? _tramDiffDestinationDiffWait;
+    private Tram? _tramSameDestinationDiffWait;
     private string? _wait;
-    private const string ExampleLastUpdated = "2023-04-19T19:34:03Z";
-    private const string DiffExampleLastUpdated = "2023-04-19T11:34:03Z";
 
     [SetUp]
     public void SetUp()
@@ -139,8 +139,8 @@ public class TestFormattedServices
     }
 
     /// <summary>
-    /// Test to add multiple trams to diff destinations.
-    /// The destination with the first tram should be displayed first
+    ///     Test to add multiple trams to diff destinations.
+    ///     The destination with the first tram should be displayed first
     /// </summary>
     [Test]
     public void TestValidateDiffDestinationsDiffWait()
@@ -196,8 +196,8 @@ public class TestFormattedServices
     }
 
     /// <summary>
-    /// Test to check that last updated is set.
-    /// This should be set to match the value given.
+    ///     Test to check that last updated is set.
+    ///     This should be set to match the value given.
     /// </summary>
     [Test]
     public void TestSetLastUpdated()
@@ -209,7 +209,7 @@ public class TestFormattedServices
     }
 
     /// <summary>
-    /// Test to check that last updated is not set when null is passed.
+    ///     Test to check that last updated is not set when null is passed.
     /// </summary>
     [Test]
     public void TestSetLastUpdatedNull()

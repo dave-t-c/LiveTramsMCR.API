@@ -7,15 +7,15 @@ using LiveTramsMCR.Models.V2.Stops;
 namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 
 /// <summary>
-/// Identifies Route related features for journeys such as interchanges.
+///     Identifies Route related features for journeys such as interchanges.
 /// </summary>
 public class RouteIdentifierV2
 {
     private readonly IRouteRepositoryV2 _routeRepository;
-    
+
     /// <summary>
-    /// Initialises a RouteIdentifier with the routes
-    /// to use for processing. 
+    ///     Initialises a RouteIdentifier with the routes
+    ///     to use for processing.
     /// </summary>
     /// <param name="routeRepository">Routes to use for processing.</param>
     public RouteIdentifierV2(IRouteRepositoryV2 routeRepository)
@@ -24,9 +24,9 @@ public class RouteIdentifierV2
     }
 
     /// <summary>
-    /// Determines if an interchange is required between two stops
-    /// by checking to see if there is a route that contains
-    /// both the origin and destination stop.
+    ///     Determines if an interchange is required between two stops
+    ///     by checking to see if there is a route that contains
+    ///     both the origin and destination stop.
     /// </summary>
     /// <param name="origin">Start of journey</param>
     /// <param name="destination">End of journey</param>
@@ -35,7 +35,7 @@ public class RouteIdentifierV2
     {
         if (origin is null)
             throw new ArgumentNullException(nameof(origin));
-        
+
         if (destination is null)
             throw new ArgumentNullException(nameof(destination));
 
@@ -47,9 +47,9 @@ public class RouteIdentifierV2
     }
 
     /// <summary>
-    /// Identifies the Interchange Stop for Stops where
-    /// the interchange stop belongs to a route available from the Origin Stop,
-    /// and also belongs to a route that belongs to the Destination Stop.
+    ///     Identifies the Interchange Stop for Stops where
+    ///     the interchange stop belongs to a route available from the Origin Stop,
+    ///     and also belongs to a route that belongs to the Destination Stop.
     /// </summary>
     /// <param name="origin"></param>
     /// <param name="destination"></param>
@@ -68,7 +68,7 @@ public class RouteIdentifierV2
             throw new ArgumentNullException(nameof(destination));
 
         var routes = _routeRepository.GetRoutes();
-        
+
         //Identify the routes for a stop.
         var originRoutes = routes.FindAll(route => route.Stops.Contains(origin));
         var destRoutes = routes.FindAll(route => route.Stops.Contains(destination));
@@ -97,16 +97,16 @@ public class RouteIdentifierV2
                 }
             }
         }
-        
+
         // When there are multiple routes, the interchange stop closest to the 
         // destination is selected.
         var interchangeEntry = stopDistanceFromDestination.MinBy(kvp => kvp.Value);
-        
+
         //Identify all stops with the same distance.
         var minDistanceStops = stopDistanceFromDestination
             .Where(entry => entry.Value == interchangeEntry.Value)
             .Select(entry => entry.Key).ToList();
-        
+
         //If there is only a single entry, we do not need to identify the one the closest to the origin. 
         return minDistanceStops.Count == 1 ? minDistanceStops.First() :
             //Of these stops, identify the stop closest to the route start, to handle cases such as AHN -> BRY
@@ -115,8 +115,8 @@ public class RouteIdentifierV2
     }
 
     /// <summary>
-    /// Identifies the Routes that connect two stops.
-    /// This returns a list of routes that can be taken between two stops.
+    ///     Identifies the Routes that connect two stops.
+    ///     This returns a list of routes that can be taken between two stops.
     /// </summary>
     /// <param name="origin">Start of journey</param>
     /// <param name="destination">End of journey</param>
@@ -127,17 +127,16 @@ public class RouteIdentifierV2
             throw new ArgumentNullException(nameof(origin));
         if (destination is null)
             throw new ArgumentNullException(nameof(destination));
-        
+
         var routes = _routeRepository.GetRoutes();
-        
+
         return routes.FindAll(route => route.Stops.Contains(origin) && route.Stops.Contains(destination));
     }
 
-    
 
     /// <summary>
-    /// Identifies the correct terminus of a route depending on the]
-    /// direction of travel between the origin and destination stops.
+    ///     Identifies the correct terminus of a route depending on the]
+    ///     direction of travel between the origin and destination stops.
     /// </summary>
     /// <param name="origin">Origin of journey on route</param>
     /// <param name="destination">Destination of journey on route</param>
@@ -146,8 +145,8 @@ public class RouteIdentifierV2
     public StopKeysV2 IdentifyRouteTerminus(StopKeysV2 origin, StopKeysV2 destination, RouteV2 route)
     {
         if (route is null)
-            throw new ArgumentNullException(paramName: nameof(route));
-        
+            throw new ArgumentNullException(nameof(route));
+
         route.ValidateStopsOnRoute(origin, destination);
 
         var originIndex = route.Stops.IndexOf(origin);
@@ -156,7 +155,7 @@ public class RouteIdentifierV2
     }
 
     /// <summary>
-    /// Converts a stop keys object to a stop by identifying it on a given route.
+    ///     Converts a stop keys object to a stop by identifying it on a given route.
     /// </summary>
     /// <param name="stopKeys"></param>
     /// <param name="routeV2"></param>

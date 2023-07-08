@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
@@ -16,7 +15,7 @@ public class MockRouteRepository : IRouteRepository
         _routes = routes;
         _routeTimes = routeTimes;
     }
-    
+
     public RouteTimes? GetRouteTimesByNameAsync(string routeName)
     {
         return _routeTimes.FirstOrDefault(route => route.Route == routeName);

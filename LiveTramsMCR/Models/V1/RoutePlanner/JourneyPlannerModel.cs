@@ -5,18 +5,18 @@ using LiveTramsMCR.Models.V1.Stops.Data;
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
 /// <summary>
-/// Data model for the Journey Planner package.
-/// This identifies the used stops and uses the Journey planner
-/// class to plan a journey.
+///     Data model for the Journey Planner package.
+///     This identifies the used stops and uses the Journey planner
+///     class to plan a journey.
 /// </summary>
-public class JourneyPlannerModel: IJourneyPlannerModel
+public class JourneyPlannerModel : IJourneyPlannerModel
 {
     private readonly IJourneyPlanner _journeyPlanner;
     private readonly StopLookup _stopLookup;
-    
+
     /// <summary>
-    /// Creates a journey planner model that can be used
-    /// for planning journeys between stops.
+    ///     Creates a journey planner model that can be used
+    ///     for planning journeys between stops.
     /// </summary>
     /// <param name="stopsRepository"></param>
     /// <param name="journeyPlanner"></param>
@@ -25,11 +25,11 @@ public class JourneyPlannerModel: IJourneyPlannerModel
         _journeyPlanner = journeyPlanner;
         _stopLookup = new StopLookup(stopsRepository);
     }
-    
-    
+
+
     /// <summary>
-    /// Plans a journey between an origin stop name or TLAREF and
-    /// a destination stop name or TLAREF, identifying any relevant interchange information.
+    ///     Plans a journey between an origin stop name or TLAREF and
+    ///     a destination stop name or TLAREF, identifying any relevant interchange information.
     /// </summary>
     /// <param name="origin">Journey start stop name or TLAREF</param>
     /// <param name="destination">Journey end stop name or TLAREF</param>

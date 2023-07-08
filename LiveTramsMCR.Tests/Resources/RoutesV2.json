@@ -1,110 +1,110 @@
 [
   {
-    "Name" : "Green",
-    "Colour" : "#318C2C",
-    "Stops" : [
+    "Name": "Green",
+    "Colour": "#318C2C",
+    "Stops": [
       {
-        "StopName" : "Altrincham",
-        "Tlaref" : "ALT"
+        "StopName": "Altrincham",
+        "Tlaref": "ALT"
       },
       {
-        "StopName" : "Navigation Road",
-        "Tlaref" : "NAV"
+        "StopName": "Navigation Road",
+        "Tlaref": "NAV"
       },
       {
-        "StopName" : "Timperley",
-        "Tlaref" : "TMP"
+        "StopName": "Timperley",
+        "Tlaref": "TMP"
       },
       {
-        "StopName" : "Brooklands",
-        "Tlaref" : "BRK"
+        "StopName": "Brooklands",
+        "Tlaref": "BRK"
       },
       {
-        "StopName" : "Sale",
-        "Tlaref" : "SAL"
+        "StopName": "Sale",
+        "Tlaref": "SAL"
       },
       {
-        "StopName" : "Dane Road",
-        "Tlaref" : "DAN"
+        "StopName": "Dane Road",
+        "Tlaref": "DAN"
       },
       {
-        "StopName" : "Stretford",
-        "Tlaref" : "STR"
+        "StopName": "Stretford",
+        "Tlaref": "STR"
       },
       {
-        "StopName" : "Old Trafford",
-        "Tlaref" : "OLD"
+        "StopName": "Old Trafford",
+        "Tlaref": "OLD"
       },
       {
-        "StopName" : "Trafford Bar",
-        "Tlaref" : "TFB"
+        "StopName": "Trafford Bar",
+        "Tlaref": "TFB"
       },
       {
-        "StopName" : "Cornbrook",
-        "Tlaref" : "CNK"
+        "StopName": "Cornbrook",
+        "Tlaref": "CNK"
       },
       {
-        "StopName" : "Deansgate - Castlefield",
-        "Tlaref" : "GMX"
+        "StopName": "Deansgate - Castlefield",
+        "Tlaref": "GMX"
       },
       {
-        "StopName" : "St Peter's Square",
-        "Tlaref" : "SPS"
+        "StopName": "St Peter's Square",
+        "Tlaref": "SPS"
       },
       {
-        "StopName" : "Market Street",
-        "Tlaref" : "MKT"
+        "StopName": "Market Street",
+        "Tlaref": "MKT"
       },
       {
-        "StopName" : "Shudehill",
-        "Tlaref" : "SHL"
+        "StopName": "Shudehill",
+        "Tlaref": "SHL"
       },
       {
-        "StopName" : "Victoria",
-        "Tlaref" : "VIC"
+        "StopName": "Victoria",
+        "Tlaref": "VIC"
       },
       {
-        "StopName" : "Queens Road",
-        "Tlaref" : "QNS"
+        "StopName": "Queens Road",
+        "Tlaref": "QNS"
       },
       {
-        "StopName" : "Abraham Moss",
-        "Tlaref" : "ABM"
+        "StopName": "Abraham Moss",
+        "Tlaref": "ABM"
       },
       {
-        "StopName" : "Crumpsall",
-        "Tlaref" : "CRP"
+        "StopName": "Crumpsall",
+        "Tlaref": "CRP"
       },
       {
-        "StopName" : "Bowker Vale",
-        "Tlaref" : "BKV"
+        "StopName": "Bowker Vale",
+        "Tlaref": "BKV"
       },
       {
-        "StopName" : "Heaton Park",
-        "Tlaref" : "HPK"
+        "StopName": "Heaton Park",
+        "Tlaref": "HPK"
       },
       {
-        "StopName" : "Prestwich",
-        "Tlaref" : "PRS"
+        "StopName": "Prestwich",
+        "Tlaref": "PRS"
       },
       {
-        "StopName" : "Besses O' Th' Barn",
-        "Tlaref" : "BOB"
+        "StopName": "Besses O' Th' Barn",
+        "Tlaref": "BOB"
       },
       {
-        "StopName" : "Whitefield",
-        "Tlaref" : "WFD"
+        "StopName": "Whitefield",
+        "Tlaref": "WFD"
       },
       {
-        "StopName" : "Radcliffe",
-        "Tlaref" : "RAD"
+        "StopName": "Radcliffe",
+        "Tlaref": "RAD"
       },
       {
-        "StopName" : "Bury",
-        "Tlaref" : "BRY"
+        "StopName": "Bury",
+        "Tlaref": "BRY"
       }
     ],
-    "PolylineCoordinates" : [
+    "PolylineCoordinates": [
       [
         -2.3476652236,
         53.3869308481
@@ -3624,67 +3624,67 @@
     ]
   },
   {
-    "Name" : "Purple",
-    "Colour" : "#7B2082",
-    "Stops" : [
+    "Name": "Purple",
+    "Colour": "#7B2082",
+    "Stops": [
       {
-        "StopName" : "Altrincham",
-        "Tlaref" : "ALT"
+        "StopName": "Altrincham",
+        "Tlaref": "ALT"
       },
       {
-        "StopName" : "Navigation Road",
-        "Tlaref" : "NAV"
+        "StopName": "Navigation Road",
+        "Tlaref": "NAV"
       },
       {
-        "StopName" : "Timperley",
-        "Tlaref" : "TMP"
+        "StopName": "Timperley",
+        "Tlaref": "TMP"
       },
       {
-        "StopName" : "Brooklands",
-        "Tlaref" : "BRK"
+        "StopName": "Brooklands",
+        "Tlaref": "BRK"
       },
       {
-        "StopName" : "Sale",
-        "Tlaref" : "SAL"
+        "StopName": "Sale",
+        "Tlaref": "SAL"
       },
       {
-        "StopName" : "Dane Road",
-        "Tlaref" : "DAN"
+        "StopName": "Dane Road",
+        "Tlaref": "DAN"
       },
       {
-        "StopName" : "Stretford",
-        "Tlaref" : "STR"
+        "StopName": "Stretford",
+        "Tlaref": "STR"
       },
       {
-        "StopName" : "Old Trafford",
-        "Tlaref" : "OLD"
+        "StopName": "Old Trafford",
+        "Tlaref": "OLD"
       },
       {
-        "StopName" : "Trafford Bar",
-        "Tlaref" : "TFB"
+        "StopName": "Trafford Bar",
+        "Tlaref": "TFB"
       },
       {
-        "StopName" : "Cornbrook",
-        "Tlaref" : "CNK"
+        "StopName": "Cornbrook",
+        "Tlaref": "CNK"
       },
       {
-        "StopName" : "Deansgate - Castlefield",
-        "Tlaref" : "GMX"
+        "StopName": "Deansgate - Castlefield",
+        "Tlaref": "GMX"
       },
       {
-        "StopName" : "St Peter's Square",
-        "Tlaref" : "SPS"
+        "StopName": "St Peter's Square",
+        "Tlaref": "SPS"
       },
       {
-        "StopName" : "Piccadilly Gardens",
-        "Tlaref" : "PCG"
+        "StopName": "Piccadilly Gardens",
+        "Tlaref": "PCG"
       },
       {
-        "StopName" : "Piccadilly",
-        "Tlaref" : "PIC"
+        "StopName": "Piccadilly",
+        "Tlaref": "PIC"
       }
     ],
-    "PolylineCoordinates" : [
+    "PolylineCoordinates": [
       [
         -2.3476652236,
         53.3869308481
@@ -5340,123 +5340,123 @@
     ]
   },
   {
-    "Name" : "Blue",
-    "Colour" : "#59C6F2",
-    "Stops" : [
+    "Name": "Blue",
+    "Colour": "#59C6F2",
+    "Stops": [
       {
-        "StopName" : "Ashton-Under-Lyne",
-        "Tlaref" : "ASH"
+        "StopName": "Ashton-Under-Lyne",
+        "Tlaref": "ASH"
       },
       {
-        "StopName" : "Ashton West",
-        "Tlaref" : "ASW"
+        "StopName": "Ashton West",
+        "Tlaref": "ASW"
       },
       {
-        "StopName" : "Ashton Moss",
-        "Tlaref" : "ASM"
+        "StopName": "Ashton Moss",
+        "Tlaref": "ASM"
       },
       {
-        "StopName" : "Audenshaw",
-        "Tlaref" : "AUD"
+        "StopName": "Audenshaw",
+        "Tlaref": "AUD"
       },
       {
-        "StopName" : "Droylsden",
-        "Tlaref" : "DYL"
+        "StopName": "Droylsden",
+        "Tlaref": "DYL"
       },
       {
-        "StopName" : "Cemetery Road",
-        "Tlaref" : "CER"
+        "StopName": "Cemetery Road",
+        "Tlaref": "CER"
       },
       {
-        "StopName" : "Edge Lane",
-        "Tlaref" : "EDL"
+        "StopName": "Edge Lane",
+        "Tlaref": "EDL"
       },
       {
-        "StopName" : "Clayton Hall",
-        "Tlaref" : "CLA"
+        "StopName": "Clayton Hall",
+        "Tlaref": "CLA"
       },
       {
-        "StopName" : "Velopark",
-        "Tlaref" : "VEL"
+        "StopName": "Velopark",
+        "Tlaref": "VEL"
       },
       {
-        "StopName" : "Etihad Campus",
-        "Tlaref" : "SPC"
+        "StopName": "Etihad Campus",
+        "Tlaref": "SPC"
       },
       {
-        "StopName" : "Holt Town",
-        "Tlaref" : "HOT"
+        "StopName": "Holt Town",
+        "Tlaref": "HOT"
       },
       {
-        "StopName" : "New Islington",
-        "Tlaref" : "NIS"
+        "StopName": "New Islington",
+        "Tlaref": "NIS"
       },
       {
-        "StopName" : "Piccadilly",
-        "Tlaref" : "PIC"
+        "StopName": "Piccadilly",
+        "Tlaref": "PIC"
       },
       {
-        "StopName" : "Piccadilly Gardens",
-        "Tlaref" : "PCG"
+        "StopName": "Piccadilly Gardens",
+        "Tlaref": "PCG"
       },
       {
-        "StopName" : "St Peter's Square",
-        "Tlaref" : "SPS"
+        "StopName": "St Peter's Square",
+        "Tlaref": "SPS"
       },
       {
-        "StopName" : "Deansgate - Castlefield",
-        "Tlaref" : "GMX"
+        "StopName": "Deansgate - Castlefield",
+        "Tlaref": "GMX"
       },
       {
-        "StopName" : "Cornbrook",
-        "Tlaref" : "CNK"
+        "StopName": "Cornbrook",
+        "Tlaref": "CNK"
       },
       {
-        "StopName" : "Pomona",
-        "Tlaref" : "POM"
+        "StopName": "Pomona",
+        "Tlaref": "POM"
       },
       {
-        "StopName" : "Exchange Quay",
-        "Tlaref" : "EXQ"
+        "StopName": "Exchange Quay",
+        "Tlaref": "EXQ"
       },
       {
-        "StopName" : "Salford Quays",
-        "Tlaref" : "SFQ"
+        "StopName": "Salford Quays",
+        "Tlaref": "SFQ"
       },
       {
-        "StopName" : "Anchorage",
-        "Tlaref" : "ANC"
+        "StopName": "Anchorage",
+        "Tlaref": "ANC"
       },
       {
-        "StopName" : "Harbour City",
-        "Tlaref" : "HBC"
+        "StopName": "Harbour City",
+        "Tlaref": "HBC"
       },
       {
-        "StopName" : "MediaCityUK",
-        "Tlaref" : "MEC"
+        "StopName": "MediaCityUK",
+        "Tlaref": "MEC"
       },
       {
-        "StopName" : "Broadway",
-        "Tlaref" : "BDW"
+        "StopName": "Broadway",
+        "Tlaref": "BDW"
       },
       {
-        "StopName" : "Langworthy",
-        "Tlaref" : "LGW"
+        "StopName": "Langworthy",
+        "Tlaref": "LGW"
       },
       {
-        "StopName" : "Weaste",
-        "Tlaref" : "WST"
+        "StopName": "Weaste",
+        "Tlaref": "WST"
       },
       {
-        "StopName" : "Ladywell",
-        "Tlaref" : "LDW"
+        "StopName": "Ladywell",
+        "Tlaref": "LDW"
       },
       {
-        "StopName" : "Eccles",
-        "Tlaref" : "ECC"
+        "StopName": "Eccles",
+        "Tlaref": "ECC"
       }
     ],
-    "PolylineCoordinates" : [
+    "PolylineCoordinates": [
       [
         -2.0975485383,
         53.4903823359
@@ -11608,71 +11608,71 @@
     ]
   },
   {
-    "Name" : "Yellow",
-    "Colour" : "#EFBB00",
-    "Stops" : [
+    "Name": "Yellow",
+    "Colour": "#EFBB00",
+    "Stops": [
       {
-        "StopName" : "Bury",
-        "Tlaref" : "BRY"
+        "StopName": "Bury",
+        "Tlaref": "BRY"
       },
       {
-        "StopName" : "Radcliffe",
-        "Tlaref" : "RAD"
+        "StopName": "Radcliffe",
+        "Tlaref": "RAD"
       },
       {
-        "StopName" : "Whitefield",
-        "Tlaref" : "WFD"
+        "StopName": "Whitefield",
+        "Tlaref": "WFD"
       },
       {
-        "StopName" : "Besses O' Th' Barn",
-        "Tlaref" : "BOB"
+        "StopName": "Besses O' Th' Barn",
+        "Tlaref": "BOB"
       },
       {
-        "StopName" : "Prestwich",
-        "Tlaref" : "PRS"
+        "StopName": "Prestwich",
+        "Tlaref": "PRS"
       },
       {
-        "StopName" : "Heaton Park",
-        "Tlaref" : "HPK"
+        "StopName": "Heaton Park",
+        "Tlaref": "HPK"
       },
       {
-        "StopName" : "Bowker Vale",
-        "Tlaref" : "BKV"
+        "StopName": "Bowker Vale",
+        "Tlaref": "BKV"
       },
       {
-        "StopName" : "Crumpsall",
-        "Tlaref" : "CRP"
+        "StopName": "Crumpsall",
+        "Tlaref": "CRP"
       },
       {
-        "StopName" : "Abraham Moss",
-        "Tlaref" : "ABM"
+        "StopName": "Abraham Moss",
+        "Tlaref": "ABM"
       },
       {
-        "StopName" : "Queens Road",
-        "Tlaref" : "QNS"
+        "StopName": "Queens Road",
+        "Tlaref": "QNS"
       },
       {
-        "StopName" : "Victoria",
-        "Tlaref" : "VIC"
+        "StopName": "Victoria",
+        "Tlaref": "VIC"
       },
       {
-        "StopName" : "Shudehill",
-        "Tlaref" : "SHL"
+        "StopName": "Shudehill",
+        "Tlaref": "SHL"
       },
       {
-        "StopName" : "Market Street",
-        "Tlaref" : "MKT"
+        "StopName": "Market Street",
+        "Tlaref": "MKT"
       },
       {
-        "StopName" : "Piccadilly Gardens",
-        "Tlaref" : "PCG"
+        "StopName": "Piccadilly Gardens",
+        "Tlaref": "PCG"
       },
       {
-        "StopName" : "Piccadilly",
-        "Tlaref" : "PIC"
+        "StopName": "Piccadilly",
+        "Tlaref": "PIC"
       }
     ],
-    "PolylineCoordinates" : [
+    "PolylineCoordinates": [
       [
         -2.2970957346,
         53.590958632
@@ -14008,143 +14008,143 @@
     ]
   },
   {
-    "Name" : "Pink",
-    "Colour" : "#FE79B0",
-    "Stops" : [
+    "Name": "Pink",
+    "Colour": "#FE79B0",
+    "Stops": [
       {
-        "StopName" : "East Didsbury",
-        "Tlaref" : "EDD"
+        "StopName": "East Didsbury",
+        "Tlaref": "EDD"
       },
       {
-        "StopName" : "Didsbury Village",
-        "Tlaref" : "DDV"
+        "StopName": "Didsbury Village",
+        "Tlaref": "DDV"
       },
       {
-        "StopName" : "West Didsbury",
-        "Tlaref" : "WDD"
+        "StopName": "West Didsbury",
+        "Tlaref": "WDD"
       },
       {
-        "StopName" : "Burton Road",
-        "Tlaref" : "BRT"
+        "StopName": "Burton Road",
+        "Tlaref": "BRT"
       },
       {
-        "StopName" : "Withington",
-        "Tlaref" : "WTH"
+        "StopName": "Withington",
+        "Tlaref": "WTH"
       },
       {
-        "StopName" : "St Werburgh's Road",
-        "Tlaref" : "SWR"
+        "StopName": "St Werburgh's Road",
+        "Tlaref": "SWR"
       },
       {
-        "StopName" : "Chorlton",
-        "Tlaref" : "CHO"
+        "StopName": "Chorlton",
+        "Tlaref": "CHO"
       },
       {
-        "StopName" : "Firswood",
-        "Tlaref" : "FIR"
+        "StopName": "Firswood",
+        "Tlaref": "FIR"
       },
       {
-        "StopName" : "Trafford Bar",
-        "Tlaref" : "TFB"
+        "StopName": "Trafford Bar",
+        "Tlaref": "TFB"
       },
       {
-        "StopName" : "Cornbrook",
-        "Tlaref" : "CNK"
+        "StopName": "Cornbrook",
+        "Tlaref": "CNK"
       },
       {
-        "StopName" : "Deansgate - Castlefield",
-        "Tlaref" : "GMX"
+        "StopName": "Deansgate - Castlefield",
+        "Tlaref": "GMX"
       },
       {
-        "StopName" : "St Peter's Square",
-        "Tlaref" : "SPS"
+        "StopName": "St Peter's Square",
+        "Tlaref": "SPS"
       },
       {
-        "StopName" : "Exchange Square",
-        "Tlaref" : "EXS"
+        "StopName": "Exchange Square",
+        "Tlaref": "EXS"
       },
       {
-        "StopName" : "Victoria",
-        "Tlaref" : "VIC"
+        "StopName": "Victoria",
+        "Tlaref": "VIC"
       },
       {
-        "StopName" : "Monsall",
-        "Tlaref" : "MON"
+        "StopName": "Monsall",
+        "Tlaref": "MON"
       },
       {
-        "StopName" : "Central Park",
-        "Tlaref" : "CEP"
+        "StopName": "Central Park",
+        "Tlaref": "CEP"
       },
       {
-        "StopName" : "Newton Heath and Moston",
-        "Tlaref" : "NHM"
+        "StopName": "Newton Heath and Moston",
+        "Tlaref": "NHM"
       },
       {
-        "StopName" : "Failsworth",
-        "Tlaref" : "FAL"
+        "StopName": "Failsworth",
+        "Tlaref": "FAL"
       },
       {
-        "StopName" : "Hollinwood",
-        "Tlaref" : "HOL"
+        "StopName": "Hollinwood",
+        "Tlaref": "HOL"
       },
       {
-        "StopName" : "South Chadderton",
-        "Tlaref" : "SOC"
+        "StopName": "South Chadderton",
+        "Tlaref": "SOC"
       },
       {
-        "StopName" : "Freehold",
-        "Tlaref" : "FRE"
+        "StopName": "Freehold",
+        "Tlaref": "FRE"
       },
       {
-        "StopName" : "Westwood",
-        "Tlaref" : "WWD"
+        "StopName": "Westwood",
+        "Tlaref": "WWD"
       },
       {
-        "StopName" : "Oldham King Street",
-        "Tlaref" : "OHK"
+        "StopName": "Oldham King Street",
+        "Tlaref": "OHK"
       },
       {
-        "StopName" : "Oldham Central",
-        "Tlaref" : "OHC"
+        "StopName": "Oldham Central",
+        "Tlaref": "OHC"
       },
       {
-        "StopName" : "Oldham Mumps",
-        "Tlaref" : "OHM"
+        "StopName": "Oldham Mumps",
+        "Tlaref": "OHM"
       },
       {
-        "StopName" : "Derker",
-        "Tlaref" : "DER"
+        "StopName": "Derker",
+        "Tlaref": "DER"
       },
       {
-        "StopName" : "Shaw and Crompton",
-        "Tlaref" : "SHC"
+        "StopName": "Shaw and Crompton",
+        "Tlaref": "SHC"
       },
       {
-        "StopName" : "Newhey",
-        "Tlaref" : "NEH"
+        "StopName": "Newhey",
+        "Tlaref": "NEH"
       },
       {
-        "StopName" : "Milnrow",
-        "Tlaref" : "MIL"
+        "StopName": "Milnrow",
+        "Tlaref": "MIL"
       },
       {
-        "StopName" : "Kingsway Business Park",
-        "Tlaref" : "KIN"
+        "StopName": "Kingsway Business Park",
+        "Tlaref": "KIN"
       },
       {
-        "StopName" : "Newbold",
-        "Tlaref" : "NEB"
+        "StopName": "Newbold",
+        "Tlaref": "NEB"
       },
       {
-        "StopName" : "Rochdale Railway Station",
-        "Tlaref" : "ROC"
+        "StopName": "Rochdale Railway Station",
+        "Tlaref": "ROC"
       },
       {
-        "StopName" : "Rochdale Town Centre",
-        "Tlaref" : "RTC"
+        "StopName": "Rochdale Town Centre",
+        "Tlaref": "RTC"
       }
     ],
-    "PolylineCoordinates" : [
+    "PolylineCoordinates": [
       [
         -2.2166948729,
         53.4119023336
@@ -27656,119 +27656,119 @@
     ]
   },
   {
-    "Name" : "Grey",
-    "Colour" : "#82735E",
-    "Stops" : [
+    "Name": "Grey",
+    "Colour": "#82735E",
+    "Stops": [
       {
-        "StopName" : "East Didsbury",
-        "Tlaref" : "EDD"
+        "StopName": "East Didsbury",
+        "Tlaref": "EDD"
       },
       {
-        "StopName" : "Didsbury Village",
-        "Tlaref" : "DDV"
+        "StopName": "Didsbury Village",
+        "Tlaref": "DDV"
       },
       {
-        "StopName" : "West Didsbury",
-        "Tlaref" : "WDD"
+        "StopName": "West Didsbury",
+        "Tlaref": "WDD"
       },
       {
-        "StopName" : "Burton Road",
-        "Tlaref" : "BRT"
+        "StopName": "Burton Road",
+        "Tlaref": "BRT"
       },
       {
-        "StopName" : "Withington",
-        "Tlaref" : "WTH"
+        "StopName": "Withington",
+        "Tlaref": "WTH"
       },
       {
-        "StopName" : "St Werburgh's Road",
-        "Tlaref" : "SWR"
+        "StopName": "St Werburgh's Road",
+        "Tlaref": "SWR"
       },
       {
-        "StopName" : "Chorlton",
-        "Tlaref" : "CHO"
+        "StopName": "Chorlton",
+        "Tlaref": "CHO"
       },
       {
-        "StopName" : "Firswood",
-        "Tlaref" : "FIR"
+        "StopName": "Firswood",
+        "Tlaref": "FIR"
       },
       {
-        "StopName" : "Trafford Bar",
-        "Tlaref" : "TFB"
+        "StopName": "Trafford Bar",
+        "Tlaref": "TFB"
       },
       {
-        "StopName" : "Cornbrook",
-        "Tlaref" : "CNK"
+        "StopName": "Cornbrook",
+        "Tlaref": "CNK"
       },
       {
-        "StopName" : "Deansgate - Castlefield",
-        "Tlaref" : "GMX"
+        "StopName": "Deansgate - Castlefield",
+        "Tlaref": "GMX"
       },
       {
-        "StopName" : "St Peter's Square",
-        "Tlaref" : "SPS"
+        "StopName": "St Peter's Square",
+        "Tlaref": "SPS"
       },
       {
-        "StopName" : "Exchange Square",
-        "Tlaref" : "EXS"
+        "StopName": "Exchange Square",
+        "Tlaref": "EXS"
       },
       {
-        "StopName" : "Victoria",
-        "Tlaref" : "VIC"
+        "StopName": "Victoria",
+        "Tlaref": "VIC"
       },
       {
-        "StopName" : "Monsall",
-        "Tlaref" : "MON"
+        "StopName": "Monsall",
+        "Tlaref": "MON"
       },
       {
-        "StopName" : "Central Park",
-        "Tlaref" : "CEP"
+        "StopName": "Central Park",
+        "Tlaref": "CEP"
       },
       {
-        "StopName" : "Newton Heath and Moston",
-        "Tlaref" : "NHM"
+        "StopName": "Newton Heath and Moston",
+        "Tlaref": "NHM"
       },
       {
-        "StopName" : "Failsworth",
-        "Tlaref" : "FAL"
+        "StopName": "Failsworth",
+        "Tlaref": "FAL"
       },
       {
-        "StopName" : "Hollinwood",
-        "Tlaref" : "HOL"
+        "StopName": "Hollinwood",
+        "Tlaref": "HOL"
       },
       {
-        "StopName" : "South Chadderton",
-        "Tlaref" : "SOC"
+        "StopName": "South Chadderton",
+        "Tlaref": "SOC"
       },
       {
-        "StopName" : "Freehold",
-        "Tlaref" : "FRE"
+        "StopName": "Freehold",
+        "Tlaref": "FRE"
       },
       {
-        "StopName" : "Westwood",
-        "Tlaref" : "WWD"
+        "StopName": "Westwood",
+        "Tlaref": "WWD"
       },
       {
-        "StopName" : "Oldham King Street",
-        "Tlaref" : "OHK"
+        "StopName": "Oldham King Street",
+        "Tlaref": "OHK"
       },
       {
-        "StopName" : "Oldham Central",
-        "Tlaref" : "OHC"
+        "StopName": "Oldham Central",
+        "Tlaref": "OHC"
       },
       {
-        "StopName" : "Oldham Mumps",
-        "Tlaref" : "OHM"
+        "StopName": "Oldham Mumps",
+        "Tlaref": "OHM"
       },
       {
-        "StopName" : "Derker",
-        "Tlaref" : "DER"
+        "StopName": "Derker",
+        "Tlaref": "DER"
       },
       {
-        "StopName" : "Shaw and Crompton",
-        "Tlaref" : "SHC"
+        "StopName": "Shaw and Crompton",
+        "Tlaref": "SHC"
       }
     ],
-    "PolylineCoordinates" : [
+    "PolylineCoordinates": [
       [
         -2.2166948729,
         53.4119023336
@@ -37180,47 +37180,47 @@
     ]
   },
   {
-    "Name" : "Red",
-    "Colour" : "#E70310",
-    "Stops" : [
+    "Name": "Red",
+    "Colour": "#E70310",
+    "Stops": [
       {
-        "StopName" : "The Trafford Centre",
-        "Tlaref" : "TRC"
+        "StopName": "The Trafford Centre",
+        "Tlaref": "TRC"
       },
       {
-        "StopName" : "Barton Dock Road",
-        "Tlaref" : "EVC"
+        "StopName": "Barton Dock Road",
+        "Tlaref": "EVC"
       },
       {
-        "StopName" : "Parkway",
-        "Tlaref" : "PAR"
+        "StopName": "Parkway",
+        "Tlaref": "PAR"
       },
       {
-        "StopName" : "Village",
-        "Tlaref" : "VLG"
+        "StopName": "Village",
+        "Tlaref": "VLG"
       },
       {
-        "StopName" : "Imperial War Museum",
-        "Tlaref" : "IWM"
+        "StopName": "Imperial War Museum",
+        "Tlaref": "IWM"
       },
       {
-        "StopName" : "Wharfside",
-        "Tlaref" : "WSD"
+        "StopName": "Wharfside",
+        "Tlaref": "WSD"
       },
       {
-        "StopName" : "Pomona",
-        "Tlaref" : "POM"
+        "StopName": "Pomona",
+        "Tlaref": "POM"
       },
       {
-        "StopName" : "Cornbrook",
-        "Tlaref" : "CNK"
+        "StopName": "Cornbrook",
+        "Tlaref": "CNK"
       },
       {
-        "StopName" : "Deansgate - Castlefield",
-        "Tlaref" : "GMX"
+        "StopName": "Deansgate - Castlefield",
+        "Tlaref": "GMX"
       }
     ],
-    "PolylineCoordinates" : [
+    "PolylineCoordinates": [
       [
         -2.3482228892,
         53.4681211194
@@ -38628,111 +38628,111 @@
     ]
   },
   {
-    "Name" : "Navy",
-    "Colour" : "#0069B4",
-    "Stops" : [
+    "Name": "Navy",
+    "Colour": "#0069B4",
+    "Stops": [
       {
-        "StopName" : "Manchester Airport",
-        "Tlaref" : "AIR"
+        "StopName": "Manchester Airport",
+        "Tlaref": "AIR"
       },
       {
-        "StopName" : "Shadowmoss",
-        "Tlaref" : "SHD"
+        "StopName": "Shadowmoss",
+        "Tlaref": "SHD"
       },
       {
-        "StopName" : "Peel Hall",
-        "Tlaref" : "PLH"
+        "StopName": "Peel Hall",
+        "Tlaref": "PLH"
       },
       {
-        "StopName" : "Robinswood Road",
-        "Tlaref" : "RBN"
+        "StopName": "Robinswood Road",
+        "Tlaref": "RBN"
       },
       {
-        "StopName" : "Wythenshawe Town Centre",
-        "Tlaref" : "WYC"
+        "StopName": "Wythenshawe Town Centre",
+        "Tlaref": "WYC"
       },
       {
-        "StopName" : "Crossacres",
-        "Tlaref" : "CRO"
+        "StopName": "Crossacres",
+        "Tlaref": "CRO"
       },
       {
-        "StopName" : "Benchill",
-        "Tlaref" : "BCH"
+        "StopName": "Benchill",
+        "Tlaref": "BCH"
       },
       {
-        "StopName" : "Martinscroft",
-        "Tlaref" : "MAR"
+        "StopName": "Martinscroft",
+        "Tlaref": "MAR"
       },
       {
-        "StopName" : "Roundthorn",
-        "Tlaref" : "RTH"
+        "StopName": "Roundthorn",
+        "Tlaref": "RTH"
       },
       {
-        "StopName" : "Baguley",
-        "Tlaref" : "BAG"
+        "StopName": "Baguley",
+        "Tlaref": "BAG"
       },
       {
-        "StopName" : "Moor Road",
-        "Tlaref" : "MRD"
+        "StopName": "Moor Road",
+        "Tlaref": "MRD"
       },
       {
-        "StopName" : "Wythenshawe Park",
-        "Tlaref" : "WPK"
+        "StopName": "Wythenshawe Park",
+        "Tlaref": "WPK"
       },
       {
-        "StopName" : "Northern Moor",
-        "Tlaref" : "NMR"
+        "StopName": "Northern Moor",
+        "Tlaref": "NMR"
       },
       {
-        "StopName" : "Sale Water Park",
-        "Tlaref" : "SWP"
+        "StopName": "Sale Water Park",
+        "Tlaref": "SWP"
       },
       {
-        "StopName" : "Barlow Moor Road",
-        "Tlaref" : "BMR"
+        "StopName": "Barlow Moor Road",
+        "Tlaref": "BMR"
       },
       {
-        "StopName" : "St Werburgh's Road",
-        "Tlaref" : "SWR"
+        "StopName": "St Werburgh's Road",
+        "Tlaref": "SWR"
       },
       {
-        "StopName" : "Chorlton",
-        "Tlaref" : "CHO"
+        "StopName": "Chorlton",
+        "Tlaref": "CHO"
       },
       {
-        "StopName" : "Firswood",
-        "Tlaref" : "FIR"
+        "StopName": "Firswood",
+        "Tlaref": "FIR"
       },
       {
-        "StopName" : "Trafford Bar",
-        "Tlaref" : "TFB"
+        "StopName": "Trafford Bar",
+        "Tlaref": "TFB"
       },
       {
-        "StopName" : "Cornbrook",
-        "Tlaref" : "CNK"
+        "StopName": "Cornbrook",
+        "Tlaref": "CNK"
       },
       {
-        "StopName" : "Deansgate - Castlefield",
-        "Tlaref" : "GMX"
+        "StopName": "Deansgate - Castlefield",
+        "Tlaref": "GMX"
       },
       {
-        "StopName" : "St Peter's Square",
-        "Tlaref" : "SPS"
+        "StopName": "St Peter's Square",
+        "Tlaref": "SPS"
       },
       {
-        "StopName" : "Market Street",
-        "Tlaref" : "MKT"
+        "StopName": "Market Street",
+        "Tlaref": "MKT"
       },
       {
-        "StopName" : "Shudehill",
-        "Tlaref" : "SHL"
+        "StopName": "Shudehill",
+        "Tlaref": "SHL"
       },
       {
-        "StopName" : "Victoria",
-        "Tlaref" : "VIC"
+        "StopName": "Victoria",
+        "Tlaref": "VIC"
       }
     ],
-    "RoutePolylines" : [
+    "RoutePolylines": [
       [
         -2.2727853424,
         53.3653025737

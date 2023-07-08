@@ -5,8 +5,8 @@ using System.Text.RegularExpressions;
 namespace LiveTramsMCR.Models.V1.Services;
 
 /// <summary>
-/// Converts Unformatted services, into a formatted form, by removing null or empty services
-/// and re-formatting the messages to be clearer.
+///     Converts Unformatted services, into a formatted form, by removing null or empty services
+///     and re-formatting the messages to be clearer.
 /// </summary>
 public class ServiceFormatter
 {
@@ -32,7 +32,7 @@ public class ServiceFormatter
                 service.Wait3));
 
             FormatMessage(formattedServices, service.MessageBoard);
-            
+
             SetLastUpdated(formattedServices, service.LastUpdated);
         }
 
@@ -40,7 +40,7 @@ public class ServiceFormatter
     }
 
     /// <summary>
-    /// Converts unformatted services to Departure board services
+    ///     Converts unformatted services to Departure board services
     /// </summary>
     /// <param name="unformattedServices"></param>
     /// <returns></returns>
@@ -57,7 +57,7 @@ public class ServiceFormatter
                 service.Wait2));
             AddTram(formattedDepartureBoardServices, new Tram(service.Dest3, service.Carriages3, service.Status3,
                 service.Wait3));
-            
+
             FormatDepartureBoardMessage(formattedDepartureBoardServices, service.MessageBoard);
         }
 
@@ -79,8 +79,8 @@ public class ServiceFormatter
 
 
     /// <summary>
-    /// Adds a tram to the formatted departure board services if the tram is
-    /// not null and the destination is not null or empty
+    ///     Adds a tram to the formatted departure board services if the tram is
+    ///     not null and the destination is not null or empty
     /// </summary>
     /// <param name="formattedServices"></param>
     /// <param name="tram"></param>
@@ -101,7 +101,7 @@ public class ServiceFormatter
         if (string.IsNullOrEmpty(message) || message == "<no message>") return;
         //Replace the caret chars with spaces for the centre.
         //This could create an excess space at the start, so run TrimStart.
-        message = Regex.Replace(message, 
+        message = Regex.Replace(message,
             @"\^J\^F0|\^F0",
             " ",
             RegexOptions.None,
@@ -114,7 +114,7 @@ public class ServiceFormatter
         if (string.IsNullOrEmpty(message) || message == "<no message>") return;
         //Replace the caret chars with spaces for the centre.
         //This could create an excess space at the start, so run TrimStart.
-        message = Regex.Replace(message, 
+        message = Regex.Replace(message,
             @"\^J\^F0|\^F0",
             " ",
             RegexOptions.None,

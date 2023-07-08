@@ -9,36 +9,36 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Geolocation" Version="1.2.1" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-        <PackageReference Include="NUnit" Version="3.13.3" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
+        <PackageReference Include="Geolocation" Version="1.2.1"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1"/>
+        <PackageReference Include="NUnit" Version="3.13.3"/>
+        <PackageReference Include="NUnit3TestAdapter" Version="4.3.1"/>
         <PackageReference Include="coverlet.collector" Version="3.2.0">
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-          <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LiveTramsMCR\LiveTramsMCR.csproj" />
+        <ProjectReference Include="..\LiveTramsMCR\LiveTramsMCR.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Resources\Station_Names_to_TLAREFs.json">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Include="Resources\TestRoutePlanner\routes.json" />
-      <Content Include="Resources\TLAREFs_to_IDs.json">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
+        <Content Include="Resources\Station_Names_to_TLAREFs.json">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Include="Resources\TestRoutePlanner\routes.json"/>
+        <Content Include="Resources\TLAREFs_to_IDs.json">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="TestModels\V1" />
+        <Folder Include="TestModels\V1"/>
     </ItemGroup>
 
 </Project>

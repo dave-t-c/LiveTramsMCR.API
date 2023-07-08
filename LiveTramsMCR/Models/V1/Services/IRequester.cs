@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Net.Http;
 
 namespace LiveTramsMCR.Models.V1.Services;
@@ -10,15 +9,15 @@ namespace LiveTramsMCR.Models.V1.Services;
 public interface IRequester
 {
     /// <summary>
-    /// Requests the services for a given list of IDs.
-    /// These IDs should be retrieved from an associated tlaref.
+    ///     Requests the services for a given list of IDs.
+    ///     These IDs should be retrieved from an associated tlaref.
     /// </summary>
     /// <param name="tlaref">Tlaref of the stop being requested</param>
     /// <returns></returns>
     public HttpResponseMessage RequestServices(string tlaref);
 
     /// <summary>
-    /// Requests services for all IDs
+    ///     Requests services for all IDs
     /// </summary>
     /// <returns></returns>
     public HttpResponseMessage RequestAllServices();

@@ -13,9 +13,9 @@ namespace LiveTramsMCR.Tests.TestControllers.V2;
 /// </summary>
 public class TestStopsControllerV2
 {
-    private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
     private MockStopsRepositoryV2? _mockStopsRepository;
+    private ResourcesConfig? _resourcesConfig;
     private IStopsDataModelV2? _stopsDataModelV2;
     private StopsControllerV2? _testStopController;
 
@@ -25,7 +25,7 @@ public class TestStopsControllerV2
         _resourcesConfig = new ResourcesConfig
         {
             StopResourcePath = "../../../Resources/TestRoutePlanner/stops.json",
-            StopV2ResourcePath = "../../../Resources/StopsV2.json", 
+            StopV2ResourcePath = "../../../Resources/StopsV2.json",
             StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json",
             TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json",
             RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json",

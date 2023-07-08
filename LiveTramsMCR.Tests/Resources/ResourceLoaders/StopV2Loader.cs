@@ -14,7 +14,7 @@ public class StopV2Loader
     private readonly ResourcesConfig _resourcesConfig;
 
     /// <summary>
-    /// Create a new StopLoader Object, which can import the required Stops.
+    ///     Create a new StopLoader Object, which can import the required Stops.
     /// </summary>
     /// <param name="resourcesConfig"></param>
     public StopV2Loader(ResourcesConfig resourcesConfig)
@@ -23,8 +23,8 @@ public class StopV2Loader
     }
 
     /// <summary>
-    /// Imports the Stops from the Stops resources file.
-    /// The results from this are then returned with a GET to '/api/v2/stops'.
+    ///     Imports the Stops from the Stops resources file.
+    ///     The results from this are then returned with a GET to '/api/v2/stops'.
     /// </summary>
     public List<StopV2> ImportStops()
     {

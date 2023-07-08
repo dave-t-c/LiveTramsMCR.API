@@ -1,1521 +1,1521 @@
 [
-    {
-        "AtcoCode": "9400ZZMAABM1",
-        "Ids": [
-            1030,
-            1031
-        ],
-        "Latitude": 53.510510781,
-        "Line": "Bury",
-        "Longitude": -2.2354932857,
-        "RoadCrossing": "",
-        "StopName": "Abraham Moss",
-        "Street": "Off Crescent Road",
-        "Tlaref": "ABM",
-        "Zone": 2,
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAALT1",
-        "Ids": [
-            1003,
-            1004
-        ],
-        "Latitude": 53.3872652199,
-        "Line": "Altrincham",
-        "Longitude": -2.3475466688,
-        "RoadCrossing": "",
-        "StopName": "Altrincham",
-        "Street": "Off Stamford New Road",
-        "Tlaref": "ALT",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMAANC1",
-        "Ids": [
-            1091,
-            1092
-        ],
-        "Latitude": 53.4743206528,
-        "Line": "Eccles",
-        "Longitude": -2.2860954196,
-        "RoadCrossing": "The Quays",
-        "StopName": "Anchorage",
-        "Street": "Anchorage Quay",
-        "Tlaref": "ANC",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAAMO2",
-        "Ids": [
-            1063,
-            1064
-        ],
-        "Latitude": 53.4836706404,
-        "Line": "East Manchester",
-        "Longitude": -2.1218873161,
-        "RoadCrossing": "Alexandria Drive",
-        "StopName": "Ashton Moss",
-        "Street": "Lord Sheldon Way",
-        "Tlaref": "ASM",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAAWT2",
-        "Ids": [
-            1065,
-            1066
-        ],
-        "Latitude": 53.4902170228,
-        "Line": "East Manchester",
-        "Longitude": -2.1097432971,
-        "RoadCrossing": "Richmond Street",
-        "StopName": "Ashton West",
-        "Street": "Lord Sheldon Way",
-        "Tlaref": "ASW",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAAUL2",
-        "Ids": [
-            1059,
-            1060,
-            1061,
-            1062
-        ],
-        "Latitude": 53.4903350628,
-        "Line": "East Manchester",
-        "Longitude": -2.0980630371,
-        "RoadCrossing": "Oldham Road",
-        "StopName": "Ashton-Under-Lyne",
-        "Street": "Wellington Road",
-        "Tlaref": "ASH",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAAUD2",
-        "Ids": [
-            1067,
-            1068
-        ],
-        "Latitude": 53.4782050268,
-        "Line": "East Manchester",
-        "Longitude": -2.1309723292,
-        "RoadCrossing": "Manchester Road",
-        "StopName": "Audenshaw",
-        "Street": "Droylsden Road",
-        "Tlaref": "AUD",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMABAG2",
-        "Ids": [
-            972,
-            973
-        ],
-        "Latitude": 53.3968593317,
-        "Line": "Airport",
-        "Longitude": -2.29273359,
-        "RoadCrossing": "Floatsall Road",
-        "StopName": "Baguley",
-        "Street": "Southmoor Road",
-        "Tlaref": "BAG",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMABAR2",
-        "Ids": [
-            976,
-            977
-        ],
-        "Latitude": 53.432895769,
-        "Line": "Airport",
-        "Longitude": -2.2692904466,
-        "RoadCrossing": "Barlow Moor Road",
-        "StopName": "Barlow Moor Road",
-        "Street": "Mauldeth Road",
-        "Tlaref": "BMR",
-        "StopZone": "2/3"
-    },
-    {
-        "AtcoCode": "9400ZZMAEVC2",
-        "Ids": [
-            1189,
-            1190
-        ],
-        "Latitude": 53.4657421188,
-        "Line": "Trafford Park",
-        "Longitude": -2.3421023341,
-        "RoadCrossing": "Phoenix Way",
-        "StopName": "Barton Dock Road",
-        "Street": "Barton Dock Road",
-        "Tlaref": "EVC",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMABLL2",
-        "Ids": [
-            974,
-            975
-        ],
-        "Latitude": 53.3872445158,
-        "Line": "Airport",
-        "Longitude": -2.2562821312,
-        "RoadCrossing": "Hollyedge Road",
-        "StopName": "Benchill",
-        "Street": "Brownley Road",
-        "Tlaref": "BCH",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMABOB1",
-        "Ids": [
-            1034,
-            1035
-        ],
-        "Latitude": 53.541994426,
-        "Line": "Bury",
-        "Longitude": -2.2861293985,
-        "RoadCrossing": "",
-        "StopName": "Besses O' Th' Barn",
-        "Street": "Off Bury Old Road",
-        "Tlaref": "BOB",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMABOW1",
-        "Ids": [
-            1032,
-            1033
-        ],
-        "Latitude": 53.5248092975,
-        "Line": "Bury",
-        "Longitude": -2.2497666819,
-        "RoadCrossing": "",
-        "StopName": "Bowker Vale",
-        "Street": "Off Middleton Road",
-        "Tlaref": "BKV",
-        "StopZone": "2/3"
-    },
-    {
-        "AtcoCode": "9400ZZMABWY1",
-        "Ids": [
-            1093,
-            1094
-        ],
-        "Latitude": 53.4747932696,
-        "Line": "Eccles",
-        "Longitude": -2.2950328811,
-        "RoadCrossing": "",
-        "StopName": "Broadway",
-        "Street": "Off Broadway",
-        "Tlaref": "BDW",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMABKS1",
-        "Ids": [
-            1005,
-            1006
-        ],
-        "Latitude": 53.41704237,
-        "Line": "Altrincham",
-        "Longitude": -2.325988166,
-        "RoadCrossing": "",
-        "StopName": "Brooklands",
-        "Street": "Off Marsland Road",
-        "Tlaref": "BRK",
-        "StopZone": "3/4"
-    },
-    {
-        "AtcoCode": "9400ZZMABNR1",
-        "Ids": [
-            1171,
-            1172
-        ],
-        "Latitude": 53.4291547399,
-        "Line": "South Manchester",
-        "Longitude": -2.2406866701,
-        "RoadCrossing": "",
-        "StopName": "Burton Road",
-        "Street": "Off Burton Road",
-        "Tlaref": "BRT",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMABUR1",
-        "Ids": [
-            1036,
-            1037
-        ],
-        "Latitude": 53.5907918773,
-        "Line": "Bury",
-        "Longitude": -2.2972761849,
-        "RoadCrossing": "",
-        "StopName": "Bury",
-        "Street": "Off Haymarket Street",
-        "Tlaref": "BRY",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMACEM2",
-        "Ids": [
-            1069,
-            1070
-        ],
-        "Latitude": 53.4798480252,
-        "Line": "East Manchester",
-        "Longitude": -2.1550409747,
-        "RoadCrossing": "Clegg Street",
-        "StopName": "Cemetery Road",
-        "Street": "Manchester Road",
-        "Tlaref": "CER",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMACTP1",
-        "Ids": [
-            1126,
-            1127
-        ],
-        "Latitude": 53.5016334931,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1991266024,
-        "RoadCrossing": "",
-        "StopName": "Central Park",
-        "Street": "Off The Gateway",
-        "Tlaref": "CEP",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMACHO2",
-        "Ids": [
-            1173,
-            1174
-        ],
-        "Latitude": 53.4428636154,
-        "Line": "South Manchester",
-        "Longitude": -2.2734334214,
-        "RoadCrossing": "",
-        "StopName": "Chorlton",
-        "Street": "Off Wilbraham Road",
-        "Tlaref": "CHO",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMACLN1",
-        "Ids": [
-            1071,
-            1072,
-            1073
-        ],
-        "Latitude": 53.4828473879,
-        "Line": "East Manchester",
-        "Longitude": -2.182432402,
-        "RoadCrossing": "Clayton Lane",
-        "StopName": "Clayton Hall",
-        "Street": "Ashton New Road",
-        "Tlaref": "CLA",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMACRN2",
-        "Ids": [
-            1095,
-            1096,
-            1097,
-            1098
-        ],
-        "Latitude": 53.4701034788,
-        "Line": "Eccles",
-        "Longitude": -2.2673869628,
-        "RoadCrossing": "",
-        "StopName": "Cornbrook",
-        "Street": "Off Cornbrook Road",
-        "Tlaref": "CNK",
-        "StopZone": "1/2"
-    },
-    {
-        "AtcoCode": "9400ZZMACSS2",
-        "Ids": [
-            978,
-            979
-        ],
-        "Latitude": 53.3833433503,
-        "Line": "Airport",
-        "Longitude": -2.2563338504,
-        "RoadCrossing": "Crossacres Road",
-        "StopName": "Crossacres",
-        "Street": "Brownley Road",
-        "Tlaref": "CRO",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMACRU3",
-        "Ids": [
-            1038,
-            1039,
-            1040
-        ],
-        "Latitude": 53.5171964835,
-        "Line": "Bury",
-        "Longitude": -2.2408389996,
-        "RoadCrossing": "",
-        "StopName": "Crumpsall",
-        "Street": "Off Station Road",
-        "Tlaref": "CRP",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMADNE2",
-        "Ids": [
-            1007,
-            1008
-        ],
-        "Latitude": 53.4300154374,
-        "Line": "Altrincham",
-        "Longitude": -2.311563849,
-        "RoadCrossing": "",
-        "StopName": "Dane Road",
-        "Street": "Off Dane Road",
-        "Tlaref": "DAN",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAGMX2",
-        "Ids": [
-            1009,
-            1010,
-            1011
-        ],
-        "Latitude": 53.4747605041,
-        "Line": "Altrincham",
-        "Longitude": -2.2503462419,
-        "RoadCrossing": "",
-        "StopName": "Deansgate - Castlefield",
-        "Street": "Off Whitworth Street West",
-        "Tlaref": "GMX",
-        "StopZone": "1"
-    },
-    {
-        "AtcoCode": "9400ZZMADER2",
-        "Ids": [
-            1128,
-            1129
-        ],
-        "Latitude": 53.5497902806,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1015363059,
-        "RoadCrossing": "",
-        "StopName": "Derker",
-        "Street": "Off Yates Street",
-        "Tlaref": "DER",
-        "StopZone": "3/4"
-    },
-    {
-        "AtcoCode": "9400ZZMADID1",
-        "Ids": [
-            1175,
-            1176
-        ],
-        "Latitude": 53.4167113816,
-        "Line": "South Manchester",
-        "Longitude": -2.2286098735,
-        "RoadCrossing": "",
-        "StopName": "Didsbury Village",
-        "Street": "Off School Lane",
-        "Tlaref": "DDV",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMADRO2",
-        "Ids": [
-            1074,
-            1075
-        ],
-        "Latitude": 53.4794745816,
-        "Line": "East Manchester",
-        "Longitude": -2.1446427902,
-        "RoadCrossing": "Market Street",
-        "StopName": "Droylsden",
-        "Street": "Ashton Road",
-        "Tlaref": "DYL",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAEDY1",
-        "Ids": [
-            1177,
-            1178,
-            1179,
-            1180
-        ],
-        "Latitude": 53.4120584954,
-        "Line": "South Manchester",
-        "Longitude": -2.2172868227,
-        "RoadCrossing": "",
-        "StopName": "East Didsbury",
-        "Street": "Off Kingsway",
-        "Tlaref": "EDD",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAECC1",
-        "Ids": [
-            1099
-        ],
-        "Latitude": 53.4830657907,
-        "Line": "Eccles",
-        "Longitude": -2.3347524063,
-        "RoadCrossing": "College Croft",
-        "StopName": "Eccles",
-        "Street": "Regent Street",
-        "Tlaref": "ECC",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAELN2",
-        "Ids": [
-            1076,
-            1077,
-            1078,
-            1079
-        ],
-        "Latitude": 53.4808859143,
-        "Line": "East Manchester",
-        "Longitude": -2.1652912485,
-        "RoadCrossing": "Edge Lane",
-        "StopName": "Edge Lane",
-        "Street": "Manchester Road",
-        "Tlaref": "EDL",
-        "StopZone": "2/3"
-    },
-    {
-        "AtcoCode": "9400ZZMAECS1",
-        "Ids": [
-            1084,
-            1085,
-            1086,
-            1087
-        ],
-        "Latitude": 53.4853860025,
-        "Line": "East Manchester",
-        "Longitude": -2.2023356575,
-        "RoadCrossing": "",
-        "StopName": "Etihad Campus",
-        "Street": "",
-        "Tlaref": "SPC",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAEXC1",
-        "Ids": [
-            1100,
-            1101
-        ],
-        "Latitude": 53.4676959032,
-        "Line": "Eccles",
-        "Longitude": -2.2824204739,
-        "RoadCrossing": "Trafford Road",
-        "StopName": "Exchange Quay",
-        "Street": "Exchange Quay",
-        "Tlaref": "EXQ",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAEXS1",
-        "Ids": [
-            1102,
-            1103
-        ],
-        "Latitude": 53.4844749883,
-        "Line": "Eccles",
-        "Longitude": -2.2426275509,
-        "RoadCrossing": "Withy Grove",
-        "StopName": "Exchange Square",
-        "Street": "Corporation Street",
-        "Tlaref": "EXS",
-        "StopZone": "1"
-    },
-    {
-        "AtcoCode": "9400ZZMAFWH2",
-        "Ids": [
-            1130,
-            1131
-        ],
-        "Latitude": 53.5106140117,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1628285875,
-        "RoadCrossing": "",
-        "StopName": "Failsworth",
-        "Street": "Off Hardman Lane",
-        "Tlaref": "FAL",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAFIR1",
-        "Ids": [
-            1181,
-            1182
-        ],
-        "Latitude": 53.4512039832,
-        "Line": "South Manchester",
-        "Longitude": -2.2777484182,
-        "RoadCrossing": "",
-        "StopName": "Firswood",
-        "Street": "Off Rye Bank Road",
-        "Tlaref": "FIR",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAFRE2",
-        "Ids": [
-            1132,
-            1133
-        ],
-        "Latitude": 53.5378987122,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1374337031,
-        "RoadCrossing": "Robinson Street",
-        "StopName": "Freehold",
-        "Street": "Off Block Lane",
-        "Tlaref": "FRE",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAHCY1",
-        "Ids": [
-            1104,
-            1105
-        ],
-        "Latitude": 53.4740647386,
-        "Line": "Eccles",
-        "Longitude": -2.2915626477,
-        "RoadCrossing": "",
-        "StopName": "Harbour City",
-        "Street": "The Quays",
-        "Tlaref": "HBC",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAHEA2",
-        "Ids": [
-            1041,
-            1042
-        ],
-        "Latitude": 53.5305600084,
-        "Line": "Bury",
-        "Longitude": -2.2672399832,
-        "RoadCrossing": "",
-        "StopName": "Heaton Park",
-        "Street": "Off Bury Old Road",
-        "Tlaref": "HPK",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAHOL2",
-        "Ids": [
-            1134,
-            1135
-        ],
-        "Latitude": 53.5199371711,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1472995494,
-        "RoadCrossing": "",
-        "StopName": "Hollinwood",
-        "Street": "Off Railway Road",
-        "Tlaref": "HOL",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAHTN2",
-        "Ids": [
-            1080,
-            1081
-        ],
-        "Latitude": 53.4832569454,
-        "Line": "East Manchester",
-        "Longitude": -2.2119999466,
-        "RoadCrossing": "Frost Street",
-        "StopName": "Holt Town",
-        "Street": "Holt Town",
-        "Tlaref": "HOT",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAIWM1",
-        "Ids": [
-            1191,
-            1192
-        ],
-        "Latitude": 53.4686497615,
-        "Line": "Trafford Park",
-        "Longitude": -2.2967979278,
-        "RoadCrossing": "Elevator Road",
-        "StopName": "Imperial War Museum",
-        "Street": "Trafford Wharf Road",
-        "Tlaref": "IWM",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAKNY2",
-        "Ids": [
-            1136,
-            1137
-        ],
-        "Latitude": 53.6112755769,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1243259972,
-        "RoadCrossing": "",
-        "StopName": "Kingsway Business Park",
-        "Street": "Off Leyfield Road",
-        "Tlaref": "KIN",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMALDY1",
-        "Ids": [
-            1106,
-            1107
-        ],
-        "Latitude": 53.4839602271,
-        "Line": "Eccles",
-        "Longitude": -2.3266068516,
-        "RoadCrossing": "Pilgrim's Way",
-        "StopName": "Ladywell",
-        "Street": "Eccles New Road",
-        "Tlaref": "LDW",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMALWY1",
-        "Ids": [
-            1108,
-            1109
-        ],
-        "Latitude": 53.4806149399,
-        "Line": "Eccles",
-        "Longitude": -2.2961883575,
-        "RoadCrossing": "South Langworthy Road",
-        "StopName": "Langworthy",
-        "Street": "Eccles New Road",
-        "Tlaref": "LGW",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAAIR1",
-        "Ids": [
-            970,
-            971
-        ],
-        "Latitude": 53.3654118101,
-        "Line": "Airport",
-        "Longitude": -2.272215482,
-        "RoadCrossing": "",
-        "StopName": "Manchester Airport",
-        "Street": "Off Malaga Avenue",
-        "Tlaref": "AIR",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMAMKT1",
-        "Ids": [
-            1043,
-            1044
-        ],
-        "Latitude": 53.4819301943,
-        "Line": "Bury",
-        "Longitude": -2.2386951408,
-        "RoadCrossing": "Fountain Street",
-        "StopName": "Market Street",
-        "Street": "Market Street",
-        "Tlaref": "MKT",
-        "StopZone": "1"
-    },
-    {
-        "AtcoCode": "9400ZZMAMFT1",
-        "Ids": [
-            980,
-            981
-        ],
-        "Latitude": 53.3919106893,
-        "Line": "Airport",
-        "Longitude": -2.2797978991,
-        "RoadCrossing": "Highdales Road",
-        "StopName": "Martinscroft",
-        "Street": "Hollyhedge Road",
-        "Tlaref": "MAR",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMAMCU2",
-        "Ids": [
-            1110,
-            1111,
-            1112,
-            1113
-        ],
-        "Latitude": 53.4721274953,
-        "Line": "Eccles",
-        "Longitude": -2.2971235181,
-        "RoadCrossing": "",
-        "StopName": "MediaCityUK",
-        "Street": "Off The Quays",
-        "Tlaref": "MEC",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAMIL2",
-        "Ids": [
-            1138,
-            1139
-        ],
-        "Latitude": 53.6082047208,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1120900275,
-        "RoadCrossing": "",
-        "StopName": "Milnrow",
-        "Street": "Off Station Road",
-        "Tlaref": "MIL",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMAMON2",
-        "Ids": [
-            1140,
-            1141
-        ],
-        "Latitude": 53.5010653856,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.210671788,
-        "RoadCrossing": "",
-        "StopName": "Monsall",
-        "Street": "Off Ruislip Avenue",
-        "Tlaref": "MON",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAMRD2",
-        "Ids": [
-            982,
-            983
-        ],
-        "Latitude": 53.4033249663,
-        "Line": "Airport",
-        "Longitude": -2.2952296875,
-        "RoadCrossing": "Bideford Drive",
-        "StopName": "Moor Road",
-        "Street": "Moor Road",
-        "Tlaref": "MRD",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMANAV2",
-        "Ids": [
-            1012,
-            1013
-        ],
-        "Latitude": 53.3955737093,
-        "Line": "Altrincham",
-        "Longitude": -2.3434036891,
-        "RoadCrossing": "",
-        "StopName": "Navigation Road",
-        "Street": "Off Navigation Road",
-        "Tlaref": "NAV",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMANIS2",
-        "Ids": [
-            1082,
-            1083
-        ],
-        "Latitude": 53.4810137409,
-        "Line": "East Manchester",
-        "Longitude": -2.2197791221,
-        "RoadCrossing": "Boond Street",
-        "StopName": "New Islington",
-        "Street": "Pollard Street",
-        "Tlaref": "NIS",
-        "StopZone": "1"
-    },
-    {
-        "AtcoCode": "9400ZZMANBD2",
-        "Ids": [
-            1142,
-            1143
-        ],
-        "Latitude": 53.613420616,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1354875508,
-        "RoadCrossing": "",
-        "StopName": "Newbold",
-        "Street": "Off Kingsway",
-        "Tlaref": "NEB",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMANHY2",
-        "Ids": [
-            1144,
-            1145
-        ],
-        "Latitude": 53.6008853996,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.0946627091,
-        "RoadCrossing": "",
-        "StopName": "Newhey",
-        "Street": "Off Huddersfield Road",
-        "Tlaref": "NEH",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMANEW2",
-        "Ids": [
-            1146,
-            1147
-        ],
-        "Latitude": 53.5042382269,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1834892665,
-        "RoadCrossing": "",
-        "StopName": "Newton Heath and Moston",
-        "Street": "Off Dean Lane",
-        "Tlaref": "NHM",
-        "StopZone": "2/3"
-    },
-    {
-        "AtcoCode": "9400ZZMANMR2",
-        "Ids": [
-            984,
-            985
-        ],
-        "Latitude": 53.4146049322,
-        "Line": "Airport",
-        "Longitude": -2.2881615127,
-        "RoadCrossing": "",
-        "StopName": "Northern Moor",
-        "Street": "Off Sale Road",
-        "Tlaref": "NMR",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAOLD1",
-        "Ids": [
-            1014,
-            1015
-        ],
-        "Latitude": 53.4557878736,
-        "Line": "Altrincham",
-        "Longitude": -2.2854737644,
-        "RoadCrossing": "",
-        "StopName": "Old Trafford",
-        "Street": "Off Brian Statham Way",
-        "Tlaref": "OLD",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAOMC1",
-        "Ids": [
-            1148,
-            1149,
-            1150,
-            1151
-        ],
-        "Latitude": 53.5403340415,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1121365925,
-        "RoadCrossing": "Clegg Street",
-        "StopName": "Oldham Central",
-        "Street": "Union Street",
-        "Tlaref": "OHC",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAOKS2",
-        "Ids": [
-            1152,
-            1153
-        ],
-        "Latitude": 53.5395379442,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1174609603,
-        "RoadCrossing": "King Street",
-        "StopName": "Oldham King Street",
-        "Street": "Union Street West",
-        "Tlaref": "OHK",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAOMP2",
-        "Ids": [
-            1154,
-            1155
-        ],
-        "Latitude": 53.5423733087,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1033896926,
-        "RoadCrossing": "Prince Street",
-        "StopName": "Oldham Mumps",
-        "Street": "Mumps",
-        "Tlaref": "OHM",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAPAR1",
-        "Ids": [
-            1193,
-            1194
-        ],
-        "Latitude": 53.4682648141,
-        "Line": "Trafford Park",
-        "Longitude": -2.323865132,
-        "RoadCrossing": "Westinghouse Road",
-        "StopName": "Parkway",
-        "Street": "Village Way",
-        "Tlaref": "PAR",
-        "StopZone": "2/3"
-    },
-    {
-        "AtcoCode": "9400ZZMAPLL2",
-        "Ids": [
-            986,
-            987
-        ],
-        "Latitude": 53.3736751897,
-        "Line": "Airport",
-        "Longitude": -2.2504138381,
-        "RoadCrossing": "Shadowmoss Road",
-        "StopName": "Peel Hall",
-        "Street": "Simonsway",
-        "Tlaref": "PLH",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMAPIC2",
-        "Ids": [
-            1049,
-            1050
-        ],
-        "Latitude": 53.4770112836,
-        "Line": "Bury",
-        "Longitude": -2.230681992,
-        "RoadCrossing": "",
-        "StopName": "Piccadilly",
-        "Street": "Off Fairfield Street",
-        "Tlaref": "PIC",
-        "StopZone": "1"
-    },
-    {
-        "AtcoCode": "9400ZZMAPGD2",
-        "Ids": [
-            1045,
-            1046,
-            1047,
-            1048
-        ],
-        "Latitude": 53.4802975262,
-        "Line": "Bury",
-        "Longitude": -2.2370736728,
-        "RoadCrossing": "Portland Street",
-        "StopName": "Piccadilly Gardens",
-        "Street": "Parker Street",
-        "Tlaref": "PCG",
-        "StopZone": "1"
-    },
-    {
-        "AtcoCode": "9400ZZMAPOM2",
-        "Ids": [
-            1114,
-            1115
-        ],
-        "Latitude": 53.4651894542,
-        "Line": "Eccles",
-        "Longitude": -2.2780205377,
-        "RoadCrossing": "",
-        "StopName": "Pomona",
-        "Street": "Off Pomona Stand",
-        "Tlaref": "POM",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAPWC1",
-        "Ids": [
-            1051,
-            1052
-        ],
-        "Latitude": 53.5332408651,
-        "Line": "Bury",
-        "Longitude": -2.2818761537,
-        "RoadCrossing": "",
-        "StopName": "Prestwich",
-        "Street": "Off Rectory Lane",
-        "Tlaref": "PRS",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAQRD1",
-        "Ids": [
-            1053,
-            1054
-        ],
-        "Latitude": 53.5016562015,
-        "Line": "Bury",
-        "Longitude": -2.226715305,
-        "RoadCrossing": "",
-        "StopName": "Queens Road",
-        "Street": "Off Queens Road",
-        "Tlaref": "QNS",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMARAD2",
-        "Ids": [
-            1055,
-            1056
-        ],
-        "Latitude": 53.5625071987,
-        "Line": "Bury",
-        "Longitude": -2.3209919408,
-        "RoadCrossing": "",
-        "StopName": "Radcliffe",
-        "Street": "Off Spring Lane",
-        "Tlaref": "RAD",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMARWD2",
-        "Ids": [
-            988,
-            989
-        ],
-        "Latitude": 53.3761500274,
-        "Line": "Airport",
-        "Longitude": -2.2574630606,
-        "RoadCrossing": "Ruddpark Road",
-        "StopName": "Robinswood Road",
-        "Street": "Simonsway",
-        "Tlaref": "RBN",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMARRS2",
-        "Ids": [
-            1156,
-            1157,
-            1158,
-            1159
-        ],
-        "Latitude": 53.6110337196,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1544336667,
-        "RoadCrossing": "Dowling Street",
-        "StopName": "Rochdale Railway Station",
-        "Street": "Maclure Rd",
-        "Tlaref": "ROC",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMARIN1",
-        "Ids": [
-            1160,
-            1161,
-            1162,
-            1163
-        ],
-        "Latitude": 53.6173422008,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1554090933,
-        "RoadCrossing": "Constantine Road",
-        "StopName": "Rochdale Town Centre",
-        "Street": "Smith Street",
-        "Tlaref": "RTC",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMARND1",
-        "Ids": [
-            990,
-            991,
-            992,
-            993
-        ],
-        "Latitude": 53.3926525867,
-        "Line": "Airport",
-        "Longitude": -2.2890807305,
-        "RoadCrossing": "Holleyedge Road",
-        "StopName": "Roundthorn",
-        "Street": "Southmoor Road",
-        "Tlaref": "RTH",
-        "StopZone": "3/4"
-    },
-    {
-        "AtcoCode": "9400ZZMASLE1",
-        "Ids": [
-            1016,
-            1017
-        ],
-        "Latitude": 53.4241890656,
-        "Line": "Altrincham",
-        "Longitude": -2.3190453909,
-        "RoadCrossing": "",
-        "StopName": "Sale",
-        "Street": "Off School Lane",
-        "Tlaref": "SAL",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMASWP1",
-        "Ids": [
-            996,
-            997
-        ],
-        "Latitude": 53.4282432416,
-        "Line": "Airport",
-        "Longitude": -2.2907671351,
-        "RoadCrossing": "",
-        "StopName": "Sale Water Park",
-        "Street": "Rifle Road",
-        "Tlaref": "SWP",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMASQY2",
-        "Ids": [
-            1116,
-            1117
-        ],
-        "Latitude": 53.470352951,
-        "Line": "Eccles",
-        "Longitude": -2.2839144655,
-        "RoadCrossing": "Waterfront Quay",
-        "StopName": "Salford Quays",
-        "Street": "The Quays",
-        "Tlaref": "SFQ",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMASDW2",
-        "Ids": [
-            994,
-            995
-        ],
-        "Latitude": 53.3679719717,
-        "Line": "Airport",
-        "Longitude": -2.2525144064,
-        "RoadCrossing": "Cornishway",
-        "StopName": "Shadowmoss",
-        "Street": "Shadow Moss Road",
-        "Tlaref": "SHD",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMASHA3",
-        "Ids": [
-            1164,
-            1165,
-            1166
-        ],
-        "Latitude": 53.5761806607,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.0894424088,
-        "RoadCrossing": "",
-        "StopName": "Shaw and Crompton",
-        "Street": "Off Beal Lane",
-        "Tlaref": "SHC",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMASHU1",
-        "Ids": [
-            1018,
-            1019
-        ],
-        "Latitude": 53.4852460516,
-        "Line": "Altrincham",
-        "Longitude": -2.2391357328,
-        "RoadCrossing": "High Street",
-        "StopName": "Shudehill",
-        "Street": "Shudehill",
-        "Tlaref": "SHL",
-        "StopZone": "1"
-    },
-    {
-        "AtcoCode": "9400ZZMASCH2",
-        "Ids": [
-            1167,
-            1168
-        ],
-        "Latitude": 53.5267171139,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1450905897,
-        "RoadCrossing": "",
-        "StopName": "South Chadderton",
-        "Street": "Off Canal Street",
-        "Tlaref": "SOC",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMASTP2",
-        "Ids": [
-            1118,
-            1119,
-            1120,
-            1121,
-            1122,
-            1123
-        ],
-        "Latitude": 53.4782538837,
-        "Line": "Eccles",
-        "Longitude": -2.2431645848,
-        "RoadCrossing": "Princess Street",
-        "StopName": "St Peter's Square",
-        "Street": "Mosley Street",
-        "Tlaref": "SPS",
-        "StopZone": "1"
-    },
-    {
-        "AtcoCode": "9400ZZMASTW1",
-        "Ids": [
-            1183,
-            1184
-        ],
-        "Latitude": 53.4388272245,
-        "Line": "South Manchester",
-        "Longitude": -2.2657151417,
-        "RoadCrossing": "",
-        "StopName": "St Werburgh's Road",
-        "Street": "Off St Werburgh's Road",
-        "Tlaref": "SWR",
-        "StopZone": "2/3"
-    },
-    {
-        "AtcoCode": "9400ZZMASFD1",
-        "Ids": [
-            1020,
-            1021
-        ],
-        "Latitude": 53.446035258,
-        "Line": "Altrincham",
-        "Longitude": -2.3037164903,
-        "RoadCrossing": "",
-        "StopName": "Stretford",
-        "Street": "Off Edge Lane",
-        "Tlaref": "STR",
-        "StopZone": "2/3"
-    },
-    {
-        "AtcoCode": "9400ZZMATRC1",
-        "Ids": [
-            1195,
-            1196
-        ],
-        "Latitude": 53.4678830354,
-        "Line": "Trafford Park",
-        "Longitude": -2.347753428,
-        "RoadCrossing": "Traders Avenue",
-        "StopName": "The Trafford Centre",
-        "Street": "Barton Dock Road",
-        "Tlaref": "TRC",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMATIM1",
-        "Ids": [
-            1024,
-            1025
-        ],
-        "Latitude": 53.4042983301,
-        "Line": "Altrincham",
-        "Longitude": -2.3382696874,
-        "RoadCrossing": "",
-        "StopName": "Timperley",
-        "Street": "Off Park Road",
-        "Tlaref": "TMP",
-        "StopZone": "4"
-    },
-    {
-        "AtcoCode": "9400ZZMATRA2",
-        "Ids": [
-            1022,
-            1023
-        ],
-        "Latitude": 53.4616855724,
-        "Line": "Altrincham",
-        "Longitude": -2.2773198534,
-        "RoadCrossing": "",
-        "StopName": "Trafford Bar",
-        "Street": "Off Seymour Grove",
-        "Tlaref": "TFB",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAVPK2",
-        "Ids": [
-            1088,
-            1089,
-            1090
-        ],
-        "Latitude": 53.4822555423,
-        "Line": "East Manchester",
-        "Longitude": -2.1929780544,
-        "RoadCrossing": "Alan Turing Way",
-        "StopName": "Velopark",
-        "Street": "Ashton New Road",
-        "Tlaref": "VEL",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAVIC1",
-        "Ids": [
-            1026,
-            1027,
-            1028,
-            1029
-        ],
-        "Latitude": 53.4879196028,
-        "Line": "Altrincham",
-        "Longitude": -2.2416224097,
-        "RoadCrossing": "",
-        "StopName": "Victoria",
-        "Street": "Off Corporation Street",
-        "Tlaref": "VIC",
-        "StopZone": "1"
-    },
-    {
-        "AtcoCode": "9400ZZMAVLG1",
-        "Ids": [
-            1197,
-            1198
-        ],
-        "Latitude": 53.4674589237,
-        "Line": "Trafford Park",
-        "Longitude": -2.3091418042,
-        "RoadCrossing": "Second Avenue",
-        "StopName": "Village",
-        "Street": "Village Way",
-        "Tlaref": "VLG",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAWST2",
-        "Ids": [
-            1124,
-            1125
-        ],
-        "Latitude": 53.4824738016,
-        "Line": "Eccles",
-        "Longitude": -2.3075482464,
-        "RoadCrossing": "Weaste Road",
-        "StopName": "Weaste",
-        "Street": "Eccles New Road",
-        "Tlaref": "WST",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAWTD1",
-        "Ids": [
-            1185,
-            1186
-        ],
-        "Latitude": 53.4244269437,
-        "Line": "South Manchester",
-        "Longitude": -2.2361002703,
-        "RoadCrossing": "",
-        "StopName": "West Didsbury",
-        "Street": "Off Palatine Road",
-        "Tlaref": "WDD",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAWWD2",
-        "Ids": [
-            1169,
-            1170
-        ],
-        "Latitude": 53.5423158188,
-        "Line": "Oldham & Rochdale",
-        "Longitude": -2.1258135241,
-        "RoadCrossing": "Winterbottom Street",
-        "StopName": "Westwood",
-        "Street": "Middleton Road",
-        "Tlaref": "WWD",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAWFS2",
-        "Ids": [
-            1199,
-            1200
-        ],
-        "Latitude": 53.4663254947,
-        "Line": "Trafford Park",
-        "Longitude": -2.2879245148,
-        "RoadCrossing": "Sir Alex Fergusson Way",
-        "StopName": "Wharfside",
-        "Street": "Trafford Wharf Road",
-        "Tlaref": "WSD",
-        "StopZone": "2"
-    },
-    {
-        "AtcoCode": "9400ZZMAWFD1",
-        "Ids": [
-            1057,
-            1058
-        ],
-        "Latitude": 53.5511316542,
-        "Line": "Bury",
-        "Longitude": -2.2951414371,
-        "RoadCrossing": "",
-        "StopName": "Whitefield",
-        "Street": "Off Bury New Road",
-        "Tlaref": "WFD",
-        "StopZone": "3/4"
-    },
-    {
-        "AtcoCode": "9400ZZMAWIT1",
-        "Ids": [
-            1187,
-            1188
-        ],
-        "Latitude": 53.4327681682,
-        "Line": "South Manchester",
-        "Longitude": -2.249421842,
-        "RoadCrossing": "",
-        "StopName": "Withington",
-        "Street": "Off Princess Road",
-        "Tlaref": "WTH",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAWPK2",
-        "Ids": [
-            998,
-            999
-        ],
-        "Latitude": 53.4077190784,
-        "Line": "Airport",
-        "Longitude": -2.2957565402,
-        "RoadCrossing": "",
-        "StopName": "Wythenshawe Park",
-        "Street": "Off Wythenshawe Road",
-        "Tlaref": "WPK",
-        "StopZone": "3"
-    },
-    {
-        "AtcoCode": "9400ZZMAWYT1",
-        "Ids": [
-            1000,
-            1001,
-            1002
-        ],
-        "Latitude": 53.3800645028,
-        "Line": "Airport",
-        "Longitude": -2.2636651643,
-        "RoadCrossing": "Poundswick Lane",
-        "StopName": "Wythenshawe Town Centre",
-        "Street": "Ainley Road",
-        "Tlaref": "WYC",
-        "StopZone": "4"
-    }
+  {
+    "AtcoCode": "9400ZZMAABM1",
+    "Ids": [
+      1030,
+      1031
+    ],
+    "Latitude": 53.510510781,
+    "Line": "Bury",
+    "Longitude": -2.2354932857,
+    "RoadCrossing": "",
+    "StopName": "Abraham Moss",
+    "Street": "Off Crescent Road",
+    "Tlaref": "ABM",
+    "Zone": 2,
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAALT1",
+    "Ids": [
+      1003,
+      1004
+    ],
+    "Latitude": 53.3872652199,
+    "Line": "Altrincham",
+    "Longitude": -2.3475466688,
+    "RoadCrossing": "",
+    "StopName": "Altrincham",
+    "Street": "Off Stamford New Road",
+    "Tlaref": "ALT",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMAANC1",
+    "Ids": [
+      1091,
+      1092
+    ],
+    "Latitude": 53.4743206528,
+    "Line": "Eccles",
+    "Longitude": -2.2860954196,
+    "RoadCrossing": "The Quays",
+    "StopName": "Anchorage",
+    "Street": "Anchorage Quay",
+    "Tlaref": "ANC",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAAMO2",
+    "Ids": [
+      1063,
+      1064
+    ],
+    "Latitude": 53.4836706404,
+    "Line": "East Manchester",
+    "Longitude": -2.1218873161,
+    "RoadCrossing": "Alexandria Drive",
+    "StopName": "Ashton Moss",
+    "Street": "Lord Sheldon Way",
+    "Tlaref": "ASM",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAAWT2",
+    "Ids": [
+      1065,
+      1066
+    ],
+    "Latitude": 53.4902170228,
+    "Line": "East Manchester",
+    "Longitude": -2.1097432971,
+    "RoadCrossing": "Richmond Street",
+    "StopName": "Ashton West",
+    "Street": "Lord Sheldon Way",
+    "Tlaref": "ASW",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAAUL2",
+    "Ids": [
+      1059,
+      1060,
+      1061,
+      1062
+    ],
+    "Latitude": 53.4903350628,
+    "Line": "East Manchester",
+    "Longitude": -2.0980630371,
+    "RoadCrossing": "Oldham Road",
+    "StopName": "Ashton-Under-Lyne",
+    "Street": "Wellington Road",
+    "Tlaref": "ASH",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAAUD2",
+    "Ids": [
+      1067,
+      1068
+    ],
+    "Latitude": 53.4782050268,
+    "Line": "East Manchester",
+    "Longitude": -2.1309723292,
+    "RoadCrossing": "Manchester Road",
+    "StopName": "Audenshaw",
+    "Street": "Droylsden Road",
+    "Tlaref": "AUD",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMABAG2",
+    "Ids": [
+      972,
+      973
+    ],
+    "Latitude": 53.3968593317,
+    "Line": "Airport",
+    "Longitude": -2.29273359,
+    "RoadCrossing": "Floatsall Road",
+    "StopName": "Baguley",
+    "Street": "Southmoor Road",
+    "Tlaref": "BAG",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMABAR2",
+    "Ids": [
+      976,
+      977
+    ],
+    "Latitude": 53.432895769,
+    "Line": "Airport",
+    "Longitude": -2.2692904466,
+    "RoadCrossing": "Barlow Moor Road",
+    "StopName": "Barlow Moor Road",
+    "Street": "Mauldeth Road",
+    "Tlaref": "BMR",
+    "StopZone": "2/3"
+  },
+  {
+    "AtcoCode": "9400ZZMAEVC2",
+    "Ids": [
+      1189,
+      1190
+    ],
+    "Latitude": 53.4657421188,
+    "Line": "Trafford Park",
+    "Longitude": -2.3421023341,
+    "RoadCrossing": "Phoenix Way",
+    "StopName": "Barton Dock Road",
+    "Street": "Barton Dock Road",
+    "Tlaref": "EVC",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMABLL2",
+    "Ids": [
+      974,
+      975
+    ],
+    "Latitude": 53.3872445158,
+    "Line": "Airport",
+    "Longitude": -2.2562821312,
+    "RoadCrossing": "Hollyedge Road",
+    "StopName": "Benchill",
+    "Street": "Brownley Road",
+    "Tlaref": "BCH",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMABOB1",
+    "Ids": [
+      1034,
+      1035
+    ],
+    "Latitude": 53.541994426,
+    "Line": "Bury",
+    "Longitude": -2.2861293985,
+    "RoadCrossing": "",
+    "StopName": "Besses O' Th' Barn",
+    "Street": "Off Bury Old Road",
+    "Tlaref": "BOB",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMABOW1",
+    "Ids": [
+      1032,
+      1033
+    ],
+    "Latitude": 53.5248092975,
+    "Line": "Bury",
+    "Longitude": -2.2497666819,
+    "RoadCrossing": "",
+    "StopName": "Bowker Vale",
+    "Street": "Off Middleton Road",
+    "Tlaref": "BKV",
+    "StopZone": "2/3"
+  },
+  {
+    "AtcoCode": "9400ZZMABWY1",
+    "Ids": [
+      1093,
+      1094
+    ],
+    "Latitude": 53.4747932696,
+    "Line": "Eccles",
+    "Longitude": -2.2950328811,
+    "RoadCrossing": "",
+    "StopName": "Broadway",
+    "Street": "Off Broadway",
+    "Tlaref": "BDW",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMABKS1",
+    "Ids": [
+      1005,
+      1006
+    ],
+    "Latitude": 53.41704237,
+    "Line": "Altrincham",
+    "Longitude": -2.325988166,
+    "RoadCrossing": "",
+    "StopName": "Brooklands",
+    "Street": "Off Marsland Road",
+    "Tlaref": "BRK",
+    "StopZone": "3/4"
+  },
+  {
+    "AtcoCode": "9400ZZMABNR1",
+    "Ids": [
+      1171,
+      1172
+    ],
+    "Latitude": 53.4291547399,
+    "Line": "South Manchester",
+    "Longitude": -2.2406866701,
+    "RoadCrossing": "",
+    "StopName": "Burton Road",
+    "Street": "Off Burton Road",
+    "Tlaref": "BRT",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMABUR1",
+    "Ids": [
+      1036,
+      1037
+    ],
+    "Latitude": 53.5907918773,
+    "Line": "Bury",
+    "Longitude": -2.2972761849,
+    "RoadCrossing": "",
+    "StopName": "Bury",
+    "Street": "Off Haymarket Street",
+    "Tlaref": "BRY",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMACEM2",
+    "Ids": [
+      1069,
+      1070
+    ],
+    "Latitude": 53.4798480252,
+    "Line": "East Manchester",
+    "Longitude": -2.1550409747,
+    "RoadCrossing": "Clegg Street",
+    "StopName": "Cemetery Road",
+    "Street": "Manchester Road",
+    "Tlaref": "CER",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMACTP1",
+    "Ids": [
+      1126,
+      1127
+    ],
+    "Latitude": 53.5016334931,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1991266024,
+    "RoadCrossing": "",
+    "StopName": "Central Park",
+    "Street": "Off The Gateway",
+    "Tlaref": "CEP",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMACHO2",
+    "Ids": [
+      1173,
+      1174
+    ],
+    "Latitude": 53.4428636154,
+    "Line": "South Manchester",
+    "Longitude": -2.2734334214,
+    "RoadCrossing": "",
+    "StopName": "Chorlton",
+    "Street": "Off Wilbraham Road",
+    "Tlaref": "CHO",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMACLN1",
+    "Ids": [
+      1071,
+      1072,
+      1073
+    ],
+    "Latitude": 53.4828473879,
+    "Line": "East Manchester",
+    "Longitude": -2.182432402,
+    "RoadCrossing": "Clayton Lane",
+    "StopName": "Clayton Hall",
+    "Street": "Ashton New Road",
+    "Tlaref": "CLA",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMACRN2",
+    "Ids": [
+      1095,
+      1096,
+      1097,
+      1098
+    ],
+    "Latitude": 53.4701034788,
+    "Line": "Eccles",
+    "Longitude": -2.2673869628,
+    "RoadCrossing": "",
+    "StopName": "Cornbrook",
+    "Street": "Off Cornbrook Road",
+    "Tlaref": "CNK",
+    "StopZone": "1/2"
+  },
+  {
+    "AtcoCode": "9400ZZMACSS2",
+    "Ids": [
+      978,
+      979
+    ],
+    "Latitude": 53.3833433503,
+    "Line": "Airport",
+    "Longitude": -2.2563338504,
+    "RoadCrossing": "Crossacres Road",
+    "StopName": "Crossacres",
+    "Street": "Brownley Road",
+    "Tlaref": "CRO",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMACRU3",
+    "Ids": [
+      1038,
+      1039,
+      1040
+    ],
+    "Latitude": 53.5171964835,
+    "Line": "Bury",
+    "Longitude": -2.2408389996,
+    "RoadCrossing": "",
+    "StopName": "Crumpsall",
+    "Street": "Off Station Road",
+    "Tlaref": "CRP",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMADNE2",
+    "Ids": [
+      1007,
+      1008
+    ],
+    "Latitude": 53.4300154374,
+    "Line": "Altrincham",
+    "Longitude": -2.311563849,
+    "RoadCrossing": "",
+    "StopName": "Dane Road",
+    "Street": "Off Dane Road",
+    "Tlaref": "DAN",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAGMX2",
+    "Ids": [
+      1009,
+      1010,
+      1011
+    ],
+    "Latitude": 53.4747605041,
+    "Line": "Altrincham",
+    "Longitude": -2.2503462419,
+    "RoadCrossing": "",
+    "StopName": "Deansgate - Castlefield",
+    "Street": "Off Whitworth Street West",
+    "Tlaref": "GMX",
+    "StopZone": "1"
+  },
+  {
+    "AtcoCode": "9400ZZMADER2",
+    "Ids": [
+      1128,
+      1129
+    ],
+    "Latitude": 53.5497902806,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1015363059,
+    "RoadCrossing": "",
+    "StopName": "Derker",
+    "Street": "Off Yates Street",
+    "Tlaref": "DER",
+    "StopZone": "3/4"
+  },
+  {
+    "AtcoCode": "9400ZZMADID1",
+    "Ids": [
+      1175,
+      1176
+    ],
+    "Latitude": 53.4167113816,
+    "Line": "South Manchester",
+    "Longitude": -2.2286098735,
+    "RoadCrossing": "",
+    "StopName": "Didsbury Village",
+    "Street": "Off School Lane",
+    "Tlaref": "DDV",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMADRO2",
+    "Ids": [
+      1074,
+      1075
+    ],
+    "Latitude": 53.4794745816,
+    "Line": "East Manchester",
+    "Longitude": -2.1446427902,
+    "RoadCrossing": "Market Street",
+    "StopName": "Droylsden",
+    "Street": "Ashton Road",
+    "Tlaref": "DYL",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAEDY1",
+    "Ids": [
+      1177,
+      1178,
+      1179,
+      1180
+    ],
+    "Latitude": 53.4120584954,
+    "Line": "South Manchester",
+    "Longitude": -2.2172868227,
+    "RoadCrossing": "",
+    "StopName": "East Didsbury",
+    "Street": "Off Kingsway",
+    "Tlaref": "EDD",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAECC1",
+    "Ids": [
+      1099
+    ],
+    "Latitude": 53.4830657907,
+    "Line": "Eccles",
+    "Longitude": -2.3347524063,
+    "RoadCrossing": "College Croft",
+    "StopName": "Eccles",
+    "Street": "Regent Street",
+    "Tlaref": "ECC",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAELN2",
+    "Ids": [
+      1076,
+      1077,
+      1078,
+      1079
+    ],
+    "Latitude": 53.4808859143,
+    "Line": "East Manchester",
+    "Longitude": -2.1652912485,
+    "RoadCrossing": "Edge Lane",
+    "StopName": "Edge Lane",
+    "Street": "Manchester Road",
+    "Tlaref": "EDL",
+    "StopZone": "2/3"
+  },
+  {
+    "AtcoCode": "9400ZZMAECS1",
+    "Ids": [
+      1084,
+      1085,
+      1086,
+      1087
+    ],
+    "Latitude": 53.4853860025,
+    "Line": "East Manchester",
+    "Longitude": -2.2023356575,
+    "RoadCrossing": "",
+    "StopName": "Etihad Campus",
+    "Street": "",
+    "Tlaref": "SPC",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAEXC1",
+    "Ids": [
+      1100,
+      1101
+    ],
+    "Latitude": 53.4676959032,
+    "Line": "Eccles",
+    "Longitude": -2.2824204739,
+    "RoadCrossing": "Trafford Road",
+    "StopName": "Exchange Quay",
+    "Street": "Exchange Quay",
+    "Tlaref": "EXQ",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAEXS1",
+    "Ids": [
+      1102,
+      1103
+    ],
+    "Latitude": 53.4844749883,
+    "Line": "Eccles",
+    "Longitude": -2.2426275509,
+    "RoadCrossing": "Withy Grove",
+    "StopName": "Exchange Square",
+    "Street": "Corporation Street",
+    "Tlaref": "EXS",
+    "StopZone": "1"
+  },
+  {
+    "AtcoCode": "9400ZZMAFWH2",
+    "Ids": [
+      1130,
+      1131
+    ],
+    "Latitude": 53.5106140117,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1628285875,
+    "RoadCrossing": "",
+    "StopName": "Failsworth",
+    "Street": "Off Hardman Lane",
+    "Tlaref": "FAL",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAFIR1",
+    "Ids": [
+      1181,
+      1182
+    ],
+    "Latitude": 53.4512039832,
+    "Line": "South Manchester",
+    "Longitude": -2.2777484182,
+    "RoadCrossing": "",
+    "StopName": "Firswood",
+    "Street": "Off Rye Bank Road",
+    "Tlaref": "FIR",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAFRE2",
+    "Ids": [
+      1132,
+      1133
+    ],
+    "Latitude": 53.5378987122,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1374337031,
+    "RoadCrossing": "Robinson Street",
+    "StopName": "Freehold",
+    "Street": "Off Block Lane",
+    "Tlaref": "FRE",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAHCY1",
+    "Ids": [
+      1104,
+      1105
+    ],
+    "Latitude": 53.4740647386,
+    "Line": "Eccles",
+    "Longitude": -2.2915626477,
+    "RoadCrossing": "",
+    "StopName": "Harbour City",
+    "Street": "The Quays",
+    "Tlaref": "HBC",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAHEA2",
+    "Ids": [
+      1041,
+      1042
+    ],
+    "Latitude": 53.5305600084,
+    "Line": "Bury",
+    "Longitude": -2.2672399832,
+    "RoadCrossing": "",
+    "StopName": "Heaton Park",
+    "Street": "Off Bury Old Road",
+    "Tlaref": "HPK",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAHOL2",
+    "Ids": [
+      1134,
+      1135
+    ],
+    "Latitude": 53.5199371711,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1472995494,
+    "RoadCrossing": "",
+    "StopName": "Hollinwood",
+    "Street": "Off Railway Road",
+    "Tlaref": "HOL",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAHTN2",
+    "Ids": [
+      1080,
+      1081
+    ],
+    "Latitude": 53.4832569454,
+    "Line": "East Manchester",
+    "Longitude": -2.2119999466,
+    "RoadCrossing": "Frost Street",
+    "StopName": "Holt Town",
+    "Street": "Holt Town",
+    "Tlaref": "HOT",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAIWM1",
+    "Ids": [
+      1191,
+      1192
+    ],
+    "Latitude": 53.4686497615,
+    "Line": "Trafford Park",
+    "Longitude": -2.2967979278,
+    "RoadCrossing": "Elevator Road",
+    "StopName": "Imperial War Museum",
+    "Street": "Trafford Wharf Road",
+    "Tlaref": "IWM",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAKNY2",
+    "Ids": [
+      1136,
+      1137
+    ],
+    "Latitude": 53.6112755769,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1243259972,
+    "RoadCrossing": "",
+    "StopName": "Kingsway Business Park",
+    "Street": "Off Leyfield Road",
+    "Tlaref": "KIN",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMALDY1",
+    "Ids": [
+      1106,
+      1107
+    ],
+    "Latitude": 53.4839602271,
+    "Line": "Eccles",
+    "Longitude": -2.3266068516,
+    "RoadCrossing": "Pilgrim's Way",
+    "StopName": "Ladywell",
+    "Street": "Eccles New Road",
+    "Tlaref": "LDW",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMALWY1",
+    "Ids": [
+      1108,
+      1109
+    ],
+    "Latitude": 53.4806149399,
+    "Line": "Eccles",
+    "Longitude": -2.2961883575,
+    "RoadCrossing": "South Langworthy Road",
+    "StopName": "Langworthy",
+    "Street": "Eccles New Road",
+    "Tlaref": "LGW",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAAIR1",
+    "Ids": [
+      970,
+      971
+    ],
+    "Latitude": 53.3654118101,
+    "Line": "Airport",
+    "Longitude": -2.272215482,
+    "RoadCrossing": "",
+    "StopName": "Manchester Airport",
+    "Street": "Off Malaga Avenue",
+    "Tlaref": "AIR",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMAMKT1",
+    "Ids": [
+      1043,
+      1044
+    ],
+    "Latitude": 53.4819301943,
+    "Line": "Bury",
+    "Longitude": -2.2386951408,
+    "RoadCrossing": "Fountain Street",
+    "StopName": "Market Street",
+    "Street": "Market Street",
+    "Tlaref": "MKT",
+    "StopZone": "1"
+  },
+  {
+    "AtcoCode": "9400ZZMAMFT1",
+    "Ids": [
+      980,
+      981
+    ],
+    "Latitude": 53.3919106893,
+    "Line": "Airport",
+    "Longitude": -2.2797978991,
+    "RoadCrossing": "Highdales Road",
+    "StopName": "Martinscroft",
+    "Street": "Hollyhedge Road",
+    "Tlaref": "MAR",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMAMCU2",
+    "Ids": [
+      1110,
+      1111,
+      1112,
+      1113
+    ],
+    "Latitude": 53.4721274953,
+    "Line": "Eccles",
+    "Longitude": -2.2971235181,
+    "RoadCrossing": "",
+    "StopName": "MediaCityUK",
+    "Street": "Off The Quays",
+    "Tlaref": "MEC",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAMIL2",
+    "Ids": [
+      1138,
+      1139
+    ],
+    "Latitude": 53.6082047208,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1120900275,
+    "RoadCrossing": "",
+    "StopName": "Milnrow",
+    "Street": "Off Station Road",
+    "Tlaref": "MIL",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMAMON2",
+    "Ids": [
+      1140,
+      1141
+    ],
+    "Latitude": 53.5010653856,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.210671788,
+    "RoadCrossing": "",
+    "StopName": "Monsall",
+    "Street": "Off Ruislip Avenue",
+    "Tlaref": "MON",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAMRD2",
+    "Ids": [
+      982,
+      983
+    ],
+    "Latitude": 53.4033249663,
+    "Line": "Airport",
+    "Longitude": -2.2952296875,
+    "RoadCrossing": "Bideford Drive",
+    "StopName": "Moor Road",
+    "Street": "Moor Road",
+    "Tlaref": "MRD",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMANAV2",
+    "Ids": [
+      1012,
+      1013
+    ],
+    "Latitude": 53.3955737093,
+    "Line": "Altrincham",
+    "Longitude": -2.3434036891,
+    "RoadCrossing": "",
+    "StopName": "Navigation Road",
+    "Street": "Off Navigation Road",
+    "Tlaref": "NAV",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMANIS2",
+    "Ids": [
+      1082,
+      1083
+    ],
+    "Latitude": 53.4810137409,
+    "Line": "East Manchester",
+    "Longitude": -2.2197791221,
+    "RoadCrossing": "Boond Street",
+    "StopName": "New Islington",
+    "Street": "Pollard Street",
+    "Tlaref": "NIS",
+    "StopZone": "1"
+  },
+  {
+    "AtcoCode": "9400ZZMANBD2",
+    "Ids": [
+      1142,
+      1143
+    ],
+    "Latitude": 53.613420616,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1354875508,
+    "RoadCrossing": "",
+    "StopName": "Newbold",
+    "Street": "Off Kingsway",
+    "Tlaref": "NEB",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMANHY2",
+    "Ids": [
+      1144,
+      1145
+    ],
+    "Latitude": 53.6008853996,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.0946627091,
+    "RoadCrossing": "",
+    "StopName": "Newhey",
+    "Street": "Off Huddersfield Road",
+    "Tlaref": "NEH",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMANEW2",
+    "Ids": [
+      1146,
+      1147
+    ],
+    "Latitude": 53.5042382269,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1834892665,
+    "RoadCrossing": "",
+    "StopName": "Newton Heath and Moston",
+    "Street": "Off Dean Lane",
+    "Tlaref": "NHM",
+    "StopZone": "2/3"
+  },
+  {
+    "AtcoCode": "9400ZZMANMR2",
+    "Ids": [
+      984,
+      985
+    ],
+    "Latitude": 53.4146049322,
+    "Line": "Airport",
+    "Longitude": -2.2881615127,
+    "RoadCrossing": "",
+    "StopName": "Northern Moor",
+    "Street": "Off Sale Road",
+    "Tlaref": "NMR",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAOLD1",
+    "Ids": [
+      1014,
+      1015
+    ],
+    "Latitude": 53.4557878736,
+    "Line": "Altrincham",
+    "Longitude": -2.2854737644,
+    "RoadCrossing": "",
+    "StopName": "Old Trafford",
+    "Street": "Off Brian Statham Way",
+    "Tlaref": "OLD",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAOMC1",
+    "Ids": [
+      1148,
+      1149,
+      1150,
+      1151
+    ],
+    "Latitude": 53.5403340415,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1121365925,
+    "RoadCrossing": "Clegg Street",
+    "StopName": "Oldham Central",
+    "Street": "Union Street",
+    "Tlaref": "OHC",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAOKS2",
+    "Ids": [
+      1152,
+      1153
+    ],
+    "Latitude": 53.5395379442,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1174609603,
+    "RoadCrossing": "King Street",
+    "StopName": "Oldham King Street",
+    "Street": "Union Street West",
+    "Tlaref": "OHK",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAOMP2",
+    "Ids": [
+      1154,
+      1155
+    ],
+    "Latitude": 53.5423733087,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1033896926,
+    "RoadCrossing": "Prince Street",
+    "StopName": "Oldham Mumps",
+    "Street": "Mumps",
+    "Tlaref": "OHM",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAPAR1",
+    "Ids": [
+      1193,
+      1194
+    ],
+    "Latitude": 53.4682648141,
+    "Line": "Trafford Park",
+    "Longitude": -2.323865132,
+    "RoadCrossing": "Westinghouse Road",
+    "StopName": "Parkway",
+    "Street": "Village Way",
+    "Tlaref": "PAR",
+    "StopZone": "2/3"
+  },
+  {
+    "AtcoCode": "9400ZZMAPLL2",
+    "Ids": [
+      986,
+      987
+    ],
+    "Latitude": 53.3736751897,
+    "Line": "Airport",
+    "Longitude": -2.2504138381,
+    "RoadCrossing": "Shadowmoss Road",
+    "StopName": "Peel Hall",
+    "Street": "Simonsway",
+    "Tlaref": "PLH",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMAPIC2",
+    "Ids": [
+      1049,
+      1050
+    ],
+    "Latitude": 53.4770112836,
+    "Line": "Bury",
+    "Longitude": -2.230681992,
+    "RoadCrossing": "",
+    "StopName": "Piccadilly",
+    "Street": "Off Fairfield Street",
+    "Tlaref": "PIC",
+    "StopZone": "1"
+  },
+  {
+    "AtcoCode": "9400ZZMAPGD2",
+    "Ids": [
+      1045,
+      1046,
+      1047,
+      1048
+    ],
+    "Latitude": 53.4802975262,
+    "Line": "Bury",
+    "Longitude": -2.2370736728,
+    "RoadCrossing": "Portland Street",
+    "StopName": "Piccadilly Gardens",
+    "Street": "Parker Street",
+    "Tlaref": "PCG",
+    "StopZone": "1"
+  },
+  {
+    "AtcoCode": "9400ZZMAPOM2",
+    "Ids": [
+      1114,
+      1115
+    ],
+    "Latitude": 53.4651894542,
+    "Line": "Eccles",
+    "Longitude": -2.2780205377,
+    "RoadCrossing": "",
+    "StopName": "Pomona",
+    "Street": "Off Pomona Stand",
+    "Tlaref": "POM",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAPWC1",
+    "Ids": [
+      1051,
+      1052
+    ],
+    "Latitude": 53.5332408651,
+    "Line": "Bury",
+    "Longitude": -2.2818761537,
+    "RoadCrossing": "",
+    "StopName": "Prestwich",
+    "Street": "Off Rectory Lane",
+    "Tlaref": "PRS",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAQRD1",
+    "Ids": [
+      1053,
+      1054
+    ],
+    "Latitude": 53.5016562015,
+    "Line": "Bury",
+    "Longitude": -2.226715305,
+    "RoadCrossing": "",
+    "StopName": "Queens Road",
+    "Street": "Off Queens Road",
+    "Tlaref": "QNS",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMARAD2",
+    "Ids": [
+      1055,
+      1056
+    ],
+    "Latitude": 53.5625071987,
+    "Line": "Bury",
+    "Longitude": -2.3209919408,
+    "RoadCrossing": "",
+    "StopName": "Radcliffe",
+    "Street": "Off Spring Lane",
+    "Tlaref": "RAD",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMARWD2",
+    "Ids": [
+      988,
+      989
+    ],
+    "Latitude": 53.3761500274,
+    "Line": "Airport",
+    "Longitude": -2.2574630606,
+    "RoadCrossing": "Ruddpark Road",
+    "StopName": "Robinswood Road",
+    "Street": "Simonsway",
+    "Tlaref": "RBN",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMARRS2",
+    "Ids": [
+      1156,
+      1157,
+      1158,
+      1159
+    ],
+    "Latitude": 53.6110337196,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1544336667,
+    "RoadCrossing": "Dowling Street",
+    "StopName": "Rochdale Railway Station",
+    "Street": "Maclure Rd",
+    "Tlaref": "ROC",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMARIN1",
+    "Ids": [
+      1160,
+      1161,
+      1162,
+      1163
+    ],
+    "Latitude": 53.6173422008,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1554090933,
+    "RoadCrossing": "Constantine Road",
+    "StopName": "Rochdale Town Centre",
+    "Street": "Smith Street",
+    "Tlaref": "RTC",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMARND1",
+    "Ids": [
+      990,
+      991,
+      992,
+      993
+    ],
+    "Latitude": 53.3926525867,
+    "Line": "Airport",
+    "Longitude": -2.2890807305,
+    "RoadCrossing": "Holleyedge Road",
+    "StopName": "Roundthorn",
+    "Street": "Southmoor Road",
+    "Tlaref": "RTH",
+    "StopZone": "3/4"
+  },
+  {
+    "AtcoCode": "9400ZZMASLE1",
+    "Ids": [
+      1016,
+      1017
+    ],
+    "Latitude": 53.4241890656,
+    "Line": "Altrincham",
+    "Longitude": -2.3190453909,
+    "RoadCrossing": "",
+    "StopName": "Sale",
+    "Street": "Off School Lane",
+    "Tlaref": "SAL",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMASWP1",
+    "Ids": [
+      996,
+      997
+    ],
+    "Latitude": 53.4282432416,
+    "Line": "Airport",
+    "Longitude": -2.2907671351,
+    "RoadCrossing": "",
+    "StopName": "Sale Water Park",
+    "Street": "Rifle Road",
+    "Tlaref": "SWP",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMASQY2",
+    "Ids": [
+      1116,
+      1117
+    ],
+    "Latitude": 53.470352951,
+    "Line": "Eccles",
+    "Longitude": -2.2839144655,
+    "RoadCrossing": "Waterfront Quay",
+    "StopName": "Salford Quays",
+    "Street": "The Quays",
+    "Tlaref": "SFQ",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMASDW2",
+    "Ids": [
+      994,
+      995
+    ],
+    "Latitude": 53.3679719717,
+    "Line": "Airport",
+    "Longitude": -2.2525144064,
+    "RoadCrossing": "Cornishway",
+    "StopName": "Shadowmoss",
+    "Street": "Shadow Moss Road",
+    "Tlaref": "SHD",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMASHA3",
+    "Ids": [
+      1164,
+      1165,
+      1166
+    ],
+    "Latitude": 53.5761806607,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.0894424088,
+    "RoadCrossing": "",
+    "StopName": "Shaw and Crompton",
+    "Street": "Off Beal Lane",
+    "Tlaref": "SHC",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMASHU1",
+    "Ids": [
+      1018,
+      1019
+    ],
+    "Latitude": 53.4852460516,
+    "Line": "Altrincham",
+    "Longitude": -2.2391357328,
+    "RoadCrossing": "High Street",
+    "StopName": "Shudehill",
+    "Street": "Shudehill",
+    "Tlaref": "SHL",
+    "StopZone": "1"
+  },
+  {
+    "AtcoCode": "9400ZZMASCH2",
+    "Ids": [
+      1167,
+      1168
+    ],
+    "Latitude": 53.5267171139,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1450905897,
+    "RoadCrossing": "",
+    "StopName": "South Chadderton",
+    "Street": "Off Canal Street",
+    "Tlaref": "SOC",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMASTP2",
+    "Ids": [
+      1118,
+      1119,
+      1120,
+      1121,
+      1122,
+      1123
+    ],
+    "Latitude": 53.4782538837,
+    "Line": "Eccles",
+    "Longitude": -2.2431645848,
+    "RoadCrossing": "Princess Street",
+    "StopName": "St Peter's Square",
+    "Street": "Mosley Street",
+    "Tlaref": "SPS",
+    "StopZone": "1"
+  },
+  {
+    "AtcoCode": "9400ZZMASTW1",
+    "Ids": [
+      1183,
+      1184
+    ],
+    "Latitude": 53.4388272245,
+    "Line": "South Manchester",
+    "Longitude": -2.2657151417,
+    "RoadCrossing": "",
+    "StopName": "St Werburgh's Road",
+    "Street": "Off St Werburgh's Road",
+    "Tlaref": "SWR",
+    "StopZone": "2/3"
+  },
+  {
+    "AtcoCode": "9400ZZMASFD1",
+    "Ids": [
+      1020,
+      1021
+    ],
+    "Latitude": 53.446035258,
+    "Line": "Altrincham",
+    "Longitude": -2.3037164903,
+    "RoadCrossing": "",
+    "StopName": "Stretford",
+    "Street": "Off Edge Lane",
+    "Tlaref": "STR",
+    "StopZone": "2/3"
+  },
+  {
+    "AtcoCode": "9400ZZMATRC1",
+    "Ids": [
+      1195,
+      1196
+    ],
+    "Latitude": 53.4678830354,
+    "Line": "Trafford Park",
+    "Longitude": -2.347753428,
+    "RoadCrossing": "Traders Avenue",
+    "StopName": "The Trafford Centre",
+    "Street": "Barton Dock Road",
+    "Tlaref": "TRC",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMATIM1",
+    "Ids": [
+      1024,
+      1025
+    ],
+    "Latitude": 53.4042983301,
+    "Line": "Altrincham",
+    "Longitude": -2.3382696874,
+    "RoadCrossing": "",
+    "StopName": "Timperley",
+    "Street": "Off Park Road",
+    "Tlaref": "TMP",
+    "StopZone": "4"
+  },
+  {
+    "AtcoCode": "9400ZZMATRA2",
+    "Ids": [
+      1022,
+      1023
+    ],
+    "Latitude": 53.4616855724,
+    "Line": "Altrincham",
+    "Longitude": -2.2773198534,
+    "RoadCrossing": "",
+    "StopName": "Trafford Bar",
+    "Street": "Off Seymour Grove",
+    "Tlaref": "TFB",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAVPK2",
+    "Ids": [
+      1088,
+      1089,
+      1090
+    ],
+    "Latitude": 53.4822555423,
+    "Line": "East Manchester",
+    "Longitude": -2.1929780544,
+    "RoadCrossing": "Alan Turing Way",
+    "StopName": "Velopark",
+    "Street": "Ashton New Road",
+    "Tlaref": "VEL",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAVIC1",
+    "Ids": [
+      1026,
+      1027,
+      1028,
+      1029
+    ],
+    "Latitude": 53.4879196028,
+    "Line": "Altrincham",
+    "Longitude": -2.2416224097,
+    "RoadCrossing": "",
+    "StopName": "Victoria",
+    "Street": "Off Corporation Street",
+    "Tlaref": "VIC",
+    "StopZone": "1"
+  },
+  {
+    "AtcoCode": "9400ZZMAVLG1",
+    "Ids": [
+      1197,
+      1198
+    ],
+    "Latitude": 53.4674589237,
+    "Line": "Trafford Park",
+    "Longitude": -2.3091418042,
+    "RoadCrossing": "Second Avenue",
+    "StopName": "Village",
+    "Street": "Village Way",
+    "Tlaref": "VLG",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAWST2",
+    "Ids": [
+      1124,
+      1125
+    ],
+    "Latitude": 53.4824738016,
+    "Line": "Eccles",
+    "Longitude": -2.3075482464,
+    "RoadCrossing": "Weaste Road",
+    "StopName": "Weaste",
+    "Street": "Eccles New Road",
+    "Tlaref": "WST",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAWTD1",
+    "Ids": [
+      1185,
+      1186
+    ],
+    "Latitude": 53.4244269437,
+    "Line": "South Manchester",
+    "Longitude": -2.2361002703,
+    "RoadCrossing": "",
+    "StopName": "West Didsbury",
+    "Street": "Off Palatine Road",
+    "Tlaref": "WDD",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAWWD2",
+    "Ids": [
+      1169,
+      1170
+    ],
+    "Latitude": 53.5423158188,
+    "Line": "Oldham & Rochdale",
+    "Longitude": -2.1258135241,
+    "RoadCrossing": "Winterbottom Street",
+    "StopName": "Westwood",
+    "Street": "Middleton Road",
+    "Tlaref": "WWD",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAWFS2",
+    "Ids": [
+      1199,
+      1200
+    ],
+    "Latitude": 53.4663254947,
+    "Line": "Trafford Park",
+    "Longitude": -2.2879245148,
+    "RoadCrossing": "Sir Alex Fergusson Way",
+    "StopName": "Wharfside",
+    "Street": "Trafford Wharf Road",
+    "Tlaref": "WSD",
+    "StopZone": "2"
+  },
+  {
+    "AtcoCode": "9400ZZMAWFD1",
+    "Ids": [
+      1057,
+      1058
+    ],
+    "Latitude": 53.5511316542,
+    "Line": "Bury",
+    "Longitude": -2.2951414371,
+    "RoadCrossing": "",
+    "StopName": "Whitefield",
+    "Street": "Off Bury New Road",
+    "Tlaref": "WFD",
+    "StopZone": "3/4"
+  },
+  {
+    "AtcoCode": "9400ZZMAWIT1",
+    "Ids": [
+      1187,
+      1188
+    ],
+    "Latitude": 53.4327681682,
+    "Line": "South Manchester",
+    "Longitude": -2.249421842,
+    "RoadCrossing": "",
+    "StopName": "Withington",
+    "Street": "Off Princess Road",
+    "Tlaref": "WTH",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAWPK2",
+    "Ids": [
+      998,
+      999
+    ],
+    "Latitude": 53.4077190784,
+    "Line": "Airport",
+    "Longitude": -2.2957565402,
+    "RoadCrossing": "",
+    "StopName": "Wythenshawe Park",
+    "Street": "Off Wythenshawe Road",
+    "Tlaref": "WPK",
+    "StopZone": "3"
+  },
+  {
+    "AtcoCode": "9400ZZMAWYT1",
+    "Ids": [
+      1000,
+      1001,
+      1002
+    ],
+    "Latitude": 53.3800645028,
+    "Line": "Airport",
+    "Longitude": -2.2636651643,
+    "RoadCrossing": "Poundswick Lane",
+    "StopName": "Wythenshawe Town Centre",
+    "Street": "Ainley Road",
+    "Tlaref": "WYC",
+    "StopZone": "4"
+  }
 ]

@@ -38,7 +38,7 @@ public class StopLoader
     {
         if (_resourcesConfig?.StopResourcePath == null)
             return new List<Stop>();
-        
+
         using var reader = new StreamReader(_resourcesConfig.StopResourcePath!);
         var jsonString = reader.ReadToEnd();
         return JsonConvert.DeserializeObject<List<Stop>>(jsonString)!;

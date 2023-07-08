@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace LiveTramsMCR.Tests.TestModels.V2.TestStops;
 
 /// <summary>
-/// Test class for StopLookupV2
+///     Test class for StopLookupV2
 /// </summary>
 public class TestStopLookupV2
 {
@@ -17,11 +17,11 @@ public class TestStopLookupV2
     private List<StopV2>? _importedStops;
     private IStopsRepositoryV2? _mockStopsRepository;
     private StopLookupV2? _stopLookupV2;
-    
+
     [SetUp]
     public void SetUp()
     {
-        var resourcesConfig = new ResourcesConfig()
+        var resourcesConfig = new ResourcesConfig
         {
             StopV2ResourcePath = StopsV2ResourcePathConst
         };
@@ -32,8 +32,8 @@ public class TestStopLookupV2
     }
 
     /// <summary>
-    /// Test to find a valid stop.
-    /// This should return the valid stop keys.
+    ///     Test to find a valid stop.
+    ///     This should return the valid stop keys.
     /// </summary>
     [Test]
     public void TestLookupValidStop()

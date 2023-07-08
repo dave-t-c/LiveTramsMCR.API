@@ -7,7 +7,6 @@ using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
-using LiveTramsMCR.Models.V2.RoutePlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
@@ -24,12 +23,12 @@ using static System.AppDomain;
 namespace LiveTramsMCR;
 
 /// <summary>
-/// Builds and configures the application
+///     Builds and configures the application
 /// </summary>
 public class Startup
 {
     /// <summary>
-    /// Generates application builder using appSettings JSON.
+    ///     Generates application builder using appSettings JSON.
     /// </summary>
     public Startup()
     {
@@ -43,10 +42,10 @@ public class Startup
     }
 
     private IConfiguration Configuration { get; }
-    
+
     /// <summary>
-    /// Method called by runtime, used to add services to the container.
-    /// This adds the required resources and models to be used for the program.
+    ///     Method called by runtime, used to add services to the container.
+    ///     This adds the required resources and models to be used for the program.
     /// </summary>
     /// <param name="services">Services for the Container</param>
     public void ConfigureServices(IServiceCollection services)
@@ -59,8 +58,7 @@ public class Startup
         // with a structured json.
         var apiOptions = new ApiOptions
         {
-            OcpApimSubscriptionKey = Configuration["OcpApimSubscriptionKey"],
-            BaseRequestUrls = baseUrls
+            OcpApimSubscriptionKey = Configuration["OcpApimSubscriptionKey"], BaseRequestUrls = baseUrls
         };
         services.AddSingleton(apiOptions);
 
@@ -71,12 +69,12 @@ public class Startup
         var routesMongoCollection = db.GetCollection<Route>("routes");
         var routesV2MongoCollection = db.GetCollection<RouteV2>("routesV2");
         var routeTimesMongoCollection = db.GetCollection<RouteTimes>("route-times");
-        
+
         IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
         IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection);
         IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
         IRouteRepositoryV2 routeRepositoryV2 = new RouteRepositoryV2(routesV2MongoCollection, stopsRepositoryV2);
-        
+
         IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
         services.AddSingleton(stopsDataModel);
 
@@ -86,7 +84,7 @@ public class Startup
         IRequester serviceRequester = new ServiceRequester(apiOptions);
         IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, serviceRequester);
         services.AddSingleton(servicesDataModel);
-        
+
         IJourneyPlanner journeyPlanner = new JourneyPlanner(routeRepository);
         IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(stopsRepository, journeyPlanner);
         services.AddSingleton(journeyPlannerModel);
@@ -98,16 +96,19 @@ public class Startup
 
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "LiveTramsMCR", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "LiveTramsMCR", Version = "v1"
+            });
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             c.IncludeXmlComments(xmlPath);
             c.EnableAnnotations();
         });
     }
-    
+
     /// <summary>
-    /// Configures HTTP request pipeline
+    ///     Configures HTTP request pipeline
     /// </summary>
     /// <param name="app">App being built</param>
     /// <param name="env">Host Environment being used.</param>

@@ -14,11 +14,13 @@ public class MockStopsRepository : IStopsRepository
     {
         _stops = stops;
     }
-    public Stop GetStop(string searchTerm) =>
-        _stops.Find(stop =>
+    public Stop GetStop(string searchTerm)
+    {
+        return _stops.Find(stop =>
             stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
             || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
         )!;
+    }
 
     public List<Stop> GetAll()
     {

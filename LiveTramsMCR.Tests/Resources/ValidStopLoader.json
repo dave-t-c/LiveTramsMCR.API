@@ -1,18 +1,18 @@
 [
-    {
-        "AtcoCode": "9400ZZMAABM1",
-        "Ids": [
-            755,
-            756
-        ],
-        "Latitude": 53.510510781,
-        "Line": "Bury",
-        "Longitude": -2.2354932857,
-        "RoadCrossing": "",
-        "StopName": "Abraham Moss",
-        "Street": "Off Crescent Road",
-        "Tlaref": "ABM",
-        "Zone": 2,
-        "StopZone": "2"
-    }
+  {
+    "AtcoCode": "9400ZZMAABM1",
+    "Ids": [
+      755,
+      756
+    ],
+    "Latitude": 53.510510781,
+    "Line": "Bury",
+    "Longitude": -2.2354932857,
+    "RoadCrossing": "",
+    "StopName": "Abraham Moss",
+    "Street": "Off Crescent Road",
+    "Tlaref": "ABM",
+    "Zone": 2,
+    "StopZone": "2"
+  }
 ]

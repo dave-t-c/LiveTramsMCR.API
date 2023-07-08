@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 
 /// <summary>
-/// Test class for the JourneyTimeFinder class 
+///     Test class for the JourneyTimeFinder class
 /// </summary>
 public class TestJourneyTimeFinder
 {
@@ -19,18 +19,18 @@ public class TestJourneyTimeFinder
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
-    private ResourcesConfig? _validResourcesConfig;
-    private StopLoader? _stopLoader;
     private List<Stop>? _importedStops;
+    private JourneyTimeFinder? _journeyTimeFinder;
+    private MockRouteRepository? _mockRouteRepository;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
-    private RouteTimesLoader? _routeTimesLoader;
     private List<RouteTimes>? _routeTimes;
-    private MockRouteRepository? _mockRouteRepository;
-    private JourneyTimeFinder? _journeyTimeFinder;
+    private RouteTimesLoader? _routeTimesLoader;
+    private StopLoader? _stopLoader;
+    private ResourcesConfig? _validResourcesConfig;
 
     /// <summary>
-    /// Sets up required resources for tests
+    ///     Sets up required resources for tests
     /// </summary>
     [SetUp]
     public void SetUp()
@@ -58,7 +58,7 @@ public class TestJourneyTimeFinder
     }
 
     /// <summary>
-    /// Clears created objects to avoid cross 
+    ///     Clears created objects to avoid cross
     /// </summary>
     [TearDown]
     public void TearDown()
@@ -71,9 +71,9 @@ public class TestJourneyTimeFinder
     }
 
     /// <summary>
-    /// Test to identify the time for a journey between Deansgate and Cornbrook
-    /// on the purple route.
-    /// This should return 3 minutes.
+    ///     Test to identify the time for a journey between Deansgate and Cornbrook
+    ///     on the purple route.
+    ///     This should return 3 minutes.
     /// </summary>
     [Test]
     public void TestIdentifyTimeDeansgateCornbrookPurpleRoute()
@@ -82,14 +82,14 @@ public class TestJourneyTimeFinder
         var deansgateStop = _importedStops?.First(stop => stop.StopName == "Deansgate - Castlefield");
         var cornbrookStop = _importedStops?.First(stop => stop.StopName == "Cornbrook");
         var result = _journeyTimeFinder?.FindJourneyTime(purpleRoute?.Name,
-                deansgateStop?.StopName, cornbrookStop?.StopName);
+            deansgateStop?.StopName, cornbrookStop?.StopName);
         Assert.AreEqual(3, result);
     }
 
     /// <summary>
-    /// Test to identify the time between Bury and Piccadilly on the
-    /// yellow route.
-    /// This should return 38 minutes.
+    ///     Test to identify the time between Bury and Piccadilly on the
+    ///     yellow route.
+    ///     This should return 38 minutes.
     /// </summary>
     [Test]
     public void TestIdentifyTimeBuryPiccadillyYellowRoute()
@@ -100,8 +100,8 @@ public class TestJourneyTimeFinder
     }
 
     /// <summary>
-    /// Test to find the route time between stops on a route that is invalid.
-    /// This should throw an invalid operation exception
+    ///     Test to find the route time between stops on a route that is invalid.
+    ///     This should throw an invalid operation exception
     /// </summary>
     [Test]
     public void TestIdentifyTimeInvalidRoute()
@@ -116,9 +116,9 @@ public class TestJourneyTimeFinder
     }
 
     /// <summary>
-    /// Test to identify a route time with an origin stop that
-    /// does not exist on the route.
-    /// This should throw an invalid operation exception
+    ///     Test to identify a route time with an origin stop that
+    ///     does not exist on the route.
+    ///     This should throw an invalid operation exception
     /// </summary>
     [Test]
     public void TestIdentifyTimeInvalidOrigin()
@@ -133,9 +133,9 @@ public class TestJourneyTimeFinder
     }
 
     /// <summary>
-    /// Test to identify a route time with a destination stop
-    /// that does not exist on the route.
-    /// This should thrown an invalid operation exception.
+    ///     Test to identify a route time with a destination stop
+    ///     that does not exist on the route.
+    ///     This should thrown an invalid operation exception.
     /// </summary>
     [Test]
     public void TestIdentifyTimeInvalidDestination()
@@ -150,8 +150,8 @@ public class TestJourneyTimeFinder
     }
 
     /// <summary>
-    /// Test to identify a route time with a null route name.
-    /// This should throw a null args exception.
+    ///     Test to identify a route time with a null route name.
+    ///     This should throw a null args exception.
     /// </summary>
     [Test]
     public void TestIdentifyTimeNullRoute()
@@ -166,8 +166,8 @@ public class TestJourneyTimeFinder
     }
 
     /// <summary>
-    /// Test to identify the route time with a null origin stop name.
-    /// This should throw an args null exception.
+    ///     Test to identify the route time with a null origin stop name.
+    ///     This should throw an args null exception.
     /// </summary>
     [Test]
     public void TestIdentifyTimeNullOriginStop()
@@ -182,8 +182,8 @@ public class TestJourneyTimeFinder
     }
 
     /// <summary>
-    /// Test to identify the route time with a null destination.
-    /// This should throw an args null exception.
+    ///     Test to identify the route time with a null destination.
+    ///     This should throw an args null exception.
     /// </summary>
     [Test]
     public void TestIdentifyTimeNullDestination()
@@ -196,10 +196,10 @@ public class TestJourneyTimeFinder
                     "Bury", null);
             });
     }
-    
+
     /// <summary>
-    /// Test to identify minutes between Altrincham and Bury.
-    /// This should return 62 mins.
+    ///     Test to identify minutes between Altrincham and Bury.
+    ///     This should return 62 mins.
     /// </summary>
     [Test]
     public void TestIdentifyTimeAltBury()

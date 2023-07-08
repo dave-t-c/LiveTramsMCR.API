@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using LiveTramsMCR.Models.V2.RoutePlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
@@ -18,7 +17,7 @@ public class MockRouteRepositoryV2 : IRouteRepositoryV2
         _importedRoutes = importedRoutes;
         _stopsRepositoryV2 = stopsRepositoryV2;
     }
-    
+
     public List<RouteV2> GetRoutes()
     {
         var stops = _stopsRepositoryV2.GetAll();

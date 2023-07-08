@@ -8,7 +8,7 @@ namespace LiveTramsMCR.Models.V1.Services;
 public class FormattedDepartureBoardServices
 {
     /// <summary>
-    /// Creates a new, empty, formatted services object.
+    ///     Creates a new, empty, formatted services object.
     /// </summary>
     public FormattedDepartureBoardServices()
     {
@@ -17,12 +17,12 @@ public class FormattedDepartureBoardServices
     }
 
     /// <summary>
-    /// Set of trams ordered by increasing arrival time
+    ///     Set of trams ordered by increasing arrival time
     /// </summary>
     public SortedSet<Tram> Trams { get; }
-    
+
     /// <summary>
-    /// Service messages for the 
+    ///     Service messages for the
     /// </summary>
     public HashSet<string> Messages { get; }
 
@@ -38,7 +38,7 @@ public class FormattedDepartureBoardServices
     }
 
     /// <summary>
-    /// Adds a message to the messages for the stop
+    ///     Adds a message to the messages for the stop
     /// </summary>
     /// <param name="message"></param>
     public void AddMessage(string message)

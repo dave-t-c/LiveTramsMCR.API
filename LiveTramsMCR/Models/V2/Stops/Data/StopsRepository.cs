@@ -8,23 +8,23 @@ namespace LiveTramsMCR.Models.V2.Stops.Data;
 public class StopsRepositoryV2 : IStopsRepositoryV2
 {
     private readonly IMongoCollection<StopV2> _stopsCollection;
-    
+
     /// <summary>
-    /// Create a new stops repository using a stops collection
+    ///     Create a new stops repository using a stops collection
     /// </summary>
     /// <param name="stopsCollection"></param>
     public StopsRepositoryV2(IMongoCollection<StopV2> stopsCollection)
     {
         _stopsCollection = stopsCollection;
     }
-    
+
     /// <inheritdoc />
     public StopV2 GetStop(string searchTerm)
     {
         return _stopsCollection.FindAsync(stop =>
-                stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-                || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-                ).Result.FirstOrDefault();
+            stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
+            || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
+        ).Result.FirstOrDefault();
     }
 
     /// <inheritdoc />

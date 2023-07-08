@@ -20,10 +20,10 @@ public class TlarefToIdsLoader
     public TlarefToIdsLoader(ResourcesConfig resourcesConfig)
     {
         var loaderHelper = new LoaderHelper();
-        
+
         if (resourcesConfig.TlarefsToIdsPath == null)
             return;
-        
+
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
 
         _resourcesConfig.TlarefsToIdsPath = LoaderHelper.CheckFileRequirements(resourcesConfig.TlarefsToIdsPath,
@@ -31,14 +31,14 @@ public class TlarefToIdsLoader
     }
 
     /// <summary>
-    /// Imports the TlarefsToIds dict using the resources config given to the constructor
+    ///     Imports the TlarefsToIds dict using the resources config given to the constructor
     /// </summary>
     /// <returns>Dict that maps Tlarefs to a list of IDs for that stop</returns>
     public Dictionary<string, List<int>> ImportTlarefsToIds()
     {
         if (_resourcesConfig == null)
             return new Dictionary<string, List<int>>();
-        
+
         using var reader = new StreamReader(_resourcesConfig.TlarefsToIdsPath!);
         var jsonString = reader.ReadToEnd();
         return JsonConvert.DeserializeObject<Dictionary<string, List<int>>>(jsonString)!;

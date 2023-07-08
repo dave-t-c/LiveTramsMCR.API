@@ -9,7 +9,7 @@ namespace LiveTramsMCR.Models.V1.Services;
 public class FormattedServices
 {
     /// <summary>
-    /// Creates a new, empty, formatted services object.
+    ///     Creates a new, empty, formatted services object.
     /// </summary>
     public FormattedServices()
     {
@@ -19,7 +19,7 @@ public class FormattedServices
     }
 
     /// <summary>
-    /// Dict between destination and a sorted set of trams for that dest
+    ///     Dict between destination and a sorted set of trams for that dest
     /// </summary>
     public Dictionary<string, SortedSet<Tram>> Destinations
     {
@@ -27,23 +27,22 @@ public class FormattedServices
         {
             return InternalDestinations.OrderBy(dest => int.Parse(dest.Value.First().Wait))
                 .ToDictionary(dest => dest.Key, dest => dest.Value);
-
         }
     }
 
     /// <summary>
-    /// Destinations added internally to the class.
-    /// These are then ordered on the get of destinations
+    ///     Destinations added internally to the class.
+    ///     These are then ordered on the get of destinations
     /// </summary>
     private Dictionary<string, SortedSet<Tram>> InternalDestinations { get; }
 
     /// <summary>
-    /// Service messages for the 
+    ///     Service messages for the
     /// </summary>
     public HashSet<string> Messages { get; }
-    
+
     /// <summary>
-    /// UTC Time string of when the service information was last updated
+    ///     UTC Time string of when the service information was last updated
     /// </summary>
     public string LastUpdated { get; private set; }
 
@@ -62,7 +61,7 @@ public class FormattedServices
     }
 
     /// <summary>
-    /// Adds a message to the messages for the stop
+    ///     Adds a message to the messages for the stop
     /// </summary>
     /// <param name="message"></param>
     public void AddMessage(string message)
@@ -72,8 +71,8 @@ public class FormattedServices
     }
 
     /// <summary>
-    /// Update the last updated value
-    /// This is not updated after initially being set
+    ///     Update the last updated value
+    ///     This is not updated after initially being set
     /// </summary>
     /// <param name="lastUpdated"></param>
     public void SetLastUpdated(string lastUpdated)

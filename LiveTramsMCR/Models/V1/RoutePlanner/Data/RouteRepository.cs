@@ -9,9 +9,9 @@ public class RouteRepository : IRouteRepository
     private readonly IMongoCollection<Route> _routeCollection;
 
     private readonly IMongoCollection<RouteTimes> _routeTimesCollection;
-    
+
     /// <summary>
-    /// Creates a new route repository using a collection of routes and route times
+    ///     Creates a new route repository using a collection of routes and route times
     /// </summary>
     /// <param name="routeCollection">Collection of route instances</param>
     /// <param name="routeTimesCollection">Collection of route times instances</param>

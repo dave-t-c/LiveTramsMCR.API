@@ -1,8 +1,6 @@
-
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Controllers.V2;
-using LiveTramsMCR.Models.V2.RoutePlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops.Data;
@@ -15,21 +13,20 @@ namespace LiveTramsMCR.Tests.TestControllers.V2;
 
 public class TestRoutesControllerV2
 {
+    private ImportedResources? _importedResources;
 
     private ResourcesConfig? _resourcesConfig;
-    private ImportedResources? _importedResources;
     private IRouteRepositoryV2? _routeRepositoryV2;
-    private IStopsRepositoryV2? _stopsRepositoryV2;
-    private IRoutesDataModelV2? _routesDataModel;
     private RoutesControllerV2? _routesControllerV2;
+    private IRoutesDataModelV2? _routesDataModel;
+    private IStopsRepositoryV2? _stopsRepositoryV2;
 
     [SetUp]
     public void Setup()
     {
-        _resourcesConfig = new ResourcesConfig()
+        _resourcesConfig = new ResourcesConfig
         {
-            RoutesV2ResourcePath = "../../../Resources/RoutesV2.json",
-            StopV2ResourcePath = "../../../Resources/StopsV2.json"
+            RoutesV2ResourcePath = "../../../Resources/RoutesV2.json", StopV2ResourcePath = "../../../Resources/StopsV2.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _stopsRepositoryV2 = new MockStopsRepositoryV2(_importedResources.ImportedStopsV2);
@@ -49,8 +46,8 @@ public class TestRoutesControllerV2
     }
 
     /// <summary>
-    /// Test to get the expected result code when getting all routes.
-    /// This should return a 200 OK.
+    ///     Test to get the expected result code when getting all routes.
+    ///     This should return a 200 OK.
     /// </summary>
     [Test]
     public void TestGetAllRoutesExpectedResultCode()
@@ -64,15 +61,15 @@ public class TestRoutesControllerV2
     }
 
     /// <summary>
-    /// Test to get all routes from the mock stops repository.
-    /// This should return the expected count of 8.
+    ///     Test to get all routes from the mock stops repository.
+    ///     This should return the expected count of 8.
     /// </summary>
     [Test]
     public void TestGetAllRoutesExpectedCount()
     {
         var result = _routesControllerV2?.GetRoutes();
         Assert.IsNotNull(result);
-        
+
         var okResult = result as OkObjectResult;
         Assert.IsNotNull(okResult);
         var routes = okResult!.Value as List<RouteV2> ?? new List<RouteV2>();
@@ -80,15 +77,15 @@ public class TestRoutesControllerV2
     }
 
     /// <summary>
-    /// Test to get all routes and check the order of the stop details.
-    /// This should match the order of the stop keys list by checking the Tlaref of both
+    ///     Test to get all routes and check the order of the stop details.
+    ///     This should match the order of the stop keys list by checking the Tlaref of both
     /// </summary>
     [Test]
     public void TestGetAllRoutesExpectedRouteStops()
     {
         var result = _routesControllerV2?.GetRoutes();
         Assert.IsNotNull(result);
-        
+
         var okResult = result as OkObjectResult;
         Assert.IsNotNull(okResult);
         var routes = okResult!.Value as List<RouteV2> ?? new List<RouteV2>();
@@ -100,7 +97,7 @@ public class TestRoutesControllerV2
 
         var stopsTlarefs = purpleRoute.Stops.Select(s => s.Tlaref);
         var stopsDetailTlarefs = purpleRoute.StopsDetail?.Select(s => s.Tlaref);
-        
+
         CollectionAssert.AreEqual(stopsTlarefs, stopsDetailTlarefs);
     }
 }
