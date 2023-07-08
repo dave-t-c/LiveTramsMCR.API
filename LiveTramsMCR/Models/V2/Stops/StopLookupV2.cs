@@ -1,3 +1,4 @@
+using System;
 using LiveTramsMCR.Models.V2.Stops.Data;
 
 namespace LiveTramsMCR.Models.V2.Stops;
@@ -23,6 +24,9 @@ public class StopLookupV2
     /// </summary>
     public StopV2 LookupStop(string value)
     {
+        if (value is null)
+            throw new ArgumentNullException(paramName: nameof(value));
+        
         var stop = _stopsRepositoryV2.GetStop(value);
         return stop;
     }

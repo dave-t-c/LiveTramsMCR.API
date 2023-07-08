@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Models.V2.Stops.Data;
@@ -50,5 +51,13 @@ public class TestStopLookupV2
         Assert.IsNotNull(returnedStop);
         Assert.AreEqual("EDD", returnedStop?.Tlaref);
         Assert.AreEqual("East Didsbury", returnedStop?.StopName);
+    }
+
+    [Test]
+    public void TestLookupNullStop()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'value')"),
+            delegate { _stopLookupV2?.LookupStop(null); });
     }
 }
