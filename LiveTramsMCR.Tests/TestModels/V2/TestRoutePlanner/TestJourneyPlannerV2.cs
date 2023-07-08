@@ -17,7 +17,7 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 public class TestJourneyPlannerV2
 {
     private const string StopsV1ResourcePath = "../../../Resources/TestRoutePlanner/stops.json";
-    private const string RoutesResourcePath = "../../../Resources/RoutesV2.json";
+    private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ResourcesConfig? _validResourcesConfig;
@@ -35,10 +35,6 @@ public class TestJourneyPlannerV2
     private MockRouteRepositoryV2? _mockRouteRepositoryV2;
     private MockStopsRepositoryV2? _mockStopsRepositoryV2;
     private RouteTimesLoader? _routeTimesLoader;
-    public TestJourneyPlannerV2(List<Route>? routes)
-    {
-        _routes = routes;
-    }
 
     /// <summary>
     /// Sets up the required resources for testing route planning,
@@ -52,7 +48,7 @@ public class TestJourneyPlannerV2
         _validResourcesConfig = new ResourcesConfig
         {
             StopResourcePath = StopsV1ResourcePath,
-            RoutesResourcePath = RoutesResourcePath,
+            RoutesV2ResourcePath = RoutesV2ResourcePath,
             RouteTimesPath = RouteTimesPath,
             StopV2ResourcePath = StopsV2ResourcePath
         };
