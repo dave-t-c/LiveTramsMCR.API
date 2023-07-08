@@ -15,7 +15,7 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 public class TestRouteV2
 {
     private const string StopResourcePathConst = "../../../Resources/StopsV2.json";
-    private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
+    private const string RoutesResourcePath = "../../../Resources/RoutesV2.json";
     private ResourcesConfig? _validResourcesConfig;
     private List<StopV2>? _importedStops;
     private List<RouteV2>? _importedRoutes;
@@ -51,7 +51,7 @@ public class TestRouteV2
         };
 
         _exampleRoute = _importedRoutes.Single(route => route.Name == "Purple");
-        _exampleAltrinchamStopKeys = _exampleRoute.Stops.Single(stop => stop.Tlaref == "ALT");
+        _exampleAltrinchamStopKeys = _exampleRoute.Stops.First(stop => stop.Tlaref == "ALT");
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class TestRouteV2
         var identifiedStops = _exampleRoute?.GetIntermediateStops(
             _exampleRoute.Stops.First(),
             _exampleRoute.Stops.Last());
-        var expectedStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var expectedStop = _importedStops?.First(stop => stop.StopName == "Navigation Road");
         Assert.IsNotEmpty(identifiedStops ?? new List<StopV2>());
         Assert.AreEqual(12, identifiedStops?.Count);
         Assert.IsTrue(identifiedStops?.Contains(expectedStop));
@@ -93,7 +93,7 @@ public class TestRouteV2
         var firstExpectedStopKeys = _exampleRoute?.Stops.First(stop => stop.StopName == "Navigation Road");
         var secondExpectedStopKeys = _exampleRoute?.Stops.First(stop => stop.StopName == "Cornbrook");
         Assert.IsNotEmpty(identifiedStops ?? new List<StopV2>());
-        Assert.AreEqual(2, identifiedStops?.Count);
+        Assert.AreEqual(12, identifiedStops?.Count);
         Assert.AreEqual(1, identifiedStops?.Count(stop => stop.StopName == firstExpectedStopKeys?.StopName));
         Assert.AreEqual(1, identifiedStops?.Count(stop => stop.StopName == secondExpectedStopKeys?.StopName));
         var firstExpectedStop = identifiedStops?.Single(stop => stop.StopName == firstExpectedStopKeys?.StopName);
@@ -110,7 +110,7 @@ public class TestRouteV2
     {
         
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'start')"),
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
             delegate
             {
                 var unused = _exampleRoute?.GetIntermediateStops(null, _exampleAltrinchamStopKeys);
@@ -125,7 +125,7 @@ public class TestRouteV2
     public void TestRouteBetweenNullEnd()
     {
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'end')"),
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
             delegate
             {
                 var unused = _exampleRoute?.GetIntermediateStops(_exampleEastDidsburyStopKeysV2, null);
@@ -141,7 +141,7 @@ public class TestRouteV2
     public void TestStartNotInRoute()
     {
         Assert.Throws(Is.TypeOf<InvalidOperationException>()
-                .And.Message.EqualTo("Route does not contain stop East Didsbury"),
+                .And.Message.EqualTo("East Didsbury does not exist on Purple route"),
             delegate
             {
                 var unused = _exampleRoute?.GetIntermediateStops(
@@ -159,7 +159,7 @@ public class TestRouteV2
     public void TestEndNotInRoute()
     {
         Assert.Throws(Is.TypeOf<InvalidOperationException>()
-                .And.Message.EqualTo("Route does not contain stop East Didsbury"),
+                .And.Message.EqualTo("East Didsbury does not exist on Purple route"),
             delegate
             {
                 var unused = _exampleRoute?.GetIntermediateStops(
