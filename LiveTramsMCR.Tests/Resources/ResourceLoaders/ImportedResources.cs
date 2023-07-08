@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V2.RoutePlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
 
 namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;

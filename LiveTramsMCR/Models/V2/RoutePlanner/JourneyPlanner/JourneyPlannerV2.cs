@@ -3,9 +3,10 @@ using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
+using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
 
-namespace LiveTramsMCR.Models.V2.RoutePlanner;
+namespace LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 
 /// <summary>
 /// Plans routes between Stop objects.

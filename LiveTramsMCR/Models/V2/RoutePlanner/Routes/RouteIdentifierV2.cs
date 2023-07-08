@@ -4,7 +4,7 @@ using System.Linq;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.Stops;
 
-namespace LiveTramsMCR.Models.V2.RoutePlanner;
+namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 
 /// <summary>
 /// Identifies Route related features for journeys such as interchanges.

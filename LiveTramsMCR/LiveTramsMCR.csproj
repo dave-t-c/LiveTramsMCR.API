@@ -20,6 +20,7 @@
     <ItemGroup>
       <Folder Include="Models\V1" />
       <Folder Include="Models\V2\" />
+      <Folder Include="Models\V2\RoutePlanner\ServiceInformation\" />
     </ItemGroup>
 
 </Project>

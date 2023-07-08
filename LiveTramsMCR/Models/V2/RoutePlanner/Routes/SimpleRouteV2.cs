@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using LiveTramsMCR.Models.V2.Stops;
 using MongoDB.Bson;
 
-namespace LiveTramsMCR.Models.V2.RoutePlanner;
+namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 
 /// <summary>
 /// Class that represents a tram route between two Stops.

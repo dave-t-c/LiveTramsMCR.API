@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 
-namespace LiveTramsMCR.Models.V2.RoutePlanner;
+namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 
 /// <inheritdoc/>
 public class RoutesDataModelV2 : IRoutesDataModelV2

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LiveTramsMCR.Models.V2.RoutePlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

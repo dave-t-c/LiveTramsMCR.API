@@ -1,6 +1,6 @@
 using LiveTramsMCR.Models.V2.Stops;
 
-namespace LiveTramsMCR.Models.V2.RoutePlanner;
+namespace LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 
 /// <summary>
 /// Interface that needs to be implemented for any RoutePlanner classes.

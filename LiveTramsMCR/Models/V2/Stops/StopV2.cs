@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using LiveTramsMCR.Models.V2.RoutePlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using MongoDB.Bson;
 
 // ReSharper disable NonReadonlyMemberInGetHashCode

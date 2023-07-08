@@ -3,6 +3,8 @@ using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V2.RoutePlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;

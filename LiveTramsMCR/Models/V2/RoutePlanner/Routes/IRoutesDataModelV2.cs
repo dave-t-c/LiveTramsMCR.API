@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LiveTramsMCR.Models.V2.RoutePlanner;
+namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 
 /// <summary>
 /// Data model for processing route related requests

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using LiveTramsMCR.Models.V2.Stops;
 using MongoDB.Bson;
 
-namespace LiveTramsMCR.Models.V2.RoutePlanner;
+namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 
 /// <summary>
 /// Represents route information. 

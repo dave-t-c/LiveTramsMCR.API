@@ -1,7 +1,8 @@
 using System;
+using LiveTramsMCR.Models.V2.RoutePlanner.Responses;
 using LiveTramsMCR.Models.V2.Stops;
 
-namespace LiveTramsMCR.Models.V2.RoutePlanner;
+namespace LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 
 /// <summary>
 /// Model for planning journeys using stops and routes v2

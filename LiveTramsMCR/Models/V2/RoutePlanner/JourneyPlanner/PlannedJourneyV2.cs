@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
 
-namespace LiveTramsMCR.Models.V2.RoutePlanner;
+namespace LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 
 /// <summary>
 /// POCO object that details a planned route between an origin and destination stop.
