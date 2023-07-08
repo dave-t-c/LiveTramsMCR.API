@@ -79,4 +79,47 @@ public class TestJourneyPlannerModel
         var actualStopNamesFromOrigin = plannedJourney?.StopsFromOrigin.Select(stop => stop.StopName).ToList();
         Assert.AreEqual(expectedStopsFromOriginNames, actualStopNamesFromOrigin);
     }
+
+    [Test]
+    public void TestIdentifyRouteWithInterchange()
+    {
+        var plannedJourney = _journeyPlannerModelV2?.PlanJourney("Altrincham", "Ashton-Under-Lyne");
+        var altrinchamStop = _importedStopV2S.Single(stop => stop.StopName == "Altrincham");
+        var ashtonStop = _importedStopV2S.Single(stop => stop.StopName == "Ashton-Under-Lyne");
+        var piccadillyStop = _importedStopV2S.Single(stop => stop.StopName == "Piccadilly");
+        
+        // Assert basic route properties
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        Assert.AreEqual(altrinchamStop, plannedJourney?.OriginStop);
+        Assert.AreEqual(ashtonStop, plannedJourney?.DestinationStop);
+        
+        // Assert routes from origin
+        Assert.AreEqual(12, plannedJourney?.StopsFromOrigin.Count);
+        var expectedStopNamesFromOrigin = new List<string>()
+        {
+            "Navigation Road", "Timperley", "Brooklands", "Sale", "Dane Road", "Stretford", "Old Trafford", "Trafford Bar", 
+            "Cornbrook", "Deansgate - Castlefield", "St Peter's Square", "Piccadilly Gardens"
+        };
+        var actualStopNamesFromOrigin = plannedJourney?.StopsFromOrigin.Select(stop => stop.StopName).ToList();
+        Assert.AreEqual(expectedStopNamesFromOrigin, actualStopNamesFromOrigin);
+        Assert.AreEqual(1, plannedJourney?.RoutesFromOrigin.Count);
+        Assert.AreEqual("Purple", plannedJourney?.RoutesFromOrigin.FirstOrDefault()?.Name);
+        
+        // Assert Interchange
+        Assert.IsNotNull(plannedJourney?.InterchangeStop);
+        Assert.AreEqual(piccadillyStop, plannedJourney?.InterchangeStop);
+        
+        // Assert routes from interchange
+        Assert.AreEqual(11, plannedJourney?.StopsFromInterchange.Count);
+        var expectedStopNamesFromInterchange = new List<string>()
+        {
+            "New Islington", "Holt Town", "Etihad Campus", "Velopark", "Clayton Hall", "Edge Lane", "Cemetery Road", "Droylsden",
+            "Audenshaw", "Ashton Moss", "Ashton West"
+        };
+        var actualStopNamesFromInterchange = plannedJourney?.StopsFromInterchange.Select(stop => stop.StopName).ToList();
+        Assert.AreEqual(expectedStopNamesFromInterchange, actualStopNamesFromInterchange);
+        Assert.AreEqual(1, plannedJourney?.RoutesFromInterchange.Count);
+        Assert.AreEqual("Blue", plannedJourney?.RoutesFromInterchange.FirstOrDefault()?.Name);
+    }
 }
