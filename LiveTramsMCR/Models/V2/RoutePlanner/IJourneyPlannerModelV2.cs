@@ -1,5 +1,8 @@
 namespace LiveTramsMCR.Models.V2.RoutePlanner;
 
+/// <summary>
+/// Interface used for journey planning functionality
+/// </summary>
 public interface IJourneyPlannerModelV2
 {
     /// <summary>
@@ -8,5 +11,5 @@ public interface IJourneyPlannerModelV2
     /// <param name="origin">Origin stop name or TLAREF</param>
     /// <param name="destination">Destination stop name or TLAREF</param>
     /// <returns>Planned Journey including interchange information</returns>
-    public PlannedJourneyV2 PlanJourney(string origin, string destination);
+    public RoutePlannerV2ResponseBodyModel PlanJourney(string origin, string destination);
 }

@@ -60,7 +60,8 @@ public class TestJourneyPlannerModel
     [Test]
     public void TestIdentifyRouteOnSameLine()
     {
-        var plannedJourney = _journeyPlannerModelV2?.PlanJourney("Altrincham", "Sale");
+        var plannedJourney = _journeyPlannerModelV2?.PlanJourney("Altrincham", "Sale")
+            .PlannedJourney;
         var altrinchamStop = _importedStopV2S.Single(stop => stop.Tlaref == "ALT");
         var saleStop = _importedStopV2S.Single(stop => stop.StopName == "Sale");
         
@@ -84,7 +85,9 @@ public class TestJourneyPlannerModel
     [Test]
     public void TestIdentifyRouteWithInterchange()
     {
-        var plannedJourney = _journeyPlannerModelV2?.PlanJourney("Altrincham", "Ashton-Under-Lyne");
+        var plannedJourney = _journeyPlannerModelV2?.PlanJourney(
+            "Altrincham",
+            "Ashton-Under-Lyne").PlannedJourney;
         var altrinchamStop = _importedStopV2S.Single(stop => stop.StopName == "Altrincham");
         var ashtonStop = _importedStopV2S.Single(stop => stop.StopName == "Ashton-Under-Lyne");
         var piccadillyStop = _importedStopV2S.Single(stop => stop.StopName == "Piccadilly");

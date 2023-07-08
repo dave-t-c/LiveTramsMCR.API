@@ -23,7 +23,7 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
     }
 
     /// <inheritdoc />
-    public PlannedJourneyV2 PlanJourney(string origin, string destination)
+    public RoutePlannerV2ResponseBodyModel PlanJourney(string origin, string destination)
     {
         if (origin is null)
             throw new ArgumentNullException(nameof(origin));
@@ -33,6 +33,9 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
         var destinationStop = _stopLookupV2.LookupStop(destination);
         var plannedJourney = _journeyPlannerV2.PlanJourney(originStop, destinationStop);
 
-        return plannedJourney;
+        return new RoutePlannerV2ResponseBodyModel()
+        {
+            PlannedJourney = plannedJourney
+        };
     }
 }

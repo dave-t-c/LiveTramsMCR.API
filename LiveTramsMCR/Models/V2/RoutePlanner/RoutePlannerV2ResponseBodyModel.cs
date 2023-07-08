@@ -5,5 +5,9 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner;
 /// </summary>
 public class RoutePlannerV2ResponseBodyModel
 {
-    public PlannedJourneyV2 PlannedJourney { get; set; }
+    /// <summary>
+    /// Journey information such as routes / stops from origin,
+    /// and if an interchange is required.
+    /// </summary>
+    public PlannedJourneyV2 PlannedJourney { get; init; }
 }
