@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V2.RoutePlanner;
@@ -121,5 +122,27 @@ public class TestJourneyPlannerModel
         Assert.AreEqual(expectedStopNamesFromInterchange, actualStopNamesFromInterchange);
         Assert.AreEqual(1, plannedJourney?.RoutesFromInterchange.Count);
         Assert.AreEqual("Blue", plannedJourney?.RoutesFromInterchange.FirstOrDefault()?.Name);
+    }
+
+    [Test]
+    public void TestNullOrigin()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
+            delegate
+            {
+                var unused = _journeyPlannerModelV2?.PlanJourney( null, "Altrincham");
+            });
+    }
+    
+    [Test]
+    public void TestNullDestination()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
+            delegate
+            {
+                var unused = _journeyPlannerModelV2?.PlanJourney( "Altrincham", null);
+            });
     }
 }
