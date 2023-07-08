@@ -145,4 +145,24 @@ public class TestJourneyPlannerModel
                 var unused = _journeyPlannerModelV2?.PlanJourney( "Altrincham", null);
             });
     }
+
+    [Test]
+    public void TestInvalidOrigin()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentException>(),
+            delegate
+            {
+                var unused = _journeyPlannerModelV2?.PlanJourney("---", "Altrincham");
+            });
+    }
+    
+    [Test]
+    public void TestInvalidDestination()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentException>(),
+            delegate
+            {
+                var unused = _journeyPlannerModelV2?.PlanJourney("Altrincham", "---");
+            });
+    }
 }
