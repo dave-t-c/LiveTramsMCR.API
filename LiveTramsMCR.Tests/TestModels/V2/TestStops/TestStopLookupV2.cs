@@ -60,4 +60,12 @@ public class TestStopLookupV2
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'value')"),
             delegate { _stopLookupV2?.LookupStop(null); });
     }
+
+    [Test]
+    public void TestInvalidStopLookup()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentException>()
+                .And.Message.EqualTo("Value given is not a valid station name or TLAREF"),
+            delegate { _stopLookupV2?.LookupStop("---"); });
+    }
 }

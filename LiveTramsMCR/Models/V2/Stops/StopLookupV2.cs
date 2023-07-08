@@ -28,6 +28,10 @@ public class StopLookupV2
             throw new ArgumentNullException(paramName: nameof(value));
         
         var stop = _stopsRepositoryV2.GetStop(value);
+
+        if (stop is null)
+            throw new ArgumentException("Value given is not a valid station name or TLAREF");
+        
         return stop;
     }
 }
