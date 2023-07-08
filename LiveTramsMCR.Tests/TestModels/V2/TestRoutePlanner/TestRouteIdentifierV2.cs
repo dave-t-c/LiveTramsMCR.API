@@ -333,7 +333,8 @@ public class TestRouteIdentifierV2
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         var identifiedTerminus = _routeIdentifier?
             .IdentifyRouteTerminus(stretfordStop, brooklandsStop, purpleRoute);
-        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham");
+        var altrinchamStop = _importedStops?.First(stop => stop.StopName == "Altrincham")
+            .ConvertToStopKeysV2();
         Assert.IsNotNull(identifiedTerminus);
         Assert.AreEqual("Altrincham", identifiedTerminus?.StopName);
         Assert.AreEqual(altrinchamStop, identifiedTerminus);
@@ -354,7 +355,8 @@ public class TestRouteIdentifierV2
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         var identifiedTerminus = _routeIdentifier?
             .IdentifyRouteTerminus(brooklandsStop, stretfordStop, purpleRoute);
-        var piccadillyStop = _importedStops?.First(stop => stop.StopName == "Piccadilly");
+        var piccadillyStop = _importedStops?.First(stop => stop.StopName == "Piccadilly")
+            .ConvertToStopKeysV2();
         Assert.IsNotNull(identifiedTerminus);
         Assert.AreEqual("Piccadilly", identifiedTerminus?.StopName);
         Assert.AreEqual(piccadillyStop, identifiedTerminus);

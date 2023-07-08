@@ -145,6 +145,9 @@ public class RouteIdentifierV2
     /// <returns>Terminus Stop for the route direction</returns>
     public StopKeysV2 IdentifyRouteTerminus(StopKeysV2 origin, StopKeysV2 destination, RouteV2 route)
     {
+        if (route is null)
+            throw new ArgumentNullException(paramName: nameof(route));
+        
         route.ValidateStopsOnRoute(origin, destination);
 
         var originIndex = route.Stops.IndexOf(origin);
