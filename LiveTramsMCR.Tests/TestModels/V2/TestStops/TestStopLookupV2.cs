@@ -27,7 +27,7 @@ public class TestStopLookupV2
         var stopLoaderV2 = new StopV2Loader(resourcesConfig);
         _importedStops = stopLoaderV2.ImportStops();
         _mockStopsRepository = new MockStopsRepositoryV2(_importedStops);
-        _stopLookupV2 = new StopLookupV2();
+        _stopLookupV2 = new StopLookupV2(_mockStopsRepository);
     }
 
     /// <summary>
@@ -41,5 +41,14 @@ public class TestStopLookupV2
         Assert.IsNotNull(returnedStop);
         Assert.AreEqual("ALT", returnedStop?.Tlaref);
         Assert.AreEqual("Altrincham", returnedStop?.StopName);
+    }
+
+    [Test]
+    public void TestLookupDifferentStop()
+    {
+        var returnedStop = _stopLookupV2?.LookupStop("EDD");
+        Assert.IsNotNull(returnedStop);
+        Assert.AreEqual("EDD", returnedStop?.Tlaref);
+        Assert.AreEqual("East Didsbury", returnedStop?.StopName);
     }
 }
