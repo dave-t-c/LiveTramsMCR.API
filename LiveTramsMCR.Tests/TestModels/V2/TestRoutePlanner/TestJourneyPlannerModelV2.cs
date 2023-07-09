@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 
-public class TestJourneyPlannerModel
+public class TestJourneyPlannerModelV2
 {
     private const string StopsV1ResourcePath = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
