@@ -17,9 +17,8 @@ public class TestRouteV2
     private const string StopResourcePathConst = "../../../Resources/StopsV2.json";
     private const string RoutesResourcePath = "../../../Resources/RoutesV2.json";
     private StopKeysV2? _exampleAltrinchamStopKeys;
-    private StopV2? _exampleAltrinchamStopV2;
+    private StopKeysV2? _exampleSaleStopKeys;
     private StopKeysV2? _exampleEastDidsburyStopKeysV2;
-    private StopV2? _exampleEastDidsburyStopV2;
     private RouteV2? _exampleRoute;
     private List<RouteV2>? _importedRoutes;
     private List<StopV2>? _importedStops;
@@ -53,7 +52,7 @@ public class TestRouteV2
 
         _exampleRoute = _importedRoutes.Single(route => route.Name == "Purple");
         _exampleAltrinchamStopKeys = _exampleRoute.Stops.First(stop => stop.Tlaref == "ALT");
-        _exampleAltrinchamStopV2 = _importedStops.Single(stop => stop.Tlaref == "ALT");
+        _exampleSaleStopKeys = _exampleRoute.Stops.Find(stop => stop.StopName == "Sale");
     }
 
     /// <summary>
@@ -173,7 +172,6 @@ public class TestRouteV2
     [Test]
     public void TestGetPolylineBetweenStops()
     {
-        var saleStopKeys = _exampleRoute?.Stops.Single(stop => stop.StopName == "Sale");
         var expectedInitialPosition = _exampleRoute?.PolylineCoordinates.First();
         var expectedFinalPosition = new List<double>()
         {
@@ -182,7 +180,7 @@ public class TestRouteV2
 
         var returnedPolyline = _exampleRoute?.GetPolylineBetweenStops(
             _exampleAltrinchamStopKeys,
-            saleStopKeys);
+            _exampleSaleStopKeys);
         Assert.Contains(expectedInitialPosition, returnedPolyline);
         var expectedInitialPositionIndex = returnedPolyline!.FindIndex(coord =>
             Math.Abs(coord[1] - expectedInitialPosition![1]) < 0.000001 &&
@@ -196,5 +194,14 @@ public class TestRouteV2
         );
         
         Assert.AreEqual(83, expectedFinalPositionIndex);
+    }
+
+    [Test]
+    public void TestGetPolylineNoStopDetail()
+    {
+        _exampleRoute!.StopsDetail = null;
+        Assert.Throws<InvalidOperationException>(
+            () => _exampleRoute.GetPolylineBetweenStops(_exampleAltrinchamStopKeys, _exampleSaleStopKeys)
+        );
     }
 }

@@ -106,6 +106,9 @@ public class RouteV2
     {
         ValidateStopsOnRoute(origin, destination);
 
+        if (StopsDetail is null)
+            throw new InvalidOperationException("Cannot find polyline when stop detail is null");
+        
         var originStopDetail = StopsDetail?[Stops.IndexOf(origin)];
         var destinationStopDetail = StopsDetail?[Stops.IndexOf(destination)];
         
