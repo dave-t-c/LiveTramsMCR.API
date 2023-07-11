@@ -5,6 +5,7 @@ using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
+using static LiveTramsMCR.Tests.Configuration.Configuration;
 
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 
@@ -183,17 +184,17 @@ public class TestRouteV2
             _exampleSaleStopKeys);
         Assert.Contains(expectedInitialPosition, returnedPolyline);
         var expectedInitialPositionIndex = returnedPolyline!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedInitialPosition![1]) < 0.000001 &&
-            Math.Abs(coord[0] - expectedInitialPosition![0]) < 0.000001
+            Math.Abs(coord[1] - expectedInitialPosition![1]) < RouteCoordinateTolerance &&
+            Math.Abs(coord[0] - expectedInitialPosition![0]) < RouteCoordinateTolerance
         );
         Assert.AreEqual(0, expectedInitialPositionIndex);
         
         var expectedFinalPositionIndex = returnedPolyline!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedFinalPosition![1]) < 0.000001 &&
-            Math.Abs(coord[0] - expectedFinalPosition![0]) < 0.000001
+            Math.Abs(coord[1] - expectedFinalPosition![1]) < RouteCoordinateTolerance &&
+            Math.Abs(coord[0] - expectedFinalPosition![0]) < RouteCoordinateTolerance
         );
         
-        Assert.AreEqual(83, expectedFinalPositionIndex);
+        Assert.AreEqual(returnedPolyline.Count -1, expectedFinalPositionIndex);
     }
 
     [Test]
