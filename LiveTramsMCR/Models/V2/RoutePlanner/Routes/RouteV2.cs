@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
+using Geolocation;
 using LiveTramsMCR.Models.V2.Stops;
 using MongoDB.Bson;
+using static LiveTramsMCR.Configuration.Configuration;
 
 namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 
@@ -91,5 +94,56 @@ public class RouteV2
             throw new InvalidOperationException(origin.StopName + " does not exist on " + Name + " route");
         if (!Stops.Contains(destination))
             throw new InvalidOperationException(destination.StopName + " does not exist on " + Name + " route");
+    }
+
+    /// <summary>
+    /// Gets the polyline between certain stops on a route.
+    /// </summary>
+    /// <param name="origin">Start of polyline</param>
+    /// <param name="destination">Stop on end of polyline</param>
+    /// <returns></returns>
+    public List<List<double>> GetPolylineBetweenStops(StopKeysV2 origin, StopKeysV2 destination)
+    {
+        ValidateStopsOnRoute(origin, destination);
+
+        var originStopDetail = StopsDetail?[Stops.IndexOf(origin)];
+        var destinationStopDetail = StopsDetail?[Stops.IndexOf(destination)];
+        
+        var polylineCoordinates = PolylineCoordinates.Select(pc =>
+            new Coordinate(pc[1], pc[0])).ToList();
+
+        var originStopCoordinate = new Coordinate(originStopDetail!.Latitude, originStopDetail!.Longitude);
+        var destinationStopCoordinate = new Coordinate(destinationStopDetail!.Latitude, destinationStopDetail!.Longitude);
+
+        var closestCoordinateToOrigin = polylineCoordinates.MinBy(pc =>
+            GeoCalculator.GetDistance(pc, originStopCoordinate));
+
+        var closestCoordinateToDestination = polylineCoordinates.MinBy(pc =>
+            GeoCalculator.GetDistance(pc, destinationStopCoordinate));
+
+        var closestOriginCoordinateIndex = IdentifyClosestCoordinateIndex(closestCoordinateToOrigin);
+
+        var closestDestinationCoordinateIndex = IdentifyClosestCoordinateIndex(closestCoordinateToDestination);
+        
+        // Need to check which should be the start of the range and then how many items to take
+        // Closest to origin index is not guaranteed to be lower than destination index, could be other way around.
+
+        var lowIndex = Math.Min(closestOriginCoordinateIndex, closestDestinationCoordinateIndex);
+        var countIncludingFinalCoordinate = Math.Abs(closestOriginCoordinateIndex - closestDestinationCoordinateIndex) + 1;
+
+        return PolylineCoordinates.Skip(lowIndex).Take(countIncludingFinalCoordinate).ToList();
+    }
+
+    /// <summary>
+    /// Identifies the closest index to a coordinate on the routes polyline.
+    /// </summary>
+    /// <param name="coordinate"></param>
+    /// <returns>Index of closest stop within tolerance, -1 if not found.</returns>
+    private int IdentifyClosestCoordinateIndex(Coordinate coordinate)
+    {
+        return PolylineCoordinates.FindIndex(coord =>
+            Math.Abs(coord[1] - coordinate.Latitude) < LocationAccuracyTolerance && 
+            Math.Abs(coord[0] - coordinate.Longitude) < LocationAccuracyTolerance
+        );
     }
 }
