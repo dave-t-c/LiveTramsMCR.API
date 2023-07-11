@@ -2,10 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
+using LiveTramsMCR.Models.V2.RoutePlanner.Visualisation;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
+
+using static LiveTramsMCR.Tests.Configuration.Configuration;
 
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 
@@ -16,6 +20,7 @@ public class TestJourneyPlannerModelV2
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private List<StopV2> _importedStopV2S = new();
+    private List<RouteV2> _importedRouteV2s = new();
     private IJourneyPlannerModelV2? _journeyPlannerModelV2;
     private IJourneyPlannerV2? _journeyPlannerV2;
     private StopLookupV2? _stopLookupV2;
@@ -44,24 +49,27 @@ public class TestJourneyPlannerModelV2
         var routesV1 = routesV1Loader.ImportRoutes();
 
         var routesV2Loader = new RouteV2Loader(resourcesConfig);
-        var routesV2 = routesV2Loader.ImportRoutes();
+        _importedRouteV2s = routesV2Loader.ImportRoutes();
 
         var routeTimesLoader = new RouteTimesLoader(resourcesConfig);
         var routeTimes = routeTimesLoader.ImportRouteTimes();
 
         var mockRouteRepositoryV1 = new MockRouteRepository(routesV1, routeTimes);
-        var mockRouteRepositoryV2 = new MockRouteRepositoryV2(routesV2, mockStopsV2Repository);
+        var mockRouteRepositoryV2 = new MockRouteRepositoryV2(_importedRouteV2s, mockStopsV2Repository);
+
+        var journeyVisualiserV2 = new JourneyVisualiserV2();
 
         _journeyPlannerV2 = new JourneyPlannerV2(mockRouteRepositoryV1, mockRouteRepositoryV2);
 
-        _journeyPlannerModelV2 = new JourneyPlannerModelV2(_stopLookupV2, _journeyPlannerV2);
+        _journeyPlannerModelV2 = new JourneyPlannerModelV2(_stopLookupV2, _journeyPlannerV2, journeyVisualiserV2);
     }
 
     [Test]
     public void TestIdentifyRouteOnSameLine()
     {
-        var plannedJourney = _journeyPlannerModelV2?.PlanJourney("Altrincham", "Sale")
-            .PlannedJourney;
+        var response = _journeyPlannerModelV2?.PlanJourney("Altrincham", "Sale");
+        Assert.IsNotNull(response);
+        var plannedJourney = response?.PlannedJourney;
         var altrinchamStop = _importedStopV2S.Single(stop => stop.Tlaref == "ALT");
         var saleStop = _importedStopV2S.Single(stop => stop.StopName == "Sale");
 
@@ -80,14 +88,26 @@ public class TestJourneyPlannerModelV2
         };
         var actualStopNamesFromOrigin = plannedJourney?.StopsFromOrigin.Select(stop => stop.StopName).ToList();
         Assert.AreEqual(expectedStopsFromOriginNames, actualStopNamesFromOrigin);
+        
+        Assert.IsNotNull(response?.VisualisedJourney);
+        var polylinesFromOrigin = response?.VisualisedJourney.PolylineFromOrigin;
+        var purpleRoute = _importedRouteV2s.Single(route => route.Name == "Purple");
+        var allPolyLineCoordinatesExistOnRoute = polylinesFromOrigin?.All(coord => 
+            purpleRoute.PolylineCoordinates.Exists(pr =>
+                Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
+                Math.Abs(coord[0] - pr![0]) < RouteCoordinateTolerance)
+        );
+        Assert.IsTrue(allPolyLineCoordinatesExistOnRoute);
     }
 
     [Test]
     public void TestIdentifyRouteWithInterchange()
     {
-        var plannedJourney = _journeyPlannerModelV2?.PlanJourney(
+        var response = _journeyPlannerModelV2?.PlanJourney(
             "Altrincham",
-            "Ashton-Under-Lyne").PlannedJourney;
+            "Ashton-Under-Lyne");
+        Assert.IsNotNull(response);
+        var plannedJourney = response?.PlannedJourney;
         var altrinchamStop = _importedStopV2S.Single(stop => stop.StopName == "Altrincham");
         var ashtonStop = _importedStopV2S.Single(stop => stop.StopName == "Ashton-Under-Lyne");
         var piccadillyStop = _importedStopV2S.Single(stop => stop.StopName == "Piccadilly");
@@ -143,7 +163,27 @@ public class TestJourneyPlannerModelV2
         var actualStopNamesFromInterchange = plannedJourney?.StopsFromInterchange.Select(stop => stop.StopName).ToList();
         Assert.AreEqual(expectedStopNamesFromInterchange, actualStopNamesFromInterchange);
         Assert.AreEqual(1, plannedJourney?.RoutesFromInterchange.Count);
-        Assert.AreEqual("Blue", plannedJourney?.RoutesFromInterchange.FirstOrDefault()?.Name);
+        Assert.AreEqual("Blue", plannedJourney?.RoutesFromInterchange.Single().Name);
+        
+        Assert.IsNotNull(response?.VisualisedJourney);
+        var polylinesFromOrigin = response?.VisualisedJourney.PolylineFromOrigin;
+        var purpleRoute = _importedRouteV2s.Single(route => route.Name == "Purple");
+        var allPolyLineCoordinatesExistOnPurpleRoute = polylinesFromOrigin?.All(coord => 
+            purpleRoute.PolylineCoordinates.Exists(pr =>
+                Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
+                Math.Abs(coord[0] - pr![0]) < RouteCoordinateTolerance)
+        );
+        Assert.IsTrue(allPolyLineCoordinatesExistOnPurpleRoute);
+
+        var polylinesFromInterchange = response?.VisualisedJourney.PolylineFromInterchange;
+        Assert.IsNotNull(polylinesFromInterchange);
+        var blueRoute = _importedRouteV2s.Single(route => route.Name == "Blue");
+        var allPolyLineCoordinatesFromInterchangeExistOnBlueRoute = polylinesFromInterchange?.All(coord => 
+            blueRoute.PolylineCoordinates.Exists(pr =>
+                Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
+                Math.Abs(coord[0] - pr![0]) < RouteCoordinateTolerance)
+        );
+        Assert.IsTrue(allPolyLineCoordinatesFromInterchangeExistOnBlueRoute);
     }
 
     [Test]
