@@ -1,3 +1,5 @@
+using LiveTramsMCR.Models.V2.Stops;
+
 namespace LiveTramsMCR.Models.V2.RoutePlanner.ServiceInformation.NextService;
 
 /// <summary>
@@ -8,7 +10,7 @@ public class NextServiceIdentifierV2Response
     /// <summary>
     /// Destination of the next service towards the interchange / destination
     /// </summary>
-    public string Destination { get; set; }
+    public StopKeysV2 Destination { get; set; }
     
     /// <summary>
     /// Wait time until this service
