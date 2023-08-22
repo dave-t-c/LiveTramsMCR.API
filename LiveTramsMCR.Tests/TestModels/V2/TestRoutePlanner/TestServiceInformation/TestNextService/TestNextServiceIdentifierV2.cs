@@ -19,18 +19,21 @@ public class TestNextServiceIdentifierV2
     private const string LiveCornbrookServicesResponsePath = "../../../Resources/ExampleCornbrookResponse.json";
     private const string LiveServicesNoServicesResponsePath = "../../../Resources/ExampleAltrinchamResponseNoServiceData.json";
     private const string LiveServicesOnlyToOldTraffordPath = "../../../Resources/ExampleAltrinchamResponseOnlyToOldTrafford.json";
+    private const string LiveExchangeQuayServicesResponse = "../../../Resources/ExampleExchangeQuayResponse.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
     private MultipleUnformattedServices? _unformattedAltrinchamServices;
     private MultipleUnformattedServices? _unformattedCornbrookServices;
     private MultipleUnformattedServices? _unformattedServicesWithNoServiceData;
     private MultipleUnformattedServices? _unformattedServicesOnlyToOldTrafford;
+    private MultipleUnformattedServices? _unformattedExchangeQuayServices;
     private List<StopV2>? _importedStops;
     private List<RouteV2>? _importedRoutes;
     private FormattedServices? _formattedAltrinchamServices;
     private FormattedServices? _formattedCornbrookServices;
     private FormattedServices? _formattedServicesNoServiceData;
     private FormattedServices? _formattedServicesOnlyToOldTrafford;
+    private FormattedServices? _formattedExchangeQuayServices;
     private NextServiceIdentifierV2? _nextServiceIdentifierV2;
     
     [SetUp]
@@ -50,6 +53,10 @@ public class TestNextServiceIdentifierV2
         _unformattedServicesOnlyToOldTrafford =
             ImportServicesResponse.ImportMultipleUnformattedServices(LiveServicesOnlyToOldTraffordPath);
         _formattedServicesOnlyToOldTrafford = serviceFormatter.FormatServices(_unformattedServicesOnlyToOldTrafford!.Value);
+
+        _unformattedExchangeQuayServices =
+            ImportServicesResponse.ImportMultipleUnformattedServices(LiveExchangeQuayServicesResponse);
+        _formattedExchangeQuayServices = serviceFormatter.FormatServices(_unformattedExchangeQuayServices!.Value);
         
         var resourcesConfig = new ResourcesConfig
         {
@@ -108,7 +115,6 @@ public class TestNextServiceIdentifierV2
         };
         Assert.AreEqual(piccadillyStopKeys, response.Destination);
         Assert.AreEqual(1, response.Wait);
-
     }
 
     /// <summary>
@@ -212,5 +218,44 @@ public class TestNextServiceIdentifierV2
         var response = _nextServiceIdentifierV2!.IdentifyNextService(request);
         
         Assert.IsNull(response);
+    }
+
+    
+    /// <summary>
+    /// Test to identify the next service when the destination string includes 'via',
+    /// e.g. Weaste via MediaCityUK.
+    /// </summary>
+    [Test]
+    public void TestIdentifyNextStopWithDestinationNameVia()
+    {
+        var originStop = _importedStops!.Single(stop => stop.Tlaref == "EXQ");
+        var destinationStop = _importedStops!.Single(stop => stop.StopName == "Weaste");
+        var routeNames = new List<string>()
+        {
+            "Blue"
+        };
+        var routesFromOrigin = _importedRoutes!.Where(route => routeNames.Contains(route.Name)).ToList();
+        var services = new List<Tram>();
+        foreach (var destination in _formattedExchangeQuayServices!.Destinations)
+        {
+            var trams = destination.Value;
+            var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
+            services.AddRange(filteredTrams);
+        }
+        
+        var request = new NextServiceIdentifierV2Request()
+        {
+            Origin = originStop, Destination = destinationStop, Routes = routesFromOrigin, Services = services
+        };
+
+        var response = _nextServiceIdentifierV2!.IdentifyNextService(request);
+        
+        Assert.IsNotNull(response);
+        var weasteStopKeys = new StopKeysV2()
+        {
+            StopName = destinationStop.StopName, Tlaref = destinationStop.Tlaref
+        };
+        Assert.AreEqual(weasteStopKeys, response.Destination);
+        Assert.AreEqual(0, response.Wait);
     }
 }

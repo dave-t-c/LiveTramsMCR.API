@@ -30,6 +30,8 @@ public class NextServiceIdentifierV2 : INextServiceIdentifierV2
             StopName = destinationStop.StopName, Tlaref = destinationStop.Tlaref
         };
 
+        SetExpectedDestinationForViaServices(services);
+        
         var minWaitDict = new Dictionary<StopKeysV2, int>();
         
         // Outline
@@ -79,6 +81,18 @@ public class NextServiceIdentifierV2 : INextServiceIdentifierV2
         };
     }
 
+    private static void SetExpectedDestinationForViaServices(List<Tram> services)
+    {
+        foreach (var service in services)
+        {
+            if (!service.Destination.Contains("via")) continue;
+            
+            var originalDestination = service.Destination;
+            var finalDestination = originalDestination.Split("via")[0].Trim();
+            service.Destination = finalDestination;
+        }
+    }
+
     private static int IdentifyRouteDirection(StopKeysV2 originStopKey, StopKeysV2 destinationStopKey, RouteV2 route)
     {
         var originStopIndex = route.Stops.IndexOf(originStopKey);
@@ -106,7 +120,7 @@ public class NextServiceIdentifierV2 : INextServiceIdentifierV2
         return identifiedStops;
     }
     
-    private static IEnumerable<string> IdentifyDestinationsFromServices(List<Tram> services)
+    private static IEnumerable<string> IdentifyDestinationsFromServices(IEnumerable<Tram> services)
     {
         var destinations = services.Select(service => service.Destination).ToList();
         return destinations;

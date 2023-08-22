@@ -30,7 +30,7 @@ public class Tram
     ///     Destination for the tram, e.g. Piccadilly.
     /// </summary>
     /// <example>Piccadilly</example>
-    public string Destination { get; }
+    public string Destination { get; internal set; }
 
     /// <summary>
     ///     Number of carriages the tram has, either 'Single' or 'Double'
