@@ -13,21 +13,21 @@ public class NextServiceIdentifierV2Request
     /// <summary>
     /// Origin of the journey
     /// </summary>
-    public StopV2 Origin { get; set; }
+    public StopV2 Origin { get; init; }
     
     /// <summary>
     /// Destination or interchange of the journey.
     /// This should be on the same route as the origin stop.
     /// </summary>
-    public StopV2 Destination { get; set; }
+    public StopV2 Destination { get; init; }
     
     /// <summary>
     /// Trams from a live service request.
     /// </summary>
-    public List<Tram> Services { get; set; }
+    public List<Tram> Services { get; init; }
     
     /// <summary>
     /// Routes between the origin and interchange or destination.
     /// </summary>
-    public List<RouteV2> Routes { get; set; }
+    public List<RouteV2> Routes { get; init; }
 }
