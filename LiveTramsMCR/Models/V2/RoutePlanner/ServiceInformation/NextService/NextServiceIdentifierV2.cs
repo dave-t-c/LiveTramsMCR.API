@@ -64,6 +64,11 @@ public class NextServiceIdentifierV2 : INextServiceIdentifierV2
                 
             }
         }
+
+        if (minWaitDict.Count == 0)
+        {
+            return null;
+        }
         
         // Check the minimum time for the destinations for each route, return the route with the smallest.
         var minDestination = minWaitDict.MinBy(kvp => kvp.Value);
