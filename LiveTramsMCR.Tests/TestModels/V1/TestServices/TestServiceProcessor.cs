@@ -182,4 +182,13 @@ public class TestServiceProcessor
             _serviceProcessorInternalServerError?.RequestServices("Example 1");
         });
     }
+
+    /// <summary>
+    /// Test to get services for a planned journey
+    /// </summary>
+    [Test]
+    public void TestServicesForPlannedJourneyV2()
+    {
+        Assert.Fail();
+    }
 }

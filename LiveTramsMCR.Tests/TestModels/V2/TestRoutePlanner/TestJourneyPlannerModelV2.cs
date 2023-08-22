@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
+using LiveTramsMCR.Models.V2.RoutePlanner.ServiceInformation.NextService;
 using LiveTramsMCR.Models.V2.RoutePlanner.Visualisation;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
+using LiveTramsMCR.Tests.TestModels.V1.TestServices;
 using NUnit.Framework;
 
 using static LiveTramsMCR.Tests.Configuration.Configuration;
@@ -15,6 +19,7 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 
 public class TestJourneyPlannerModelV2
 {
+    private const string LiveAltrinchamServicesResponsePath = "../../../Resources/ExampleAltrinchamResponse.json";
     private const string StopsV1ResourcePath = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
@@ -23,6 +28,8 @@ public class TestJourneyPlannerModelV2
     private List<RouteV2> _importedRouteV2s = new();
     private IJourneyPlannerModelV2? _journeyPlannerModelV2;
     private IJourneyPlannerV2? _journeyPlannerV2;
+    private INextServiceIdentifierV2? _nextServiceIdentifierV2;
+    private ServiceProcessor? _serviceProcessor;
     private StopLookupV2? _stopLookupV2;
 
     [SetUp]
@@ -39,6 +46,8 @@ public class TestJourneyPlannerModelV2
         var stopsV1Loader = new StopLoader(resourcesConfig);
         var stopsV1 = stopsV1Loader.ImportStops();
 
+        var mockStopsV1Repository = new MockStopsRepository(stopsV1);
+        
         var stopsV2Loader = new StopV2Loader(resourcesConfig);
         _importedStopV2S = stopsV2Loader.ImportStops();
 
@@ -61,7 +70,22 @@ public class TestJourneyPlannerModelV2
 
         _journeyPlannerV2 = new JourneyPlannerV2(mockRouteRepositoryV1, mockRouteRepositoryV2);
 
-        _journeyPlannerModelV2 = new JourneyPlannerModelV2(_stopLookupV2, _journeyPlannerV2, journeyVisualiserV2);
+        var mockHttpResponse =
+            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(
+                HttpStatusCode.OK, 
+                LiveAltrinchamServicesResponsePath);
+        var serviceRequester = new MockServiceRequester(mockHttpResponse!);
+        
+        _serviceProcessor = new ServiceProcessor(serviceRequester, mockStopsV1Repository);
+
+        _nextServiceIdentifierV2 = new NextServiceIdentifierV2();
+
+        _journeyPlannerModelV2 = new JourneyPlannerModelV2(
+            _stopLookupV2, 
+            _journeyPlannerV2, 
+            journeyVisualiserV2, 
+            _nextServiceIdentifierV2, 
+            _serviceProcessor);
     }
 
     [Test]

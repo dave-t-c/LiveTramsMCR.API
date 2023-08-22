@@ -1,6 +1,7 @@
 using System;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 
 namespace LiveTramsMCR.Models.V1.Services;
 
@@ -38,6 +39,17 @@ public class ServiceProcessor
         var serviceResponses = _requester.RequestServices(stop.Tlaref);
         var unformattedServices = ServiceValidator.ValidateServiceResponse(serviceResponses);
         return _serviceFormatter.FormatServices(unformattedServices);
+    }
+
+    /// <summary>
+    /// Request the services for a planned journey.
+    /// This will request the service information for origin and destination stops.
+    /// The interchange stop will also be requested if the journey involves
+    /// and interchange.
+    /// </summary>
+    public FormattedServices RequestServicesForPlannedJourneyV2(PlannedJourneyV2 plannedJourneyV2)
+    {
+        throw new NotImplementedException();
     }
 
     /// <summary>
