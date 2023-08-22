@@ -24,7 +24,7 @@ public class NextServiceIdentifierV2Request
     /// <summary>
     /// Trams from a live service request.
     /// </summary>
-    public SortedSet<Tram> Services { get; set; }
+    public List<Tram> Services { get; set; }
     
     /// <summary>
     /// Routes between the origin and interchange or destination.

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V1.Services;
@@ -52,7 +53,15 @@ public class NextServiceIdentifierV2 : INextServiceIdentifierV2
 
             foreach (var destination in minWaitForMatchedDestinations)
             {
-                minWaitDict.Add(destination.Key, destination.Value);
+                if (!minWaitDict.TryGetValue(destination.Key, out var existingValue))
+                {
+                    minWaitDict[destination.Key] = destination.Value;
+                }
+                else
+                {
+                    minWaitDict[destination.Key] = Math.Min(existingValue, destination.Value);    
+                }
+                
             }
         }
         
@@ -92,7 +101,7 @@ public class NextServiceIdentifierV2 : INextServiceIdentifierV2
         return identifiedStops;
     }
     
-    private static IEnumerable<string> IdentifyDestinationsFromServices(SortedSet<Tram> services)
+    private static IEnumerable<string> IdentifyDestinationsFromServices(List<Tram> services)
     {
         var destinations = services.Select(service => service.Destination).ToList();
         return destinations;
@@ -107,7 +116,7 @@ public class NextServiceIdentifierV2 : INextServiceIdentifierV2
     }
 
     private static Dictionary<StopKeysV2, int> IdentifyMinimumWaitTimeForDestination(IEnumerable<StopKeysV2> matchedDestinations,
-        SortedSet<Tram> services)
+        List<Tram> services)
     {
         var minimumWaitDict = new Dictionary<StopKeysV2, int>();
 

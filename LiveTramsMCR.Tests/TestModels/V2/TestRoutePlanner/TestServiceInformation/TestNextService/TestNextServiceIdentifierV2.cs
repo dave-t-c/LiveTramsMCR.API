@@ -16,23 +16,28 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner.TestServiceInformati
 public class TestNextServiceIdentifierV2
 {
     private const string LiveServicesResponsePath = "../../../Resources/ExampleAltrinchamResponse.json";
+    private const string LiveCornbrookServicesResponsePath = "../../../Resources/ExampleCornbrookResponse.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
-    private UnformattedServices? _unformattedServices;
+    private MultipleUnformattedServices? _unformattedAltrinchamServices;
+    private MultipleUnformattedServices? _unformattedCornbrookServices;
     private List<StopV2>? _importedStops;
     private List<RouteV2>? _importedRoutes;
-    private FormattedServices? _formattedServices;
+    private FormattedServices? _formattedAltrinchamServices;
+    private FormattedServices? _formattedCornbrookServices;
     private NextServiceIdentifierV2? _nextServiceIdentifierV2;
     
     [SetUp]
     public void SetUp()
     {
-        _unformattedServices = _unformattedServices = ImportServicesResponse.ImportUnformattedServices(LiveServicesResponsePath);
-        var unformattedServicesList = new List<UnformattedServices>()
-        {
-            _unformattedServices!
-        };
-        _formattedServices = new ServiceFormatter().FormatServices(unformattedServicesList);
+        var serviceFormatter = new ServiceFormatter();
+        _unformattedAltrinchamServices = _unformattedAltrinchamServices = ImportServicesResponse.ImportMultipleUnformattedServices(LiveServicesResponsePath);
+        _formattedAltrinchamServices = serviceFormatter.FormatServices(_unformattedAltrinchamServices!.Value);
+        
+        _unformattedCornbrookServices = ImportServicesResponse.ImportMultipleUnformattedServices(LiveCornbrookServicesResponsePath);
+        _formattedCornbrookServices = serviceFormatter.FormatServices(_unformattedCornbrookServices!.Value);
+        
+        
         
         var resourcesConfig = new ResourcesConfig
         {
@@ -68,12 +73,12 @@ public class TestNextServiceIdentifierV2
             "Purple", "Green"
         };
         var routesFromOrigin = _importedRoutes!.Where(route => routeNames.Contains(route.Name)).ToList();
-        var services = new SortedSet<Tram>(new TramComparer());
-        foreach (var destination in _formattedServices!.Destinations)
+        var services = new List<Tram>();
+        foreach (var destination in _formattedAltrinchamServices!.Destinations)
         {
             var trams = destination.Value;
             var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
-            services.UnionWith(filteredTrams);
+            services.AddRange(filteredTrams);
         }
         
         var request = new NextServiceIdentifierV2Request()
@@ -101,7 +106,35 @@ public class TestNextServiceIdentifierV2
     [Test]
     public void TestIdentifyNextServiceOppositeDirection()
     {
-        Assert.Fail();
+        var destinationStop = _importedStops!.Single(stop => stop.Tlaref == "ALT");
+        var originStop = _importedStops!.Single(stop => stop.StopName == "Cornbrook");
+        var routeNames = new List<string>()
+        {
+            "Purple", "Green"
+        };
+        var routesFromOrigin = _importedRoutes!.Where(route => routeNames.Contains(route.Name)).ToList();
+        var services = new List<Tram>();
+        foreach (var destination in _formattedCornbrookServices!.Destinations)
+        {
+            var trams = destination.Value;
+            var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
+            services.AddRange(filteredTrams);
+        }
+        
+        var request = new NextServiceIdentifierV2Request()
+        {
+            Origin = originStop, Destination = destinationStop, Routes = routesFromOrigin, Services = services
+        };
+
+        var response = _nextServiceIdentifierV2!.IdentifyNextService(request);
+        
+        Assert.IsNotNull(response);
+        var altrinchamStopKeys = new StopKeysV2()
+        {
+            StopName = destinationStop.StopName, Tlaref = destinationStop.Tlaref
+        };
+        Assert.AreEqual(altrinchamStopKeys, response.Destination);
+        Assert.AreEqual(3, response.Wait);
     }
 
     /// <summary>
