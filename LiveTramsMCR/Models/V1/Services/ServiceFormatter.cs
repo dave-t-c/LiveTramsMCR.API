@@ -23,13 +23,13 @@ public class ServiceFormatter
         {
             // This currently appears to be the easiest way to create information for all four possible trams.
             AddTram(formattedServices, new Tram(service.Dest0, service.Carriages0, service.Status0,
-                service.Wait0));
+                service.Wait0, service.Tlaref));
             AddTram(formattedServices, new Tram(service.Dest1, service.Carriages1, service.Status1,
-                service.Wait1));
+                service.Wait1, service.Tlaref));
             AddTram(formattedServices, new Tram(service.Dest2, service.Carriages2, service.Status2,
-                service.Wait2));
+                service.Wait2, service.Tlaref));
             AddTram(formattedServices, new Tram(service.Dest3, service.Carriages3, service.Status3,
-                service.Wait3));
+                service.Wait3, service.Tlaref));
 
             FormatMessage(formattedServices, service.MessageBoard);
 
@@ -50,13 +50,13 @@ public class ServiceFormatter
         foreach (var service in unformattedServices)
         {
             AddTram(formattedDepartureBoardServices, new Tram(service.Dest0, service.Carriages0, service.Status0,
-                service.Wait0));
+                service.Wait0, service.Tlaref));
             AddTram(formattedDepartureBoardServices, new Tram(service.Dest1, service.Carriages1, service.Status1,
-                service.Wait1));
+                service.Wait1, service.Tlaref));
             AddTram(formattedDepartureBoardServices, new Tram(service.Dest2, service.Carriages2, service.Status2,
-                service.Wait2));
+                service.Wait2, service.Tlaref));
             AddTram(formattedDepartureBoardServices, new Tram(service.Dest3, service.Carriages3, service.Status3,
-                service.Wait3));
+                service.Wait3, service.Tlaref));
 
             FormatDepartureBoardMessage(formattedDepartureBoardServices, service.MessageBoard);
         }

@@ -22,6 +22,7 @@ public class TestFormattedServices
     private Tram? _tramDiffDestinationDiffWait;
     private Tram? _tramSameDestinationDiffWait;
     private string? _wait;
+    private string? _tlaref;
 
     [SetUp]
     public void SetUp()
@@ -33,10 +34,11 @@ public class TestFormattedServices
         _status = "Due";
         _wait = "9";
         _diffWait = "1";
-        _tram = new Tram(_destination, _carriages, _status, _wait);
-        _tramDiffDestination = new Tram(_diffDestination, _carriages, _status, _wait);
-        _tramSameDestinationDiffWait = new Tram(_destination, _diffCarriages, _status, _diffWait);
-        _tramDiffDestinationDiffWait = new Tram(_diffDestination, _diffCarriages, _status, _diffWait);
+        _tlaref = "ALT";
+        _tram = new Tram(_destination, _carriages, _status, _wait, _tlaref);
+        _tramDiffDestination = new Tram(_diffDestination, _carriages, _status, _wait, _tlaref);
+        _tramSameDestinationDiffWait = new Tram(_destination, _diffCarriages, _status, _diffWait, _tlaref);
+        _tramDiffDestinationDiffWait = new Tram(_diffDestination, _diffCarriages, _status, _diffWait, _tlaref);
         _formattedServices = new FormattedServices();
     }
 
