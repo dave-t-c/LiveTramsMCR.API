@@ -18,16 +18,19 @@ public class TestNextServiceIdentifierV2
     private const string LiveServicesResponsePath = "../../../Resources/ExampleAltrinchamResponse.json";
     private const string LiveCornbrookServicesResponsePath = "../../../Resources/ExampleCornbrookResponse.json";
     private const string LiveServicesNoServicesResponsePath = "../../../Resources/ExampleAltrinchamResponseNoServiceData.json";
+    private const string LiveServicesOnlyToOldTraffordPath = "../../../Resources/ExampleAltrinchamResponseOnlyToOldTrafford.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
     private MultipleUnformattedServices? _unformattedAltrinchamServices;
     private MultipleUnformattedServices? _unformattedCornbrookServices;
     private MultipleUnformattedServices? _unformattedServicesWithNoServiceData;
+    private MultipleUnformattedServices? _unformattedServicesOnlyToOldTrafford;
     private List<StopV2>? _importedStops;
     private List<RouteV2>? _importedRoutes;
     private FormattedServices? _formattedAltrinchamServices;
     private FormattedServices? _formattedCornbrookServices;
     private FormattedServices? _formattedServicesNoServiceData;
+    private FormattedServices? _formattedServicesOnlyToOldTrafford;
     private NextServiceIdentifierV2? _nextServiceIdentifierV2;
     
     [SetUp]
@@ -43,6 +46,10 @@ public class TestNextServiceIdentifierV2
         _unformattedServicesWithNoServiceData =
             ImportServicesResponse.ImportMultipleUnformattedServices(LiveServicesNoServicesResponsePath);
         _formattedServicesNoServiceData = serviceFormatter.FormatServices(_unformattedServicesWithNoServiceData!.Value);
+
+        _unformattedServicesOnlyToOldTrafford =
+            ImportServicesResponse.ImportMultipleUnformattedServices(LiveServicesOnlyToOldTraffordPath);
+        _formattedServicesOnlyToOldTrafford = serviceFormatter.FormatServices(_unformattedServicesOnlyToOldTrafford!.Value);
         
         var resourcesConfig = new ResourcesConfig
         {
@@ -158,6 +165,39 @@ public class TestNextServiceIdentifierV2
         var routesFromOrigin = _importedRoutes!.Where(route => routeNames.Contains(route.Name)).ToList();
         var services = new List<Tram>();
         foreach (var destination in _formattedServicesNoServiceData!.Destinations)
+        {
+            var trams = destination.Value;
+            var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
+            services.AddRange(filteredTrams);
+        }
+        
+        var request = new NextServiceIdentifierV2Request()
+        {
+            Origin = originStop, Destination = destinationStop, Routes = routesFromOrigin, Services = services
+        };
+
+        var response = _nextServiceIdentifierV2!.IdentifyNextService(request);
+        
+        Assert.IsNull(response);
+    }
+
+    
+    /// <summary>
+    /// Test to check the next service when data is available,
+    /// but there are no services to the interchange stop.
+    /// </summary>
+    [Test]
+    public void TestServiceDataAvailableButNoServiceToInterchange()
+    {
+        var originStop = _importedStops!.Single(stop => stop.Tlaref == "ALT");
+        var destinationStop = _importedStops!.Single(stop => stop.StopName == "Cornbrook");
+        var routeNames = new List<string>()
+        {
+            "Purple", "Green"
+        };
+        var routesFromOrigin = _importedRoutes!.Where(route => routeNames.Contains(route.Name)).ToList();
+        var services = new List<Tram>();
+        foreach (var destination in _formattedServicesOnlyToOldTrafford!.Destinations)
         {
             var trams = destination.Value;
             var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
