@@ -49,6 +49,7 @@ public class ServiceProcessor
     /// </summary>
     public FormattedServices RequestServicesForPlannedJourneyV2(PlannedJourneyV2 plannedJourneyV2)
     {
+        if (plannedJourneyV2 == null) throw new ArgumentNullException(nameof(plannedJourneyV2));
         throw new NotImplementedException();
     }
 

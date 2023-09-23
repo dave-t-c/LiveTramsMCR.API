@@ -191,4 +191,29 @@ public class TestServiceProcessor
     {
         Assert.Fail();
     }
+
+    /// <summary>
+    /// Get the services for a planned journey with an interchange.
+    /// This should include information for the interchange stop.
+    /// </summary>
+    [Test]
+    public void TestServicesForPlannedJourneyV2WithInterchange()
+    {
+        Assert.Fail();
+    }
+    
+    /// <summary>
+    /// Test to get the services for a null journey.
+    /// This should throw an arg null exception.
+    /// </summary>
+    [Test]
+    public void TestServicesForPlannedJourneyV2NullJourney()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'plannedJourneyV2')"),
+            delegate
+            {
+                _serviceProcessor?.RequestServicesForPlannedJourneyV2(null);
+            });
+    }
 }
