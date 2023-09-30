@@ -26,7 +26,7 @@ public class TestJourneyPlannerModelV2
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private List<StopV2> _importedStopV2S = new();
-    private List<RouteV2> _importedRouteV2s = new();
+    private List<RouteV2> _importedRouteV2S = new();
     private IJourneyPlannerModelV2? _journeyPlannerModelV2Interchange;
     private IJourneyPlannerModelV2? _journeyPlannerModelV2;
     private IJourneyPlannerV2? _journeyPlannerV2;
@@ -61,13 +61,13 @@ public class TestJourneyPlannerModelV2
         var routesV1 = routesV1Loader.ImportRoutes();
 
         var routesV2Loader = new RouteV2Loader(resourcesConfig);
-        _importedRouteV2s = routesV2Loader.ImportRoutes();
+        _importedRouteV2S = routesV2Loader.ImportRoutes();
 
         var routeTimesLoader = new RouteTimesLoader(resourcesConfig);
         var routeTimes = routeTimesLoader.ImportRouteTimes();
 
         var mockRouteRepositoryV1 = new MockRouteRepository(routesV1, routeTimes);
-        var mockRouteRepositoryV2 = new MockRouteRepositoryV2(_importedRouteV2s, mockStopsV2Repository);
+        var mockRouteRepositoryV2 = new MockRouteRepositoryV2(_importedRouteV2S, mockStopsV2Repository);
 
         var journeyVisualiserV2 = new JourneyVisualiserV2();
 
@@ -130,7 +130,7 @@ public class TestJourneyPlannerModelV2
         
         Assert.IsNotNull(response?.VisualisedJourney);
         var polylinesFromOrigin = response?.VisualisedJourney.PolylineFromOrigin;
-        var purpleRoute = _importedRouteV2s.Single(route => route.Name == "Purple");
+        var purpleRoute = _importedRouteV2S.Single(route => route.Name == "Purple");
         var allPolyLineCoordinatesExistOnRoute = polylinesFromOrigin?.All(coord => 
             purpleRoute.PolylineCoordinates.Exists(pr =>
                 Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
@@ -220,7 +220,7 @@ public class TestJourneyPlannerModelV2
         
         Assert.IsNotNull(response?.VisualisedJourney);
         var polylinesFromOrigin = response?.VisualisedJourney.PolylineFromOrigin;
-        var purpleRoute = _importedRouteV2s.Single(route => route.Name == "Purple");
+        var purpleRoute = _importedRouteV2S.Single(route => route.Name == "Purple");
         var allPolyLineCoordinatesExistOnPurpleRoute = polylinesFromOrigin?.All(coord => 
             purpleRoute.PolylineCoordinates.Exists(pr =>
                 Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
@@ -230,7 +230,7 @@ public class TestJourneyPlannerModelV2
 
         var polylinesFromInterchange = response?.VisualisedJourney.PolylineFromInterchange;
         Assert.IsNotNull(polylinesFromInterchange);
-        var blueRoute = _importedRouteV2s.Single(route => route.Name == "Blue");
+        var blueRoute = _importedRouteV2S.Single(route => route.Name == "Blue");
         var allPolyLineCoordinatesFromInterchangeExistOnBlueRoute = polylinesFromInterchange?.All(coord => 
             blueRoute.PolylineCoordinates.Exists(pr =>
                 Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
