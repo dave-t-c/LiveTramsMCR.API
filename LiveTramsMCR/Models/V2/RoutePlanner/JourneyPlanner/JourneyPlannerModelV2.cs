@@ -55,7 +55,8 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
         {
             PlannedJourney = plannedJourney,
             VisualisedJourney = visualisedJourney,
-            NextService = nextService
+            NextService = nextService,
+            ServiceUpdates = services.Messages
         };
     }
 

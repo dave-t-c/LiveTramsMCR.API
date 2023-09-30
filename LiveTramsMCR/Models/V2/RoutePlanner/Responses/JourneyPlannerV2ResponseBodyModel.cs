@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.ServiceInformation.NextService;
 using LiveTramsMCR.Models.V2.RoutePlanner.Visualisation;
@@ -25,4 +26,9 @@ public class JourneyPlannerV2ResponseBodyModel
     /// interchange if a change is required.
     /// </summary>
     public NextServiceIdentifierV2Response NextService { get; init; }
+    
+    /// <summary>
+    /// Service updates, e.g. for engineering works
+    /// </summary>
+    public HashSet<string> ServiceUpdates { get; init; }
 }

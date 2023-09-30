@@ -141,12 +141,16 @@ public class TestJourneyPlannerModelV2
         Assert.IsNotNull(response?.NextService);
         var nextService = response?.NextService;
         Assert.AreEqual(5, nextService?.Wait);
-        var expectedInterchangeStopKeys = new StopKeysV2
+        var expectedNextServiceStopKeys = new StopKeysV2
         {
             StopName = "Piccadilly",
             Tlaref = "PIC"
         };
-        Assert.AreEqual(expectedInterchangeStopKeys, nextService?.Destination);
+        Assert.AreEqual(expectedNextServiceStopKeys, nextService?.Destination);
+        
+        var messages = response?.ServiceUpdates;
+        Assert.IsNotNull(messages);
+        Assert.AreEqual(1, messages?.Count);
     }
 
     [Test]
@@ -243,6 +247,10 @@ public class TestJourneyPlannerModelV2
             Tlaref = "PIC"
         };
         Assert.AreEqual(expectedInterchangeStopKeys, nextService?.Destination);
+
+        var messages = response?.ServiceUpdates;
+        Assert.IsNotNull(messages);
+        Assert.AreEqual(1, messages?.Count);
     }
 
     [Test]
