@@ -7,7 +7,7 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner.Responses;
 /// <summary>
 ///     Response body model for the route planner 'plan journey' endpoint
 /// </summary>
-public class RoutePlannerV2ResponseBodyModel
+public class JourneyPlannerV2ResponseBodyModel
 {
     /// <summary>
     ///     Journey information such as routes / stops from origin,

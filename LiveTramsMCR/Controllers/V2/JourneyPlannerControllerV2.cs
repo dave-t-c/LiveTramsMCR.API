@@ -1,50 +1,47 @@
 using System;
-using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace LiveTramsMCR.Controllers.V1;
+namespace LiveTramsMCR.Controllers.V2;
 
 /// <summary>
-///     Controller for handling requests related to journey planning.
+/// Controller for journey planner v2 request.
 /// </summary>
-[Route("/v1/journey-planner")]
+[Route("/v2/journey-planner")]
 [ApiController]
-public class JourneyPlannerController : Controller
+public class JourneyPlannerControllerV2 : Controller
 {
-
-    private readonly IJourneyPlannerModel _journeyPlannerModel;
-
+    private readonly IJourneyPlannerModelV2 _journeyPlannerModelV2;
+    
     /// <summary>
-    ///     Creates a new JourneyPlannerController and uses the given IJourneyPlannerModel
-    ///     to process requests.
+    /// Create a new journey planner v2 controller.
     /// </summary>
-    /// <param name="journeyPlannerModel"></param>
-    public JourneyPlannerController(IJourneyPlannerModel journeyPlannerModel)
+    public JourneyPlannerControllerV2(IJourneyPlannerModelV2 journeyPlannerModelV2)
     {
-        _journeyPlannerModel = journeyPlannerModel;
+        _journeyPlannerModelV2 = journeyPlannerModelV2;
     }
 
     /// <summary>
-    ///     Plans a journey between an origin and destination stop.
+    /// Plans a journey between an origin and destination stop.
     /// </summary>
     /// <param name="origin">Origin stop name or tlaref</param>
     /// <param name="destination">Destination stop name or tlaref</param>
-    /// <returns>A planned journey between the origin an destination</returns>
-    [Route("/v1/journey-planner/{origin}/{destination}")]
+    [HttpGet]
     [Tags("JourneyPlanner")]
+    [Route("/v2/journey-planner/{origin}/{destination}")]
     [Produces("application/json")]
-    [SwaggerResponse(type: typeof (PlannedJourney), statusCode: StatusCodes.Status200OK)]
+    [SwaggerResponse(type: typeof (JourneyPlannerV2ResponseBodyModel), statusCode: StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid Stop Name or TLAREF provided")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "An internal server error occured")]
-    [HttpGet]
     public IActionResult PlanJourney(string origin, string destination)
     {
-        PlannedJourney plannedJourney;
+        JourneyPlannerV2ResponseBodyModel plannedJourney;
         try
         {
-            plannedJourney = _journeyPlannerModel.PlanJourney(origin, destination);
+            plannedJourney = _journeyPlannerModelV2.PlanJourney(origin, destination);
         }
         catch (Exception ex) when (ex is InvalidOperationException or ArgumentException)
         {

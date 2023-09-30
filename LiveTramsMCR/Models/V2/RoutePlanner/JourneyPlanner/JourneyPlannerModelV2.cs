@@ -37,7 +37,7 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
     }
 
     /// <inheritdoc />
-    public RoutePlannerV2ResponseBodyModel PlanJourney(string origin, string destination)
+    public JourneyPlannerV2ResponseBodyModel PlanJourney(string origin, string destination)
     {
         if (origin is null)
             throw new ArgumentNullException(nameof(origin));
@@ -51,7 +51,7 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
         var services = _serviceProcessor.RequestServices(plannedJourney);
         var nextService = IdentifyNextService(services, plannedJourney);
         
-        return new RoutePlannerV2ResponseBodyModel
+        return new JourneyPlannerV2ResponseBodyModel
         {
             PlannedJourney = plannedJourney,
             VisualisedJourney = visualisedJourney,

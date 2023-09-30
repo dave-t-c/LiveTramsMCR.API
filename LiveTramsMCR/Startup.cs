@@ -8,7 +8,10 @@ using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
+using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
+using LiveTramsMCR.Models.V2.RoutePlanner.ServiceInformation.NextService;
+using LiveTramsMCR.Models.V2.RoutePlanner.Visualisation;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Models.V2.Stops.Data;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Events;
 using static System.AppDomain;
 
 namespace LiveTramsMCR;
@@ -91,6 +95,21 @@ public class Startup
 
         IRoutesDataModelV2 routesDataModelV2 = new RoutesDataModelV2(routeRepositoryV2);
         services.AddSingleton(routesDataModelV2);
+
+        var stopLookupV2 = new StopLookupV2(stopsRepositoryV2);
+        IJourneyPlannerV2 journeyPlannerV2 = new JourneyPlannerV2(routeRepository, routeRepositoryV2);
+        var journeyVisualiserV2 = new JourneyVisualiserV2();
+        var nextServiceIdentifierV2 = new NextServiceIdentifierV2();
+        IRequester requester = new ServiceRequester(apiOptions);
+        var serviceProcessor = new ServiceProcessor(requester, stopsRepository);
+        IJourneyPlannerModelV2 journeyPlannerModelV2 = new JourneyPlannerModelV2(
+            stopLookupV2,
+            journeyPlannerV2,
+            journeyVisualiserV2,
+            nextServiceIdentifierV2,
+            serviceProcessor);
+
+        services.AddSingleton(journeyPlannerModelV2);
 
         services.AddControllers();
 

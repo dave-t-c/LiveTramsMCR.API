@@ -13,5 +13,5 @@ public interface IJourneyPlannerModelV2
     /// <param name="origin">Origin stop name or TLAREF</param>
     /// <param name="destination">Destination stop name or TLAREF</param>
     /// <returns>Planned Journey including interchange information</returns>
-    public RoutePlannerV2ResponseBodyModel PlanJourney(string origin, string destination);
+    public JourneyPlannerV2ResponseBodyModel PlanJourney(string origin, string destination);
 }
