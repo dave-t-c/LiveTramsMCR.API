@@ -48,7 +48,7 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
         var plannedJourney = _journeyPlannerV2.PlanJourney(originStop, destinationStop);
         var visualisedJourney = _journeyVisualiserV2.VisualiseJourney(plannedJourney);
         
-        var services = _serviceProcessor.RequestServicesForPlannedJourneyV2(plannedJourney);
+        var services = _serviceProcessor.RequestServices(plannedJourney);
         var nextService = IdentifyNextService(services, plannedJourney);
         
         return new RoutePlannerV2ResponseBodyModel
@@ -67,7 +67,7 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
 
         var allServices = services.Destinations.SelectMany(x => x.Value);
         var filteredServices = allServices.Where(
-            service => service.Tlaref == plannedJourney.OriginStop.Tlaref).ToList();
+            service => service.SourceTlaref == plannedJourney.OriginStop.Tlaref).ToList();
         
         var request = new NextServiceIdentifierV2Request()
         {

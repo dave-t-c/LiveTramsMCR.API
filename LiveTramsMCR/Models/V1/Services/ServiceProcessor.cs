@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
@@ -47,10 +48,23 @@ public class ServiceProcessor
     /// The interchange stop will also be requested if the journey involves
     /// and interchange.
     /// </summary>
-    public FormattedServices RequestServicesForPlannedJourneyV2(PlannedJourneyV2 plannedJourneyV2)
+    public FormattedServices RequestServices(PlannedJourneyV2 plannedJourneyV2)
     {
         if (plannedJourneyV2 == null) throw new ArgumentNullException(nameof(plannedJourneyV2));
-        throw new NotImplementedException();
+        var stopTlarefs = new List<string>
+        {
+            plannedJourneyV2.OriginStop.Tlaref,
+            plannedJourneyV2.DestinationStop.Tlaref
+        };
+
+        if (plannedJourneyV2.RequiresInterchange)
+        {
+            stopTlarefs.Add(plannedJourneyV2.InterchangeStop.Tlaref);
+        }
+
+        var servicesResponse = _requester.RequestServices(stopTlarefs);
+        var unformattedServices = ServiceValidator.ValidateServiceResponse(servicesResponse);
+        return _serviceFormatter.FormatServices(unformattedServices);
     }
 
     /// <summary>

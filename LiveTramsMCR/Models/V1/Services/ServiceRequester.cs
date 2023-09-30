@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using LiveTramsMCR.Models.V1.Resources;
@@ -25,6 +27,12 @@ public class ServiceRequester : IRequester
     public HttpResponseMessage RequestServices(string tlaref)
     {
         return RequestStopTlaref(tlaref).Result;
+    }
+    
+    /// <inheritdoc />
+    public HttpResponseMessage RequestServices(IEnumerable<string> tlarefs)
+    {
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />

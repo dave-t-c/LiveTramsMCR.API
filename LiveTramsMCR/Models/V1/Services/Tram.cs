@@ -15,15 +15,15 @@ public class Tram
     /// <param name="carriages">Num of carriages, either 'Single' or 'Double'</param>
     /// <param name="status">Status of the tram, e.g 'Due', 'Arrived', 'Departing'</param>
     /// <param name="wait">Wait until tram arrives, usually an int of mins but provided as a string</param>
-    /// <param name="tlaref">Tlaref this tram information has been reported at</param>
+    /// <param name="sourceTlaref">Tlaref this tram information has been reported at</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public Tram(string destination, string carriages, string status, string wait, string tlaref)
+    public Tram(string destination, string carriages, string status, string wait, string sourceTlaref)
     {
         Destination = destination ?? throw new ArgumentNullException(nameof(destination));
         Carriages = carriages ?? throw new ArgumentNullException(nameof(carriages));
         Status = status ?? throw new ArgumentNullException(nameof(status));
         Wait = wait ?? throw new ArgumentNullException(nameof(wait));
-        Tlaref = tlaref ?? throw new ArgumentNullException(nameof(tlaref));
+        SourceTlaref = sourceTlaref ?? throw new ArgumentNullException(nameof(sourceTlaref));
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class Tram
     /// <summary>
     /// Tlaref of the stop the information for this tram has been reported at.
     /// </summary>
-    public string Tlaref { get; }
+    public string SourceTlaref { get; }
 
     /// <summary>
     ///     Determines if this Tram object and an other object are equal.

@@ -165,7 +165,7 @@ public class TestTram
     public void TestTramNullTlaref()
     {
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'tlaref')"),
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'sourceTlaref')"),
             delegate
             {
                 var unused = new Tram(_destination, _carriages, _status, _wait, null);

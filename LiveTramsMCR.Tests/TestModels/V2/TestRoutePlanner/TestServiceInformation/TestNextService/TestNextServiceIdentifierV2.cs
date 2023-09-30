@@ -96,7 +96,7 @@ public class TestNextServiceIdentifierV2
         foreach (var destination in _formattedAltrinchamServices!.Destinations)
         {
             var trams = destination.Value;
-            var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
+            var filteredTrams = trams.Where(tram => tram.SourceTlaref == originStop.Tlaref);
             services.AddRange(filteredTrams);
         }
         
@@ -135,7 +135,7 @@ public class TestNextServiceIdentifierV2
         foreach (var destination in _formattedCornbrookServices!.Destinations)
         {
             var trams = destination.Value;
-            var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
+            var filteredTrams = trams.Where(tram => tram.SourceTlaref == originStop.Tlaref);
             services.AddRange(filteredTrams);
         }
         
@@ -173,7 +173,7 @@ public class TestNextServiceIdentifierV2
         foreach (var destination in _formattedServicesNoServiceData!.Destinations)
         {
             var trams = destination.Value;
-            var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
+            var filteredTrams = trams.Where(tram => tram.SourceTlaref == originStop.Tlaref);
             services.AddRange(filteredTrams);
         }
         
@@ -206,7 +206,7 @@ public class TestNextServiceIdentifierV2
         foreach (var destination in _formattedServicesOnlyToOldTrafford!.Destinations)
         {
             var trams = destination.Value;
-            var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
+            var filteredTrams = trams.Where(tram => tram.SourceTlaref == originStop.Tlaref);
             services.AddRange(filteredTrams);
         }
         
@@ -239,7 +239,7 @@ public class TestNextServiceIdentifierV2
         foreach (var destination in _formattedExchangeQuayServices!.Destinations)
         {
             var trams = destination.Value;
-            var filteredTrams = trams.Where(tram => tram.Tlaref == originStop.Tlaref);
+            var filteredTrams = trams.Where(tram => tram.SourceTlaref == originStop.Tlaref);
             services.AddRange(filteredTrams);
         }
         
