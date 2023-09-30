@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using LiveTramsMCR.Models.V1.Resources;
@@ -32,7 +34,20 @@ public class ServiceRequester : IRequester
     /// <inheritdoc />
     public HttpResponseMessage RequestServices(IEnumerable<string> tlarefs)
     {
-        throw new NotImplementedException();
+        var client = new HttpClient();
+
+        // Request headers
+        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiOptions.OcpApimSubscriptionKey);
+
+        var filter = "?$filter=";
+        var filterSections = tlarefs.Select(tlaref => $"TLAREF eq '{tlaref}'").ToList();
+        var combinedFilterSections = string.Join(" or ", filterSections);
+        filter += combinedFilterSections;
+
+        var generatedUrl = _apiOptions.BaseRequestUrls.BaseLiveServicesUrl + filter;
+
+        var response = client.GetAsync(generatedUrl).Result;
+        return response;
     }
 
     /// <inheritdoc />
