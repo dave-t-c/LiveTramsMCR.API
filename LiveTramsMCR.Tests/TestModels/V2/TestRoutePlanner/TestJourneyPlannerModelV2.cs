@@ -20,16 +20,19 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 public class TestJourneyPlannerModelV2
 {
     private const string JourneyPlannerV2WithInterchangeResponsePath = "../../../Resources/TestJourneyPlannerV2/AltrinchamPiccadillyAshtonServices.json";
+    private const string JourneyPlannerV2ResponsePath = "../../../Resources/TestJourneyPlannerV2/AltrinchamSaleServices.json";
     private const string StopsV1ResourcePath = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private List<StopV2> _importedStopV2S = new();
     private List<RouteV2> _importedRouteV2s = new();
+    private IJourneyPlannerModelV2? _journeyPlannerModelV2Interchange;
     private IJourneyPlannerModelV2? _journeyPlannerModelV2;
     private IJourneyPlannerV2? _journeyPlannerV2;
     private INextServiceIdentifierV2? _nextServiceIdentifierV2;
     private ServiceProcessor? _serviceProcessor;
+    private ServiceProcessor? _serviceProcessorWithInterchange;
     private StopLookupV2? _stopLookupV2;
 
     [SetUp]
@@ -70,15 +73,27 @@ public class TestJourneyPlannerModelV2
 
         _journeyPlannerV2 = new JourneyPlannerV2(mockRouteRepositoryV1, mockRouteRepositoryV2);
 
-        var mockHttpResponse =
+        var mockInterchangeHttpResponse =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(
                 HttpStatusCode.OK, 
                 JourneyPlannerV2WithInterchangeResponsePath);
+        var mockHttpResponse = ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(
+            HttpStatusCode.OK,
+            JourneyPlannerV2ResponsePath);
+        
+        var serviceRequesterWithInterchange = new MockServiceRequester(mockInterchangeHttpResponse!);
         var serviceRequester = new MockServiceRequester(mockHttpResponse!);
         
+        _serviceProcessorWithInterchange = new ServiceProcessor(serviceRequesterWithInterchange, mockStopsV1Repository);
         _serviceProcessor = new ServiceProcessor(serviceRequester, mockStopsV1Repository);
-
         _nextServiceIdentifierV2 = new NextServiceIdentifierV2();
+
+        _journeyPlannerModelV2Interchange = new JourneyPlannerModelV2(
+            _stopLookupV2, 
+            _journeyPlannerV2, 
+            journeyVisualiserV2, 
+            _nextServiceIdentifierV2, 
+            _serviceProcessorWithInterchange);
 
         _journeyPlannerModelV2 = new JourneyPlannerModelV2(
             _stopLookupV2, 
@@ -122,12 +137,22 @@ public class TestJourneyPlannerModelV2
                 Math.Abs(coord[0] - pr![0]) < RouteCoordinateTolerance)
         );
         Assert.IsTrue(allPolyLineCoordinatesExistOnRoute);
+        
+        Assert.IsNotNull(response?.NextService);
+        var nextService = response?.NextService;
+        Assert.AreEqual(5, nextService?.Wait);
+        var expectedInterchangeStopKeys = new StopKeysV2
+        {
+            StopName = "Piccadilly",
+            Tlaref = "PIC"
+        };
+        Assert.AreEqual(expectedInterchangeStopKeys, nextService?.Destination);
     }
 
     [Test]
     public void TestIdentifyRouteWithInterchange()
     {
-        var response = _journeyPlannerModelV2?.PlanJourney(
+        var response = _journeyPlannerModelV2Interchange?.PlanJourney(
             "Altrincham",
             "Ashton-Under-Lyne");
         Assert.IsNotNull(response);
@@ -227,7 +252,7 @@ public class TestJourneyPlannerModelV2
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
             delegate
             {
-                var unused = _journeyPlannerModelV2?.PlanJourney(null, "Altrincham");
+                var unused = _journeyPlannerModelV2Interchange?.PlanJourney(null, "Altrincham");
             });
     }
 
@@ -238,7 +263,7 @@ public class TestJourneyPlannerModelV2
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
             delegate
             {
-                var unused = _journeyPlannerModelV2?.PlanJourney("Altrincham", null);
+                var unused = _journeyPlannerModelV2Interchange?.PlanJourney("Altrincham", null);
             });
     }
 
@@ -248,7 +273,7 @@ public class TestJourneyPlannerModelV2
         Assert.Throws(Is.TypeOf<ArgumentException>(),
             delegate
             {
-                var unused = _journeyPlannerModelV2?.PlanJourney("---", "Altrincham");
+                var unused = _journeyPlannerModelV2Interchange?.PlanJourney("---", "Altrincham");
             });
     }
 
@@ -258,7 +283,7 @@ public class TestJourneyPlannerModelV2
         Assert.Throws(Is.TypeOf<ArgumentException>(),
             delegate
             {
-                var unused = _journeyPlannerModelV2?.PlanJourney("Altrincham", "---");
+                var unused = _journeyPlannerModelV2Interchange?.PlanJourney("Altrincham", "---");
             });
     }
 }
