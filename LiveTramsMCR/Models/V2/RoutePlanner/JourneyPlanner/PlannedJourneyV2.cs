@@ -69,13 +69,7 @@ public class PlannedJourneyV2
     ///     and InterchangeStop will be null.
     /// </summary>
     public bool RequiresInterchange { get; set; }
-
-    /// <summary>
-    ///     Useful information about the route
-    ///     not covered by the other fields.
-    /// </summary>
-    public string RouteDetails { get; set; }
-
+    
     /// <summary>
     ///     Journey time minutes from the origin stop to
     ///     interchange stop or end of journey if no interchange is required.
