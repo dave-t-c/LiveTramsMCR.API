@@ -54,7 +54,8 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
         return new RoutePlannerV2ResponseBodyModel
         {
             PlannedJourney = plannedJourney,
-            VisualisedJourney = visualisedJourney
+            VisualisedJourney = visualisedJourney,
+            NextService = nextService
         };
     }
 

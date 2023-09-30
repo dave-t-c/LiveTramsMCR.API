@@ -19,7 +19,7 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 
 public class TestJourneyPlannerModelV2
 {
-    private const string LiveAltrinchamServicesResponsePath = "../../../Resources/ExampleAltrinchamResponse.json";
+    private const string JourneyPlannerV2WithInterchangeResponsePath = "../../../Resources/TestJourneyPlannerV2/AltrinchamPiccadillyAshtonServices.json";
     private const string StopsV1ResourcePath = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
@@ -73,7 +73,7 @@ public class TestJourneyPlannerModelV2
         var mockHttpResponse =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(
                 HttpStatusCode.OK, 
-                LiveAltrinchamServicesResponsePath);
+                JourneyPlannerV2WithInterchangeResponsePath);
         var serviceRequester = new MockServiceRequester(mockHttpResponse!);
         
         _serviceProcessor = new ServiceProcessor(serviceRequester, mockStopsV1Repository);
@@ -208,6 +208,16 @@ public class TestJourneyPlannerModelV2
                 Math.Abs(coord[0] - pr![0]) < RouteCoordinateTolerance)
         );
         Assert.IsTrue(allPolyLineCoordinatesFromInterchangeExistOnBlueRoute);
+
+        var nextService = response?.NextService;
+        Assert.IsNotNull(nextService);
+        Assert.AreEqual(1, nextService?.Wait);
+        var expectedInterchangeStopKeys = new StopKeysV2
+        {
+            StopName = "Piccadilly",
+            Tlaref = "PIC"
+        };
+        Assert.AreEqual(expectedInterchangeStopKeys, nextService?.Destination);
     }
 
     [Test]

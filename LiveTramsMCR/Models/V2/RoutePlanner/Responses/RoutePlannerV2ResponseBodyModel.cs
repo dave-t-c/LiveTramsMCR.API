@@ -1,4 +1,5 @@
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
+using LiveTramsMCR.Models.V2.RoutePlanner.ServiceInformation.NextService;
 using LiveTramsMCR.Models.V2.RoutePlanner.Visualisation;
 
 namespace LiveTramsMCR.Models.V2.RoutePlanner.Responses;
@@ -18,4 +19,10 @@ public class RoutePlannerV2ResponseBodyModel
     /// Visualisation information for route maps.
     /// </summary>
     public VisualisedJourneyV2 VisualisedJourney { get; init; }
+    
+    /// <summary>
+    /// Next service from origin to either the destination or
+    /// interchange if a change is required.
+    /// </summary>
+    public NextServiceIdentifierV2Response NextService { get; init; }
 }
