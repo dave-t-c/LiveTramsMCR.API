@@ -153,4 +153,24 @@ public class TestZoneIdentifierV2
         };
         CollectionAssert.AreEqual(expectedZones, result);
     }
+
+    /// <summary>
+    /// Test to start in the left of a combined zone, e.g.
+    /// starting in zone 3 and ending in zone 3/4
+    /// </summary>
+    [Test]
+    public void TestStartInLeftOfCombinedZone()
+    {
+        var saleStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "SAL");
+        var brooklandsStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "BRK");
+        var plannedJourney = _journeyPlanner?.PlanJourney(saleStop, brooklandsStop);
+        var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result?.Count);
+        var expectedZones = new List<int>
+        {
+            3
+        };
+        CollectionAssert.AreEqual(expectedZones, result);
+    }
 }
