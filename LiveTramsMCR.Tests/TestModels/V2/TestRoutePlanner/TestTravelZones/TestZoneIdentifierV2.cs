@@ -193,4 +193,20 @@ public class TestZoneIdentifierV2
         };
         CollectionAssert.AreEqual(expectedZones, result);
     }
+
+    [Test]
+    public void TestJourneyAcrossAllZones()
+    {
+        var altrinchamStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "ALT");
+        var brooklandsStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "RTC");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, brooklandsStop);
+        var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(4, result?.Count);
+        var expectedZones = new List<int>
+        {
+            1, 2, 3, 4
+        };
+        CollectionAssert.AreEqual(expectedZones, result);
+    }
 }
