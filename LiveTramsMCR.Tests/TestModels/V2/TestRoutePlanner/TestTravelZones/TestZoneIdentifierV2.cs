@@ -133,4 +133,24 @@ public class TestZoneIdentifierV2
         };
         CollectionAssert.AreEqual(expectedZones, result);
     }
+    
+    /// <summary>
+    /// Test to identify zones when starting in a zone in the format
+    /// a/b.
+    /// </summary>
+    [Test]
+    public void TestIdentifyStartInCombinedZone()
+    {
+        var piccadillyStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "PIC");
+        var stretfordStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "STR");
+        var plannedJourney = _journeyPlanner?.PlanJourney(stretfordStop, piccadillyStop);
+        var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result?.Count);
+        var expectedZones = new List<int>
+        {
+            1, 2
+        };
+        CollectionAssert.AreEqual(expectedZones, result);
+    }
 }
