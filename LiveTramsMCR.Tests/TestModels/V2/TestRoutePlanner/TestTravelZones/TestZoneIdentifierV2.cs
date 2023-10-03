@@ -225,4 +225,20 @@ public class TestZoneIdentifierV2
         };
         CollectionAssert.AreEqual(expectedZones, result);
     }
+
+    [Test]
+    public void TestTravelFromOutToCentre()
+    {
+        var altrinchamStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "ALT");
+        var piccadillyStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "PIC");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, piccadillyStop);
+        var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(4, result?.Count);
+        var expectedZones = new List<int>
+        {
+            1, 2, 3, 4
+        };
+        CollectionAssert.AreEqual(expectedZones, result);
+    }
 }
