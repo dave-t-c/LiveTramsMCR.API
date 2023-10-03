@@ -113,4 +113,24 @@ public class TestZoneIdentifierV2
         };
         CollectionAssert.AreEqual(expectedZones, result);
     }
+
+    /// <summary>
+    /// Test to identify zones when ending in a zone in the format
+    /// a/b.
+    /// </summary>
+    [Test]
+    public void TestIdentifyEndInCombinedZone()
+    {
+        var altrinchamStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "ALT");
+        var stretfordStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "STR");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, stretfordStop);
+        var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result?.Count);
+        var expectedZones = new List<int>
+        {
+            3, 4
+        };
+        CollectionAssert.AreEqual(expectedZones, result);
+    }
 }
