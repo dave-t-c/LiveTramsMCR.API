@@ -91,11 +91,25 @@ public class TestZoneIdentifierV2
         var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result?.Count);
-        CollectionAssert.Contains(result,3);
-        CollectionAssert.Contains(result,4);
         var expectedZones = new List<int>
         {
             3, 4
+        };
+        CollectionAssert.AreEqual(expectedZones, result);
+    }
+
+    [Test]
+    public void TestIdentifyMultipleZoneWithInterchange()
+    {
+        var buryStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "BRY");
+        var freeholdStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "FRE");
+        var plannedJourney = _journeyPlanner?.PlanJourney(buryStop, freeholdStop);
+        var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(4, result?.Count);
+        var expectedZones = new List<int>
+        {
+            1, 2, 3, 4
         };
         CollectionAssert.AreEqual(expectedZones, result);
     }
