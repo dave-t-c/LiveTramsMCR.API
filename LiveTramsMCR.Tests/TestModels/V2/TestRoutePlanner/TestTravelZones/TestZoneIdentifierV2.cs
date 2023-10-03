@@ -155,11 +155,11 @@ public class TestZoneIdentifierV2
     }
 
     /// <summary>
-    /// Test to start in the left of a combined zone, e.g.
+    /// Test to start on the left of a combined zone, e.g.
     /// starting in zone 3 and ending in zone 3/4
     /// </summary>
     [Test]
-    public void TestStartInLeftOfCombinedZone()
+    public void TestStartOnLeftOfCombinedZone()
     {
         var saleStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "SAL");
         var brooklandsStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "BRK");
@@ -170,6 +170,26 @@ public class TestZoneIdentifierV2
         var expectedZones = new List<int>
         {
             3
+        };
+        CollectionAssert.AreEqual(expectedZones, result);
+    }
+    
+    /// <summary>
+    /// Test to start in the right of a combined zone, e.g.
+    /// starting in zone 4 and ending in zone 3/4
+    /// </summary>
+    [Test]
+    public void TestStartOnRightOfCombinedZone()
+    {
+        var altrinchamStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "ALT");
+        var brooklandsStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "BRK");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, brooklandsStop);
+        var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result?.Count);
+        var expectedZones = new List<int>
+        {
+            4
         };
         CollectionAssert.AreEqual(expectedZones, result);
     }
