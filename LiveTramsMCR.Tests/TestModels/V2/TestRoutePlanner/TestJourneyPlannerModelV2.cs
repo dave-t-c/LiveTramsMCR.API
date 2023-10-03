@@ -134,7 +134,7 @@ public class TestJourneyPlannerModelV2
         var allPolyLineCoordinatesExistOnRoute = polylinesFromOrigin?.All(coord => 
             purpleRoute.PolylineCoordinates.Exists(pr =>
                 Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
-                Math.Abs(coord[0] - pr![0]) < RouteCoordinateTolerance)
+                Math.Abs(coord[0] - pr[0]) < RouteCoordinateTolerance)
         );
         Assert.IsTrue(allPolyLineCoordinatesExistOnRoute);
         
@@ -224,7 +224,7 @@ public class TestJourneyPlannerModelV2
         var allPolyLineCoordinatesExistOnPurpleRoute = polylinesFromOrigin?.All(coord => 
             purpleRoute.PolylineCoordinates.Exists(pr =>
                 Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
-                Math.Abs(coord[0] - pr![0]) < RouteCoordinateTolerance)
+                Math.Abs(coord[0] - pr[0]) < RouteCoordinateTolerance)
         );
         Assert.IsTrue(allPolyLineCoordinatesExistOnPurpleRoute);
 
@@ -234,7 +234,7 @@ public class TestJourneyPlannerModelV2
         var allPolyLineCoordinatesFromInterchangeExistOnBlueRoute = polylinesFromInterchange?.All(coord => 
             blueRoute.PolylineCoordinates.Exists(pr =>
                 Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
-                Math.Abs(coord[0] - pr![0]) < RouteCoordinateTolerance)
+                Math.Abs(coord[0] - pr[0]) < RouteCoordinateTolerance)
         );
         Assert.IsTrue(allPolyLineCoordinatesFromInterchangeExistOnBlueRoute);
 
