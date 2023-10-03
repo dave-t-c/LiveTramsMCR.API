@@ -241,4 +241,30 @@ public class TestZoneIdentifierV2
         };
         CollectionAssert.AreEqual(expectedZones, result);
     }
+
+    /// <summary>
+    /// Test to have an interchange on a zone boundary.
+    /// This journey interchanges with Cornbrook on the 1/2
+    /// zone boundary, and should not include zone 1 in
+    /// the response.
+    /// </summary>
+    [Test]
+    public void TestInterchangeZoneBoundary()
+    {
+        var altrinchamStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "ALT");
+        var ecclesStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "ECC");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, ecclesStop);
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        var cornbrookStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "CNK");
+        Assert.AreEqual(cornbrookStop, plannedJourney?.InterchangeStop);
+        var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(3, result?.Count);
+        var expectedZones = new List<int>
+        {
+            2, 3, 4
+        };
+        CollectionAssert.AreEqual(expectedZones, result);
+    }
 }
