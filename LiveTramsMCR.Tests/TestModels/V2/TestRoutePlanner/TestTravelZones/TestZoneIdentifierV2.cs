@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
@@ -266,5 +267,16 @@ public class TestZoneIdentifierV2
             2, 3, 4
         };
         CollectionAssert.AreEqual(expectedZones, result);
+    }
+
+    [Test]
+    public void TestNullPlannedJourney()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'journeyV2')"),
+            delegate
+            {
+                _zoneIdentifierV2?.IdentifyZonesForJourney(null);
+            });
     }
 }

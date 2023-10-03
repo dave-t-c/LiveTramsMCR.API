@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
@@ -11,6 +12,8 @@ public class ZoneIdentifierV2 : IZoneIdentifierV2
     /// <inheritdoc />
     public List<int> IdentifyZonesForJourney(PlannedJourneyV2 journeyV2)
     {
+        if (journeyV2 == null) throw new ArgumentNullException(nameof(journeyV2));
+        
         var identifiedZones = new List<string>
         {
             journeyV2.OriginStop.StopZone
