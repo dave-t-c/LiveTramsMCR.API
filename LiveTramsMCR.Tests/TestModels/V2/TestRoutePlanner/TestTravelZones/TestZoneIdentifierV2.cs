@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
@@ -16,7 +15,7 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner.TestTravelZones;
 /// <summary>
 /// Test class for the travel zone identifier.
 /// </summary>
-public class TestZoneIdentifier
+public class TestZoneIdentifierV2
 {
     private const string StopsV1ResourcePath = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
@@ -81,5 +80,23 @@ public class TestZoneIdentifier
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result?.Count);
         CollectionAssert.Contains(result,4);
+    }
+
+    [Test]
+    public void TestIdentifyMultipleZoneJourneysNoInterchange()
+    {
+        var altrinchamStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "ALT");
+        var saleStop = _importedStopsV2S?.Single(stop => stop.Tlaref == "SAL");
+        var plannedJourney = _journeyPlanner?.PlanJourney(altrinchamStop, saleStop);
+        var result = _zoneIdentifierV2?.IdentifyZonesForJourney(plannedJourney);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result?.Count);
+        CollectionAssert.Contains(result,3);
+        CollectionAssert.Contains(result,4);
+        var expectedZones = new List<int>
+        {
+            3, 4
+        };
+        CollectionAssert.AreEqual(expectedZones, result);
     }
 }
