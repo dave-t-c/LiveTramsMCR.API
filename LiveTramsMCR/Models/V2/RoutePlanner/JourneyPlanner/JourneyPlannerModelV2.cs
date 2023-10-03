@@ -3,6 +3,7 @@ using System.Linq;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V2.RoutePlanner.Responses;
 using LiveTramsMCR.Models.V2.RoutePlanner.ServiceInformation.NextService;
+using LiveTramsMCR.Models.V2.RoutePlanner.TravelZones;
 using LiveTramsMCR.Models.V2.RoutePlanner.Visualisation;
 using LiveTramsMCR.Models.V2.Stops;
 
@@ -18,6 +19,7 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
     private readonly StopLookupV2 _stopLookupV2;
     private readonly INextServiceIdentifierV2 _nextServiceIdentifierV2;
     private readonly ServiceProcessor _serviceProcessor;
+    private readonly ZoneIdentifierV2 _zoneIdentifierV2;
 
     /// <summary>
     ///     Creates a new journey planner model
@@ -34,6 +36,7 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
         _journeyVisualiserV2 = journeyVisualiserV2;
         _nextServiceIdentifierV2 = nextServiceIdentifierV2;
         _serviceProcessor = serviceProcessor;
+        _zoneIdentifierV2 = new ZoneIdentifierV2();
     }
 
     /// <inheritdoc />
@@ -50,13 +53,15 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
         
         var services = _serviceProcessor.RequestServices(plannedJourney);
         var nextService = IdentifyNextService(services, plannedJourney);
+        var travelZones = _zoneIdentifierV2.IdentifyZonesForJourney(plannedJourney);
         
         return new JourneyPlannerV2ResponseBodyModel
         {
             PlannedJourney = plannedJourney,
             VisualisedJourney = visualisedJourney,
             NextService = nextService,
-            ServiceUpdates = services.Messages
+            ServiceUpdates = services.Messages,
+            TravelZones = travelZones
         };
     }
 

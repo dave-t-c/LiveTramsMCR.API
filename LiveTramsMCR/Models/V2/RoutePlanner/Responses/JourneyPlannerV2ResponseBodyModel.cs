@@ -31,4 +31,9 @@ public class JourneyPlannerV2ResponseBodyModel
     /// Service updates, e.g. for engineering works
     /// </summary>
     public HashSet<string> ServiceUpdates { get; init; }
+    
+    /// <summary>
+    /// Fare zones travelled through
+    /// </summary>
+    public List<int> TravelZones { get; init; }
 }

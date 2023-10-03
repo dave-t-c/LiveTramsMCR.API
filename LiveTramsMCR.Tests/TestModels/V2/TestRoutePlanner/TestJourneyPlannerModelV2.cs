@@ -151,6 +151,15 @@ public class TestJourneyPlannerModelV2
         var messages = response?.ServiceUpdates;
         Assert.IsNotNull(messages);
         Assert.AreEqual(1, messages?.Count);
+        
+        var travelZones = response?.TravelZones;
+        Assert.IsNotNull(travelZones);
+        Assert.AreEqual(2, travelZones?.Count);
+        var expectedTravelZones = new List<int>
+        {
+            3, 4
+        };
+        CollectionAssert.AreEqual(expectedTravelZones, travelZones);
     }
 
     [Test]
@@ -251,6 +260,15 @@ public class TestJourneyPlannerModelV2
         var messages = response?.ServiceUpdates;
         Assert.IsNotNull(messages);
         Assert.AreEqual(1, messages?.Count);
+
+        var travelZones = response?.TravelZones;
+        Assert.IsNotNull(travelZones);
+        Assert.AreEqual(4, travelZones?.Count);
+        var expectedTravelZones = new List<int>
+        {
+            1, 2, 3, 4
+        };
+        CollectionAssert.AreEqual(expectedTravelZones, travelZones);
     }
 
     [Test]
