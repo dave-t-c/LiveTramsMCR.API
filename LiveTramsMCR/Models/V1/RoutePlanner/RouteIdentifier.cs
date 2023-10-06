@@ -107,7 +107,7 @@ public class RouteIdentifier
             .Select(entry => entry.Key).ToList();
 
         //If there is only a single entry, we do not need to identify the one the closest to the origin. 
-        return minDistanceStops.Count == 1 ? minDistanceStops.First() :
+        return minDistanceStops.Count == 1 ? minDistanceStops[0] :
             //Of these stops, identify the stop closest to the route start, to handle cases such as AHN -> BRY
             // Where it can be via St Peters Square or Piccadilly Gardens, which is quicker. 
             minDistanceStops.MinBy(stop => stopDistanceFromOrigin[stop]);
@@ -171,7 +171,7 @@ public class RouteIdentifier
 
         var originIndex = route.Stops.IndexOf(origin);
         var destinationIndex = route.Stops.IndexOf(destination);
-        return destinationIndex > originIndex ? route.Stops.Last() : route.Stops.First();
+        return destinationIndex > originIndex ? route.Stops[^1] : route.Stops[0];
     }
 
     /// <summary>

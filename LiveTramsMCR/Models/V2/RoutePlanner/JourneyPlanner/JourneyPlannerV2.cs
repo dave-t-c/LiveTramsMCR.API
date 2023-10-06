@@ -68,14 +68,14 @@ public class JourneyPlannerV2 : IJourneyPlannerV2
     private PlannedJourneyV2 PlanJourneyWithoutInterchange(StopKeysV2 origin, StopKeysV2 destination)
     {
         var originRoutes = _routeIdentifierV2.IdentifyRoutesBetween(origin, destination);
-        var originStops = originRoutes.First().GetIntermediateStops(origin, destination);
+        var originStops = originRoutes[0].GetIntermediateStops(origin, destination);
         var terminiFromOrigin = new HashSet<StopKeysV2>();
         foreach (var route in originRoutes)
         {
             terminiFromOrigin.Add(_routeIdentifierV2.IdentifyRouteTerminus(origin, destination, route));
         }
 
-        var minutesFromOrigin = IdentifyJourneyTime(originRoutes.First(), origin, destination);
+        var minutesFromOrigin = IdentifyJourneyTime(originRoutes[0], origin, destination);
         return new PlannedJourneyV2
         {
             RoutesFromOrigin = originRoutes,
@@ -96,7 +96,7 @@ public class JourneyPlannerV2 : IJourneyPlannerV2
     {
         var interchangeStopKeys = _routeIdentifierV2.IdentifyInterchangeStop(origin, destination);
         var originRoutes = _routeIdentifierV2.IdentifyRoutesBetween(origin, interchangeStopKeys);
-        var originStops = originRoutes.First().GetIntermediateStops(origin, interchangeStopKeys);
+        var originStops = originRoutes[0].GetIntermediateStops(origin, interchangeStopKeys);
 
         var terminiFromOrigin = new HashSet<StopKeysV2>();
         foreach (var route in originRoutes)
@@ -106,8 +106,8 @@ public class JourneyPlannerV2 : IJourneyPlannerV2
 
 
         var interchangeRoutes = _routeIdentifierV2.IdentifyRoutesBetween(interchangeStopKeys, destination);
-        var interchangeStops = interchangeRoutes.First().GetIntermediateStops(interchangeStopKeys, destination);
-        var interchangeStop = RouteIdentifierV2.ConvertStopKeysToStop(interchangeStopKeys, interchangeRoutes.First());
+        var interchangeStops = interchangeRoutes[0].GetIntermediateStops(interchangeStopKeys, destination);
+        var interchangeStop = RouteIdentifierV2.ConvertStopKeysToStop(interchangeStopKeys, interchangeRoutes[0]);
 
         var terminiFromInterchange = new HashSet<StopKeysV2>();
         foreach (var route in interchangeRoutes)
@@ -120,8 +120,8 @@ public class JourneyPlannerV2 : IJourneyPlannerV2
             );
         }
 
-        var minutesFromOrigin = IdentifyJourneyTime(originRoutes.First(), origin, interchangeStopKeys);
-        var minutesFromInterchange = IdentifyJourneyTime(interchangeRoutes.First(),
+        var minutesFromOrigin = IdentifyJourneyTime(originRoutes[0], origin, interchangeStopKeys);
+        var minutesFromInterchange = IdentifyJourneyTime(interchangeRoutes[0],
             interchangeStopKeys, destination);
 
 
