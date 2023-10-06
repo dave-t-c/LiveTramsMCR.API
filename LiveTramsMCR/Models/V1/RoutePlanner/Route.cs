@@ -70,7 +70,7 @@ public class Route
         var identifiedStops = new List<Stop>();
         for (var i = startIndex + increment; i != endIndex; i += increment)
         {
-            identifiedStops.Add(Stops.ElementAt(i));
+            identifiedStops.Add(Stops[i]);
         }
         return identifiedStops;
     }
