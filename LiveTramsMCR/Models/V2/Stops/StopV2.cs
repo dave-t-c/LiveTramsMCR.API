@@ -92,16 +92,6 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>
     }
 
     /// <summary>
-    ///     Generates a hash code for a stop obj
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public int GetHashCode(StopV2 obj)
-    {
-        return HashCode.Combine(obj.StopName, obj.Tlaref);
-    }
-
-    /// <summary>
     ///     Checks equality of stops by checking name or tlaref
     /// </summary>
     /// <param name="other">Stop to compare</param>
@@ -136,5 +126,16 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>
         var hashCode = new HashCode();
         hashCode.Add(StopName);
         return hashCode.ToHashCode();
+    }
+    
+    
+    /// <summary>
+    ///     Generates a hash code for a stop obj
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public int GetHashCode(StopV2 obj)
+    {
+        return HashCode.Combine(obj.StopName, obj.Tlaref);
     }
 }

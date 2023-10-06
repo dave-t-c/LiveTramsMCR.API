@@ -1,4 +1,3 @@
-using System.Linq;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.Stops;
 
@@ -17,19 +16,19 @@ public class JourneyVisualiserV2 : IJourneyVisualiserV2
 
     private static VisualisedJourneyV2 VisualiseJourneyWithoutInterchange(PlannedJourneyV2 plannedJourneyV2)
     {
-        var route = plannedJourneyV2.RoutesFromOrigin.First();
-        var originStopKeys = new StopKeysV2()
+        var route = plannedJourneyV2.RoutesFromOrigin[0];
+        var originStopKeys = new StopKeysV2
         {
             StopName = plannedJourneyV2.OriginStop.StopName, Tlaref = plannedJourneyV2.OriginStop.Tlaref
         };
 
-        var destinationStopKeys = new StopKeysV2()
+        var destinationStopKeys = new StopKeysV2
         {
             StopName = plannedJourneyV2.DestinationStop.StopName, Tlaref = plannedJourneyV2.DestinationStop.Tlaref
         };
 
         var polylineFromOrigin = route.GetPolylineBetweenStops(originStopKeys, destinationStopKeys);
-        return new VisualisedJourneyV2()
+        return new VisualisedJourneyV2
         {
             PolylineFromOrigin = polylineFromOrigin
         };
@@ -37,8 +36,8 @@ public class JourneyVisualiserV2 : IJourneyVisualiserV2
     
     private static VisualisedJourneyV2 VisualiseJourneyWithInterchange(PlannedJourneyV2 plannedJourneyV2)
     {
-        var routeFromOrigin = plannedJourneyV2.RoutesFromOrigin.First();
-        var routeFromInterchange = plannedJourneyV2.RoutesFromInterchange.First();
+        var routeFromOrigin = plannedJourneyV2.RoutesFromOrigin[0];
+        var routeFromInterchange = plannedJourneyV2.RoutesFromInterchange[0];
         var originStopKeys = new StopKeysV2()
         {
             StopName = plannedJourneyV2.OriginStop.StopName, Tlaref = plannedJourneyV2.OriginStop.Tlaref
