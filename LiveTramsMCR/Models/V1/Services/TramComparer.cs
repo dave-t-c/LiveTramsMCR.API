@@ -3,13 +3,13 @@ using System.Collections.Generic;
 namespace LiveTramsMCR.Models.V1.Services;
 
 /// <summary>
-/// IComparer used when determining which tram should be included
-/// in results first.
+///     IComparer used when determining which tram should be included
+///     in results first.
 /// </summary>
 public class TramComparer : IComparer<Tram>
 {
     /// <summary>
-    /// CompareTo equivalent for two trams
+    ///     CompareTo equivalent for two trams
     /// </summary>
     /// <param name="aTram">Tram to compare (can be null)</param>
     /// <param name="bTram">Tram to compare (can be null)</param>

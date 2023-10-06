@@ -8,16 +8,16 @@ namespace LiveTramsMCR.Models.V1.Stops.Data;
 public class StopsRepository : IStopsRepository
 {
     private readonly IMongoCollection<Stop> _stopsCollection;
-    
+
     /// <summary>
-    /// Create a new stops repository using a stops collection
+    ///     Create a new stops repository using a stops collection
     /// </summary>
     /// <param name="stopsCollection"></param>
     public StopsRepository(IMongoCollection<Stop> stopsCollection)
     {
         _stopsCollection = stopsCollection;
     }
-    
+
     /// <inheritdoc />
     public Stop GetStop(string searchTerm)
     {

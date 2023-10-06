@@ -5,17 +5,17 @@ namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 /// </summary>
 public class ResourceLoader
 {
+    private readonly ResourcesConfig _config;
+    private readonly RouteTimesLoader _routeTimesLoader;
+    private readonly RouteV2Loader _routeV2Loader;
     private readonly StationNamesToTlarefLoader _stationNamesToTlarefLoader;
     private readonly StopLoader _stopLoader;
     private readonly StopV2Loader _stopV2Loader;
     private readonly TlarefToIdsLoader _tlarefToIdsLoader;
-    private readonly ResourcesConfig _config;
-    private readonly RouteTimesLoader _routeTimesLoader;
-    private readonly RouteV2Loader _routeV2Loader;
 
     /// <summary>
-    /// Creates a new resources loader using the given resources configuration.
-    /// No null checks are performed on the resource config given.
+    ///     Creates a new resources loader using the given resources configuration.
+    ///     No null checks are performed on the resource config given.
     /// </summary>
     /// <param name="resourcesConfig">Resource config used for importing resources</param>
     public ResourceLoader(ResourcesConfig resourcesConfig)

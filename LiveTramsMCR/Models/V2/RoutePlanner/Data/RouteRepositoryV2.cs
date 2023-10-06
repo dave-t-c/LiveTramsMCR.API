@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Models.V2.Stops.Data;
 using MongoDB.Driver;
@@ -13,8 +14,8 @@ public class RouteRepositoryV2 : IRouteRepositoryV2
     private readonly IStopsRepositoryV2 _stopsRepositoryV2;
 
     /// <summary>
-    /// Create a new routes repository using a routes collection.
-    /// Builds the route details using the stops collection provided.
+    ///     Create a new routes repository using a routes collection.
+    ///     Builds the route details using the stops collection provided.
     /// </summary>
     public RouteRepositoryV2(IMongoCollection<RouteV2> routesCollection, IStopsRepositoryV2 stopsRepositoryV2)
     {
@@ -25,7 +26,7 @@ public class RouteRepositoryV2 : IRouteRepositoryV2
     /// <inheritdoc />
     public List<RouteV2> GetRoutes()
     {
-        var routes =  _routesCollection.FindAsync(_ => true).Result.ToList();
+        var routes = _routesCollection.FindAsync(_ => true).Result.ToList();
         var stops = _stopsRepositoryV2.GetAll();
         PopulateRoutes(routes, stops);
         return routes;

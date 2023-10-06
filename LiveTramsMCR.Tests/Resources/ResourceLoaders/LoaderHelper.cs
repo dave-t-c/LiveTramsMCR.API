@@ -5,7 +5,7 @@ using static System.AppDomain;
 namespace LiveTramsMCR.Tests.Resources.ResourceLoaders;
 
 /// <summary>
-/// Helper functions used when loading resources into the application.
+///     Helper functions used when loading resources into the application.
 /// </summary>
 public class LoaderHelper
 {

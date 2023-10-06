@@ -9,25 +9,25 @@ using NUnit.Framework;
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 
 /// <summary>
-/// Test class for the journey planner model.
+///     Test class for the journey planner model.
 /// </summary>
 public class TestJourneyPlannerModel
 {
-    
+
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
-    private ResourcesConfig? _validResourcesConfig;
     private ImportedResources? _importedResources;
-    private ResourceLoader? _resourceLoader;
-    private List<Route>? _routes;
-    private MockRouteRepository? _mockRouteRepository;
-    private MockStopsRepository? _mockStopsRepository;
     private JourneyPlanner? _journeyPlanner;
     private JourneyPlannerModel? _journeyPlannerModel;
-    
+    private MockRouteRepository? _mockRouteRepository;
+    private MockStopsRepository? _mockStopsRepository;
+    private ResourceLoader? _resourceLoader;
+    private List<Route>? _routes;
+    private ResourcesConfig? _validResourcesConfig;
+
     [SetUp]
     public void SetUp()
     {
@@ -63,10 +63,10 @@ public class TestJourneyPlannerModel
     }
 
     /// <summary>
-    /// Test to identify a route between Altrincham and Piccadilly
-    /// using their station names as params.
-    /// This should return that an interchange is not required,
-    /// with the expected Stop Objects.
+    ///     Test to identify a route between Altrincham and Piccadilly
+    ///     using their station names as params.
+    ///     This should return that an interchange is not required,
+    ///     with the expected Stop Objects.
     /// </summary>
     [Test]
     public void TestIdentifyAltrinchamPiccadillyNames()
@@ -84,9 +84,9 @@ public class TestJourneyPlannerModel
     }
 
     /// <summary>
-    /// Test to identify a route between Altrincham and Ashton.
-    /// This should require an interchange and have a single route
-    /// from origin and from the interchange.
+    ///     Test to identify a route between Altrincham and Ashton.
+    ///     This should require an interchange and have a single route
+    ///     from origin and from the interchange.
     /// </summary>
     [Test]
     public void TestIdentifyAltrinchamAshtonRoute()
@@ -107,8 +107,8 @@ public class TestJourneyPlannerModel
     }
 
     /// <summary>
-    /// Test to plan a journey with a null origin stop.
-    /// This should throw a null args exception.
+    ///     Test to plan a journey with a null origin stop.
+    ///     This should throw a null args exception.
     /// </summary>
     [Test]
     public void TestJourneyPlannerModelNullOrigin()
@@ -117,13 +117,13 @@ public class TestJourneyPlannerModel
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'origin')"),
             delegate
             {
-                var unused = _journeyPlannerModel?.PlanJourney( null, "Altrincham");
+                var unused = _journeyPlannerModel?.PlanJourney(null, "Altrincham");
             });
     }
-    
+
     /// <summary>
-    /// Test to identify a journey with a null destination.
-    /// This should throw a null args exception.
+    ///     Test to identify a journey with a null destination.
+    ///     This should throw a null args exception.
     /// </summary>
     [Test]
     public void TestJourneyPlannerModelNullDestination()
@@ -132,13 +132,13 @@ public class TestJourneyPlannerModel
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
             delegate
             {
-                var unused = _journeyPlannerModel?.PlanJourney( "Altrincham", null);
+                var unused = _journeyPlannerModel?.PlanJourney("Altrincham", null);
             });
     }
-    
+
     /// <summary>
-    /// Test to plan a journey with an invalid origin.
-    /// This should throw an invalid operation exception.
+    ///     Test to plan a journey with an invalid origin.
+    ///     This should throw an invalid operation exception.
     /// </summary>
     [Test]
     public void TestJourneyPlannerModelInvalidOrigin()
@@ -149,10 +149,10 @@ public class TestJourneyPlannerModel
                 var unused = _journeyPlannerModel?.PlanJourney("---", "Altrincham");
             });
     }
-    
+
     /// <summary>
-    /// Test to plan a journey with an invalid destination.
-    /// This should throw an invalid operation exception.
+    ///     Test to plan a journey with an invalid destination.
+    ///     This should throw an invalid operation exception.
     /// </summary>
     [Test]
     public void TestJourneyPlannerModelInvalidDestination()

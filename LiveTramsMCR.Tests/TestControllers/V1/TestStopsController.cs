@@ -13,9 +13,9 @@ namespace LiveTramsMCR.Tests.TestControllers.V1;
 /// </summary>
 public class TestStopsController
 {
-    private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
     private MockStopsRepository? _mockStopsRepository;
+    private ResourcesConfig? _resourcesConfig;
     private IStopsDataModel? _stopsDataModel;
     private StopsController? _testStopController;
 

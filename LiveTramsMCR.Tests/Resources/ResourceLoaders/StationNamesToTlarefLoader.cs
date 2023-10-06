@@ -21,10 +21,10 @@ public class StationNamesToTlarefLoader
     public StationNamesToTlarefLoader(ResourcesConfig resourcesConfig)
     {
         var loaderHelper = new LoaderHelper();
-        
+
         if (resourcesConfig.StationNamesToTlarefsPath == null)
             return;
-        
+
         _resourcesConfig = resourcesConfig ?? throw new ArgumentNullException(nameof(resourcesConfig));
 
         _resourcesConfig.StationNamesToTlarefsPath = LoaderHelper.CheckFileRequirements(
@@ -40,7 +40,7 @@ public class StationNamesToTlarefLoader
     {
         if (_resourcesConfig?.StationNamesToTlarefsPath == null)
             return new Dictionary<string, string>();
-        
+
         using var reader = new StreamReader(_resourcesConfig.StationNamesToTlarefsPath!);
         var jsonString = reader.ReadToEnd();
         return JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString)!;

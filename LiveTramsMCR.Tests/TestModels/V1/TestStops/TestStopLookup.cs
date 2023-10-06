@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Tests.Mocks;
@@ -20,11 +18,11 @@ public class TestStopLookup
     private const string RoutePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ImportedResources? _importedResources;
+    private MockStopsRepository? _mockStopsRepository;
 
     private ResourceLoader? _resourceLoader;
     private ResourcesConfig? _resourcesConfig;
     private StopLookup? _stopLookup;
-    private MockStopsRepository? _mockStopsRepository;
 
     /// <summary>
     ///     Set up the required resources for each test.
@@ -61,8 +59,8 @@ public class TestStopLookup
     }
 
     /// <summary>
-    /// Test to lookup the Altrincham Stop.
-    /// This should return the expected stop with a matching stop name.
+    ///     Test to lookup the Altrincham Stop.
+    ///     This should return the expected stop with a matching stop name.
     /// </summary>
     [Test]
     public void TestStopObjectLookupName()
@@ -74,8 +72,8 @@ public class TestStopLookup
     }
 
     /// <summary>
-    /// Test to lookup the Piccadilly stop based on its name.
-    /// This should return the expected stop object.
+    ///     Test to lookup the Piccadilly stop based on its name.
+    ///     This should return the expected stop object.
     /// </summary>
     [Test]
     public void TestStopObjectLookupDifferentName()
@@ -87,8 +85,8 @@ public class TestStopLookup
     }
 
     /// <summary>
-    /// Test to lookup a stop based on its tlaref.
-    /// This should return the Altrincham stop.
+    ///     Test to lookup a stop based on its tlaref.
+    ///     This should return the Altrincham stop.
     /// </summary>
     [Test]
     public void TestStopObjectLookupTlaref()
@@ -100,8 +98,8 @@ public class TestStopLookup
     }
 
     /// <summary>
-    /// Test to lookup a stop with an invalid stop name.
-    /// This should throw an Invalid operation Exception.
+    ///     Test to lookup a stop with an invalid stop name.
+    ///     This should throw an Invalid operation Exception.
     /// </summary>
     [Test]
     public void TestLookupStopObjectInvalidName()
@@ -112,8 +110,8 @@ public class TestStopLookup
     }
 
     /// <summary>
-    /// Test to lookup a stop object using a null value.
-    /// This should throw a null args exception.
+    ///     Test to lookup a stop object using a null value.
+    ///     This should throw a null args exception.
     /// </summary>
     [Test]
     public void TestLookupStopObjectNullValue()

@@ -10,26 +10,26 @@ using NUnit.Framework;
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 
 /// <summary>
-/// Test class for the RouteIdentifier.
+///     Test class for the RouteIdentifier.
 /// </summary>
 public class TestRouteIdentifier
 {
-    
+
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
-    private ResourcesConfig? _validResourcesConfig;
-    private List<Stop>? _importedStops;
-    private List<Route>? _routes;
-    private ResourceLoader? _resourceLoader;
     private ImportedResources? _importedResources;
+    private List<Stop>? _importedStops;
     private MockRouteRepository? _mockRouteRepository;
+    private ResourceLoader? _resourceLoader;
     private RouteIdentifier? _routeIdentifier;
-    
+    private List<Route>? _routes;
+    private ResourcesConfig? _validResourcesConfig;
+
     /// <summary>
-    /// Import routes / stops before each test.
+    ///     Import routes / stops before each test.
     /// </summary>
     [SetUp]
     public void SetUp()
@@ -55,8 +55,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Set stops and routes to null
-    /// to ensure no cross-test contamination.
+    ///     Set stops and routes to null
+    ///     to ensure no cross-test contamination.
     /// </summary>
     [TearDown]
     public void TearDown()
@@ -68,9 +68,9 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to determine if an interchange is required
-    /// for two stops on the same route.
-    /// This should return false.
+    ///     Test to determine if an interchange is required
+    ///     for two stops on the same route.
+    ///     This should return false.
     /// </summary>
     [Test]
     public void TestIsInterchangeRequired()
@@ -81,8 +81,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to see if an interchange is required by checking stops on different routes.
-    /// This should return true
+    ///     Test to see if an interchange is required by checking stops on different routes.
+    ///     This should return true
     /// </summary>
     [Test]
     public void TestInterchangeShouldBeRequired()
@@ -93,9 +93,9 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to determine if a null origin stop
-    /// requires an interchange to a valid dest.
-    /// This should throw an illegal args exception
+    ///     Test to determine if a null origin stop
+    ///     requires an interchange to a valid dest.
+    ///     This should throw an illegal args exception
     /// </summary>
     [Test]
     public void TestInterchangeNullOrigin()
@@ -110,9 +110,9 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to determine if an interchange is required between a valid origin stop
-    /// and a null dest.
-    /// This should throw an args null exception.
+    ///     Test to determine if an interchange is required between a valid origin stop
+    ///     and a null dest.
+    ///     This should throw an args null exception.
     /// </summary>
     [Test]
     public void TestInterchangeNullDest()
@@ -127,8 +127,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify an interchange stop for a journey where an interchange is required.
-    /// This should identify the stop shared on both routes that is closest to the destination.
+    ///     Test to identify an interchange stop for a journey where an interchange is required.
+    ///     This should identify the stop shared on both routes that is closest to the destination.
     /// </summary>
     [Test]
     public void TestIdentifyInterChange()
@@ -140,10 +140,10 @@ public class TestRouteIdentifier
         Assert.AreEqual("Piccadilly", interchangeStop?.StopName);
     }
 
-    
+
     /// <summary>
-    /// Test to identify the interchange between Eccles and the Trafford Centre.
-    /// This should return Pomona.
+    ///     Test to identify the interchange between Eccles and the Trafford Centre.
+    ///     This should return Pomona.
     /// </summary>
     [Test]
     public void TestIdentifyEcclesTraffordCentreInterchange()
@@ -156,8 +156,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify the interchange between the Airport and Bury.
-    /// This should return Victoria.
+    ///     Test to identify the interchange between the Airport and Bury.
+    ///     This should return Victoria.
     /// </summary>
     [Test]
     public void TestIdentifyInterchangeAirportBury()
@@ -171,8 +171,8 @@ public class TestRouteIdentifier
 
 
     /// <summary>
-    /// Test to identify the interchange between the Airport and East Didsbury.
-    /// This should be St Werburgh's Road.
+    ///     Test to identify the interchange between the Airport and East Didsbury.
+    ///     This should be St Werburgh's Road.
     /// </summary>
     [Test]
     public void TestIdentifyInterchangeAirportDidsbury()
@@ -185,8 +185,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify the interchange with a null origin.
-    /// This should throw a null args exception.
+    ///     Test to identify the interchange with a null origin.
+    ///     This should throw a null args exception.
     /// </summary>
     [Test]
     public void TestIdentifyInterchangeNullOrigin()
@@ -201,8 +201,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify an interchange for a journey with a null destination.
-    /// This should throw a null args exception.
+    ///     Test to identify an interchange for a journey with a null destination.
+    ///     This should throw a null args exception.
     /// </summary>
     [Test]
     public void TestIdentifyInterchangeNullDestination()
@@ -217,8 +217,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to Identify the routes between two stops.
-    /// This should contain 2 items, Purple and Green
+    ///     Test to Identify the routes between two stops.
+    ///     This should contain 2 items, Purple and Green
     /// </summary>
     [Test]
     public void TestIdentifyRoutesBetweenStops()
@@ -236,8 +236,8 @@ public class TestRouteIdentifier
 
 
     /// <summary>
-    /// Test to identify the routes between Bury and Market Street.
-    /// This should identify the green and yellow route.
+    ///     Test to identify the routes between Bury and Market Street.
+    ///     This should identify the green and yellow route.
     /// </summary>
     [Test]
     public void TestIdentifyRoutesBetweenBuryMarketStreet()
@@ -254,8 +254,8 @@ public class TestRouteIdentifier
 
 
     /// <summary>
-    /// Identify routes with a null origin.
-    /// This should throw a null args exception.
+    ///     Identify routes with a null origin.
+    ///     This should throw a null args exception.
     /// </summary>
     [Test]
     public void TestIdentifyRoutesBetweenNullOrigin()
@@ -270,8 +270,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Identify the routes between stops with a null destination.
-    /// This should throw a null args exception.
+    ///     Identify the routes between stops with a null destination.
+    ///     This should throw a null args exception.
     /// </summary>
     [Test]
     public void TestIdentifyRoutesBetweenNullDestination()
@@ -286,9 +286,9 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify the stops between an
-    /// origin and a destination on a given route.
-    /// This should identify a single stop, and not include the origin or destination Stop.
+    ///     Test to identify the stops between an
+    ///     origin and a destination on a given route.
+    ///     This should identify a single stop, and not include the origin or destination Stop.
     /// </summary>
     [Test]
     public void TestIdentifyIntermediateStops()
@@ -305,10 +305,10 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify intermediate stops for a different journey.
-    /// This should return the stops between Stretford and Brooklands
-    /// starting with Dane Road.
-    /// This should match the order they would be traversed in if travelled between.
+    ///     Test to identify intermediate stops for a different journey.
+    ///     This should return the stops between Stretford and Brooklands
+    ///     starting with Dane Road.
+    ///     This should match the order they would be traversed in if travelled between.
     /// </summary>
     [Test]
     public void TestIdentifyIntermediateStopsDifferentRoute()
@@ -330,9 +330,9 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify the same intermediate stops as the previous test,
-    /// but as the origin and destination have been swapped, they should be in the
-    /// opposite order.
+    ///     Test to identify the same intermediate stops as the previous test,
+    ///     but as the origin and destination have been swapped, they should be in the
+    ///     opposite order.
     /// </summary>
     [Test]
     public void TestIdentifyIntermediateStopsReverse()
@@ -354,8 +354,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify an intermediate stops with an origin Stop not on the route.
-    /// This should throw an InvalidOperationException.
+    ///     Test to identify an intermediate stops with an origin Stop not on the route.
+    ///     This should throw an InvalidOperationException.
     /// </summary>
     [Test]
     public void TestIdentifyIntermediateStopsWithInvalidStop()
@@ -373,9 +373,9 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify intermediate stops where the destination stop
-    /// does not belong to the route.
-    /// This should throw an invalid op exception.
+    ///     Test to identify intermediate stops where the destination stop
+    ///     does not belong to the route.
+    ///     This should throw an invalid op exception.
     /// </summary>
     [Test]
     public void TestIdentifyIntermediateStopsWithInvalidDestinationStop()
@@ -393,8 +393,8 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify intermediate stops with a null origin.
-    /// This should throw an args null exception.
+    ///     Test to identify intermediate stops with a null origin.
+    ///     This should throw an args null exception.
     /// </summary>
     [Test]
     public void TestIdentifyIntermediateRouteNullOrigin()
@@ -409,10 +409,10 @@ public class TestRouteIdentifier
                     .IdentifyIntermediateStops(null, stretfordStop, purpleRoute);
             });
     }
-    
+
     /// <summary>
-    /// Test to identify intermediate stops with a null destination.
-    /// This should throw an args null exception.
+    ///     Test to identify intermediate stops with a null destination.
+    ///     This should throw an args null exception.
     /// </summary>
     [Test]
     public void TestIdentifyIntermediateRouteNullDestination()
@@ -427,10 +427,10 @@ public class TestRouteIdentifier
                     .IdentifyIntermediateStops(stretfordStop, null, purpleRoute);
             });
     }
-    
+
     /// <summary>
-    /// Test to identify intermediate stops with a null route.
-    /// This should throw an args null exception.
+    ///     Test to identify intermediate stops with a null route.
+    ///     This should throw an args null exception.
     /// </summary>
     [Test]
     public void TestIdentifyIntermediateRouteNullRoute()
@@ -447,9 +447,9 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify the terminus stop of a tram.
-    /// This should return the stop not where the route ends, but the
-    /// route terminates in the direction of travel.
+    ///     Test to identify the terminus stop of a tram.
+    ///     This should return the stop not where the route ends, but the
+    ///     route terminates in the direction of travel.
     /// </summary>
     [Test]
     public void TestIdentifyTramTerminusForRoute()
@@ -466,9 +466,9 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify the terminus of the purple route when going in the
-    /// opposite direction.
-    /// This should return Piccadilly. 
+    ///     Test to identify the terminus of the purple route when going in the
+    ///     opposite direction.
+    ///     This should return Piccadilly.
     /// </summary>
     [Test]
     public void TestIdentifyTramTerminusForReverseRoute()
@@ -486,8 +486,8 @@ public class TestRouteIdentifier
 
 
     /// <summary>
-    /// Test to identify a terminus with a null origin stop.
-    /// This should throw an args null exception.
+    ///     Test to identify a terminus with a null origin stop.
+    ///     This should throw an args null exception.
     /// </summary>
     [Test]
     public void TestIdentifyTerminusNullOrigin()
@@ -502,10 +502,10 @@ public class TestRouteIdentifier
                     .IdentifyRouteTerminus(null, brooklandsStop, purpleRoute);
             });
     }
-    
+
     /// <summary>
-    /// Identify terminus with a null destination.
-    /// This should throw an args null exception.
+    ///     Identify terminus with a null destination.
+    ///     This should throw an args null exception.
     /// </summary>
     [Test]
     public void TestIdentifyTerminusNullDestination()
@@ -520,10 +520,10 @@ public class TestRouteIdentifier
                     .IdentifyRouteTerminus(brooklandsStop, null, purpleRoute);
             });
     }
-    
+
     /// <summary>
-    /// Test to identify a terminus with a null route.
-    /// This should throw an args null exception.
+    ///     Test to identify a terminus with a null route.
+    ///     This should throw an args null exception.
     /// </summary>
     [Test]
     public void TestIdentifyTerminusNullRoute()
@@ -540,9 +540,9 @@ public class TestRouteIdentifier
     }
 
     /// <summary>
-    /// Test to identify a terminus of a route when the origin
-    /// stop does not belong to the route.
-    /// This should throw an invalid operation exception. 
+    ///     Test to identify a terminus of a route when the origin
+    ///     stop does not belong to the route.
+    ///     This should throw an invalid operation exception.
     /// </summary>
     [Test]
     public void TestIdentifyTerminusOriginNotOnRoute()
@@ -555,14 +555,14 @@ public class TestRouteIdentifier
             delegate
             {
                 var unused = _routeIdentifier?
-                    .IdentifyRouteTerminus( buryStop, brooklandsStop, purpleRoute);
+                    .IdentifyRouteTerminus(buryStop, brooklandsStop, purpleRoute);
             });
     }
-    
+
     /// <summary>
-    /// Test to identify a terminus of a route when the destination
-    /// stop is not on the route
-    /// This should throw an invalid operation exception. 
+    ///     Test to identify a terminus of a route when the destination
+    ///     stop is not on the route
+    ///     This should throw an invalid operation exception.
     /// </summary>
     [Test]
     public void TestIdentifyTerminusDestinationNotOnRoute()
@@ -575,7 +575,7 @@ public class TestRouteIdentifier
             delegate
             {
                 var unused = _routeIdentifier?
-                    .IdentifyRouteTerminus( brooklandsStop, buryStop, purpleRoute);
+                    .IdentifyRouteTerminus(brooklandsStop, buryStop, purpleRoute);
             });
     }
 }

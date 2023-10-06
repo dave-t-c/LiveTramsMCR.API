@@ -12,12 +12,12 @@ namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 public class TestServicesDataModel
 {
     private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
-    private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
-    private IRequester? _requester;
-    private ServicesDataModel? _servicesDataModel;
-    private MockStopsRepository? _mockStopsRepository;
     private MockRouteRepository? _mockRouteRepository;
+    private MockStopsRepository? _mockStopsRepository;
+    private IRequester? _requester;
+    private ResourcesConfig? _resourcesConfig;
+    private ServicesDataModel? _servicesDataModel;
 
     [SetUp]
     public void SetUp()
@@ -33,7 +33,7 @@ public class TestServicesDataModel
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         var mockHttpResponse =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
-        
+
         _requester = new MockServiceRequester(mockHttpResponse!);
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
@@ -50,8 +50,8 @@ public class TestServicesDataModel
     }
 
     /// <summary>
-    /// Request services for 'BMR".
-    /// This is one of the values returned in the mock service requester, with 1 destination expected.
+    ///     Request services for 'BMR".
+    ///     This is one of the values returned in the mock service requester, with 1 destination expected.
     /// </summary>
     [Test]
     public void TestRequestExpectedService()
@@ -63,8 +63,8 @@ public class TestServicesDataModel
     }
 
     /// <summary>
-    /// Request services for a null stop.
-    /// This should throw an argument null exception.
+    ///     Request services for a null stop.
+    ///     This should throw an argument null exception.
     /// </summary>
     [Test]
     public void TestNullServiceLocationName()
@@ -79,8 +79,8 @@ public class TestServicesDataModel
     }
 
     /// <summary>
-    /// Request departure board services.
-    /// This should return 3 trams matching the destinations and wait times.
+    ///     Request departure board services.
+    ///     This should return 3 trams matching the destinations and wait times.
     /// </summary>
     [Test]
     public void TestRequestDepartureBoardServices()
@@ -95,5 +95,4 @@ public class TestServicesDataModel
         var finalTram = trams?.Last();
         Assert.AreEqual("23", finalTram?.Wait);
     }
-    
 }

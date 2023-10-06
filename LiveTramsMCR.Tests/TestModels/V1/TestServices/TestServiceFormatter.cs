@@ -203,8 +203,8 @@ public class TestServiceFormatter
     }
 
     /// <summary>
-    /// Test to check the last updated value is set.
-    /// This should be set to that from the first service
+    ///     Test to check the last updated value is set.
+    ///     This should be set to that from the first service
     /// </summary>
     [Test]
     public void TestSetLastUpdated()
@@ -216,10 +216,10 @@ public class TestServiceFormatter
         Assert.IsNotEmpty(result?.LastUpdated);
         Assert.AreEqual(_unformattedServices?.LastUpdated, result?.LastUpdated);
     }
-    
+
 
     /// <summary>
-    /// Test formatting departureBoardServices with valid unformatted services.
+    ///     Test formatting departureBoardServices with valid unformatted services.
     /// </summary>
     [Test]
     public void TestFormatDepartureBoardServices()
@@ -235,7 +235,7 @@ public class TestServiceFormatter
         var finalTram = trams?.Last();
         Assert.AreEqual("Manchester Airport", finalTram?.Destination);
         Assert.AreEqual("23", finalTram?.Wait);
-        
+
         // Check there are 3 distinct trams
         Assert.AreEqual(3, trams?.Distinct().Count());
 

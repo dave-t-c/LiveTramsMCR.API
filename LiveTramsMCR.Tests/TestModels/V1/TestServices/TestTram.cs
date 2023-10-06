@@ -22,6 +22,7 @@ public class TestTram
     private Tram? _tramDiffStatus;
     private Tram? _tramDiffWait;
     private string? _wait;
+    private string? _tlaref;
 
     [SetUp]
     public void SetUp()
@@ -34,14 +35,15 @@ public class TestTram
         _diffStatus = "Departing";
         _wait = "9";
         _diffWait = "0";
+        _tlaref = "ALT";
 
-        _tram = new Tram(_destination, _carriages, _status, _wait);
-        _duplicateTram = new Tram(_destination, _carriages, _status, _wait);
-        _tramDiffDest = new Tram(_diffDestination, _carriages, _status, _wait);
-        _tramDiffCarriages = new Tram(_destination, _diffCarriages, _status, _wait);
-        _tramDiffStatus = new Tram(_destination, _carriages, _diffStatus, _wait);
-        _tramDiffWait = new Tram(_destination, _carriages, _status, _diffWait);
-        _diffTram = new Tram(_diffDestination, _diffCarriages, _diffStatus, _diffWait);
+        _tram = new Tram(_destination, _carriages, _status, _wait, _tlaref);
+        _duplicateTram = new Tram(_destination, _carriages, _status, _wait, _tlaref);
+        _tramDiffDest = new Tram(_diffDestination, _carriages, _status, _wait, _tlaref);
+        _tramDiffCarriages = new Tram(_destination, _diffCarriages, _status, _wait, _tlaref);
+        _tramDiffStatus = new Tram(_destination, _carriages, _diffStatus, _wait, _tlaref);
+        _tramDiffWait = new Tram(_destination, _carriages, _status, _diffWait, _tlaref);
+        _diffTram = new Tram(_diffDestination, _diffCarriages, _diffStatus, _diffWait, _tlaref);
     }
 
     [TearDown]
@@ -105,7 +107,7 @@ public class TestTram
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'destination')"),
             delegate
             {
-                var unused = new Tram(null, _carriages, _status, _wait);
+                var unused = new Tram(null, _carriages, _status, _wait, _tlaref);
             });
     }
 
@@ -120,7 +122,7 @@ public class TestTram
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'carriages')"),
             delegate
             {
-                var unused = new Tram(_destination, null, _status, _wait);
+                var unused = new Tram(_destination, null, _status, _wait, _tlaref);
             });
     }
 
@@ -135,7 +137,7 @@ public class TestTram
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'status')"),
             delegate
             {
-                var unused = new Tram(_destination, _carriages, null, _wait);
+                var unused = new Tram(_destination, _carriages, null, _wait, _tlaref);
             });
     }
 
@@ -151,7 +153,22 @@ public class TestTram
                 .And.Message.EqualTo("Value cannot be null. (Parameter 'wait')"),
             delegate
             {
-                var unused = new Tram(_destination, _carriages, _status, null);
+                var unused = new Tram(_destination, _carriages, _status, null, _tlaref);
+            });
+    }
+    
+    /// <summary>
+    ///     Create a tram with a null tlaref.
+    ///     This should throw a arg null exception.
+    /// </summary>
+    [Test]
+    public void TestTramNullTlaref()
+    {
+        Assert.Throws(Is.TypeOf<ArgumentNullException>()
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'sourceTlaref')"),
+            delegate
+            {
+                var unused = new Tram(_destination, _carriages, _status, _wait, null);
             });
     }
 

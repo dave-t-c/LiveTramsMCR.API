@@ -1,12 +1,12 @@
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
 /// <summary>
-/// Interfaces for Route Planner model classes
+///     Interfaces for Route Planner model classes
 /// </summary>
 public interface IJourneyPlannerModel
 {
     /// <summary>
-    /// Plans a route between an origin and destination
+    ///     Plans a route between an origin and destination
     /// </summary>
     /// <param name="origin">Origin stop name or TLAREF</param>
     /// <param name="destination">Destination stop name or TLAREF</param>

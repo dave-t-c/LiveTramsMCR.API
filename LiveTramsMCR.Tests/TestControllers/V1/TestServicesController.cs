@@ -11,28 +11,28 @@ using NUnit.Framework;
 namespace LiveTramsMCR.Tests.TestControllers.V1;
 
 /// <summary>
-/// Test class for the ServiceController class.
+///     Test class for the ServiceController class.
 /// </summary>
 public class TestServicesController
 {
     private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
     private const string InternalServerErrorResponsePath = "../../../Resources/ExampleApiInternalServerErrorResponse.json";
     private const string UpdateStopsApiResponsePath = "../../../Resources/TestStopUpdater/ApiResponse.json";
-    private ResourcesConfig? _resourcesConfig;
-    private ResourcesConfig? _updateStopsResourceConfig;
     private ImportedResources? _importedResources;
-    private ImportedResources? _updateStopsImportedResources;
-    private IRequester? _requester;
+    private MockRouteRepository? _mockRouteRepository;
+    private MockRouteRepository? _mockRouteRepositoryUpdateStops;
     private IRequester? _mockServiceRequesterInternalServerError;
     private MockStopsRepository? _mockStopsRepository;
-    private MockRouteRepository? _mockRouteRepository;
     private MockStopsRepository? _mockStopsRepositoryUpdateStops;
-    private MockRouteRepository? _mockRouteRepositoryUpdateStops;
-    private IServicesDataModel? _servicesDataModel;
-    private IServicesDataModel? _servicesDataModelUpdateStops;
+    private IRequester? _requester;
+    private ResourcesConfig? _resourcesConfig;
     private ServiceController? _serviceController;
     private ServiceController? _serviceControllerUpdateStops;
-    
+    private IServicesDataModel? _servicesDataModel;
+    private IServicesDataModel? _servicesDataModelUpdateStops;
+    private ImportedResources? _updateStopsImportedResources;
+    private ResourcesConfig? _updateStopsResourceConfig;
+
     [SetUp]
     public void SetUp()
     {
@@ -44,7 +44,7 @@ public class TestServicesController
             RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json",
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
-        
+
         _updateStopsResourceConfig = new ResourcesConfig
         {
             StopResourcePath = "../../../Resources/TestStopUpdater/stops.json",
@@ -53,37 +53,37 @@ public class TestServicesController
             RoutesResourcePath = "../../../Resources/TestStopUpdater/routes.json",
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
-        
+
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _updateStopsImportedResources = new ResourceLoader(_updateStopsResourceConfig).ImportResources();
-        
+
         var mockHttpResponse =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
-        
+
         var mockHttpResponseInternalServerError =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.InternalServerError,
                 InternalServerErrorResponsePath);
-        
-        var mockHttpResponseGetAllStops = 
+
+        var mockHttpResponseGetAllStops =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK,
                 UpdateStopsApiResponsePath);
-        
+
         _requester = new MockServiceRequester(mockHttpResponse!);
         _mockServiceRequesterInternalServerError = new MockServiceRequester(
-            mockHttpResponseInternalServerError!, 
+            mockHttpResponseInternalServerError!,
             mockHttpResponseGetAllStops!);
-        
+
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
         _mockStopsRepositoryUpdateStops = new MockStopsRepository(_updateStopsImportedResources.ImportedStops);
-        
+
         _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
         _mockRouteRepositoryUpdateStops = new MockRouteRepository(_updateStopsImportedResources.ImportedRoutes,
             _updateStopsImportedResources.ImportedRouteTimes);
-        
+
         _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
         _servicesDataModelUpdateStops = new ServicesDataModel(_mockStopsRepositoryUpdateStops,
             _mockServiceRequesterInternalServerError);
-        
+
         _serviceController = new ServiceController(_servicesDataModel);
         _serviceControllerUpdateStops = new ServiceController(_servicesDataModelUpdateStops);
     }
@@ -99,9 +99,9 @@ public class TestServicesController
     }
 
     /// <summary>
-    /// Test to request services for BMR.
-    /// This should again return services  with a single destination.
-    /// This should also return an OK status code
+    ///     Test to request services for BMR.
+    ///     This should again return services  with a single destination.
+    ///     This should also return an OK status code
     /// </summary>
     [Test]
     public void TestRequestServices()
@@ -117,8 +117,8 @@ public class TestServicesController
     }
 
     /// <summary>
-    /// Requests services for a non-existent stop name
-    /// This should return a 400 bad request code.
+    ///     Requests services for a non-existent stop name
+    ///     This should return a 400 bad request code.
     /// </summary>
     [Test]
     public void TestRequestServicesInvalidName()
@@ -131,8 +131,8 @@ public class TestServicesController
     }
 
     /// <summary>
-    /// Request a service with a null stop name.
-    /// This should return a 400 bad request
+    ///     Request a service with a null stop name.
+    ///     This should return a 400 bad request
     /// </summary>
     [Test]
     public void TestRequestNullStopName()
@@ -143,11 +143,11 @@ public class TestServicesController
         Assert.NotNull(requestObj);
         Assert.AreEqual(400, requestObj?.StatusCode);
     }
-    
+
     /// <summary>
-    /// Test to request departure board services for BMR.
-    /// This should return 3 trams
-    /// This should also return an OK status code
+    ///     Test to request departure board services for BMR.
+    ///     This should return 3 trams
+    ///     This should also return an OK status code
     /// </summary>
     [Test]
     public void TestRequestDepartureBoardServices()
@@ -170,8 +170,8 @@ public class TestServicesController
     }
 
     /// <summary>
-    /// Requests departure board services for a non-existent stop name
-    /// This should return a 400 bad request code.
+    ///     Requests departure board services for a non-existent stop name
+    ///     This should return a 400 bad request code.
     /// </summary>
     [Test]
     public void TestRequestDepartureBoardServicesInvalidName()
@@ -184,8 +184,8 @@ public class TestServicesController
     }
 
     /// <summary>
-    /// Request departure board services with a null stop name.
-    /// This should return a 400 bad request
+    ///     Request departure board services with a null stop name.
+    ///     This should return a 400 bad request
     /// </summary>
     [Test]
     public void TestRequestDepartureBoardServicesNullStopName()
@@ -198,8 +198,8 @@ public class TestServicesController
     }
 
     /// <summary>
-    /// Request services when the IDs are outdated.
-    /// This should return a 503 Service unavailable
+    ///     Request services when the IDs are outdated.
+    ///     This should return a 503 Service unavailable
     /// </summary>
     [Test]
     public void TestRequestServicesOutOfDateIds()

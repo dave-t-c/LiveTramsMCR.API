@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 
 /// <summary>
-/// Test class for FormattedDepartureBoardServices
+///     Test class for FormattedDepartureBoardServices
 /// </summary>
 public class TestFormattedDepartureBoardServices
 {
@@ -13,14 +13,15 @@ public class TestFormattedDepartureBoardServices
     private string? _destination;
     private string? _diffCarriages;
     private string? _diffDestination;
+    private Tram? _diffTram;
     private string? _diffWait;
     private FormattedDepartureBoardServices? _formattedDepartureBoardServices;
     private string? _status;
     private Tram? _tram;
-    private Tram? _diffTram;
     private Tram? _tramSameDestinationDiffWait;
     private string? _wait;
-    
+    private string? _tlaref;
+
     [SetUp]
     public void SetUp()
     {
@@ -31,10 +32,11 @@ public class TestFormattedDepartureBoardServices
         _status = "Due";
         _wait = "9";
         _diffWait = "1";
-        _tram = new Tram(_destination, _carriages, _status, _wait);
-        _tramSameDestinationDiffWait = new Tram(_destination, _diffCarriages, _status, _diffWait);
+        _tlaref = "ALT";
+        _tram = new Tram(_destination, _carriages, _status, _wait, _tlaref);
+        _tramSameDestinationDiffWait = new Tram(_destination, _diffCarriages, _status, _diffWait, _tlaref);
         _formattedDepartureBoardServices = new FormattedDepartureBoardServices();
-        _diffTram = new Tram(_diffDestination, _diffCarriages, _status, _diffWait);
+        _diffTram = new Tram(_diffDestination, _diffCarriages, _status, _diffWait, _tlaref);
     }
 
     [TearDown]
@@ -54,8 +56,8 @@ public class TestFormattedDepartureBoardServices
 
 
     /// <summary>
-    /// Test to add a single tram
-    /// Set should contain a single item, matching the destination.
+    ///     Test to add a single tram
+    ///     Set should contain a single item, matching the destination.
     /// </summary>
     [Test]
     public void TestAddSingleTram()
@@ -73,8 +75,8 @@ public class TestFormattedDepartureBoardServices
 
 
     /// <summary>
-    /// Test to add a different tram
-    /// This should match the added values.
+    ///     Test to add a different tram
+    ///     This should match the added values.
     /// </summary>
     [Test]
     public void TestAddDifferentTram()
@@ -91,8 +93,8 @@ public class TestFormattedDepartureBoardServices
     }
 
     /// <summary>
-    /// Test to add a null tram.
-    /// This should not be added to the set and the set size should remain zero.
+    ///     Test to add a null tram.
+    ///     This should not be added to the set and the set size should remain zero.
     /// </summary>
     [Test]
     public void TestAddNullTram()
@@ -104,8 +106,8 @@ public class TestFormattedDepartureBoardServices
     }
 
     /// <summary>
-    /// Test to add multiple trams with different waits.
-    /// This should return a set ordered by the due time.
+    ///     Test to add multiple trams with different waits.
+    ///     This should return a set ordered by the due time.
     /// </summary>
     [Test]
     public void TestAddMultipleTrams()
@@ -120,7 +122,7 @@ public class TestFormattedDepartureBoardServices
         Assert.IsTrue(returnedServices?.ElementAt(0).Equals(_tramSameDestinationDiffWait));
         Assert.IsTrue(returnedServices?.ElementAt(1).Equals(_tram));
     }
-    
+
     /// <summary>
     ///     Test to add a message to the formatted services.
     ///     This should leave a set with size 1.

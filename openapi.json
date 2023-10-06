@@ -5,6 +5,52 @@
     "version": "v1"
   },
   "paths": {
+    "/v2/journey-planner/{origin}/{destination}": {
+      "get": {
+        "tags": [
+          "JourneyPlanner"
+        ],
+        "summary": "Plans a journey between an origin and destination stop.",
+        "parameters": [
+          {
+            "name": "origin",
+            "in": "path",
+            "description": "Origin stop name or tlaref",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destination",
+            "in": "path",
+            "description": "Destination stop name or tlaref",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JourneyPlannerV2ResponseBodyModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Stop Name or TLAREF provided"
+          },
+          "500": {
+            "description": "An internal server error occured"
+          }
+        }
+      }
+    },
     "/v1/journey-planner/{origin}/{destination}": {
       "get": {
         "tags": [
@@ -264,6 +310,55 @@
         "additionalProperties": false,
         "description": "Stores services by destination, ordered by ascending wait time."
       },
+      "JourneyPlannerV2ResponseBodyModel": {
+        "type": "object",
+        "properties": {
+          "plannedJourney": {
+            "$ref": "#/components/schemas/PlannedJourneyV2"
+          },
+          "visualisedJourney": {
+            "$ref": "#/components/schemas/VisualisedJourneyV2"
+          },
+          "nextService": {
+            "$ref": "#/components/schemas/NextServiceIdentifierV2Response"
+          },
+          "serviceUpdates": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Service updates, e.g. for engineering works",
+            "nullable": true
+          },
+          "travelZones": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "Fare zones travelled through",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response body model for the route planner 'plan journey' endpoint"
+      },
+      "NextServiceIdentifierV2Response": {
+        "type": "object",
+        "properties": {
+          "destination": {
+            "$ref": "#/components/schemas/StopKeysV2"
+          },
+          "wait": {
+            "type": "integer",
+            "description": "Wait time until this service",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "A destination, wait pair of the next service towards a destination."
+      },
       "PlannedJourney": {
         "type": "object",
         "properties": {
@@ -334,6 +429,91 @@
             "type": "string",
             "description": "Useful information about the route\r\nnot covered by the other fields.",
             "nullable": true
+          },
+          "minutesFromOrigin": {
+            "type": "integer",
+            "description": "Journey time minutes from the origin stop to\r\ninterchange stop or end of journey if no interchange is required.",
+            "format": "int32"
+          },
+          "minutesFromInterchange": {
+            "type": "integer",
+            "description": "Journey time minutes from the interchange stop to the\r\ndestination stop. This is 0 if there is no interchange.",
+            "format": "int32"
+          },
+          "totalJourneyTimeMinutes": {
+            "type": "integer",
+            "description": "Total journey time from origin to destination in minutes.\r\nIf there is no interchange, this will be the same as the\r\nMinutesFromOrigin",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "POCO object that details a planned route between an origin and destination stop."
+      },
+      "PlannedJourneyV2": {
+        "type": "object",
+        "properties": {
+          "originStop": {
+            "$ref": "#/components/schemas/StopV2"
+          },
+          "destinationStop": {
+            "$ref": "#/components/schemas/StopV2"
+          },
+          "interchangeStop": {
+            "$ref": "#/components/schemas/StopV2"
+          },
+          "routesFromOrigin": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteV2"
+            },
+            "description": "Routes taken from the origin destination\r\nto either the interchange stop or destination\r\nstop if no interchange is required\r\n(Only require a single route).",
+            "nullable": true
+          },
+          "stopsFromOrigin": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StopV2"
+            },
+            "description": "Stops between the origin stop and interchange or destination for each route.",
+            "nullable": true
+          },
+          "terminiFromOrigin": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StopKeysV2"
+            },
+            "description": "Maps the route name to the destination of the Tram to the Interchange Stop or the Destination Stop\r\nE.g.Green line towards Bury (With the Stop value for Bury)",
+            "nullable": true
+          },
+          "routesFromInterchange": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteV2"
+            },
+            "description": "Route from the Interchange stop to the\r\ndestination stop. This may be null.",
+            "nullable": true
+          },
+          "stopsFromInterchange": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StopV2"
+            },
+            "description": "Stops between the interchange and destination stop.",
+            "nullable": true
+          },
+          "terminiFromInterchange": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StopKeysV2"
+            },
+            "description": "Maps the route name to the destination of the Tram from the interchange stop.\r\nE.g.Green line towards Bury (With the Stop value for Bury)",
+            "nullable": true
+          },
+          "requiresInterchange": {
+            "type": "boolean",
+            "description": "Boolean showing if the route requires an\r\ninterchange. This can be used as a proxy\r\nto see if the RouteFromInterchange\r\nand InterchangeStop will be null."
           },
           "minutesFromOrigin": {
             "type": "integer",
@@ -614,10 +794,46 @@
             "description": "Wait for the tram, an int of mins.\r\nThis is stored as a string as this is the format returned by the TfGM API.\r\nIt is not converted as no calculations are completed using it.",
             "nullable": true,
             "example": "10"
+          },
+          "sourceTlaref": {
+            "type": "string",
+            "description": "Tlaref of the stop the information for this tram has been reported at.",
+            "nullable": true
           }
         },
         "additionalProperties": false,
         "description": "Stores service information about a single tram."
+      },
+      "VisualisedJourneyV2": {
+        "type": "object",
+        "properties": {
+          "polylineFromOrigin": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "double"
+              }
+            },
+            "description": "Polyline from origin to interchange,\r\nor end of journey if no interchange required",
+            "nullable": true
+          },
+          "polylineFromInterchange": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "double"
+              }
+            },
+            "description": "Polyline from interchange to destination\r\nWill be null if no interchange is required",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for data returned for journey visualisation, e.g. polylines."
       }
     }
   }

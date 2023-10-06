@@ -6,15 +6,15 @@ using LiveTramsMCR.Models.V1.Stops;
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
 /// <summary>
-/// Plans routes between Stop objects.
+///     Plans routes between Stop objects.
 /// </summary>
 public class JourneyPlanner : IJourneyPlanner
 {
-    private readonly RouteIdentifier _routeIdentifier;
     private readonly JourneyTimeFinder _journeyTimeFinder;
+    private readonly RouteIdentifier _routeIdentifier;
 
     /// <summary>
-    /// Create a new route planner with a list of available routes.
+    ///     Create a new route planner with a list of available routes.
     /// </summary>
     /// <param name="routeRepository">Repository for retrieving route times</param>
     public JourneyPlanner(IRouteRepository routeRepository)
@@ -22,9 +22,9 @@ public class JourneyPlanner : IJourneyPlanner
         _routeIdentifier = new RouteIdentifier(routeRepository);
         _journeyTimeFinder = new JourneyTimeFinder(routeRepository);
     }
-    
+
     /// <summary>
-    /// Finds a route between an Origin and Destination Stop.
+    ///     Finds a route between an Origin and Destination Stop.
     /// </summary>
     /// <param name="origin">Start of journey</param>
     /// <param name="destination">End of Journey</param>
@@ -46,7 +46,7 @@ public class JourneyPlanner : IJourneyPlanner
 
 
     /// <summary>
-    /// Plans a journey where it is known an interchange is not required.
+    ///     Plans a journey where it is known an interchange is not required.
     /// </summary>
     /// <param name="origin">Start of journey</param>
     /// <param name="destination">End of journey</param>
@@ -55,7 +55,7 @@ public class JourneyPlanner : IJourneyPlanner
     {
         var originRoutes = _routeIdentifier.IdentifyRoutesBetween(origin, destination);
         var originStops = _routeIdentifier
-            .IdentifyIntermediateStops(origin, destination, originRoutes.First());
+            .IdentifyIntermediateStops(origin, destination, originRoutes[0]);
         var terminiFromOrigin = new HashSet<Stop>();
         foreach (var route in originRoutes)
         {
@@ -63,7 +63,7 @@ public class JourneyPlanner : IJourneyPlanner
                 .IdentifyRouteTerminus(origin, destination, route));
         }
 
-        var minutesFromOrigin = IdentifyJourneyTime(originRoutes.First(), origin, destination);
+        var minutesFromOrigin = IdentifyJourneyTime(originRoutes[0], origin, destination);
         return new PlannedJourney
         {
             RoutesFromOrigin = originRoutes,
@@ -72,10 +72,10 @@ public class JourneyPlanner : IJourneyPlanner
             MinutesFromOrigin = minutesFromOrigin
         };
     }
-    
+
     /// <summary>
-    /// Plans a journey where it is known an interchange is required.
-    /// This identifies and handles the interchange stop.
+    ///     Plans a journey where it is known an interchange is required.
+    ///     This identifies and handles the interchange stop.
     /// </summary>
     /// <param name="origin">Start of journey</param>
     /// <param name="destination">End of journey</param>
@@ -85,7 +85,7 @@ public class JourneyPlanner : IJourneyPlanner
         var interchangeStop = _routeIdentifier.IdentifyInterchangeStop(origin, destination);
         var originRoutes = _routeIdentifier.IdentifyRoutesBetween(origin, interchangeStop);
         var originStops = _routeIdentifier
-            .IdentifyIntermediateStops(origin, interchangeStop, originRoutes.First());
+            .IdentifyIntermediateStops(origin, interchangeStop, originRoutes[0]);
         var terminiFromOrigin = new HashSet<Stop>();
         foreach (var route in originRoutes)
         {
@@ -96,7 +96,7 @@ public class JourneyPlanner : IJourneyPlanner
 
         var interchangeRoutes = _routeIdentifier.IdentifyRoutesBetween(interchangeStop, destination);
         var interchangeStops = _routeIdentifier
-            .IdentifyIntermediateStops(interchangeStop, destination, interchangeRoutes.First());
+            .IdentifyIntermediateStops(interchangeStop, destination, interchangeRoutes[0]);
         var terminiFromInterchange = new HashSet<Stop>();
         foreach (var route in interchangeRoutes)
         {
@@ -104,8 +104,8 @@ public class JourneyPlanner : IJourneyPlanner
                 .IdentifyRouteTerminus(interchangeStop, destination, route));
         }
 
-        var minutesFromOrigin = IdentifyJourneyTime(originRoutes.First(), origin, interchangeStop);
-        var minutesFromInterchange = IdentifyJourneyTime(interchangeRoutes.First(),
+        var minutesFromOrigin = IdentifyJourneyTime(originRoutes[0], origin, interchangeStop);
+        var minutesFromInterchange = IdentifyJourneyTime(interchangeRoutes[0],
             interchangeStop, destination);
         return new PlannedJourney
         {
@@ -122,7 +122,7 @@ public class JourneyPlanner : IJourneyPlanner
     }
 
     /// <summary>
-    /// Identifies the journey time between an origin and interchange / destination stop.
+    ///     Identifies the journey time between an origin and interchange / destination stop.
     /// </summary>
     /// <param name="route">Route being taken</param>
     /// <param name="origin">Start of journey</param>

@@ -9,18 +9,18 @@ using NUnit.Framework;
 namespace LiveTramsMCR.Tests.TestControllers.V1;
 
 /// <summary>
-/// Test class for the 
+///     Test class for the
 /// </summary>
 public class TestJourneyPlannerController
 {
-    private ResourcesConfig? _resourcesConfig;
     private ImportedResources? _importedResources;
     private IJourneyPlanner? _journeyPlanner;
-    private MockStopsRepository? _mockStopsRepository;
-    private MockRouteRepository? _mockRouteRepository;
-    private IJourneyPlannerModel? _journeyPlannerModel;
     private JourneyPlannerController? _journeyPlannerController;
-    
+    private IJourneyPlannerModel? _journeyPlannerModel;
+    private MockRouteRepository? _mockRouteRepository;
+    private MockStopsRepository? _mockStopsRepository;
+    private ResourcesConfig? _resourcesConfig;
+
     [SetUp]
     public void SetUp()
     {
@@ -40,7 +40,7 @@ public class TestJourneyPlannerController
         _journeyPlannerModel = new JourneyPlannerModel(_mockStopsRepository, _journeyPlanner);
         _journeyPlannerController = new JourneyPlannerController(_journeyPlannerModel);
     }
-    
+
     [TearDown]
     public void TearDown()
     {
@@ -49,11 +49,11 @@ public class TestJourneyPlannerController
         _journeyPlannerController = null;
     }
 
-    
+
     /// <summary>
-    /// Test to identify a planned journey between Altrincham and Piccadilly.
-    /// This should return an Ok result with no interchange being required,
-    /// with the expected start and end stops.
+    ///     Test to identify a planned journey between Altrincham and Piccadilly.
+    ///     This should return an Ok result with no interchange being required,
+    ///     with the expected start and end stops.
     /// </summary>
     [Test]
     public void TestHandleAltrinchamPiccadillyRoute()
@@ -73,8 +73,8 @@ public class TestJourneyPlannerController
     }
 
     /// <summary>
-    /// Test to plan a journey with an invalid origin name.
-    /// This should return a 400 bad request
+    ///     Test to plan a journey with an invalid origin name.
+    ///     This should return a 400 bad request
     /// </summary>
     [Test]
     public void TestPlanJourneyInvalidOriginName()

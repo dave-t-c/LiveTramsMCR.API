@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Models.V2.Stops.Data;
 
@@ -15,11 +13,13 @@ public class MockStopsRepositoryV2 : IStopsRepositoryV2
     {
         _stops = stops;
     }
-    public StopV2 GetStop(string searchTerm) =>
-        _stops.Find(stop =>
+    public StopV2 GetStop(string searchTerm)
+    {
+        return _stops.Find(stop =>
             stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
             || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
         )!;
+    }
 
     public List<StopV2> GetAll()
     {

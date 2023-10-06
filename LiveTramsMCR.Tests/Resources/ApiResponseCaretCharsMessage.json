@@ -1,31 +1,32 @@
 {
-    "@odata.context": "https://opendataclientapi.azurewebsites.net/odata/$metadata#Metrolinks/$entity",
-    "value": [{
-        "Id": 769,
-        "Line": "Bury",
-        "TLAREF": "PCG",
-        "PIDREF": "PCG-TPID02",
-        "StationLocation": "Piccadilly Gardens",
-        "AtcoCode": "9400ZZMAPGD2",
-        "Direction": "Incoming",
-        "Dest0": "Altrincham",
-        "Carriages0": "Double",
-        "Status0": "Due",
-        "Wait0": "5",
-        "Dest1": "Eccles via MediaCityUK",
-        "Carriages1": "Single",
-        "Status1": "Due",
-        "Wait1": "10",
-        "Dest2": "Bury",
-        "Carriages2": "Single",
-        "Status2": "Due",
-        "Wait2": "11",
-        "Dest3": "",
-        "Carriages3": "",
-        "Status3": "",
-        "MessageBoard":
-        "^F0Next Altrincham Departures:^F0Altrincham (Picc Gdns)^J^F0dbl 5 min^F0Altrincham (Market St)^J^F0dbl 11 min",
-        "Wait3": "",
-        "LastUpdated": "2022-01-22T14:04:48Z"
-    }]
+  "@odata.context": "https://opendataclientapi.azurewebsites.net/odata/$metadata#Metrolinks/$entity",
+  "value": [
+    {
+      "Id": 769,
+      "Line": "Bury",
+      "TLAREF": "PCG",
+      "PIDREF": "PCG-TPID02",
+      "StationLocation": "Piccadilly Gardens",
+      "AtcoCode": "9400ZZMAPGD2",
+      "Direction": "Incoming",
+      "Dest0": "Altrincham",
+      "Carriages0": "Double",
+      "Status0": "Due",
+      "Wait0": "5",
+      "Dest1": "Eccles via MediaCityUK",
+      "Carriages1": "Single",
+      "Status1": "Due",
+      "Wait1": "10",
+      "Dest2": "Bury",
+      "Carriages2": "Single",
+      "Status2": "Due",
+      "Wait2": "11",
+      "Dest3": "",
+      "Carriages3": "",
+      "Status3": "",
+      "MessageBoard": "^F0Next Altrincham Departures:^F0Altrincham (Picc Gdns)^J^F0dbl 5 min^F0Altrincham (Market St)^J^F0dbl 11 min",
+      "Wait3": "",
+      "LastUpdated": "2022-01-22T14:04:48Z"
+    }
+  ]
 }

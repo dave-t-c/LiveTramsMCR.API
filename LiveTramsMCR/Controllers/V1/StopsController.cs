@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace LiveTramsMCR.Controllers.V1;
 
 /// <summary>
-/// Controller for Stops related information
+///     Controller for Stops related information
 /// </summary>
 [Route("/v1/stops")]
 [ApiController]
@@ -34,7 +34,7 @@ public class StopsController : Controller
     [Route("/v1/stops")]
     [Produces("application/json")]
     [Tags("Stops")]
-    [SwaggerResponse (type:typeof (List<Stop>), statusCode: StatusCodes.Status200OK)]
+    [SwaggerResponse(type: typeof (List<Stop>), statusCode: StatusCodes.Status200OK)]
     [HttpGet]
     public IActionResult GetAllStops()
     {
