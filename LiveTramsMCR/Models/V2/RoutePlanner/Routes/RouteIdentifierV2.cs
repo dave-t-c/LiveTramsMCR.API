@@ -162,7 +162,7 @@ public class RouteIdentifierV2
     /// <returns></returns>
     public static StopV2 ConvertStopKeysToStop(StopKeysV2 stopKeys, RouteV2 routeV2)
     {
-        return routeV2.StopsDetail?.FirstOrDefault(stop =>
+        return routeV2.StopsDetail?.Find(stop =>
             stop.StopName == stopKeys.StopName &&
             stop.Tlaref == stopKeys.Tlaref);
     }
