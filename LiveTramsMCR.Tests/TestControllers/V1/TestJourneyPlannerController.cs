@@ -1,14 +1,11 @@
-using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.RoutePlanner;
-using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Tests.Common;
-using LiveTramsMCR.Tests.Configuration;
 using LiveTramsMCR.Tests.Helpers;
-using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
@@ -25,8 +22,8 @@ public class TestJourneyPlannerController : BaseNunitTest
     private IJourneyPlanner? _journeyPlanner;
     private JourneyPlannerController? _journeyPlannerController;
     private IJourneyPlannerModel? _journeyPlannerModel;
-    private MockRouteRepository? _mockRouteRepository;
-    private MockStopsRepository? _mockStopsRepository;
+    private IRouteRepository? _routeRepository;
+    private IStopsRepository? _stopsRepository;
     private ResourcesConfig? _resourcesConfig;
 
     [SetUp]
@@ -41,25 +38,17 @@ public class TestJourneyPlannerController : BaseNunitTest
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
-        _mockRouteRepository =
-            new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
-        _journeyPlanner = new JourneyPlanner(_mockRouteRepository);
-        _journeyPlannerModel = new JourneyPlannerModel(_mockStopsRepository, _journeyPlanner);
+
+        _stopsRepository = TestHelper.GetService<IStopsRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
+
+        _routeRepository = TestHelper.GetService<IRouteRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _importedResources.ImportedRoutes);
+        MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _importedResources.ImportedRouteTimes);
+
+        _journeyPlanner = new JourneyPlanner(_routeRepository);
+        _journeyPlannerModel = new JourneyPlannerModel(_stopsRepository, _journeyPlanner);
         _journeyPlannerController = new JourneyPlannerController(_journeyPlannerModel);
-
-        IStopsRepository stopsRepository = TestHelper.GetService<IStopsRepository>();
-
-        var stop = new Stop()
-        {
-            StopName = "Testing"
-        };
-
-        var stops = new List<Stop> { stop };
-        
-        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, stops);
-        
-        stopsRepository.GetAll();
     }
 
     [TearDown]

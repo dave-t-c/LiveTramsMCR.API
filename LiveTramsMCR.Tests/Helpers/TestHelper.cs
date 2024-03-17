@@ -1,5 +1,7 @@
 using System;
 using LiveTramsMCR.Configuration;
+using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Tests.Configuration;
@@ -17,10 +19,14 @@ public static class TestHelper
         var mongoClient = new MongoClient(TestAppConfiguration.TestDbConnectionString);
         var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         var stopsMongoCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
+        var routesMongoCollection = db.GetCollection<Route>(AppConfiguration.RoutesCollectionName);
+        var routeTimesMongoCollection = db.GetCollection<RouteTimes>(AppConfiguration.RouteTimesCollectionName);
         IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
+        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
 
         services.AddSingleton(mongoClient);
         services.AddSingleton(stopsRepository);
+        services.AddSingleton(routeRepository);
         
         return services.BuildServiceProvider();
     }
