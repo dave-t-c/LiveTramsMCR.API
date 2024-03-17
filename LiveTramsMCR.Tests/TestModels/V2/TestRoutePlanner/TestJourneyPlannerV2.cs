@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
@@ -15,7 +19,7 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 ///     Test class for the route planner, a class for
 ///     identifying routes between given stops
 /// </summary>
-public class TestJourneyPlannerV2
+public class TestJourneyPlannerV2 : BaseNunitTest
 {
     private const string StopsV1ResourcePath = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
@@ -24,7 +28,7 @@ public class TestJourneyPlannerV2
     private List<Stop>? _importedStopsV1S;
     private List<StopV2>? _importedStopsV2S;
     private JourneyPlannerV2? _journeyPlanner;
-    private MockRouteRepository? _mockRouteRepository;
+    private IRouteRepository? _routeRepository;
     private MockRouteRepositoryV2? _mockRouteRepositoryV2;
     private MockStopsRepositoryV2? _mockStopsRepositoryV2;
     private RouteLoader? _routeLoader;
@@ -69,9 +73,11 @@ public class TestJourneyPlannerV2
         _routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
         _routeTimes = _routeTimesLoader.ImportRouteTimes();
         _mockStopsRepositoryV2 = new MockStopsRepositoryV2(_importedStopsV2S);
-        _mockRouteRepository = new MockRouteRepository(_routes, _routeTimes);
+        _routeRepository = TestHelper.GetService<IRouteRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _routes);
+        MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _routeTimes);
         _mockRouteRepositoryV2 = new MockRouteRepositoryV2(_routesV2S, _mockStopsRepositoryV2);
-        _journeyPlanner = new JourneyPlannerV2(_mockRouteRepository, _mockRouteRepositoryV2);
+        _journeyPlanner = new JourneyPlannerV2(_routeRepository, _mockRouteRepositoryV2);
     }
 
     /// <summary>

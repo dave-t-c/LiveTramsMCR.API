@@ -2,7 +2,10 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using LiveTramsMCR.Configuration;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
@@ -13,7 +16,6 @@ public class TestServicesDataModel
 {
     private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
     private ImportedResources? _importedResources;
-    private MockRouteRepository? _mockRouteRepository;
     private MockStopsRepository? _mockStopsRepository;
     private IRequester? _requester;
     private ResourcesConfig? _resourcesConfig;
@@ -36,7 +38,6 @@ public class TestServicesDataModel
 
         _requester = new MockServiceRequester(mockHttpResponse!);
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
-        _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
         _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
     }
 

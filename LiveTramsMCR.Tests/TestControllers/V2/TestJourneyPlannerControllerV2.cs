@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V2;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Responses;
@@ -9,6 +11,8 @@ using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.RoutePlanner.ServiceInformation.NextService;
 using LiveTramsMCR.Models.V2.RoutePlanner.Visualisation;
 using LiveTramsMCR.Models.V2.Stops;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using LiveTramsMCR.Tests.TestModels.V1.TestServices;
@@ -20,7 +24,7 @@ namespace LiveTramsMCR.Tests.TestControllers.V2;
 /// <summary>
 /// Test class for the journey planner controller v2.
 /// </summary>
-public class TestJourneyPlannerControllerV2
+public class TestJourneyPlannerControllerV2 : BaseNunitTest
 {
     private const string JourneyPlannerV2WithInterchangeResponsePath = "../../../Resources/TestJourneyPlannerV2/AltrinchamPiccadillyAshtonServices.json";
     private const string JourneyPlannerV2ResponsePath = "../../../Resources/TestJourneyPlannerV2/AltrinchamSaleServices.json";
@@ -71,12 +75,14 @@ public class TestJourneyPlannerControllerV2
         var routeTimesLoader = new RouteTimesLoader(resourcesConfig);
         var routeTimes = routeTimesLoader.ImportRouteTimes();
 
-        var mockRouteRepositoryV1 = new MockRouteRepository(routesV1, routeTimes);
+        var routeRepositoryV1 = TestHelper.GetService<IRouteRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, routesV1);
+        MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, routeTimes);
         var mockRouteRepositoryV2 = new MockRouteRepositoryV2(_importedRouteV2S, mockStopsV2Repository);
 
         var journeyVisualiserV2 = new JourneyVisualiserV2();
 
-        _journeyPlannerV2 = new JourneyPlannerV2(mockRouteRepositoryV1, mockRouteRepositoryV2);
+        _journeyPlannerV2 = new JourneyPlannerV2(routeRepositoryV1, mockRouteRepositoryV2);
 
         var mockInterchangeHttpResponse =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(

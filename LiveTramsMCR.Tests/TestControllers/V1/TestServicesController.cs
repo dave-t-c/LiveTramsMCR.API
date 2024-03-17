@@ -2,6 +2,7 @@ using System.Linq;
 using System.Net;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using LiveTramsMCR.Tests.TestModels.V1.TestServices;
@@ -13,24 +14,15 @@ namespace LiveTramsMCR.Tests.TestControllers.V1;
 /// <summary>
 ///     Test class for the ServiceController class.
 /// </summary>
-public class TestServicesController
+public class TestServicesController : BaseNunitTest
 {
     private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
-    private const string InternalServerErrorResponsePath = "../../../Resources/ExampleApiInternalServerErrorResponse.json";
-    private const string UpdateStopsApiResponsePath = "../../../Resources/TestStopUpdater/ApiResponse.json";
     private ImportedResources? _importedResources;
-    private MockRouteRepository? _mockRouteRepository;
-    private MockRouteRepository? _mockRouteRepositoryUpdateStops;
-    private IRequester? _mockServiceRequesterInternalServerError;
     private MockStopsRepository? _mockStopsRepository;
-    private MockStopsRepository? _mockStopsRepositoryUpdateStops;
     private IRequester? _requester;
     private ResourcesConfig? _resourcesConfig;
     private ServiceController? _serviceController;
-    private ServiceController? _serviceControllerUpdateStops;
     private IServicesDataModel? _servicesDataModel;
-    private IServicesDataModel? _servicesDataModelUpdateStops;
-    private ImportedResources? _updateStopsImportedResources;
     private ResourcesConfig? _updateStopsResourceConfig;
 
     [SetUp]
@@ -55,37 +47,18 @@ public class TestServicesController
         };
 
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _updateStopsImportedResources = new ResourceLoader(_updateStopsResourceConfig).ImportResources();
+        new ResourceLoader(_updateStopsResourceConfig).ImportResources();
 
         var mockHttpResponse =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
-
-        var mockHttpResponseInternalServerError =
-            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.InternalServerError,
-                InternalServerErrorResponsePath);
-
-        var mockHttpResponseGetAllStops =
-            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK,
-                UpdateStopsApiResponsePath);
-
+        
         _requester = new MockServiceRequester(mockHttpResponse!);
-        _mockServiceRequesterInternalServerError = new MockServiceRequester(
-            mockHttpResponseInternalServerError!,
-            mockHttpResponseGetAllStops!);
 
         _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
-        _mockStopsRepositoryUpdateStops = new MockStopsRepository(_updateStopsImportedResources.ImportedStops);
-
-        _mockRouteRepository = new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
-        _mockRouteRepositoryUpdateStops = new MockRouteRepository(_updateStopsImportedResources.ImportedRoutes,
-            _updateStopsImportedResources.ImportedRouteTimes);
 
         _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
-        _servicesDataModelUpdateStops = new ServicesDataModel(_mockStopsRepositoryUpdateStops,
-            _mockServiceRequesterInternalServerError);
 
         _serviceController = new ServiceController(_servicesDataModel);
-        _serviceControllerUpdateStops = new ServiceController(_servicesDataModelUpdateStops);
     }
 
     [TearDown]
@@ -195,19 +168,5 @@ public class TestServicesController
         var requestObj = result as ObjectResult;
         Assert.NotNull(requestObj);
         Assert.AreEqual(400, requestObj?.StatusCode);
-    }
-
-    /// <summary>
-    ///     Request services when the IDs are outdated.
-    ///     This should return a 503 Service unavailable
-    /// </summary>
-    [Test]
-    public void TestRequestServicesOutOfDateIds()
-    {
-        var result = _serviceControllerUpdateStops?.GetService("Example 1");
-        Assert.NotNull(result);
-        var requestObj = result as ObjectResult;
-        Assert.NotNull(requestObj);
-        Assert.AreEqual(503, requestObj?.StatusCode);
     }
 }

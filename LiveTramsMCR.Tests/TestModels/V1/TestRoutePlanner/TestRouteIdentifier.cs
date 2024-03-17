@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
@@ -12,7 +16,7 @@ namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 /// <summary>
 ///     Test class for the RouteIdentifier.
 /// </summary>
-public class TestRouteIdentifier
+public class TestRouteIdentifier : BaseNunitTest
 {
 
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
@@ -22,7 +26,7 @@ public class TestRouteIdentifier
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ImportedResources? _importedResources;
     private List<Stop>? _importedStops;
-    private MockRouteRepository? _mockRouteRepository;
+    private IRouteRepository? _routeRepository;
     private ResourceLoader? _resourceLoader;
     private RouteIdentifier? _routeIdentifier;
     private List<Route>? _routes;
@@ -47,11 +51,12 @@ public class TestRouteIdentifier
 
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
-        _mockRouteRepository =
-            new MockRouteRepository(_importedResources.ImportedRoutes, _importedResources.ImportedRouteTimes);
+        _routeRepository = TestHelper.GetService<IRouteRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _importedResources.ImportedRoutes);
+        MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _importedResources.ImportedRouteTimes);
         _importedStops = _importedResources.ImportedStops;
         _routes = _importedResources.ImportedRoutes;
-        _routeIdentifier = new RouteIdentifier(_mockRouteRepository);
+        _routeIdentifier = new RouteIdentifier(_routeRepository);
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using LiveTramsMCR.Configuration;
 using MongoDB.Driver;
 
@@ -14,7 +15,11 @@ internal static class MongoHelper
         var mongoClient = TestHelper.GetService<MongoClient>();
         var db = mongoClient.GetDatabase(dbName);
         var collection = db.GetCollection<T>(collectionName);
-        collection.InsertMany(items);
+        var enumerable = items.ToList();
+        if (enumerable.Any())
+        {
+            collection.InsertMany(enumerable);
+        }
     }
 
     internal static void TearDownDatabase(
