@@ -29,7 +29,7 @@ jobs:
         run: dotnet tool install --global dotnet-coverage
       - name: Run SonarCloud coverage analysis
         run: |
-          dotnet sonarscanner begin /k:"${{ secrets.SONAR_PROJET_KEY }}"
+          dotnet sonarscanner begin /k:"${{ secrets.SONAR_PROJECT_KEY }}"
           /d:sonar.token="<sonar-token>"
           /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           dotnet build --no-incremental
