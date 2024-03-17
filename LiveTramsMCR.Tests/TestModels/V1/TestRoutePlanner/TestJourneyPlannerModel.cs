@@ -4,6 +4,7 @@ using System.Linq;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
+using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
@@ -27,7 +28,7 @@ public class TestJourneyPlannerModel : BaseNunitTest
     private JourneyPlanner? _journeyPlanner;
     private JourneyPlannerModel? _journeyPlannerModel;
     private IRouteRepository? _routeRepository;
-    private MockStopsRepository? _mockStopsRepository;
+    private IStopsRepository? _stopsRepository;
     private ResourceLoader? _resourceLoader;
     private List<Route>? _routes;
     private ResourcesConfig? _validResourcesConfig;
@@ -52,9 +53,11 @@ public class TestJourneyPlannerModel : BaseNunitTest
         MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _importedResources?.ImportedRoutes);
         MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _importedResources?.ImportedRouteTimes);
 
-        _mockStopsRepository = new MockStopsRepository(_importedResources?.ImportedStops!);
+        _stopsRepository = TestHelper.GetService<IStopsRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources?.ImportedStops);
+
         _journeyPlanner = new JourneyPlanner(_routeRepository);
-        _journeyPlannerModel = new JourneyPlannerModel(_mockStopsRepository, _journeyPlanner);
+        _journeyPlannerModel = new JourneyPlannerModel(_stopsRepository, _journeyPlanner);
     }
 
     [TearDown]

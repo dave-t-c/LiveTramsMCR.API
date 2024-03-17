@@ -1,6 +1,10 @@
 using System.Collections.Generic;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +15,10 @@ namespace LiveTramsMCR.Tests.TestControllers.V1;
 /// <summary>
 ///     Test class for the StopsController class
 /// </summary>
-public class TestStopsController
+public class TestStopsController : BaseNunitTest
 {
     private ImportedResources? _importedResources;
-    private MockStopsRepository? _mockStopsRepository;
+    private IStopsRepository? _stopsRepository;
     private ResourcesConfig? _resourcesConfig;
     private IStopsDataModel? _stopsDataModel;
     private StopsController? _testStopController;
@@ -31,9 +35,9 @@ public class TestStopsController
             RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _mockStopsRepository =
-            new MockStopsRepository(_importedResources.ImportedStops);
-        _stopsDataModel = new StopsDataModel(_mockStopsRepository);
+        _stopsRepository = TestHelper.GetService<IStopsRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
+        _stopsDataModel = new StopsDataModel(_stopsRepository);
         _testStopController = new StopsController(_stopsDataModel);
     }
 

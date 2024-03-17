@@ -1,6 +1,10 @@
 using System;
 using System.Linq;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
@@ -10,7 +14,7 @@ namespace LiveTramsMCR.Tests.TestModels.V1.TestStops;
 /// <summary>
 ///     Test class for the StopLookup class
 /// </summary>
-public class TestStopLookup
+public class TestStopLookup : BaseNunitTest
 {
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
@@ -18,7 +22,7 @@ public class TestStopLookup
     private const string RoutePath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private ImportedResources? _importedResources;
-    private MockStopsRepository? _mockStopsRepository;
+    private IStopsRepository? _stopsRepository;
 
     private ResourceLoader? _resourceLoader;
     private ResourcesConfig? _resourcesConfig;
@@ -42,8 +46,9 @@ public class TestStopLookup
 
         _resourceLoader = new ResourceLoader(_resourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
-        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
-        _stopLookup = new StopLookup(_mockStopsRepository);
+        _stopsRepository = TestHelper.GetService<IStopsRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
+        _stopLookup = new StopLookup(_stopsRepository);
     }
 
     /// <summary>

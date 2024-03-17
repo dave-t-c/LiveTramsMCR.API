@@ -5,6 +5,7 @@ using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V2;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Responses;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
@@ -58,7 +59,8 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
         var stopsV1Loader = new StopLoader(resourcesConfig);
         var stopsV1 = stopsV1Loader.ImportStops();
 
-        var mockStopsV1Repository = new MockStopsRepository(stopsV1);
+        var stopsV1Repository = TestHelper.GetService<IStopsRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, stopsV1);
 
         var stopsV2Loader = new StopV2Loader(resourcesConfig);
         _importedStopV2S = stopsV2Loader.ImportStops();
@@ -95,8 +97,8 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
         var serviceRequesterWithInterchange = new MockServiceRequester(mockInterchangeHttpResponse!);
         var serviceRequester = new MockServiceRequester(mockHttpResponse!);
 
-        _serviceProcessorWithInterchange = new ServiceProcessor(serviceRequesterWithInterchange, mockStopsV1Repository);
-        _serviceProcessor = new ServiceProcessor(serviceRequester, mockStopsV1Repository);
+        _serviceProcessorWithInterchange = new ServiceProcessor(serviceRequesterWithInterchange, stopsV1Repository);
+        _serviceProcessor = new ServiceProcessor(serviceRequester, stopsV1Repository);
         _nextServiceIdentifierV2 = new NextServiceIdentifierV2();
 
         _journeyPlannerModelV2Interchange = new JourneyPlannerModelV2(

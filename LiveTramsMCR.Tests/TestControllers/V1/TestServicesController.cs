@@ -1,8 +1,11 @@
 using System.Linq;
 using System.Net;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using LiveTramsMCR.Tests.TestModels.V1.TestServices;
@@ -18,7 +21,7 @@ public class TestServicesController : BaseNunitTest
 {
     private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
     private ImportedResources? _importedResources;
-    private MockStopsRepository? _mockStopsRepository;
+    private IStopsRepository? _stopsRepository;
     private IRequester? _requester;
     private ResourcesConfig? _resourcesConfig;
     private ServiceController? _serviceController;
@@ -54,9 +57,9 @@ public class TestServicesController : BaseNunitTest
         
         _requester = new MockServiceRequester(mockHttpResponse!);
 
-        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
-
-        _servicesDataModel = new ServicesDataModel(_mockStopsRepository, _requester);
+        _stopsRepository = TestHelper.GetService<IStopsRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
+        _servicesDataModel = new ServicesDataModel(_stopsRepository, _requester);
 
         _serviceController = new ServiceController(_servicesDataModel);
     }
