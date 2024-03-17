@@ -1,6 +1,12 @@
+using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Tests.Configuration;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +17,7 @@ namespace LiveTramsMCR.Tests.TestControllers.V1;
 /// <summary>
 ///     Test class for the
 /// </summary>
+[TestFixture]
 public class TestJourneyPlannerController
 {
     private ImportedResources? _importedResources;
@@ -39,6 +46,19 @@ public class TestJourneyPlannerController
         _journeyPlanner = new JourneyPlanner(_mockRouteRepository);
         _journeyPlannerModel = new JourneyPlannerModel(_mockStopsRepository, _journeyPlanner);
         _journeyPlannerController = new JourneyPlannerController(_journeyPlannerModel);
+
+        IStopsRepository stopsRepository = TestHelper.GetService<IStopsRepository>();
+
+        var stop = new Stop()
+        {
+            StopName = "Testing"
+        };
+
+        var stops = new List<Stop> { stop };
+        
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, stops);
+        
+        stopsRepository.GetAll();
     }
 
     [TearDown]

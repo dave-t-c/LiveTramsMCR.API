@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
@@ -67,12 +68,12 @@ public class Startup
         services.AddSingleton(apiOptions);
 
         var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
-        var db = mongoClient.GetDatabase("livetramsmcr");
-        var stopsMongoCollection = db.GetCollection<Stop>("stops");
-        var stopsV2MongoCollection = db.GetCollection<StopV2>("stopsV2");
-        var routesMongoCollection = db.GetCollection<Route>("routes");
-        var routesV2MongoCollection = db.GetCollection<RouteV2>("routesV2");
-        var routeTimesMongoCollection = db.GetCollection<RouteTimes>("route-times");
+        var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
+        var stopsMongoCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
+        var stopsV2MongoCollection = db.GetCollection<StopV2>(AppConfiguration.StopsV2CollectionName);
+        var routesMongoCollection = db.GetCollection<Route>(AppConfiguration.RoutesCollectionName);
+        var routesV2MongoCollection = db.GetCollection<RouteV2>(AppConfiguration.RoutesV2CollectionName);
+        var routeTimesMongoCollection = db.GetCollection<RouteTimes>(AppConfiguration.RouteTimesCollectionName);
 
         IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
         IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection);

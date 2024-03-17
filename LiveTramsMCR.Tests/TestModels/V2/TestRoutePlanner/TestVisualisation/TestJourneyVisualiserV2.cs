@@ -9,7 +9,7 @@ using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
-using static LiveTramsMCR.Tests.Configuration.Configuration;
+using static LiveTramsMCR.Tests.Configuration.TestAppConfiguration;
 
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner.TestVisualisation;
 

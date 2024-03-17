@@ -4,7 +4,7 @@ namespace LiveTramsMCR.Configuration;
 /// Configuration vars
 /// This should eventually be injected in instead of just used.
 /// </summary>
-internal static partial class Configuration
+public static partial class AppConfiguration
 {
     
 }

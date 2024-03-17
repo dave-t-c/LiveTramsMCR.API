@@ -13,7 +13,7 @@ using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using LiveTramsMCR.Tests.TestModels.V1.TestServices;
 using NUnit.Framework;
 
-using static LiveTramsMCR.Tests.Configuration.Configuration;
+using static LiveTramsMCR.Tests.Configuration.TestAppConfiguration;
 
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 
