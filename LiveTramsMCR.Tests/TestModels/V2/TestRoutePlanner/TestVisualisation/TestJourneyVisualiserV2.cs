@@ -1,19 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Configuration;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
+using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.RoutePlanner.Visualisation;
 using LiveTramsMCR.Models.V2.Stops;
-using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Models.V2.Stops.Data;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
-using static LiveTramsMCR.Tests.Configuration.Configuration;
+using static LiveTramsMCR.Tests.Configuration.TestAppConfiguration;
 
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner.TestVisualisation;
 
-public class TestJourneyVisualiserV2
+public class TestJourneyVisualiserV2 : BaseNunitTest
 {
     private const string StopsV1ResourcePath = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
@@ -45,7 +50,8 @@ public class TestJourneyVisualiserV2
         var stopsV2Loader = new StopV2Loader(resourcesConfig);
         _importedStopV2S = stopsV2Loader.ImportStops();
 
-        var mockStopsV2Repository = new MockStopsRepositoryV2(_importedStopV2S);
+        var stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedStopV2S);
 
         var routesV1Loader = new RouteLoader(resourcesConfig, stopsV1);
         var routesV1 = routesV1Loader.ImportRoutes();
@@ -56,10 +62,14 @@ public class TestJourneyVisualiserV2
         var routeTimesLoader = new RouteTimesLoader(resourcesConfig);
         var routeTimes = routeTimesLoader.ImportRouteTimes();
 
-        var mockRouteRepositoryV1 = new MockRouteRepository(routesV1, routeTimes);
-        var mockRouteRepositoryV2 = new MockRouteRepositoryV2(routesV2, mockStopsV2Repository);
+        var routeRepositoryV1 = TestHelper.GetService<IRouteRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, routesV1);
+        MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, routeTimes);
+        
+        var routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesV2CollectionName, routesV2);
 
-        _journeyPlannerV2 = new JourneyPlannerV2(mockRouteRepositoryV1, mockRouteRepositoryV2);
+        _journeyPlannerV2 = new JourneyPlannerV2(routeRepositoryV1, routeRepositoryV2);
         _journeyVisualiserV2 = new JourneyVisualiserV2();
         
         _altrinchamStopV2 = _importedStopV2S.Single(stop => stop.Tlaref == "ALT");

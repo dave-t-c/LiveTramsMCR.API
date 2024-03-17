@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Models.V2.Stops.Data;
-using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
@@ -11,11 +13,11 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestStops;
 /// <summary>
 ///     Test class for StopLookupV2
 /// </summary>
-public class TestStopLookupV2
+public class TestStopLookupV2 : BaseNunitTest
 {
     private const string StopsV2ResourcePathConst = "../../../Resources/StopsV2.json";
     private List<StopV2>? _importedStops;
-    private IStopsRepositoryV2? _mockStopsRepository;
+    private IStopsRepositoryV2? _stopsRepositoryV2;
     private StopLookupV2? _stopLookupV2;
 
     [SetUp]
@@ -27,8 +29,9 @@ public class TestStopLookupV2
         };
         var stopLoaderV2 = new StopV2Loader(resourcesConfig);
         _importedStops = stopLoaderV2.ImportStops();
-        _mockStopsRepository = new MockStopsRepositoryV2(_importedStops);
-        _stopLookupV2 = new StopLookupV2(_mockStopsRepository);
+        _stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedStops);
+        _stopLookupV2 = new StopLookupV2(_stopsRepositoryV2);
     }
 
     /// <summary>

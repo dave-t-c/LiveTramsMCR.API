@@ -1,15 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V2;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Responses;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.RoutePlanner.ServiceInformation.NextService;
 using LiveTramsMCR.Models.V2.RoutePlanner.Visualisation;
 using LiveTramsMCR.Models.V2.Stops;
-using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Models.V2.Stops.Data;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using LiveTramsMCR.Tests.TestModels.V1.TestServices;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +26,7 @@ namespace LiveTramsMCR.Tests.TestControllers.V2;
 /// <summary>
 /// Test class for the journey planner controller v2.
 /// </summary>
-public class TestJourneyPlannerControllerV2
+public class TestJourneyPlannerControllerV2 : BaseNunitTest
 {
     private const string JourneyPlannerV2WithInterchangeResponsePath = "../../../Resources/TestJourneyPlannerV2/AltrinchamPiccadillyAshtonServices.json";
     private const string JourneyPlannerV2ResponsePath = "../../../Resources/TestJourneyPlannerV2/AltrinchamSaleServices.json";
@@ -54,13 +60,16 @@ public class TestJourneyPlannerControllerV2
         var stopsV1Loader = new StopLoader(resourcesConfig);
         var stopsV1 = stopsV1Loader.ImportStops();
 
-        var mockStopsV1Repository = new MockStopsRepository(stopsV1);
+        var stopsV1Repository = TestHelper.GetService<IStopsRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, stopsV1);
 
         var stopsV2Loader = new StopV2Loader(resourcesConfig);
         _importedStopV2S = stopsV2Loader.ImportStops();
 
-        var mockStopsV2Repository = new MockStopsRepositoryV2(_importedStopV2S);
-        _stopLookupV2 = new StopLookupV2(mockStopsV2Repository);
+        var stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedStopV2S);
+        
+        _stopLookupV2 = new StopLookupV2(stopsRepositoryV2);
 
         var routesV1Loader = new RouteLoader(resourcesConfig, stopsV1);
         var routesV1 = routesV1Loader.ImportRoutes();
@@ -71,12 +80,16 @@ public class TestJourneyPlannerControllerV2
         var routeTimesLoader = new RouteTimesLoader(resourcesConfig);
         var routeTimes = routeTimesLoader.ImportRouteTimes();
 
-        var mockRouteRepositoryV1 = new MockRouteRepository(routesV1, routeTimes);
-        var mockRouteRepositoryV2 = new MockRouteRepositoryV2(_importedRouteV2S, mockStopsV2Repository);
+        var routeRepositoryV1 = TestHelper.GetService<IRouteRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, routesV1);
+        MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, routeTimes);
+        
+        var routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesV2CollectionName, _importedRouteV2S);
 
         var journeyVisualiserV2 = new JourneyVisualiserV2();
 
-        _journeyPlannerV2 = new JourneyPlannerV2(mockRouteRepositoryV1, mockRouteRepositoryV2);
+        _journeyPlannerV2 = new JourneyPlannerV2(routeRepositoryV1, routeRepositoryV2);
 
         var mockInterchangeHttpResponse =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(
@@ -89,8 +102,8 @@ public class TestJourneyPlannerControllerV2
         var serviceRequesterWithInterchange = new MockServiceRequester(mockInterchangeHttpResponse!);
         var serviceRequester = new MockServiceRequester(mockHttpResponse!);
 
-        _serviceProcessorWithInterchange = new ServiceProcessor(serviceRequesterWithInterchange, mockStopsV1Repository);
-        _serviceProcessor = new ServiceProcessor(serviceRequester, mockStopsV1Repository);
+        _serviceProcessorWithInterchange = new ServiceProcessor(serviceRequesterWithInterchange, stopsV1Repository);
+        _serviceProcessor = new ServiceProcessor(serviceRequester, stopsV1Repository);
         _nextServiceIdentifierV2 = new NextServiceIdentifierV2();
 
         _journeyPlannerModelV2Interchange = new JourneyPlannerModelV2(

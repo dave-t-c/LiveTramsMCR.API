@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
-using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
@@ -12,7 +15,7 @@ namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 /// <summary>
 ///     Test class for the JourneyTimeFinder class
 /// </summary>
-public class TestJourneyTimeFinder
+public class TestJourneyTimeFinder : BaseNunitTest
 {
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
@@ -21,7 +24,7 @@ public class TestJourneyTimeFinder
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private List<Stop>? _importedStops;
     private JourneyTimeFinder? _journeyTimeFinder;
-    private MockRouteRepository? _mockRouteRepository;
+    private IRouteRepository? _routeRepository;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
     private List<RouteTimes>? _routeTimes;
@@ -53,8 +56,10 @@ public class TestJourneyTimeFinder
         _routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
         _routeTimes = _routeTimesLoader.ImportRouteTimes();
 
-        _mockRouteRepository = new MockRouteRepository(_routes, _routeTimes);
-        _journeyTimeFinder = new JourneyTimeFinder(_mockRouteRepository);
+        _routeRepository = TestHelper.GetService<IRouteRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _routes);
+        MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _routeTimes);
+        _journeyTimeFinder = new JourneyTimeFinder(_routeRepository);
     }
 
     /// <summary>

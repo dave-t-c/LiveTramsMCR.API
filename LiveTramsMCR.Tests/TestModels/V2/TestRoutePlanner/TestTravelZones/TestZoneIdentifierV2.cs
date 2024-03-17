@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.RoutePlanner;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.RoutePlanner.TravelZones;
 using LiveTramsMCR.Models.V2.Stops;
-using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Models.V2.Stops.Data;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
@@ -16,7 +21,7 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner.TestTravelZones;
 /// <summary>
 /// Test class for the travel zone identifier.
 /// </summary>
-public class TestZoneIdentifierV2
+public class TestZoneIdentifierV2 : BaseNunitTest
 {
     private const string StopsV1ResourcePath = "../../../Resources/TestRoutePlanner/stops.json";
     private const string RoutesV2ResourcePath = "../../../Resources/RoutesV2.json";
@@ -25,9 +30,9 @@ public class TestZoneIdentifierV2
     private List<Stop>? _importedStopsV1S;
     private List<StopV2>? _importedStopsV2S;
     private JourneyPlannerV2? _journeyPlanner;
-    private MockRouteRepository? _mockRouteRepository;
-    private MockRouteRepositoryV2? _mockRouteRepositoryV2;
-    private MockStopsRepositoryV2? _mockStopsRepositoryV2;
+    private IRouteRepository? _routeRepository;
+    private IRouteRepositoryV2? _routeRepositoryV2;
+    private IStopsRepositoryV2? _stopsRepositoryV2;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
     private List<RouteV2>? _routesV2S;
@@ -64,10 +69,17 @@ public class TestZoneIdentifierV2
 
         _routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
         _routeTimes = _routeTimesLoader.ImportRouteTimes();
-        _mockStopsRepositoryV2 = new MockStopsRepositoryV2(_importedStopsV2S);
-        _mockRouteRepository = new MockRouteRepository(_routes, _routeTimes);
-        _mockRouteRepositoryV2 = new MockRouteRepositoryV2(_routesV2S, _mockStopsRepositoryV2);
-        _journeyPlanner = new JourneyPlannerV2(_mockRouteRepository, _mockRouteRepositoryV2);
+        _stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedStopsV2S);
+        
+        _routeRepository = TestHelper.GetService<IRouteRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _routes);
+        MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _routeTimes);
+        
+        _routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesV2CollectionName, _routesV2S);
+        
+        _journeyPlanner = new JourneyPlannerV2(_routeRepository, _routeRepositoryV2);
         _zoneIdentifierV2 = new ZoneIdentifierV2();
     }
 

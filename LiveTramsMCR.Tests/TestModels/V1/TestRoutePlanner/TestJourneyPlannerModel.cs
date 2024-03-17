@@ -1,19 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.RoutePlanner;
-using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Models.V1.RoutePlanner.Data;
+using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
+#pragma warning disable CS8604 // Possible null reference argument.
 
 namespace LiveTramsMCR.Tests.TestModels.V1.TestRoutePlanner;
 
 /// <summary>
 ///     Test class for the journey planner model.
 /// </summary>
-public class TestJourneyPlannerModel
+public class TestJourneyPlannerModel : BaseNunitTest
 {
-
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
     private const string TlarefsToIdsPath = "../../../Resources/TLAREFs_to_IDs.json";
     private const string RoutesResourcePath = "../../../Resources/TestRoutePlanner/routes.json";
@@ -22,8 +26,8 @@ public class TestJourneyPlannerModel
     private ImportedResources? _importedResources;
     private JourneyPlanner? _journeyPlanner;
     private JourneyPlannerModel? _journeyPlannerModel;
-    private MockRouteRepository? _mockRouteRepository;
-    private MockStopsRepository? _mockStopsRepository;
+    private IRouteRepository? _routeRepository;
+    private IStopsRepository? _stopsRepository;
     private ResourceLoader? _resourceLoader;
     private List<Route>? _routes;
     private ResourcesConfig? _validResourcesConfig;
@@ -43,13 +47,16 @@ public class TestJourneyPlannerModel
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
         _importedResources = _resourceLoader.ImportResources();
 
-        _routes = _importedResources?.ImportedRoutes;
-        _mockRouteRepository =
-            new MockRouteRepository(_importedResources?.ImportedRoutes!, _importedResources?.ImportedRouteTimes!);
+        _routeRepository = TestHelper.GetService<IRouteRepository>();
+        _routes = _importedResources.ImportedRoutes;
+        MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _importedResources?.ImportedRoutes);
+        MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _importedResources?.ImportedRouteTimes);
 
-        _mockStopsRepository = new MockStopsRepository(_importedResources?.ImportedStops!);
-        _journeyPlanner = new JourneyPlanner(_mockRouteRepository);
-        _journeyPlannerModel = new JourneyPlannerModel(_mockStopsRepository, _journeyPlanner);
+        _stopsRepository = TestHelper.GetService<IStopsRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources?.ImportedStops);
+
+        _journeyPlanner = new JourneyPlanner(_routeRepository);
+        _journeyPlannerModel = new JourneyPlannerModel(_stopsRepository, _journeyPlanner);
     }
 
     [TearDown]
@@ -80,7 +87,7 @@ public class TestJourneyPlannerModel
         Assert.IsFalse(plannedRoute?.RequiresInterchange);
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         Assert.AreEqual(1, plannedRoute?.RoutesFromOrigin.Count);
-        Assert.AreEqual(purpleRoute, plannedRoute?.RoutesFromOrigin.First());
+        Assert.AreEqual(purpleRoute?.Name, plannedRoute?.RoutesFromOrigin.First().Name);
     }
 
     /// <summary>
@@ -100,10 +107,10 @@ public class TestJourneyPlannerModel
         Assert.AreEqual(ashtonStop, plannedRoute?.DestinationStop);
         var purpleRoute = _routes?.First(route => route.Name == "Purple");
         Assert.AreEqual(1, plannedRoute?.RoutesFromOrigin.Count);
-        Assert.AreEqual(purpleRoute, plannedRoute?.RoutesFromOrigin.First());
+        Assert.AreEqual(purpleRoute?.Name, plannedRoute?.RoutesFromOrigin.First().Name);
         var blueRoute = _routes?.First(route => route.Name == "Blue");
         Assert.AreEqual(1, plannedRoute?.RoutesFromInterchange.Count);
-        Assert.AreEqual(blueRoute, plannedRoute?.RoutesFromInterchange.First());
+        Assert.AreEqual(blueRoute?.Name, plannedRoute?.RoutesFromInterchange.First().Name);
     }
 
     /// <summary>

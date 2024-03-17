@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.Services;
+using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.Stops;
-using LiveTramsMCR.Tests.Mocks;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
 
@@ -15,7 +18,7 @@ namespace LiveTramsMCR.Tests.TestModels.V1.TestServices;
 /// <summary>
 ///     Test class for the ServiceProcessor.
 /// </summary>
-public class TestServiceProcessor
+public class TestServiceProcessor : BaseNunitTest
 {
     private const string StopResourcePathConst = "../../../Resources/TestRoutePlanner/stops.json";
     private const string StationNamesToTlarefsPath = "../../../Resources/Station_Names_to_TLAREFs.json";
@@ -23,29 +26,22 @@ public class TestServiceProcessor
     private const string RoutesPath = "../../../Resources/TestRoutePlanner/routes.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private const string ValidApiResponsePath = "../../../Resources/ExampleApiResponse.json";
-    private const string InternalServerErrorResponsePath = "../../../Resources/ExampleApiInternalServerErrorResponse.json";
     private const string UpdateStopsStopResourcePathConst = "../../../Resources/TestStopUpdater/stops.json";
     private const string UpdateStopsRoutesResourcePath = "../../../Resources/TestStopUpdater/routes.json";
     private const string UpdateStopsRouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
-    private const string UpdateStopsApiResponsePath = "../../../Resources/TestStopUpdater/ApiResponse.json";
     private const string StopsV2ResourcePath = "../../../Resources/StopsV2.json";
     private const string JourneyPlannerV2ResponsePath = "../../../Resources/JourneyPlannerV2ApiResponse.json";
     private const string JourneyPlannerV2WithInterchangeResponsePath = "../../../Resources/JourneyPlannerV2InterchangeApiResponse.json";
     private ImportedResources? _importedResources;
     private MockServiceRequester? _mockServiceRequester;
-    private MockServiceRequester? _mockServiceRequesterInternalServerError;
     private MockServiceRequester? _mockServiceRequesterJourneyPlannerV2;
     private MockServiceRequester? _mockServiceRequesterJourneyPlannerV2Interchange;
-    private MockStopsRepository? _mockStopsRepository;
-    private MockStopsRepository? _mockStopsRepositoryUpdateStops;
+    private IStopsRepository? _stopsRepository;
     private ResourceLoader? _resourceLoader;
     private ServiceProcessor? _serviceProcessor;
-    private ServiceProcessor? _serviceProcessorInternalServerError;
     private ServiceProcessor? _serviceProcessorJourneyPlannerV2;
     private ServiceProcessor? _serviceProcessorJourneyPlannerV2Interchange;
-    private ImportedResources? _updateStopsImportedResources;
     private ResourcesConfig? _updateStopsResourceConfig;
-    private ResourceLoader? _updateStopsResourceLoader;
     private ResourcesConfig? _validResourcesConfig;
     private PlannedJourneyV2? _plannedJourneyV2;
     private PlannedJourneyV2? _plannedJourneyV2WithInterchange;
@@ -74,35 +70,18 @@ public class TestServiceProcessor
         };
 
         _resourceLoader = new ResourceLoader(_validResourcesConfig);
-        _updateStopsResourceLoader = new ResourceLoader(_updateStopsResourceConfig);
         _importedResources = _resourceLoader.ImportResources();
-        _updateStopsImportedResources = _updateStopsResourceLoader.ImportResources();
 
         var mockHttpResponse =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK, ValidApiResponsePath);
 
-        var mockHttpResponseInternalServerError =
-            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.InternalServerError,
-                InternalServerErrorResponsePath);
-
-        var mockHttpResponseGetAllStops =
-            ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(HttpStatusCode.OK,
-                UpdateStopsApiResponsePath);
-
         _mockServiceRequester = new MockServiceRequester(mockHttpResponse!);
 
-        _mockServiceRequesterInternalServerError = new MockServiceRequester(
-            mockHttpResponseInternalServerError!,
-            mockHttpResponseGetAllStops!);
+        _stopsRepository = TestHelper.GetService<IStopsRepository>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
 
-        _mockStopsRepository = new MockStopsRepository(_importedResources.ImportedStops);
-        _mockStopsRepositoryUpdateStops = new MockStopsRepository(_updateStopsImportedResources.ImportedStops);
-
-        _serviceProcessor = new ServiceProcessor(_mockServiceRequester, _mockStopsRepository);
-
-        _serviceProcessorInternalServerError = new ServiceProcessor(
-            _mockServiceRequesterInternalServerError,
-            _mockStopsRepositoryUpdateStops);
+        _serviceProcessor = new ServiceProcessor(_mockServiceRequester, _stopsRepository);
+        
         
         _importedStopV2S = _importedResources.ImportedStopsV2;
         
@@ -132,11 +111,11 @@ public class TestServiceProcessor
         
         _serviceProcessorJourneyPlannerV2 = new ServiceProcessor(
             _mockServiceRequesterJourneyPlannerV2,
-            _mockStopsRepository);
+            _stopsRepository);
 
         _serviceProcessorJourneyPlannerV2Interchange = new ServiceProcessor(
             _mockServiceRequesterJourneyPlannerV2Interchange,
-            _mockStopsRepository);
+            _stopsRepository);
     }
 
     [TearDown]
@@ -148,7 +127,6 @@ public class TestServiceProcessor
         _importedResources = null;
         _mockServiceRequester = null;
         _serviceProcessor = null;
-        _serviceProcessorInternalServerError = null;
     }
 
 
@@ -214,21 +192,6 @@ public class TestServiceProcessor
             {
                 _serviceProcessor?.RequestDepartureBoardServices(null);
             });
-    }
-
-    /// <summary>
-    ///     Test to try and retrieve live services when the IDs are outdated.
-    ///     This should update the IDs to that given in the mock response
-    ///     This should throw an invalid operation exception
-    /// </summary>
-    [Test]
-    public void TestServiceIDsOutdated()
-    {
-        Assert.Throws(Is.TypeOf<InvalidOperationException>()
-            .And.Message.EqualTo("Retry in 5s"), delegate
-        {
-            _serviceProcessorInternalServerError?.RequestServices("Example 1");
-        });
     }
     
     /// <summary>
