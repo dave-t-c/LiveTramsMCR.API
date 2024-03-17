@@ -27,6 +27,8 @@ jobs:
         run: dotnet test --no-restore --verbosity normal
       - name: Install dotnet coverage tool
         run: dotnet tool install --global dotnet-coverage
+      - name: Install SonarScanner for dotnet
+        run: dotnet tool install --global dotnet-sonarscanner --version 6.2
       - name: Run SonarCloud coverage analysis
         run: |
           dotnet sonarscanner begin /k:"${{ secrets.SONAR_PROJECT_KEY }}"
