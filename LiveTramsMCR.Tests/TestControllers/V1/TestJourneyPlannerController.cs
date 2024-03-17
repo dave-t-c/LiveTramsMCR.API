@@ -5,6 +5,7 @@ using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Configuration;
 using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
@@ -18,7 +19,7 @@ namespace LiveTramsMCR.Tests.TestControllers.V1;
 ///     Test class for the
 /// </summary>
 [TestFixture]
-public class TestJourneyPlannerController
+public class TestJourneyPlannerController : BaseNunitTest
 {
     private ImportedResources? _importedResources;
     private IJourneyPlanner? _journeyPlanner;
