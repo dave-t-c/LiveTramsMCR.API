@@ -7,6 +7,7 @@ using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
+using LiveTramsMCR.Models.V2.Stops.Data;
 using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
@@ -30,7 +31,7 @@ public class TestJourneyPlannerV2 : BaseNunitTest
     private JourneyPlannerV2? _journeyPlanner;
     private IRouteRepository? _routeRepository;
     private MockRouteRepositoryV2? _mockRouteRepositoryV2;
-    private MockStopsRepositoryV2? _mockStopsRepositoryV2;
+    private IStopsRepositoryV2? _stopsRepositoryV2;
     private RouteLoader? _routeLoader;
     private List<Route>? _routes;
     private List<RouteV2>? _routesV2S;
@@ -72,11 +73,13 @@ public class TestJourneyPlannerV2 : BaseNunitTest
 
         _routeTimesLoader = new RouteTimesLoader(_validResourcesConfig);
         _routeTimes = _routeTimesLoader.ImportRouteTimes();
-        _mockStopsRepositoryV2 = new MockStopsRepositoryV2(_importedStopsV2S);
+        _stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedStopsV2S);
+        
         _routeRepository = TestHelper.GetService<IRouteRepository>();
         MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _routes);
         MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _routeTimes);
-        _mockRouteRepositoryV2 = new MockRouteRepositoryV2(_routesV2S, _mockStopsRepositoryV2);
+        _mockRouteRepositoryV2 = new MockRouteRepositoryV2(_routesV2S, _stopsRepositoryV2);
         _journeyPlanner = new JourneyPlannerV2(_routeRepository, _mockRouteRepositoryV2);
     }
 

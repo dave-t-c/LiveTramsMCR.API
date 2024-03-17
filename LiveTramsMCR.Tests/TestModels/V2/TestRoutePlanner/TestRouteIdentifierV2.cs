@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
+using LiveTramsMCR.Models.V2.Stops.Data;
+using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Extensions;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
@@ -13,14 +17,14 @@ namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 /// <summary>
 ///     Test class for the RouteIdentifier.
 /// </summary>
-public class TestRouteIdentifierV2
+public class TestRouteIdentifierV2 : BaseNunitTest
 {
     private const string RoutesResourcePath = "../../../Resources/RoutesV2.json";
     private const string StopResourcePathConst = "../../../Resources/StopsV2.json";
     private const string RouteTimesPath = "../../../Resources/TestRoutePlanner/route-times.json";
     private List<StopV2>? _importedStops;
     private MockRouteRepositoryV2? _mockRouteRepositoryV2;
-    private MockStopsRepositoryV2? _mockStopsRepositoryV2;
+    private IStopsRepositoryV2? _stopsRepositoryV2;
     private RouteIdentifierV2? _routeIdentifier;
     private List<RouteV2>? _routes;
     private RouteV2Loader? _routeV2Loader;
@@ -42,15 +46,15 @@ public class TestRouteIdentifierV2
 
         _stopV2Loader = new StopV2Loader(_validResourcesConfig);
         _importedStops = _stopV2Loader.ImportStops();
-
-        _mockStopsRepositoryV2 = new MockStopsRepositoryV2(_importedStops);
+        _stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedStops);
 
         _routeV2Loader = new RouteV2Loader(_validResourcesConfig);
         _routes = _routeV2Loader.ImportRoutes();
 
         _mockRouteRepositoryV2 = new MockRouteRepositoryV2(
             _routes,
-            _mockStopsRepositoryV2);
+            _stopsRepositoryV2);
 
         _routeIdentifier = new RouteIdentifierV2(_mockRouteRepositoryV2);
     }

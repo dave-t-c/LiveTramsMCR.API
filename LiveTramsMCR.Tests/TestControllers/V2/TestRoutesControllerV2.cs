@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V2;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops.Data;
+using LiveTramsMCR.Tests.Common;
+using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +14,7 @@ using NUnit.Framework;
 
 namespace LiveTramsMCR.Tests.TestControllers.V2;
 
-public class TestRoutesControllerV2
+public class TestRoutesControllerV2 : BaseNunitTest
 {
     private ImportedResources? _importedResources;
 
@@ -29,7 +32,8 @@ public class TestRoutesControllerV2
             RoutesV2ResourcePath = "../../../Resources/RoutesV2.json", StopV2ResourcePath = "../../../Resources/StopsV2.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _stopsRepositoryV2 = new MockStopsRepositoryV2(_importedResources.ImportedStopsV2);
+        _stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedResources.ImportedStopsV2);
         _routeRepositoryV2 = new MockRouteRepositoryV2(_importedResources.ImportedRoutesV2, _stopsRepositoryV2);
         _routesDataModel = new RoutesDataModelV2(_routeRepositoryV2);
         _routesControllerV2 = new RoutesControllerV2(_routesDataModel);
