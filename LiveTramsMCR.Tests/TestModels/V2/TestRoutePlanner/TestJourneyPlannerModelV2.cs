@@ -6,6 +6,7 @@ using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V1.Services;
 using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.JourneyPlanner;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.RoutePlanner.ServiceInformation.NextService;
@@ -14,7 +15,6 @@ using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Models.V2.Stops.Data;
 using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
-using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using LiveTramsMCR.Tests.TestModels.V1.TestServices;
 using NUnit.Framework;
@@ -78,11 +78,13 @@ public class TestJourneyPlannerModelV2 : BaseNunitTest
         var routeRepositoryV1 = TestHelper.GetService<IRouteRepository>();
         MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, routesV1);
         MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, routeTimes);
-        var mockRouteRepositoryV2 = new MockRouteRepositoryV2(_importedRouteV2S, stopsRepositoryV2);
+        
+        var routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesV2CollectionName, _importedRouteV2S);
 
         var journeyVisualiserV2 = new JourneyVisualiserV2();
 
-        _journeyPlannerV2 = new JourneyPlannerV2(routeRepositoryV1, mockRouteRepositoryV2);
+        _journeyPlannerV2 = new JourneyPlannerV2(routeRepositoryV1, routeRepositoryV2);
 
         var mockInterchangeHttpResponse =
             ImportServicesResponse.ImportHttpResponseMessageWithUnformattedServices(

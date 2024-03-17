@@ -7,7 +7,6 @@ using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops.Data;
 using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
-using LiveTramsMCR.Tests.Mocks;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
@@ -34,7 +33,10 @@ public class TestRoutesControllerV2 : BaseNunitTest
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
         MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedResources.ImportedStopsV2);
-        _routeRepositoryV2 = new MockRouteRepositoryV2(_importedResources.ImportedRoutesV2, _stopsRepositoryV2);
+
+        _routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.RoutesV2CollectionName, _importedResources.ImportedRoutesV2);
+        
         _routesDataModel = new RoutesDataModelV2(_routeRepositoryV2);
         _routesControllerV2 = new RoutesControllerV2(_routesDataModel);
     }
