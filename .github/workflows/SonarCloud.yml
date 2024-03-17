@@ -21,7 +21,7 @@ jobs:
       - name: Install dotnet-covereage
         run: dotnet tool install --global dotnet-coverage
       - name: Start docker containers
-        run: docker-compose -f docker-compose.windows.yml up -d
+        run: docker-compose up -d
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
