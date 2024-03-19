@@ -6,7 +6,7 @@ using MongoDB.Driver;
 namespace LiveTramsMCR.DataSync.SynchronizationTasks;
 
 /// <inheritdoc />
-public class StopsSynchronization : ISynchronizationTask<Stop>
+public class StopSynchronization : ISynchronizationTask<Stop>
 {
     /// <inheritdoc />
     public Task SyncData(IMongoClient mongoClient, IEnumerable<Stop> staticData)
