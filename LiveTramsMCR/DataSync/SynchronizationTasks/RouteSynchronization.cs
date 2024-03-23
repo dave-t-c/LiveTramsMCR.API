@@ -44,7 +44,7 @@ public class RouteSynchronization : ISynchronizationTask<Route>
     {
         foreach (var routeToDelete in routesToDelete)
         {
-            await routesCollection.FindOneAndDeleteAsync(stop => stop.Name == routeToDelete.Name);
+            await routesCollection.FindOneAndDeleteAsync(route => route.Name == routeToDelete.Name);
         }
     }
 
@@ -52,9 +52,9 @@ public class RouteSynchronization : ISynchronizationTask<Route>
         IMongoCollection<Route> routesCollection,
         IEnumerable<Route> routesToUpdate)
     {
-        foreach (var stop in routesToUpdate)
+        foreach (var route in routesToUpdate)
         {
-            await routesCollection.FindOneAndReplaceAsync(existingStop => existingStop.Name == stop.Name, stop);
+            await routesCollection.FindOneAndReplaceAsync(existingRoute => existingRoute.Name == route.Name, route);
         }
     }
 }

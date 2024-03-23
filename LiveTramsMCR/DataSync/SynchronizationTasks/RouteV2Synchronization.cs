@@ -53,9 +53,9 @@ public class RouteV2Synchronization : ISynchronizationTask<RouteV2>
         IMongoCollection<RouteV2> routesCollection,
         IEnumerable<RouteV2> routesToUpdate)
     {
-        foreach (var stop in routesToUpdate)
+        foreach (var route in routesToUpdate)
         {
-            await routesCollection.FindOneAndReplaceAsync(existingStop => existingStop.Name == stop.Name, stop);
+            await routesCollection.FindOneAndReplaceAsync(existingStop => existingStop.Name == route.Name, route);
         }
     }
 }
