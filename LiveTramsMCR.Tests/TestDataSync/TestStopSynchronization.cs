@@ -23,6 +23,7 @@ public class TestStopSynchronization : BaseNunitTest
     private MongoClient? _mongoClient;
     private IStopsRepository? _stopsRepository;
     private List<Stop>? _stops;
+    private IMongoCollection<Stop> _stopsCollection;
     
     [SetUp]
     public void SetUp()
@@ -32,6 +33,8 @@ public class TestStopSynchronization : BaseNunitTest
         _stopsRepository = TestHelper.GetService<IStopsRepository>();
         var stopsPath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.StopsPath);
         _stops = FileHelper.ImportFromJsonFile<List<Stop>>(stopsPath);
+        var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
+        _stopsCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
 
     }
 
@@ -63,9 +66,7 @@ public class TestStopSynchronization : BaseNunitTest
     [Test]
     public async Task TestUpdateExistingStop()
     {
-        var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
-        var stopsCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
-        await stopsCollection.InsertManyAsync(_stops);
+        await _stopsCollection.InsertManyAsync(_stops);
 
         var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");
 
@@ -83,8 +84,50 @@ public class TestStopSynchronization : BaseNunitTest
     }
 
     [Test]
-    public void TestDeleteExistingStop()
+    public async Task TestDeleteExistingStop()
     {
-        Assert.Fail();
+        await _stopsCollection.InsertManyAsync(_stops);
+        
+        _stops.RemoveAll(stop => stop.Tlaref == "ALT");
+
+        await _stopSynchronization.SyncData(_mongoClient, _stops);
+        
+        var updatedStops = _stopsRepository.GetAll();
+        Assert.AreEqual(_stops.Count, updatedStops.Count);
+        Assert.IsNull(updatedStops.FirstOrDefault(stop => stop.Tlaref == "ALT"));
+    }
+
+    [Test]
+    public async Task TestCreateUpdateDelete()
+    {
+        await _stopsCollection.InsertManyAsync(_stops);
+        
+        var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");
+        altrinchamStop.StopName = "Updated stop name";
+        var altrinchamIndex = _stops.FindIndex(stop => stop.Tlaref == "ALT");
+        _stops[altrinchamIndex] = altrinchamStop;
+        
+        _stops.RemoveAll(stop => stop.Tlaref == "ABM");
+
+        var createdStop = new Stop()
+        {
+            Tlaref = "TST",
+            StopName = "Test stop"
+        };
+        
+        _stops.Add(createdStop);
+
+        await _stopSynchronization.SyncData(_mongoClient, _stops);
+        
+        var updatedStops = _stopsRepository.GetAll();
+        Assert.AreEqual(_stops.Count, updatedStops.Count);
+
+        var updatedAltrinchamStop = updatedStops.First(stop => stop.Tlaref == "ALT");
+        Assert.AreEqual("Updated stop name", updatedAltrinchamStop.StopName);
+        
+        Assert.IsNull(updatedStops.FirstOrDefault(stop => stop.Tlaref == "ABM"));
+
+        var createdStopResponse = updatedStops.FirstOrDefault(stop => stop.StopName == "Test stop");
+        Assert.IsNotNull(createdStopResponse);
     }
 }
