@@ -12,12 +12,9 @@ namespace LiveTramsMCR.DataSync.SynchronizationTasks;
 public class RouteSynchronization : ISynchronizationTask<Route>
 {
     /// <inheritdoc />
-    public async Task SyncData(IMongoClient mongoClient, List<Route> staticData)
+    public async Task SyncData(IMongoCollection<Route> mongoCollection, List<Route> staticData)
     {
-        var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
-        var routesCollection = db.GetCollection<Route>(AppConfiguration.RoutesCollectionName);
-
-        var existingRoutes = (await routesCollection.FindAsync(_ => true)).ToList();
+        var existingRoutes = (await mongoCollection.FindAsync(_ => true)).ToList();
         
         var routesToCreate =
             staticData.Where(stop => existingRoutes.All(existingStop => existingStop.Name != stop.Name)).ToList();
@@ -25,13 +22,13 @@ public class RouteSynchronization : ISynchronizationTask<Route>
         var routesToDelete =
             existingRoutes.Where(existingStop => staticData.All(stop => existingStop.Name != stop.Name));
 
-        await DeleteRoutes(routesCollection, routesToDelete);
+        await DeleteRoutes(mongoCollection, routesToDelete);
         
-        await UpdateExistingRoutes(routesCollection, staticData);
+        await UpdateExistingRoutes(mongoCollection, staticData);
         
         if (routesToCreate.Any())
         {
-            await CreateRoutes(routesCollection, routesToCreate);
+            await CreateRoutes(mongoCollection, routesToCreate);
         }
     }
 

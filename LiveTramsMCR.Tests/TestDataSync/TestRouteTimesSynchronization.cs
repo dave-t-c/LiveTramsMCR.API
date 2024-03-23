@@ -57,7 +57,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
     [Test]
     public async Task TestCreateRoutesFromEmptyDb()
     {
-        await _routeTimesSynchronization.SyncData(_mongoClient, _routeTimes);
+        await _routeTimesSynchronization.SyncData(_routeTimesCollection, _routeTimes);
 
         var createdRouteTimes = _routeRepository.GetAllRouteTimes();
         Assert.AreEqual(_routeTimes.Count, createdRouteTimes.Count);
@@ -77,7 +77,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         var purpleRouteIndex = _routeTimes.FindIndex(route => route.Route == "Purple");
         _routeTimes[purpleRouteIndex] = purpleRoute;
 
-        await _routeTimesSynchronization.SyncData(_mongoClient, _routeTimes);
+        await _routeTimesSynchronization.SyncData(_routeTimesCollection, _routeTimes);
         
         var updatedRouteTimes = _routeRepository.GetAllRouteTimes();
         Assert.AreEqual(_routeTimes.Count, updatedRouteTimes.Count);
@@ -93,7 +93,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         
         _routeTimes.RemoveAll(route => route.Route == "Purple");
 
-        await _routeTimesSynchronization.SyncData(_mongoClient, _routeTimes);
+        await _routeTimesSynchronization.SyncData(_routeTimesCollection, _routeTimes);
         
         var updatedRouteTimes = _routeRepository.GetAllRouteTimes();
         Assert.AreEqual(_routeTimes.Count, updatedRouteTimes.Count);
@@ -120,7 +120,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         
         _routeTimes.Add(createdRouteTimes);
 
-        await _routeTimesSynchronization.SyncData(_mongoClient, _routeTimes);
+        await _routeTimesSynchronization.SyncData(_routeTimesCollection, _routeTimes);
         
         var updatedRoutes = _routeRepository.GetAllRouteTimes();
         Assert.AreEqual(_routeTimes.Count, updatedRoutes.Count);

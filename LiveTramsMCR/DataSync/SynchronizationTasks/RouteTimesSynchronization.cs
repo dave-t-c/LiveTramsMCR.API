@@ -11,12 +11,9 @@ namespace LiveTramsMCR.DataSync.SynchronizationTasks;
 public class RouteTimesSynchronization : ISynchronizationTask<RouteTimes>
 {
     /// <inheritdoc />
-    public async Task SyncData(IMongoClient mongoClient, List<RouteTimes> staticData)
+    public async Task SyncData(IMongoCollection<RouteTimes> mongoCollection, List<RouteTimes> staticData)
     {
-        var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
-        var routeTimesCollection = db.GetCollection<RouteTimes>(AppConfiguration.RouteTimesCollectionName);
-
-        var existingRouteTimes = (await routeTimesCollection.FindAsync(_ => true)).ToList();
+        var existingRouteTimes = (await mongoCollection.FindAsync(_ => true)).ToList();
         
         var routeTimesToCreate =
             staticData.Where(stop => existingRouteTimes.All(existingStop => existingStop.Route != stop.Route)).ToList();
@@ -24,13 +21,13 @@ public class RouteTimesSynchronization : ISynchronizationTask<RouteTimes>
         var routeTimesToDelete =
             existingRouteTimes.Where(existingStop => staticData.All(stop => existingStop.Route != stop.Route));
 
-        await DeleteRouteTimes(routeTimesCollection, routeTimesToDelete);
+        await DeleteRouteTimes(mongoCollection, routeTimesToDelete);
         
-        await UpdateExistingRouteTimes(routeTimesCollection, staticData);
+        await UpdateExistingRouteTimes(mongoCollection, staticData);
         
         if (routeTimesToCreate.Any())
         {
-            await CreateRouteTimes(routeTimesCollection, routeTimesToCreate);
+            await CreateRouteTimes(mongoCollection, routeTimesToCreate);
         }
     }
 

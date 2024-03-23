@@ -54,7 +54,7 @@ public class TestStopSynchronization : BaseNunitTest
     [Test]
     public async Task TestCreateStopsFromEmptyDb()
     {
-        await _stopSynchronization.SyncData(_mongoClient, _stops);
+        await _stopSynchronization.SyncData(_stopsCollection, _stops);
 
         var createdStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, createdStops.Count);
@@ -74,7 +74,7 @@ public class TestStopSynchronization : BaseNunitTest
         var altrinchamIndex = _stops.FindIndex(stop => stop.Tlaref == "ALT");
         _stops[altrinchamIndex] = altrinchamStop;
 
-        await _stopSynchronization.SyncData(_mongoClient, _stops);
+        await _stopSynchronization.SyncData(_stopsCollection, _stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);
@@ -90,7 +90,7 @@ public class TestStopSynchronization : BaseNunitTest
         
         _stops.RemoveAll(stop => stop.Tlaref == "ALT");
 
-        await _stopSynchronization.SyncData(_mongoClient, _stops);
+        await _stopSynchronization.SyncData(_stopsCollection, _stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);
@@ -117,7 +117,7 @@ public class TestStopSynchronization : BaseNunitTest
         
         _stops.Add(createdStop);
 
-        await _stopSynchronization.SyncData(_mongoClient, _stops);
+        await _stopSynchronization.SyncData(_stopsCollection, _stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);

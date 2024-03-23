@@ -11,12 +11,9 @@ namespace LiveTramsMCR.DataSync.SynchronizationTasks;
 public class StopV2Synchronization : ISynchronizationTask<StopV2>
 {
     /// <inheritdoc />
-    public async Task SyncData(IMongoClient mongoClient, List<StopV2> staticData)
+    public async Task SyncData(IMongoCollection<StopV2> mongoCollection, List<StopV2> staticData)
     {
-        var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
-        var stopsCollection = db.GetCollection<StopV2>(AppConfiguration.StopsV2CollectionName);
-
-        var existingStops = (await stopsCollection.FindAsync(_ => true)).ToList();
+        var existingStops = (await mongoCollection.FindAsync(_ => true)).ToList();
         
         var stopsToCreate =
             staticData.Where(stop => existingStops.All(existingStop => existingStop.Tlaref != stop.Tlaref)).ToList();
@@ -24,13 +21,13 @@ public class StopV2Synchronization : ISynchronizationTask<StopV2>
         var stopsToDelete =
             existingStops.Where(existingStop => staticData.All(stop => existingStop.Tlaref != stop.Tlaref));
 
-        await DeleteStops(stopsCollection, stopsToDelete);
+        await DeleteStops(mongoCollection, stopsToDelete);
         
-        await UpdateExistingStops(stopsCollection, staticData);
+        await UpdateExistingStops(mongoCollection, staticData);
         
         if (stopsToCreate.Any())
         {
-            await CreateStops(stopsCollection, stopsToCreate);
+            await CreateStops(mongoCollection, stopsToCreate);
         }
     }
 
