@@ -10,7 +10,7 @@
 
 ## Contents
 1. [Introduction](#introduction)
-2. [Using the API](#using-the-api)
+2. [Running locally](#running-the-system-locally)
 3. [Coming Soon](#coming-soon)
 4. [Project Status](#project-status)
 5. [Declaration](#declaration)
@@ -21,11 +21,17 @@ C# ASP.NET API to retrieve live service data from TfGM Open Data API and adds mo
 
 This API is used in the [LiveTramsMCR](https://github.com/dave-t-c/LiveTramsMCR) app.
 
-## Using the API
-To use the API, you can sign up through [Azure](https://livetramsmcr-apim.developer.azure-api.net/).
+## Running the system locally
+To run the system locally, you will need docker and docker-compose installed.
 
-As the API is a side project, it will not support many requests over a short period of time and will return 429s.
-If you are expecting to make heavy usage, I would reccommend self hosting a version of the project. 
+First, add your `TfGM OcpApimSubscriptionKey` key into the `docker-compose.run-local.yaml` file.
+
+After doing this, run `docker-compose -f docker-compose.run-local.yml up -d` from the route repo directory.
+
+This will start the system locally on `localhost:8080`. Head to `localhost:8080/swagger/index.html` to view endpoints.
+
+You will also be able to view any changes you make to data using
+mongo express, which will be started on `localhost:8081`. This can be accessed using the default mentioned `ME_CONFIG_MONGODB_AUTH_USERNAME` username and `ME_CONFIG_MONGODB_AUTH_PASSWORD` password specified [here](https://github.com/mongo-express/mongo-express?tab=readme-ov-file#usage-docker).
 
 ## Coming soon
 - Expected journey time and stops for route planning
