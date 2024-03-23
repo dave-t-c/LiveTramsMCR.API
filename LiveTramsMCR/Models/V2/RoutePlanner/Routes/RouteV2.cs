@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Geolocation;
 using LiveTramsMCR.Models.V2.Stops;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using static LiveTramsMCR.Configuration.AppConfiguration;
 
 namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
@@ -12,6 +13,7 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 /// <summary>
 ///     Represents route information.
 /// </summary>
+[BsonIgnoreExtraElements]
 public class RouteV2
 {
 
