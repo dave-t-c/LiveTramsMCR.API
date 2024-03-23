@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 // ReSharper disable NonReadonlyMemberInGetHashCode
 
@@ -12,14 +13,9 @@ namespace LiveTramsMCR.Models.V1.Stops;
 /// </summary>
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Global
+[BsonIgnoreExtraElements]
 public sealed class Stop : IEquatable<Stop>
 {
-    /// <summary>
-    ///     Object Id used internally by mongodb.
-    /// </summary>
-    [JsonIgnore]
-    public ObjectId Id { get; set; }
-
     /// <summary>
     ///     Name of the stop, such as Piccadilly
     /// </summary>

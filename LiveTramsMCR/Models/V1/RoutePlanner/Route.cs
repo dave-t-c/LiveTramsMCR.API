@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using LiveTramsMCR.Models.V1.Stops;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
@@ -10,6 +11,7 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 ///     Class that represents a tram route between two Stops.
 ///     The stops are included as the Stop class, so all relevant information is available.
 /// </summary>
+[BsonIgnoreExtraElements]
 public class Route
 {
 
@@ -25,11 +27,6 @@ public class Route
         Colour = colour ?? throw new ArgumentNullException(nameof(colour));
         Stops = stops ?? throw new ArgumentNullException(nameof(stops));
     }
-    /// <summary>
-    ///     Object ID used by mongodb
-    /// </summary>
-    [JsonIgnore]
-    public ObjectId Id { get; set; }
 
     /// <summary>
     ///     Name of the route, e.g. "Purple"
@@ -39,7 +36,7 @@ public class Route
     /// <summary>
     ///     Hex colour string for the route, e.g. #7B2082
     /// </summary>
-    public string Colour { get; private set; }
+    public string Colour { get; set; }
 
     /// <summary>
     ///     Stops belonging to a route in the order they can be travelled between.

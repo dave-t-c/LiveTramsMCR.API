@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
@@ -9,16 +10,9 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 ///     Maps a route name, e.g. Purple to a dictionary of it's stops
 ///     against an example timetable entry.
 /// </summary>
+[BsonIgnoreExtraElements]
 public class RouteTimes
 {
-    /// <summary>
-    ///     Object ID field used in cosmos-db.
-    ///     This is not used internally
-    /// </summary>
-    [JsonIgnore]
-    [JsonPropertyName("_id")]
-    public ObjectId Id { get; set; }
-
     /// <summary>
     ///     Name of the route
     /// </summary>

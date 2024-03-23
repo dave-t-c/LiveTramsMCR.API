@@ -16,6 +16,11 @@ public interface IRouteRepository
     public RouteTimes? GetRouteTimesByNameAsync(string routeName);
 
     /// <summary>
+    /// Retrieves all route times
+    /// </summary>
+    public List<RouteTimes> GetAllRouteTimes();
+
+    /// <summary>
     ///     Gets all routes
     /// </summary>
     /// <returns>List of routes</returns>

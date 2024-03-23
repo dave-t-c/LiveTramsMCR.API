@@ -1,7 +1,9 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using LiveTramsMCR.Configuration;
+using LiveTramsMCR.DataSync;
 using LiveTramsMCR.Models.V1.Resources;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
@@ -67,6 +69,26 @@ public class Startup
         services.AddSingleton(apiOptions);
 
         var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
+        
+        var synchronizationRequest = new SynchronizationRequest
+        {
+            MongoClient = mongoClient,
+            TargetDbName = AppConfiguration.DatabaseName,
+            StopsCollectionName = AppConfiguration.StopsCollectionName,
+            StopsPath = AppConfiguration.StopsPath,
+            StopsV2CollectionName = AppConfiguration.StopsV2CollectionName,
+            StopsV2Path = AppConfiguration.StopsV2Path,
+            RouteTimesCollectionName = AppConfiguration.RouteTimesCollectionName,
+            RouteTimesPath = AppConfiguration.RouteTimesPath,
+            RoutesCollectionName = AppConfiguration.RoutesCollectionName,
+            RoutesPath = AppConfiguration.RoutesPath,
+            RoutesV2CollectionName = AppConfiguration.RoutesV2CollectionName,
+            RoutesV2Path = AppConfiguration.RoutesV2Path
+        };
+
+        var synchronizer = new Synchronizer();
+        synchronizer.SynchronizeStaticData(synchronizationRequest).Wait();
+        
         var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         var stopsMongoCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
         var stopsV2MongoCollection = db.GetCollection<StopV2>(AppConfiguration.StopsV2CollectionName);

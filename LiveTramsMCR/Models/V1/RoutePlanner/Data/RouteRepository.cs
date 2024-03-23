@@ -28,6 +28,13 @@ public class RouteRepository : IRouteRepository
     }
 
     /// <inheritdoc />
+    public List<RouteTimes> GetAllRouteTimes()
+    {
+        return _routeTimesCollection.FindAsync(_ => true).Result.ToList();
+
+    }
+
+    /// <inheritdoc />
     public List<Route> GetAllRoutes()
     {
         return _routeCollection.FindAsync(_ => true).Result.ToList();
