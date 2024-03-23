@@ -26,9 +26,9 @@ To run the system locally, you will need docker and docker-compose installed.
 
 First, add your `TfGM OcpApimSubscriptionKey` key into the `docker-compose.run-local.yaml` file.
 
-After doing this, run `docker-compose -f docker-compose.run-local.yml up -d` from the route repo direcotry.
+After doing this, run `docker-compose -f docker-compose.run-local.yml up -d` from the route repo directory.
 
-This will start the system locally on `localhost:8080`.
+This will start the system locally on `localhost:8080`. Head to `localhost:8080/swagger/index.html` to view endpoints.
 
 You will also be able to view any changes you make to data using
 mongo express, which will be started on `localhost:8081`. This can be accessed using the default mentioned `ME_CONFIG_MONGODB_AUTH_USERNAME` username and `ME_CONFIG_MONGODB_AUTH_PASSWORD` password specified [here](https://github.com/mongo-express/mongo-express?tab=readme-ov-file#usage-docker).

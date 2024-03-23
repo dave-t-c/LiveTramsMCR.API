@@ -10,6 +10,7 @@ services:
     environment:
       CosmosConnectionString: mongodb://foo:bar@mongo:27017/
       OcpApimSubscriptionKey: "<Your TfGM OpenData API OcpApimSubscriptionKey here>"
+      ASPNETCORE_ENVIRONMENT: Development # Allow SwaggerUI
   mongo:
     image: mongo
     restart: always
