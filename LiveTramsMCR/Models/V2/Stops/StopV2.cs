@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 // ReSharper disable NonReadonlyMemberInGetHashCode
 
@@ -13,6 +14,7 @@ namespace LiveTramsMCR.Models.V2.Stops;
 /// </summary>
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Global
+[BsonIgnoreExtraElements]
 public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>
 {
     /// <summary>

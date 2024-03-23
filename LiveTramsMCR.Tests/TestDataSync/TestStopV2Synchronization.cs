@@ -8,6 +8,8 @@ using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
 using LiveTramsMCR.Models.V1.Stops;
 using LiveTramsMCR.Models.V1.Stops.Data;
+using LiveTramsMCR.Models.V2.Stops;
+using LiveTramsMCR.Models.V2.Stops.Data;
 using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
 using MongoDB.Driver;
@@ -17,24 +19,24 @@ using NUnit.Framework;
 
 namespace LiveTramsMCR.Tests.TestDataSync;
 
-public class TestStopSynchronization : BaseNunitTest
+public class TestStopV2Synchronization : BaseNunitTest
 {
-    private StopSynchronization? _stopSynchronization;
+    private StopV2Synchronization? _stopSynchronization;
     private MongoClient? _mongoClient;
-    private IStopsRepository? _stopsRepository;
-    private List<Stop>? _stops;
-    private IMongoCollection<Stop>? _stopsCollection;
+    private IStopsRepositoryV2? _stopsRepository;
+    private List<StopV2>? _stops;
+    private IMongoCollection<StopV2>? _stopsCollection;
     
     [SetUp]
     public void SetUp()
     {
-        _stopSynchronization = new StopSynchronization();
+        _stopSynchronization = new StopV2Synchronization();
         _mongoClient = TestHelper.GetService<MongoClient>();
-        _stopsRepository = TestHelper.GetService<IStopsRepository>();
-        var stopsPath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.StopsPath);
-        _stops = FileHelper.ImportFromJsonFile<List<Stop>>(stopsPath);
+        _stopsRepository = TestHelper.GetService<IStopsRepositoryV2>();
+        var stopsPath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.StopsV2Path);
+        _stops = FileHelper.ImportFromJsonFile<List<StopV2>>(stopsPath);
         var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
-        _stopsCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
+        _stopsCollection = db.GetCollection<StopV2>(AppConfiguration.StopsV2CollectionName);
 
     }
 
@@ -109,7 +111,7 @@ public class TestStopSynchronization : BaseNunitTest
         
         _stops.RemoveAll(stop => stop.Tlaref == "ABM");
 
-        var createdStop = new Stop()
+        var createdStop = new StopV2()
         {
             Tlaref = "TST",
             StopName = "Test stop"

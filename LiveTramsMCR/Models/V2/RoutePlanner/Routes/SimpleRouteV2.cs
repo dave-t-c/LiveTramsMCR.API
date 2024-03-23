@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using LiveTramsMCR.Models.V2.Stops;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 
@@ -10,6 +11,7 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 ///     Class that represents a tram route between two Stops.
 ///     The stops are included as the Stop class, so all relevant information is available.
 /// </summary>
+[BsonIgnoreExtraElements]
 public class SimpleRouteV2
 {
 
