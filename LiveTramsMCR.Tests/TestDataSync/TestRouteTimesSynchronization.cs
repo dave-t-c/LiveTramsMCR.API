@@ -8,10 +8,6 @@ using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
-using LiveTramsMCR.Models.V1.Stops;
-using LiveTramsMCR.Models.V1.Stops.Data;
-using LiveTramsMCR.Models.V2.Stops;
-using LiveTramsMCR.Models.V2.Stops.Data;
 using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
 using MongoDB.Driver;
@@ -50,10 +46,6 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         _routeTimes = null;
     }
 
-    /// <summary>
-    /// Test to create stops from an empty DB.
-    /// All 99 stops should be created.
-    /// </summary>
     [Test]
     public async Task TestCreateRoutesFromEmptyDb()
     {
@@ -63,9 +55,6 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         Assert.AreEqual(_routeTimes.Count, createdRouteTimes.Count);
     }
 
-    /// <summary>
-    /// Test to update an existing stop wth a new value.
-    /// </summary>
     [Test]
     public async Task TestUpdateExistingRoute()
     {

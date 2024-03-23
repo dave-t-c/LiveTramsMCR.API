@@ -47,10 +47,6 @@ public class TestStopSynchronization : BaseNunitTest
         _stops = null;
     }
 
-    /// <summary>
-    /// Test to create stops from an empty DB.
-    /// All 99 stops should be created.
-    /// </summary>
     [Test]
     public async Task TestCreateStopsFromEmptyDb()
     {
@@ -60,9 +56,6 @@ public class TestStopSynchronization : BaseNunitTest
         Assert.AreEqual(_stops.Count, createdStops.Count);
     }
 
-    /// <summary>
-    /// Test to update an existing stop wth a new value.
-    /// </summary>
     [Test]
     public async Task TestUpdateExistingStop()
     {

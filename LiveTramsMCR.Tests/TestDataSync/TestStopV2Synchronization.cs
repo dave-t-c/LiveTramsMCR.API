@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
-using LiveTramsMCR.Models.V1.Stops;
-using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Models.V2.Stops.Data;
 using LiveTramsMCR.Tests.Common;
@@ -49,10 +47,6 @@ public class TestStopV2Synchronization : BaseNunitTest
         _stops = null;
     }
 
-    /// <summary>
-    /// Test to create stops from an empty DB.
-    /// All 99 stops should be created.
-    /// </summary>
     [Test]
     public async Task TestCreateStopsFromEmptyDb()
     {
@@ -62,9 +56,6 @@ public class TestStopV2Synchronization : BaseNunitTest
         Assert.AreEqual(_stops.Count, createdStops.Count);
     }
 
-    /// <summary>
-    /// Test to update an existing stop wth a new value.
-    /// </summary>
     [Test]
     public async Task TestUpdateExistingStop()
     {
