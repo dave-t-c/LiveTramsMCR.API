@@ -16,10 +16,10 @@ public class StopSynchronization : ISynchronizationTask<Stop>
         var existingStops = (await mongoCollection.FindAsync(_ => true)).ToList();
         
         var stopsToCreate =
-            staticData.Where(stop => existingStops.All(existingStop => existingStop.Tlaref != stop.Tlaref)).ToList();
+            staticData.Where(stop => existingStops.TrueForAll(existingStop => existingStop.Tlaref != stop.Tlaref)).ToList();
 
         var stopsToDelete =
-            existingStops.Where(existingStop => staticData.All(stop => existingStop.Tlaref != stop.Tlaref));
+            existingStops.Where(existingStop => staticData.TrueForAll(stop => existingStop.Tlaref != stop.Tlaref));
 
         await DeleteStops(mongoCollection, stopsToDelete);
         

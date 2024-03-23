@@ -16,10 +16,10 @@ public class RouteTimesSynchronization : ISynchronizationTask<RouteTimes>
         var existingRouteTimes = (await mongoCollection.FindAsync(_ => true)).ToList();
         
         var routeTimesToCreate =
-            staticData.Where(stop => existingRouteTimes.All(existingStop => existingStop.Route != stop.Route)).ToList();
+            staticData.Where(stop => existingRouteTimes.TrueForAll(existingStop => existingStop.Route != stop.Route)).ToList();
 
         var routeTimesToDelete =
-            existingRouteTimes.Where(existingStop => staticData.All(stop => existingStop.Route != stop.Route));
+            existingRouteTimes.Where(existingStop => staticData.TrueForAll(stop => existingStop.Route != stop.Route));
 
         await DeleteRouteTimes(mongoCollection, routeTimesToDelete);
         

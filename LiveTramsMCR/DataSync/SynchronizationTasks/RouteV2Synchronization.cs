@@ -18,10 +18,10 @@ public class RouteV2Synchronization : ISynchronizationTask<RouteV2>
         var existingRoutes = (await mongoCollection.FindAsync(_ => true)).ToList();
         
         var routesToCreate =
-            staticData.Where(stop => existingRoutes.All(existingStop => existingStop.Name != stop.Name)).ToList();
+            staticData.Where(stop => existingRoutes.TrueForAll(existingStop => existingStop.Name != stop.Name)).ToList();
 
         var routesToDelete =
-            existingRoutes.Where(existingStop => staticData.All(stop => existingStop.Name != stop.Name));
+            existingRoutes.Where(existingStop => staticData.TrueForAll(stop => existingStop.Name != stop.Name));
 
         await DeleteRoutes(mongoCollection, routesToDelete);
         
