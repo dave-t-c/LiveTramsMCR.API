@@ -11,7 +11,7 @@ namespace LiveTramsMCR.DataSync.SynchronizationTasks;
 public class StopSynchronization : ISynchronizationTask<Stop>
 {
     /// <inheritdoc />
-    public async Task SyncData(IMongoClient mongoClient, IEnumerable<Stop> staticData)
+    public async Task SyncData(IMongoClient mongoClient, List<Stop> staticData)
     {
         var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         var stopsCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
@@ -21,11 +21,26 @@ public class StopSynchronization : ISynchronizationTask<Stop>
         var stopsToCreate =
             staticData.Where(stop => existingStops.All(existingStop => existingStop.Tlaref != stop.Tlaref)).ToList();
 
-        await CreateStops(stopsCollection, stopsToCreate);
+        await UpdateExistingStops(stopsCollection, staticData);
+        
+        if (stopsToCreate.Any())
+        {
+            await CreateStops(stopsCollection, stopsToCreate);
+        }
     }
 
-    private async Task CreateStops(IMongoCollection<Stop> stopsCollection, IEnumerable<Stop> stopsToCreate)
+    private static async Task CreateStops(IMongoCollection<Stop> stopsCollection, IEnumerable<Stop> stopsToCreate)
     {
         await stopsCollection.InsertManyAsync(stopsToCreate);
+    }
+
+    private static async Task UpdateExistingStops(
+        IMongoCollection<Stop> stopsCollection,
+        IEnumerable<Stop> stopsToUpdate)
+    {
+        foreach (var stop in stopsToUpdate)
+        {
+            await stopsCollection.FindOneAndReplaceAsync(existingStop => existingStop.Tlaref == stop.Tlaref, stop);
+        }
     }
 }

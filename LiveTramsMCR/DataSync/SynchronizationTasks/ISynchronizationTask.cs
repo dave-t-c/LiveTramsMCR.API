@@ -7,12 +7,12 @@ namespace LiveTramsMCR.DataSync.SynchronizationTasks;
 /// <summary>
 /// Specifies a task to synchronize static data
 /// </summary>
-public interface ISynchronizationTask<in T>
+public interface ISynchronizationTask<T>
 {
     /// <summary>
     /// Executes a task to sync static data
     /// </summary>
     /// <param name="mongoClient">Mongo client to use to sync data</param>
     /// <param name="staticData">Latest copy of data to upsert</param>
-    public Task SyncData(IMongoClient mongoClient, IEnumerable<T> staticData);
+    public Task SyncData(IMongoClient mongoClient, List<T> staticData);
 }
