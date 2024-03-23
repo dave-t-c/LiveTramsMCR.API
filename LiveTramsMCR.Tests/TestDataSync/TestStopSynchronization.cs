@@ -6,6 +6,7 @@ using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V1.Stops.Data;
 using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
 using MongoDB.Driver;
@@ -18,18 +19,22 @@ public class TestStopSynchronization : BaseNunitTest
 {
     private StopSynchronization? _stopSynchronization;
     private MongoClient? _mongoClient;
+    private IStopsRepository? _stopsRepository;
     
     [SetUp]
     public void SetUp()
     {
         _stopSynchronization = new StopSynchronization();
         _mongoClient = TestHelper.GetService<MongoClient>();
+        _stopsRepository = TestHelper.GetService<IStopsRepository>();
     }
 
     [TearDown]
     public void TearDown()
     {
         _stopSynchronization = null;
+        _mongoClient = null;
+        _stopsRepository = null;
     }
 
     /// <summary>
@@ -43,6 +48,9 @@ public class TestStopSynchronization : BaseNunitTest
         var importedStops = FileHelper.ImportFromJsonFile<List<Stop>>(stopsPath);
 
         await _stopSynchronization.SyncData(_mongoClient, importedStops);
+
+        var createdStops = _stopsRepository.GetAll();
+        Assert.AreEqual(importedStops.Count, createdStops.Count);
     }
 
     /// <summary>
