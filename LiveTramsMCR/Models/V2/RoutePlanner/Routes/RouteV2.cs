@@ -16,13 +16,6 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 [BsonIgnoreExtraElements]
 public class RouteV2
 {
-
-    /// <summary>
-    ///     Object ID used by mongodb
-    /// </summary>
-    [JsonIgnore]
-    public ObjectId Id { get; set; }
-
     /// <summary>
     ///     Name of the route, e.g. "Purple"
     /// </summary>

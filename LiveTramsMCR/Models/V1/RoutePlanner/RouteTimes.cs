@@ -14,14 +14,6 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 public class RouteTimes
 {
     /// <summary>
-    ///     Object ID field used in cosmos-db.
-    ///     This is not used internally
-    /// </summary>
-    [JsonIgnore]
-    [JsonPropertyName("_id")]
-    public ObjectId Id { get; set; }
-
-    /// <summary>
     ///     Name of the route
     /// </summary>
     public string Route { get; set; }

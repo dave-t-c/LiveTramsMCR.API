@@ -27,11 +27,6 @@ public class Route
         Colour = colour ?? throw new ArgumentNullException(nameof(colour));
         Stops = stops ?? throw new ArgumentNullException(nameof(stops));
     }
-    /// <summary>
-    ///     Object ID used by mongodb
-    /// </summary>
-    [JsonIgnore]
-    public ObjectId Id { get; set; }
 
     /// <summary>
     ///     Name of the route, e.g. "Purple"

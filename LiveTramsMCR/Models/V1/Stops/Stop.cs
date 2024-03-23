@@ -17,12 +17,6 @@ namespace LiveTramsMCR.Models.V1.Stops;
 public sealed class Stop : IEquatable<Stop>
 {
     /// <summary>
-    ///     Object Id used internally by mongodb.
-    /// </summary>
-    [JsonIgnore]
-    public ObjectId Id { get; set; }
-
-    /// <summary>
     ///     Name of the stop, such as Piccadilly
     /// </summary>
     public string StopName { get; set; }

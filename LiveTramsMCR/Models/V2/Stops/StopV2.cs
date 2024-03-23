@@ -18,12 +18,6 @@ namespace LiveTramsMCR.Models.V2.Stops;
 public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>
 {
     /// <summary>
-    ///     Object Id used internally by mongodb.
-    /// </summary>
-    [JsonIgnore]
-    public ObjectId Id { get; set; }
-
-    /// <summary>
     ///     Name of the stop, such as Piccadilly
     /// </summary>
     public string StopName { get; set; }
