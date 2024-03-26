@@ -35,6 +35,7 @@ public class JourneyPlannerController : Controller
     [Route("/v1/journey-planner/{origin}/{destination}")]
     [Tags("JourneyPlanner")]
     [Produces("application/json")]
+    [SwaggerOperation(OperationId = "v1-journey-planner")]
     [SwaggerResponse(type: typeof (PlannedJourney), statusCode: StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid Stop Name or TLAREF provided")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "An internal server error occured")]

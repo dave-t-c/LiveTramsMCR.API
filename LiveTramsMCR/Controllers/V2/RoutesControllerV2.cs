@@ -31,6 +31,7 @@ public class RoutesControllerV2 : Controller
     /// <returns></returns>
     [Route("/v2/routes")]
     [Produces("application/json")]
+    [SwaggerOperation(OperationId = "v2-routes")]
     [SwaggerResponse(type: typeof (List<RouteV2>), statusCode: StatusCodes.Status200OK)]
     [Tags("Routes")]
     [HttpGet]

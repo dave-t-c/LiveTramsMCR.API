@@ -11,6 +11,7 @@
           "JourneyPlanner"
         ],
         "summary": "Plans a journey between an origin and destination stop.",
+        "operationId": "v2-journey-planner",
         "parameters": [
           {
             "name": "origin",
@@ -57,6 +58,7 @@
           "JourneyPlanner"
         ],
         "summary": "Plans a journey between an origin and destination stop.",
+        "operationId": "v1-journey-planner",
         "parameters": [
           {
             "name": "origin",
@@ -103,6 +105,7 @@
           "Routes"
         ],
         "summary": "Returns a json list of all routes.",
+        "operationId": "v2-routes",
         "responses": {
           "200": {
             "description": "Success",
@@ -126,6 +129,7 @@
           "Service"
         ],
         "summary": "Retrieves the services for a given stop",
+        "operationId": "v1-services",
         "parameters": [
           {
             "name": "stop",
@@ -166,6 +170,7 @@
           "Service"
         ],
         "summary": "Retrieves services for a given stop in a departure board format.",
+        "operationId": "v1-services-departure-board",
         "parameters": [
           {
             "name": "stop",
@@ -203,6 +208,7 @@
           "Stops"
         ],
         "summary": "Returns a JSON List of all Stops.",
+        "operationId": "v2-stops",
         "responses": {
           "200": {
             "description": "Success",
@@ -226,6 +232,7 @@
           "Stops"
         ],
         "summary": "Returns a JSON List of all Stops.",
+        "operationId": "v1-stops",
         "responses": {
           "200": {
             "description": "Success",
