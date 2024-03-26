@@ -31,6 +31,7 @@ public class ServiceController : Controller
     /// <returns>FormattedServices -> Services for the specified stop</returns>
     [Route("/v1/services/{stop}")]
     [Produces("application/json")]
+    [SwaggerOperation(OperationId = "v1-services")]
     [SwaggerResponse(type: typeof (FormattedServices), statusCode: StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid Stop Name or TLAREF provided")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "An internal server error occured")]
@@ -72,6 +73,7 @@ public class ServiceController : Controller
     /// <returns>Service information formatted for use with a departure board</returns>
     [Route("/v1/services/departure-boards/{stop}")]
     [Produces("application/json")]
+    [SwaggerOperation(OperationId = "v1-services-departure-board")]
     [SwaggerResponse(type: typeof (FormattedDepartureBoardServices), statusCode: StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid Stop Name or TLAREF provided")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "An internal server error occured")]
