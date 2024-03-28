@@ -85,9 +85,14 @@ public class Startup
             RoutesV2CollectionName = AppConfiguration.RoutesV2CollectionName,
             RoutesV2Path = AppConfiguration.RoutesV2Path
         };
-
-        var synchronizer = new Synchronizer();
-        synchronizer.SynchronizeStaticData(synchronizationRequest).Wait();
+        
+        var migrationMode = Environment.GetEnvironmentVariable(AppConfiguration.MigrationModeVariable);
+        if (migrationMode == AppConfiguration.MigrationModeCreateValue)
+        {
+            var synchronizer = new Synchronizer();
+            synchronizer.SynchronizeStaticData(synchronizationRequest).Wait();
+        }
+        
         
         var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         var stopsMongoCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
