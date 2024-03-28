@@ -11,6 +11,7 @@ services:
       CosmosConnectionString: mongodb://foo:bar@mongo:27017/
       OcpApimSubscriptionKey: "<Your TfGM OpenData API OcpApimSubscriptionKey here>"
       ASPNETCORE_ENVIRONMENT: Development # Allow SwaggerUI
+      MIGRATIONMODE: CREATE # Create required data in mongodb on startup
   mongo:
     image: mongo
     restart: always

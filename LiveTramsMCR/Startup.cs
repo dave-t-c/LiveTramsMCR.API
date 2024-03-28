@@ -70,26 +70,25 @@ public class Startup
 
         var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
         
-        var synchronizationRequest = new SynchronizationRequest
-        {
-            MongoClient = mongoClient,
-            TargetDbName = AppConfiguration.DatabaseName,
-            StopsCollectionName = AppConfiguration.StopsCollectionName,
-            StopsPath = AppConfiguration.StopsPath,
-            StopsV2CollectionName = AppConfiguration.StopsV2CollectionName,
-            StopsV2Path = AppConfiguration.StopsV2Path,
-            RouteTimesCollectionName = AppConfiguration.RouteTimesCollectionName,
-            RouteTimesPath = AppConfiguration.RouteTimesPath,
-            RoutesCollectionName = AppConfiguration.RoutesCollectionName,
-            RoutesPath = AppConfiguration.RoutesPath,
-            RoutesV2CollectionName = AppConfiguration.RoutesV2CollectionName,
-            RoutesV2Path = AppConfiguration.RoutesV2Path
-        };
-        
         var migrationMode = Environment.GetEnvironmentVariable(AppConfiguration.MigrationModeVariable);
         if (migrationMode == AppConfiguration.MigrationModeCreateValue)
         {
             var synchronizer = new Synchronizer();
+            var synchronizationRequest = new SynchronizationRequest
+            {
+                MongoClient = mongoClient,
+                TargetDbName = AppConfiguration.DatabaseName,
+                StopsCollectionName = AppConfiguration.StopsCollectionName,
+                StopsPath = AppConfiguration.StopsPath,
+                StopsV2CollectionName = AppConfiguration.StopsV2CollectionName,
+                StopsV2Path = AppConfiguration.StopsV2Path,
+                RouteTimesCollectionName = AppConfiguration.RouteTimesCollectionName,
+                RouteTimesPath = AppConfiguration.RouteTimesPath,
+                RoutesCollectionName = AppConfiguration.RoutesCollectionName,
+                RoutesPath = AppConfiguration.RoutesPath,
+                RoutesV2CollectionName = AppConfiguration.RoutesV2CollectionName,
+                RoutesV2Path = AppConfiguration.RoutesV2Path
+            };
             synchronizer.SynchronizeStaticData(synchronizationRequest).Wait();
         }
         
