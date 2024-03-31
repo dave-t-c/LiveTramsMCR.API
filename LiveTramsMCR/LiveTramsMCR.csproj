@@ -4,11 +4,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>LiveTramsMCR</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <UserSecretsId>68bc7bfb-b0a9-4ae2-b259-a4cd2ecabd4e</UserSecretsId>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="9.0.0" />
         <PackageReference Include="Geolocation" Version="1.2.1" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
         <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
