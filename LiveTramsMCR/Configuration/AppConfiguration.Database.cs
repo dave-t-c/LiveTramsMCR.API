@@ -14,4 +14,8 @@ public static partial class AppConfiguration
     public const string RoutesV2CollectionName = "routesV2";
 
     public const string RouteTimesCollectionName = "route-times";
+
+    public const string MigrationModeVariable = "MIGRATIONMODE";
+
+    public const string MigrationModeCreateValue = "CREATE";
 }
