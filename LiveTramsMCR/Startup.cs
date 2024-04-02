@@ -58,7 +58,7 @@ public class Startup
     ///     This adds the required resources and models to be used for the program.
     /// </summary>
     /// <param name="services">Services for the Container</param>
-    public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
+    public void ConfigureServices(IServiceCollection services)
     {
         var baseUrls = new BaseUrls();
         Configuration.Bind("BaseUrls", baseUrls);
