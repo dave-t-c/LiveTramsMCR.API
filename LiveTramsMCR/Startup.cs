@@ -75,8 +75,7 @@ public class Startup
         var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
         var dynamoDbConfig = new AmazonDynamoDBConfig
         {
-            RegionEndpoint = RegionEndpoint.EUWest2
-            
+            RegionEndpoint = RegionEndpoint.GetBySystemName(Configuration["aws-region-name"])
         };
         
         var dynamoDbClient = new AmazonDynamoDBClient(dynamoDbConfig);
