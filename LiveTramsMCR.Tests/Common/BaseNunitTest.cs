@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using LiveTramsMCR.Tests.Helpers;
 using NUnit.Framework;
 
@@ -6,8 +7,9 @@ namespace LiveTramsMCR.Tests.Common;
 public class BaseNunitTest
 {
     [TearDown]
-    public void BaseTearDown()
+    public async Task BaseTearDown()
     {
         MongoHelper.TearDownDatabase();
+        await DynamoDbHelper.TearDownDatabase();
     }
 }

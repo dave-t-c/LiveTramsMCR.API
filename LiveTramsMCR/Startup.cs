@@ -2,6 +2,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync;
 using LiveTramsMCR.Models.V1.Resources;
@@ -23,6 +26,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using static System.AppDomain;
 
@@ -54,7 +58,7 @@ public class Startup
     ///     This adds the required resources and models to be used for the program.
     /// </summary>
     /// <param name="services">Services for the Container</param>
-    public void ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
     {
         var baseUrls = new BaseUrls();
         Configuration.Bind("BaseUrls", baseUrls);
@@ -69,7 +73,15 @@ public class Startup
         services.AddSingleton(apiOptions);
 
         var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
+        var dynamoDbConfig = new AmazonDynamoDBConfig
+        {
+            RegionEndpoint = RegionEndpoint.EUWest2
+            
+        };
         
+        var dynamoDbClient = new AmazonDynamoDBClient(dynamoDbConfig);
+        var dynamoDbContext = new DynamoDBContext(dynamoDbClient);
+
         var migrationMode = Environment.GetEnvironmentVariable(AppConfiguration.MigrationModeVariable);
         if (migrationMode == AppConfiguration.MigrationModeCreateValue)
         {
@@ -99,8 +111,8 @@ public class Startup
         var routesMongoCollection = db.GetCollection<Route>(AppConfiguration.RoutesCollectionName);
         var routesV2MongoCollection = db.GetCollection<RouteV2>(AppConfiguration.RoutesV2CollectionName);
         var routeTimesMongoCollection = db.GetCollection<RouteTimes>(AppConfiguration.RouteTimesCollectionName);
-
-        IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
+        
+        IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection, dynamoDbContext);
         IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection);
         IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
         IRouteRepositoryV2 routeRepositoryV2 = new RouteRepositoryV2(routesV2MongoCollection, stopsRepositoryV2);
