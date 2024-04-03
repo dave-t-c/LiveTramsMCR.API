@@ -39,7 +39,7 @@ public static class TestHelper
         var routesV2MongoCollection = db.GetCollection<RouteV2>(AppConfiguration.RoutesV2CollectionName);
         var routeTimesMongoCollection = db.GetCollection<RouteTimes>(AppConfiguration.RouteTimesCollectionName);
         IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection, dynamoDbContext);
-        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
+        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection, dynamoDbContext);
         IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection);
         IRouteRepositoryV2 routeRepositoryV2 = new RouteRepositoryV2(routesV2MongoCollection, stopsRepositoryV2);
 
