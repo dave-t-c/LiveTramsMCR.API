@@ -72,7 +72,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         Assert.AreEqual(_routeTimes.Count, updatedRouteTimes.Count);
 
         var updatedPurpleRoute = updatedRouteTimes.First(route => route.Route == "Purple");
-        Assert.AreEqual(TimeSpan.MaxValue, updatedPurpleRoute.Times["Test stop name"]);
+        Assert.AreEqual("00:00:00", updatedPurpleRoute.Times["Test stop name"]);
     }
 
     [Test]
@@ -115,7 +115,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         Assert.AreEqual(_routeTimes.Count, updatedRoutes.Count);
 
         var updatedPurpleRoute = updatedRoutes.First(route => route.Route == "Purple");
-        Assert.AreEqual(TimeSpan.MaxValue, updatedPurpleRoute.Times["Test stop name"]);
+        Assert.AreEqual("00:00:00", updatedPurpleRoute.Times["Test stop name"]);
         
         Assert.IsNull(updatedRoutes.FirstOrDefault(route => route.Route == "Yellow"));
 

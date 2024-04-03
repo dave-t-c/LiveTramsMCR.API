@@ -30,6 +30,9 @@ public class RouteTimes : IDynamoDbTable
     /// </summary>
     [DynamoDBProperty]
     public Dictionary<string, string> Times { get; set; }
+    
+    [DynamoDBRangeKey]
+    public int Range { get; set; }
 
     public CreateTableRequest BuildCreateTableRequest()
     {
@@ -42,6 +45,11 @@ public class RouteTimes : IDynamoDbTable
                 {
                     AttributeName = nameof(Route),
                     KeyType = KeyType.HASH
+                },
+                new()
+                {
+                    AttributeName = nameof(Range),
+                    KeyType = KeyType.RANGE
                 }
             },
             AttributeDefinitions = new List<AttributeDefinition>
@@ -50,6 +58,11 @@ public class RouteTimes : IDynamoDbTable
                 {
                     AttributeName = nameof(Route),
                     AttributeType = ScalarAttributeType.S
+                },
+                new ()
+                {
+                    AttributeName = nameof(Range),
+                    AttributeType = ScalarAttributeType.N
                 }
             },
             ProvisionedThroughput = new ProvisionedThroughput
