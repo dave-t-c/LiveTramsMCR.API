@@ -29,8 +29,8 @@ public class JourneyPlannerController : Controller
     /// <summary>
     ///     Plans a journey between an origin and destination stop.
     /// </summary>
-    /// <param name="origin">Origin stop name or tlaref</param>
-    /// <param name="destination">Destination stop name or tlaref</param>
+    /// <param name="origin">Origin stop tlaref</param>
+    /// <param name="destination">Destination stop tlaref</param>
     /// <returns>A planned journey between the origin an destination</returns>
     [Route("/v1/journey-planner/{origin}/{destination}")]
     [Tags("JourneyPlanner")]

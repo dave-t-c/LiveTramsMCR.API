@@ -8,10 +8,9 @@ namespace LiveTramsMCR.Models.V2.Stops.Data;
 public interface IStopsRepositoryV2
 {
     /// <summary>
-    ///     Gets a stop object for a given stop name
-    ///     or tlaref
+    ///     Gets a stop object for a given stop tlaref
     /// </summary>
-    /// <param name="searchTerm">Stop name or tlaref</param>
+    /// <param name="searchTerm">Stop tlaref</param>
     /// <returns></returns>
     public StopV2 GetStop(string searchTerm);
 

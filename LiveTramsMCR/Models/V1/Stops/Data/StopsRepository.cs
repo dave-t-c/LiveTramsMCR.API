@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
+using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.Model;
 using LiveTramsMCR.Configuration;
 using MongoDB.Driver;
 
@@ -24,12 +27,21 @@ public class StopsRepository : IStopsRepository
     }
 
     /// <inheritdoc />
-    public Stop GetStop(string searchTerm)
+    public Stop GetStop(string stopTlaref)
     {
-        return _stopsCollection.FindAsync(stop =>
-            stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-            || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-        ).Result.FirstOrDefault();
+        Stop result;
+        if (FeatureFlags.DynamoDbEnabled)
+        {
+            result = _context.QueryAsync<Stop>(stopTlaref).GetRemainingAsync().Result.FirstOrDefault();
+        }
+        else
+        {
+            result = _stopsCollection.FindAsync(stop =>
+                stop.Tlaref.Equals(stopTlaref, StringComparison.OrdinalIgnoreCase)
+            ).Result.FirstOrDefault();
+        }
+
+        return result;
     }
 
     /// <inheritdoc />
@@ -49,20 +61,5 @@ public class StopsRepository : IStopsRepository
         }
 
         return result;
-    }
-
-    /// <inheritdoc />
-    public void UpdateStops(List<Stop> stops)
-    {
-        foreach (var stop in stops)
-        {
-            UpdateStop(stop);
-        }
-    }
-
-    /// <inheritdoc />
-    public void UpdateStop(Stop stop)
-    {
-        _stopsCollection.ReplaceOne(s => s.Tlaref == stop.Tlaref, stop);
     }
 }

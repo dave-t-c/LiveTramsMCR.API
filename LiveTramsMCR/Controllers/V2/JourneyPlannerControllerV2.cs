@@ -27,15 +27,15 @@ public class JourneyPlannerControllerV2 : Controller
     /// <summary>
     /// Plans a journey between an origin and destination stop.
     /// </summary>
-    /// <param name="origin">Origin stop name or tlaref</param>
-    /// <param name="destination">Destination stop name or tlaref</param>
+    /// <param name="origin">Origin stop tlaref</param>
+    /// <param name="destination">Destination stop tlaref</param>
     [HttpGet]
     [Tags("JourneyPlanner")]
     [Route("/v2/journey-planner/{origin}/{destination}")]
     [Produces("application/json")]
     [SwaggerOperation(OperationId = "v2-journey-planner")]
     [SwaggerResponse(type: typeof (JourneyPlannerV2ResponseBodyModel), statusCode: StatusCodes.Status200OK)]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid Stop Name or TLAREF provided")]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid Stop TLAREF provided")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "An internal server error occured")]
     public IActionResult PlanJourney(string origin, string destination)
     {

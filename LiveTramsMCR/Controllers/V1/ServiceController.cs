@@ -27,7 +27,7 @@ public class ServiceController : Controller
     /// <summary>
     ///     Retrieves the services for a given stop
     /// </summary>
-    /// <param name="stop">Stop name or Tlaref for stop</param>
+    /// <param name="stop">Stop Tlaref</param>
     /// <returns>FormattedServices -> Services for the specified stop</returns>
     [Route("/v1/services/{stop}")]
     [Produces("application/json")]

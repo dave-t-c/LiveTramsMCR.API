@@ -63,32 +63,6 @@ public class TestStopLookup : BaseNunitTest
     }
 
     /// <summary>
-    ///     Test to lookup the Altrincham Stop.
-    ///     This should return the expected stop with a matching stop name.
-    /// </summary>
-    [Test]
-    public void TestStopObjectLookupName()
-    {
-        var identifiedStop = _stopLookup?.LookupStop("Altrincham");
-        var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
-        Assert.IsNotNull(identifiedStop);
-        Assert.AreEqual(altrinchamStop, identifiedStop);
-    }
-
-    /// <summary>
-    ///     Test to lookup the Piccadilly stop based on its name.
-    ///     This should return the expected stop object.
-    /// </summary>
-    [Test]
-    public void TestStopObjectLookupDifferentName()
-    {
-        var identifiedStop = _stopLookup?.LookupStop("Piccadilly");
-        var piccadillyStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Piccadilly");
-        Assert.IsNotNull(identifiedStop);
-        Assert.AreEqual(piccadillyStop, identifiedStop);
-    }
-
-    /// <summary>
     ///     Test to lookup a stop based on its tlaref.
     ///     This should return the Altrincham stop.
     /// </summary>

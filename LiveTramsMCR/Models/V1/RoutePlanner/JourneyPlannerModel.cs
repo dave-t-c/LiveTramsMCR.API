@@ -28,11 +28,11 @@ public class JourneyPlannerModel : IJourneyPlannerModel
 
 
     /// <summary>
-    ///     Plans a journey between an origin stop name or TLAREF and
-    ///     a destination stop name or TLAREF, identifying any relevant interchange information.
+    ///     Plans a journey between an origin TLAREF and
+    ///     a destination TLAREF, identifying any relevant interchange information.
     /// </summary>
-    /// <param name="origin">Journey start stop name or TLAREF</param>
-    /// <param name="destination">Journey end stop name or TLAREF</param>
+    /// <param name="origin">Journey start stop TLAREF</param>
+    /// <param name="destination">Journey end stop TLAREF</param>
     /// <returns>Planned journey including relevant interchange information</returns>
     public PlannedJourney PlanJourney(string origin, string destination)
     {

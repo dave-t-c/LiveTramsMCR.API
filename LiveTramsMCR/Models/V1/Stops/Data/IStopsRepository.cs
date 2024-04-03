@@ -8,29 +8,15 @@ namespace LiveTramsMCR.Models.V1.Stops.Data;
 public interface IStopsRepository
 {
     /// <summary>
-    ///     Gets a stop object for a given stop name
-    ///     or tlaref
+    ///     Gets a stop object for a given stop tlaref
     /// </summary>
-    /// <param name="searchTerm">Stop name or tlaref</param>
+    /// <param name="stopTlaref">Stop or tlaref</param>
     /// <returns></returns>
-    public Stop GetStop(string searchTerm);
+    public Stop GetStop(string stopTlaref);
 
     /// <summary>
     ///     Gets all stops
     /// </summary>
     /// <returns>A list of all stops</returns>
     public List<Stop> GetAll();
-
-    /// <summary>
-    ///     Updates a list of stops in the db.
-    /// </summary>
-    /// <param name="stops"></param>
-    public void UpdateStops(List<Stop> stops);
-
-    /// <summary>
-    ///     Updates a single stop in the DB.
-    ///     This will replace the stop with a matching tlraef to the stop given.
-    /// </summary>
-    /// <param name="stop"></param>
-    public void UpdateStop(Stop stop);
 }

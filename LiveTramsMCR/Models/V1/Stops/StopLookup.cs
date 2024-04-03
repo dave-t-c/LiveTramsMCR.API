@@ -6,8 +6,7 @@ namespace LiveTramsMCR.Models.V1.Stops;
 /// <summary>
 ///     Looks up the Stop Information for a
 ///     given stop.
-///     This will return the IDs from either a stop name, e.g. Victoria,
-///     or a TLARef, e.g. ALT.
+///     This will return the IDs from a TLARef, e.g. ALT.
 /// </summary>
 public class StopLookup
 {
@@ -24,9 +23,9 @@ public class StopLookup
     }
 
     /// <summary>
-    ///     Looks up a stop from either its stop name or TLAREF value.
+    ///     Looks up a stop from its TLAREF value.
     /// </summary>
-    /// <param name="value">Stop name or TLAREF value for a stop.</param>
+    /// <param name="value">Stop TLAREF value for a stop.</param>
     /// <returns>Stop object with the associated name or TLAREF</returns>
     public Stop LookupStop(string value)
     {

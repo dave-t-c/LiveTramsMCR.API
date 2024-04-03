@@ -68,7 +68,7 @@ public class TestJourneyPlannerController : BaseNunitTest
     [Test]
     public void TestHandleAltrinchamPiccadillyRoute()
     {
-        var result = _journeyPlannerController?.PlanJourney("Altrincham", "Piccadilly");
+        var result = _journeyPlannerController?.PlanJourney("ALT", "PIC");
         Assert.NotNull(result);
         var okResult = result as OkObjectResult;
         Assert.NotNull(okResult);

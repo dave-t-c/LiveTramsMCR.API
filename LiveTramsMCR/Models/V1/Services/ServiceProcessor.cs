@@ -29,7 +29,7 @@ public class ServiceProcessor
     }
 
     /// <summary>
-    ///     Returns services for a given stop name or Tlaref.
+    ///     Returns services for a given stop Tlaref.
     /// </summary>
     /// <param name="stopIdentifier">Stop Id, either name or Tlaref. </param>
     /// <returns>Formatted Services for given stop</returns>
@@ -69,14 +69,14 @@ public class ServiceProcessor
 
     /// <summary>
     ///     Returns services formatted for a departure board
-    ///     for a given stop name or Tlaref.
+    ///     for a given stop Tlaref.
     /// </summary>
-    /// <param name="stopIdentifier">Stop identifier, either name or tlaref</param>
+    /// <param name="stopTlaref">Stop tlaref</param>
     /// <returns>Service data formatted for use with a departure board</returns>
-    public FormattedDepartureBoardServices RequestDepartureBoardServices(string stopIdentifier)
+    public FormattedDepartureBoardServices RequestDepartureBoardServices(string stopTlaref)
     {
-        if (stopIdentifier == null) throw new ArgumentNullException(nameof(stopIdentifier));
-        var stop = _stopLookup.LookupStop(stopIdentifier);
+        if (stopTlaref == null) throw new ArgumentNullException(nameof(stopTlaref));
+        var stop = _stopLookup.LookupStop(stopTlaref);
         var serviceResponses = _requester.RequestServices(stop.Tlaref);
         var unformattedServices = ServiceValidator.ValidateServiceResponse(serviceResponses);
         return _serviceFormatter.FormatDepartureBoardServices(unformattedServices);
