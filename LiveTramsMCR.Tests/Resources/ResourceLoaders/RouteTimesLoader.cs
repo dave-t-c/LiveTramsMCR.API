@@ -60,10 +60,10 @@ public class RouteTimesLoader
     /// </summary>
     /// <param name="unprocessedRoute">Unprocessed route times to convert to timestamps</param>
     /// <returns>A stop name, TimeStamp dict</returns>
-    private static Dictionary<string, TimeSpan> ProcessesRoute(Dictionary<string, string> unprocessedRoute)
+    private static Dictionary<string, string> ProcessesRoute(Dictionary<string, string> unprocessedRoute)
     {
         return unprocessedRoute.ToDictionary(
             kvp => kvp.Key,
-            kvp => TimeSpan.Parse(kvp.Value));
+            kvp => kvp.Value);
     }
 }

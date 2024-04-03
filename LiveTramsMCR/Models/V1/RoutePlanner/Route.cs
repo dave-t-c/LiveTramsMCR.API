@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.Model;
+using LiveTramsMCR.Common.Data.DynamoDb;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.Stops;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
@@ -12,8 +15,15 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 ///     The stops are included as the Stop class, so all relevant information is available.
 /// </summary>
 [BsonIgnoreExtraElements]
-public class Route
+[DynamoDBTable(AppConfiguration.RoutesCollectionName)]
+public class Route: IDynamoDbTable
 {
+    /// <summary>
+    /// Empty constructor for retrieving dynamodb information
+    /// </summary>
+    public Route()
+    {
+    }
 
     /// <summary>
     ///     Creates a new route, the params are only null sanitised
@@ -31,16 +41,19 @@ public class Route
     /// <summary>
     ///     Name of the route, e.g. "Purple"
     /// </summary>
+    [DynamoDBHashKey]
     public string Name { get; private set; }
 
     /// <summary>
     ///     Hex colour string for the route, e.g. #7B2082
     /// </summary>
+    [DynamoDBRangeKey]
     public string Colour { get; set; }
 
     /// <summary>
     ///     Stops belonging to a route in the order they can be travelled between.
     /// </summary>
+    [DynamoDBProperty]
     public List<Stop> Stops { get; internal set; }
 
     /// <summary>
@@ -79,5 +92,44 @@ public class Route
     public bool ContainsStop(Stop stop)
     {
         return Stops.Contains(stop);
+    }
+
+    public CreateTableRequest BuildCreateTableRequest()
+    {
+        return new CreateTableRequest
+        {
+            TableName = AppConfiguration.RoutesCollectionName,
+            KeySchema = new List<KeySchemaElement>
+            {
+                new()
+                {
+                    AttributeName = nameof(Name),
+                    KeyType = KeyType.HASH
+                },
+                new()
+                {
+                    AttributeName = nameof(Colour),
+                    KeyType = KeyType.RANGE
+                }
+            },
+            AttributeDefinitions = new List<AttributeDefinition>
+            {
+                new()
+                {
+                    AttributeName = nameof(Name),
+                    AttributeType = ScalarAttributeType.S
+                },
+                new()
+                {
+                    AttributeName = nameof(Colour),
+                    AttributeType = ScalarAttributeType.S
+                }
+            },
+            ProvisionedThroughput = new ProvisionedThroughput
+            {
+                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
+                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
+            }
+        };
     }
 }

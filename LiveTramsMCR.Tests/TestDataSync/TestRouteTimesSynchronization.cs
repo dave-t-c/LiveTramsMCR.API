@@ -62,7 +62,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
 
         var purpleRoute = _routeTimes.First(route => route.Route == "Purple");
 
-        purpleRoute.Times["Test stop name"] = TimeSpan.MaxValue;
+        purpleRoute.Times["Test stop name"] = "00:00:00";
         var purpleRouteIndex = _routeTimes.FindIndex(route => route.Route == "Purple");
         _routeTimes[purpleRouteIndex] = purpleRoute;
 
@@ -95,7 +95,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         await _routeTimesCollection.InsertManyAsync(_routeTimes);
         
         var purpleRoute = _routeTimes.First(route => route.Route == "Purple");
-        purpleRoute.Times["Test stop name"] = TimeSpan.MaxValue;
+        purpleRoute.Times["Test stop name"] = "00:00:00";
         var purpleRouteIndex = _routeTimes.FindIndex(route => route.Route == "Purple");
         _routeTimes[purpleRouteIndex] = purpleRoute;
         
@@ -104,7 +104,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         var createdRouteTimes = new RouteTimes
         {
             Route = "TestRoute",
-            Times = new Dictionary<string, TimeSpan>()
+            Times = new Dictionary<string, string>()
         };
         
         _routeTimes.Add(createdRouteTimes);

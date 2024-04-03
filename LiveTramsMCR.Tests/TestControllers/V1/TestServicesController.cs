@@ -74,6 +74,7 @@ public class TestServicesController : BaseNunitTest
         _requester = null;
         _servicesDataModel = null;
         _serviceController = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     /// <summary>
