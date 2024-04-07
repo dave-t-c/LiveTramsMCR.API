@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V2;
 using LiveTramsMCR.Models.V2.Stops;
@@ -23,7 +25,7 @@ public class TestStopsControllerV2 : BaseNunitTest
     private StopsControllerV2? _testStopController;
 
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
         _resourcesConfig = new ResourcesConfig
         {
@@ -37,6 +39,7 @@ public class TestStopsControllerV2 : BaseNunitTest
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
         MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedResources.ImportedStopsV2);
+        await DynamoDbHelper.CreateRecords(_importedResources.ImportedStopsV2);
         _stopsDataModelV2 = new StopsDataModelV2(_stopsRepositoryV2);
         _testStopController = new StopsControllerV2(_stopsDataModelV2);
     }
@@ -53,6 +56,7 @@ public class TestStopsControllerV2 : BaseNunitTest
         _importedResources = null;
         _stopsDataModelV2 = null;
         _testStopController = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     /// <summary>
@@ -77,6 +81,20 @@ public class TestStopsControllerV2 : BaseNunitTest
     [Test]
     public void TestGetExpectedStopsCount()
     {
+        var result = _testStopController!.GetAllStops();
+        Assert.IsNotNull(result);
+
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        var retrievedStops = okResult!.Value as List<StopV2> ?? new List<StopV2>();
+        Assert.AreEqual(99, retrievedStops.Count);
+    }
+    
+    [Test]
+    public void TestGetExpectedStopsCountDynamoDb()
+    {
+        MongoHelper.TearDownDatabase();
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, "true");
         var result = _testStopController!.GetAllStops();
         Assert.IsNotNull(result);
 
