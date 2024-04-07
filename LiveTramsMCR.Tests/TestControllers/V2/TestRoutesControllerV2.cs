@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V2;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
@@ -21,21 +23,21 @@ public class TestRoutesControllerV2 : BaseNunitTest
     private IRouteRepositoryV2? _routeRepositoryV2;
     private RoutesControllerV2? _routesControllerV2;
     private IRoutesDataModelV2? _routesDataModel;
-    private IStopsRepositoryV2? _stopsRepositoryV2;
 
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
         _resourcesConfig = new ResourcesConfig
         {
             RoutesV2ResourcePath = "../../../Resources/RoutesV2.json", StopV2ResourcePath = "../../../Resources/StopsV2.json"
         };
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
-        _stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
-        MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedResources.ImportedStopsV2);
 
         _routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
+        MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedResources.ImportedStopsV2);
+        await DynamoDbHelper.CreateRecords(_importedResources.ImportedStopsV2);
         MongoHelper.CreateRecords(AppConfiguration.RoutesV2CollectionName, _importedResources.ImportedRoutesV2);
+        await DynamoDbHelper.CreateRecords(_importedResources.ImportedRoutesV2);
         
         _routesDataModel = new RoutesDataModelV2(_routeRepositoryV2);
         _routesControllerV2 = new RoutesControllerV2(_routesDataModel);
@@ -49,6 +51,7 @@ public class TestRoutesControllerV2 : BaseNunitTest
         _routeRepositoryV2 = null;
         _importedResources = null;
         _resourcesConfig = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     /// <summary>
@@ -73,6 +76,20 @@ public class TestRoutesControllerV2 : BaseNunitTest
     [Test]
     public void TestGetAllRoutesExpectedCount()
     {
+        var result = _routesControllerV2?.GetRoutes();
+        Assert.IsNotNull(result);
+
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        var routes = okResult!.Value as List<RouteV2> ?? new List<RouteV2>();
+        Assert.AreEqual(8, routes.Count);
+    }
+    
+    [Test]
+    public void TestGetAllRoutesExpectedCountDynamoDb()
+    {
+        MongoHelper.TearDownDatabase();
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, "true");
         var result = _routesControllerV2?.GetRoutes();
         Assert.IsNotNull(result);
 
