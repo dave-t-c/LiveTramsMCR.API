@@ -112,7 +112,7 @@ public class Startup
         var routeTimesMongoCollection = db.GetCollection<RouteTimes>(AppConfiguration.RouteTimesCollectionName);
         
         IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection, dynamoDbContext);
-        IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection);
+        IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection, dynamoDbContext);
         IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection, dynamoDbContext);
         IRouteRepositoryV2 routeRepositoryV2 = new RouteRepositoryV2(routesV2MongoCollection, stopsRepositoryV2);
 

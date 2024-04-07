@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.Model;
+using LiveTramsMCR.Common.Data.DynamoDb;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -15,27 +20,32 @@ namespace LiveTramsMCR.Models.V2.Stops;
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Global
 [BsonIgnoreExtraElements]
-public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>
+[DynamoDBTable(AppConfiguration.StopsV2CollectionName)]
+public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDynamoDbTable
 {
     /// <summary>
     ///     Name of the stop, such as Piccadilly
     /// </summary>
+    [DynamoDBRangeKey]
     public string StopName { get; set; }
 
     /// <summary>
     ///     3 code ID for the stop, e.g. PIC for Piccadilly
     /// </summary>
+    [DynamoDBHashKey]
     public string Tlaref { get; set; }
 
     /// <summary>
     ///     Routes the stop is on.
     /// </summary>
+    [DynamoDBProperty]
     public List<SimpleRouteV2> Routes { get; set; }
 
     /// <summary>
     ///     Naptan ID for the stop. This can be used to look up more information
     ///     in government transport data sets
     /// </summary>
+    [DynamoDBProperty]
     public string AtcoCode { get; set; }
 
     /// <summary>
@@ -46,30 +56,35 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>
     /// <summary>
     ///     Stop Longitude. This may be different to that shown by apple or google maps.
     /// </summary>
+    [DynamoDBProperty]
     public double Longitude { get; set; }
 
     /// <summary>
     ///     Street the stop is on. If it is not directly on a street, it will be prefixed
     ///     with 'Off'.
     /// </summary>
+    [DynamoDBProperty]
     public string Street { get; set; }
 
     /// <summary>
     ///     Closest road intersection to the stop. For stops where there is not a close intersection,
     ///     this will be blank.
     /// </summary>
+    [DynamoDBProperty]
     public string RoadCrossing { get; set; }
 
     /// <summary>
     ///     Line the stop is on. This is a single value and does not contain all lines.
     ///     This will be a destination, such as Bury, and does not include the line colour(s).
     /// </summary>
+    [DynamoDBProperty]
     public string Line { get; set; }
 
     /// <summary>
     ///     Ticket fare zone for the stop. If a stop is in multiple zones, it will
     ///     be shown as 'a/b', where a is the smaller of the two zones, e.g. '3/4'.
     /// </summary>
+    [DynamoDBProperty]
     public string StopZone { get; set; }
 
     /// <summary>
@@ -123,8 +138,47 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>
         hashCode.Add(StopName);
         return hashCode.ToHashCode();
     }
-    
-    
+
+    public CreateTableRequest BuildCreateTableRequest()
+    {
+        return new CreateTableRequest()
+        {
+            TableName = AppConfiguration.StopsV2CollectionName,
+            KeySchema = new List<KeySchemaElement>
+            {
+                new()
+                {
+                    AttributeName = nameof(Tlaref),
+                    KeyType = KeyType.HASH
+                },
+                new()
+                {
+                    AttributeName = nameof(StopName),
+                    KeyType = KeyType.RANGE
+                }
+            },
+            AttributeDefinitions = new List<AttributeDefinition>
+            {
+                new()
+                {
+                    AttributeName = nameof(Tlaref),
+                    AttributeType = ScalarAttributeType.S
+                },
+                new()
+                {
+                    AttributeName = nameof(StopName),
+                    AttributeType = ScalarAttributeType.S
+                }
+            },
+            ProvisionedThroughput = new ProvisionedThroughput
+            {
+                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
+                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
+            }
+        };
+    }
+
+
     /// <summary>
     ///     Generates a hash code for a stop obj
     /// </summary>

@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.Model;
 using Geolocation;
+using LiveTramsMCR.Common.Data.DynamoDb;
+using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V2.Stops;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using static LiveTramsMCR.Configuration.AppConfiguration;
 
@@ -14,21 +17,25 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 ///     Represents route information.
 /// </summary>
 [BsonIgnoreExtraElements]
-public class RouteV2
+[DynamoDBTable(AppConfiguration.RoutesV2CollectionName)]
+public class RouteV2 : IDynamoDbTable
 {
     /// <summary>
     ///     Name of the route, e.g. "Purple"
     /// </summary>
+    [DynamoDBHashKey]
     public string Name { get; set; }
 
     /// <summary>
     ///     Hex colour string for the route, e.g. #7B2082
     /// </summary>
+    [DynamoDBRangeKey]
     public string Colour { get; set; }
 
     /// <summary>
     ///     Stops belonging to a route in the order they can be travelled between.
     /// </summary>
+    [DynamoDBProperty]
     public List<StopKeysV2> Stops { get; set; }
 
 #nullable enable
@@ -36,6 +43,7 @@ public class RouteV2
     ///     Stop detail generated using the Stop keys
     ///     Contains the full detail for all stops on the route.
     /// </summary>
+    [DynamoDBProperty]
     public List<StopV2>? StopsDetail { get; set; }
 #nullable disable
 
@@ -44,6 +52,7 @@ public class RouteV2
     ///     This follows the same direction as the stops.
     ///     In the format longitude, latitude
     /// </summary>
+    [DynamoDBProperty]
     public List<List<double>> PolylineCoordinates { get; set; }
 
     /// <summary>
@@ -144,4 +153,44 @@ public class RouteV2
             Math.Abs(coord[0] - coordinate.Longitude) < LocationAccuracyTolerance
         );
     }
+
+    public CreateTableRequest BuildCreateTableRequest()
+    {
+        return new CreateTableRequest
+        {
+            TableName = AppConfiguration.RoutesV2CollectionName,
+            KeySchema = new List<KeySchemaElement>
+            {
+                new()
+                {
+                    AttributeName = nameof(Name),
+                    KeyType = KeyType.HASH
+                },
+                new()
+                {
+                    AttributeName = nameof(Colour),
+                    KeyType = KeyType.RANGE
+                }
+            },
+            AttributeDefinitions = new List<AttributeDefinition>
+            {
+                new()
+                {
+                    AttributeName = nameof(Name),
+                    AttributeType = ScalarAttributeType.S
+                },
+                new()
+                {
+                    AttributeName = nameof(Colour),
+                    AttributeType = ScalarAttributeType.S
+                }
+            },
+            ProvisionedThroughput = new ProvisionedThroughput
+            {
+                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
+                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
+            }
+        };
+    }
+
 }
