@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V2;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
@@ -47,7 +49,7 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
     private StopLookupV2? _stopLookupV2;
 
     [SetUp]
-    public void SetUp()
+    public async Task SetUp()
     {
         var resourcesConfig = new ResourcesConfig
         {
@@ -62,12 +64,15 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
 
         var stopsV1Repository = TestHelper.GetService<IStopsRepository>();
         MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, stopsV1);
+        await DynamoDbHelper.CreateRecords(stopsV1);
+
 
         var stopsV2Loader = new StopV2Loader(resourcesConfig);
         _importedStopV2S = stopsV2Loader.ImportStops();
 
         var stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
         MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedStopV2S);
+        await DynamoDbHelper.CreateRecords(_importedStopV2S);
         
         _stopLookupV2 = new StopLookupV2(stopsRepositoryV2);
 
@@ -82,10 +87,13 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
 
         var routeRepositoryV1 = TestHelper.GetService<IRouteRepository>();
         MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, routesV1);
+        await DynamoDbHelper.CreateRecords(routesV1);
         MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, routeTimes);
+        await DynamoDbHelper.CreateRecords(routeTimes);
         
         var routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
         MongoHelper.CreateRecords(AppConfiguration.RoutesV2CollectionName, _importedRouteV2S);
+        await DynamoDbHelper.CreateRecords(_importedRouteV2S);
 
         var journeyVisualiserV2 = new JourneyVisualiserV2();
 
@@ -123,11 +131,38 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
         _journeyPlannerControllerV2 = new JourneyPlannerControllerV2(_journeyPlannerModelV2);
         _journeyPlannerControllerV2Interchange = new JourneyPlannerControllerV2(_journeyPlannerModelV2Interchange);
     }
+    
+    
+    [TearDown]
+    public void TearDown()
+    {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
+    }
 
     [Test]
     public void TestJourneyPlanner()
     {
-        var result = _journeyPlannerControllerV2?.PlanJourney("Altrincham", "Sale");
+        var result = _journeyPlannerControllerV2?.PlanJourney("ALT", "SAL");
+        Assert.IsNotNull(result);
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        var response = okResult!.Value as JourneyPlannerV2ResponseBodyModel;
+        Assert.IsNotNull(response);
+        var plannedJourney = response?.PlannedJourney;
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsFalse(plannedJourney?.RequiresInterchange);
+        var altrinchamStop = _importedStopV2S.Single(stop => stop.Tlaref == "ALT");
+        var saleStop = _importedStopV2S.Single(stop => stop.Tlaref == "SAL");
+        Assert.AreEqual(altrinchamStop, plannedJourney?.OriginStop);
+        Assert.AreEqual(saleStop, plannedJourney?.DestinationStop);
+    }
+    
+    [Test]
+    public void TestJourneyPlannerDynamoDb()
+    {
+        MongoHelper.TearDownDatabase();
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, "true");
+        var result = _journeyPlannerControllerV2?.PlanJourney("ALT", "SAL");
         Assert.IsNotNull(result);
         var okResult = result as OkObjectResult;
         Assert.IsNotNull(okResult);
@@ -146,8 +181,32 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
     public void TestJourneyPlannerWithInterchange()
     {
         var result = _journeyPlannerControllerV2Interchange?.PlanJourney(
-            "Altrincham",
-            "Ashton-Under-Lyne");
+            "ALT",
+            "ASH");
+        Assert.IsNotNull(result);
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        var response = okResult!.Value as JourneyPlannerV2ResponseBodyModel;
+        Assert.IsNotNull(response);
+        var plannedJourney = response?.PlannedJourney;
+        Assert.IsNotNull(plannedJourney);
+        Assert.IsTrue(plannedJourney?.RequiresInterchange);
+        var altrinchamStop = _importedStopV2S.Single(stop => stop.Tlaref == "ALT");
+        var ashtonStop = _importedStopV2S.Single(stop => stop.Tlaref == "ASH");
+        var piccadillyStop = _importedStopV2S.Single(stop => stop.Tlaref == "PIC");
+        Assert.AreEqual(altrinchamStop, plannedJourney?.OriginStop);
+        Assert.AreEqual(ashtonStop, plannedJourney?.DestinationStop);
+        Assert.AreEqual(piccadillyStop, plannedJourney?.InterchangeStop);
+    }
+    
+    [Test]
+    public void TestJourneyPlannerWithInterchangeDynamoDb()
+    {
+        MongoHelper.TearDownDatabase();
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, "true");
+        var result = _journeyPlannerControllerV2Interchange?.PlanJourney(
+            "ALT",
+            "ASH");
         Assert.IsNotNull(result);
         var okResult = result as OkObjectResult;
         Assert.IsNotNull(okResult);
