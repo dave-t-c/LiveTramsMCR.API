@@ -119,7 +119,7 @@ public class TestJourneyPlannerModelV2 : BaseNunitTest
     [Test]
     public void TestIdentifyRouteOnSameLine()
     {
-        var response = _journeyPlannerModelV2?.PlanJourney("Altrincham", "Sale");
+        var response = _journeyPlannerModelV2?.PlanJourney("ALT", "SAL");
         Assert.IsNotNull(response);
         var plannedJourney = response?.PlannedJourney;
         var altrinchamStop = _importedStopV2S.Single(stop => stop.Tlaref == "ALT");
@@ -179,8 +179,8 @@ public class TestJourneyPlannerModelV2 : BaseNunitTest
     public void TestIdentifyRouteWithInterchange()
     {
         var response = _journeyPlannerModelV2Interchange?.PlanJourney(
-            "Altrincham",
-            "Ashton-Under-Lyne");
+            "ALT",
+            "ASH");
         Assert.IsNotNull(response);
         var plannedJourney = response?.PlannedJourney;
         var altrinchamStop = _importedStopV2S.Single(stop => stop.StopName == "Altrincham");

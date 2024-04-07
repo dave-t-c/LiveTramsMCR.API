@@ -10,9 +10,9 @@ public interface IStopsRepositoryV2
     /// <summary>
     ///     Gets a stop object for a given stop tlaref
     /// </summary>
-    /// <param name="searchTerm">Stop tlaref</param>
+    /// <param name="stopTlaref">Stop tlaref</param>
     /// <returns></returns>
-    public StopV2 GetStop(string searchTerm);
+    public StopV2 GetStop(string stopTlaref);
 
     /// <summary>
     ///     Gets all stops
