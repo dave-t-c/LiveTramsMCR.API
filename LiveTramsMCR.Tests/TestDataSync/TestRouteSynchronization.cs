@@ -120,4 +120,34 @@ public class TestRouteSynchronization : BaseNunitTest
         var createdRouteResponse = updatedRoutes.FirstOrDefault(route => route.Name == "Test Route");
         Assert.IsNotNull(createdRouteResponse);
     }
+    
+    [Test]
+    public async Task TestCreateUpdateDeleteDynamoDb()
+    {
+        await _routeCollection.InsertManyAsync(_routes);
+        
+        var purpleRoute = _routes.First(route => route.Name == "Purple");
+        purpleRoute.Colour = "Updated route colour";
+        var purpleRouteIndex = _routes.FindIndex(route => route.Name == "Purple");
+        _routes[purpleRouteIndex] = purpleRoute;
+        
+        _routes.RemoveAll(route => route.Name == "Yellow");
+
+        var createdRoute = new Route("Test Route", "Test", new List<Stop>());
+        
+        _routes.Add(createdRoute);
+
+        await _routeSynchronization.SyncData(_routeCollection, _routes);
+        
+        var updatedRoutes = _routeRepository.GetAllRoutes();
+        Assert.AreEqual(_routes.Count, updatedRoutes.Count);
+
+        var updatedPurpleRoute = updatedRoutes.First(route => route.Name == "Purple");
+        Assert.AreEqual("Updated route colour", updatedPurpleRoute.Colour);
+        
+        Assert.IsNull(updatedRoutes.FirstOrDefault(route => route.Name == "Yellow"));
+
+        var createdRouteResponse = updatedRoutes.FirstOrDefault(route => route.Name == "Test Route");
+        Assert.IsNotNull(createdRouteResponse);
+    }
 }

@@ -5,7 +5,9 @@ using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using LiveTramsMCR.Common.Data.DynamoDb;
 using LiveTramsMCR.Configuration;
+using LiveTramsMCR.DataSync.SynchronizationTasks;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 
 // ReSharper disable NonReadonlyMemberInGetHashCode
 #pragma warning disable CS0618 // Member is obsolete
@@ -19,7 +21,7 @@ namespace LiveTramsMCR.Models.V1.Stops;
 // ReSharper disable UnusedMember.Global
 [BsonIgnoreExtraElements]
 [DynamoDBTable(AppConfiguration.StopsCollectionName)]
-public sealed class Stop : IEquatable<Stop>, IDynamoDbTable
+public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationType<Stop>
 {
     /// <summary>
     ///     Name of the stop, such as Piccadilly
@@ -99,6 +101,16 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable
         return StopName == other.StopName
                || Tlaref == other.Tlaref;
 
+    }
+
+    public bool CompareSyncData(Stop otherData)
+    {
+        return this.StopName == otherData.StopName;
+    }
+
+    public FilterDefinition<Stop> BuildFilter()
+    {
+        throw new NotImplementedException();
     }
 
     /// <summary>

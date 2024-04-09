@@ -5,8 +5,11 @@ using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using LiveTramsMCR.Common.Data.DynamoDb;
 using LiveTramsMCR.Configuration;
+using LiveTramsMCR.DataSync.SynchronizationTasks;
 using LiveTramsMCR.Models.V1.Stops;
+using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
@@ -16,7 +19,7 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 /// </summary>
 [BsonIgnoreExtraElements]
 [DynamoDBTable(AppConfiguration.RoutesCollectionName)]
-public class Route: IDynamoDbTable
+public class Route: IDynamoDbTable, ISynchronizationType<Route>
 {
     /// <summary>
     /// Empty constructor for retrieving dynamodb information
@@ -131,5 +134,17 @@ public class Route: IDynamoDbTable
                 WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
             }
         };
+    }
+
+    public bool CompareSyncData(Route otherData)
+    {
+        return this.Name != otherData.Name;
+    }
+
+    public FilterDefinition<Route> BuildFilter()
+    {
+        var filter = Builders<Route>.Filter
+            .Eq(route => route.Name, this.Name);
+        return filter;
     }
 }

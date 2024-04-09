@@ -7,8 +7,10 @@ using Amazon.DynamoDBv2.Model;
 using Geolocation;
 using LiveTramsMCR.Common.Data.DynamoDb;
 using LiveTramsMCR.Configuration;
+using LiveTramsMCR.DataSync.SynchronizationTasks;
 using LiveTramsMCR.Models.V2.Stops;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 using static LiveTramsMCR.Configuration.AppConfiguration;
 
 namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
@@ -18,7 +20,7 @@ namespace LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 /// </summary>
 [BsonIgnoreExtraElements]
 [DynamoDBTable(AppConfiguration.RoutesV2CollectionName)]
-public class RouteV2 : IDynamoDbTable
+public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
 {
     /// <summary>
     ///     Name of the route, e.g. "Purple"
@@ -193,4 +195,13 @@ public class RouteV2 : IDynamoDbTable
         };
     }
 
+    public bool CompareSyncData(RouteV2 otherData)
+    {
+        return this.Name == otherData.Name;
+    }
+
+    public FilterDefinition<RouteV2> BuildFilter()
+    {
+        throw new NotImplementedException();
+    }
 }

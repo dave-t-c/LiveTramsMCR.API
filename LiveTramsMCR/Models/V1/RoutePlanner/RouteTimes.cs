@@ -6,6 +6,7 @@ using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using LiveTramsMCR.Common.Data.DynamoDb;
 using LiveTramsMCR.Configuration;
+using LiveTramsMCR.DataSync.SynchronizationTasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -71,5 +72,10 @@ public class RouteTimes : IDynamoDbTable
                 WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
             }
         };
+    }
+
+    public bool CompareSyncData(RouteTimes otherData)
+    {
+        return this.Route == otherData.Route;
     }
 }
