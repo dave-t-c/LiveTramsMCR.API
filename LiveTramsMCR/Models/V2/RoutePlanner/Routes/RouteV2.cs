@@ -197,11 +197,13 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
 
     public bool CompareSyncData(RouteV2 otherData)
     {
-        return this.Name == otherData.Name;
+        return this.Name != otherData.Name;
     }
 
     public FilterDefinition<RouteV2> BuildFilter()
     {
-        throw new NotImplementedException();
+        var filter = Builders<RouteV2>.Filter
+            .Eq(route => route.Name, this.Name);
+        return filter;
     }
 }

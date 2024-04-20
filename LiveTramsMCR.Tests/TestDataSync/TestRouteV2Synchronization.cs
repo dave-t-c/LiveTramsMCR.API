@@ -20,7 +20,7 @@ namespace LiveTramsMCR.Tests.TestDataSync;
 
 public class TestRouteV2Synchronization : BaseNunitTest
 {
-    private RouteV2Synchronization? _routeSynchronization;
+    private SynchronizationTask<RouteV2>? _routeSynchronization;
     private MongoClient? _mongoClient;
     private IRouteRepositoryV2? _routeRepository;
     private List<RouteV2>? _routes;
@@ -29,7 +29,7 @@ public class TestRouteV2Synchronization : BaseNunitTest
     [SetUp]
     public async Task SetUp()
     {
-        _routeSynchronization = new RouteV2Synchronization();
+        _routeSynchronization = new SynchronizationTask<RouteV2>();
         _mongoClient = TestHelper.GetService<MongoClient>();
         _routeRepository = TestHelper.GetService<IRouteRepositoryV2>();
         var routePath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.RoutesV2Path);

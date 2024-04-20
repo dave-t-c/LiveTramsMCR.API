@@ -37,22 +37,8 @@ public class Synchronizer
         await RunSyncTask<StopV2>(db, request.StopsV2CollectionName, 
             request.StopsV2Path);
         
-        await RunSyncTask<RouteV2, RouteV2Synchronization>(db, request.RoutesV2CollectionName, 
+        await RunSyncTask<RouteV2>(db, request.RoutesV2CollectionName, 
             request.RoutesV2Path);
-    }
-
-    private static async Task RunSyncTask<T, TU>(
-        IMongoDatabase db,
-        string collectionName,
-        string configPath)
-    where TU : ISynchronizationTask<T>
-    {
-        var mongoCollection = db.GetCollection<T>(collectionName);
-        var staticDataPath = Path.Combine(Environment.CurrentDirectory, configPath);
-        var importedStaticData = FileHelper.ImportFromJsonFile<List<T>>(staticDataPath);
-
-        var syncTask = (ISynchronizationTask<T>)Activator.CreateInstance(typeof(TU));
-        await syncTask?.SyncData(mongoCollection, importedStaticData)!;
     }
 
     private static async Task RunSyncTask<T>(
