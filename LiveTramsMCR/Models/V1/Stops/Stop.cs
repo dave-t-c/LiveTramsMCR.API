@@ -105,12 +105,14 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationTyp
 
     public bool CompareSyncData(Stop otherData)
     {
-        return this.StopName == otherData.StopName;
+        return this.StopName != otherData.StopName;
     }
 
     public FilterDefinition<Stop> BuildFilter()
     {
-        throw new NotImplementedException();
+        var filter = Builders<Stop>.Filter
+            .Eq(stop => stop.Tlaref, this.Tlaref);
+        return filter;
     }
 
     /// <summary>

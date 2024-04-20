@@ -25,7 +25,7 @@ public class Synchronizer
     {
         var db = request.MongoClient.GetDatabase(request.TargetDbName);
 
-        await RunSyncTask<Stop, StopSynchronization>(db, request.StopsCollectionName,
+        await RunSyncTask<Stop>(db, request.StopsCollectionName,
             request.StopsPath);
         
         await RunSyncTask<RouteTimes, RouteTimesSynchronization>(db, request.RouteTimesCollectionName, 
