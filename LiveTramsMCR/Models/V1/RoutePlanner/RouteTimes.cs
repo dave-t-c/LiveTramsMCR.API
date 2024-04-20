@@ -9,6 +9,7 @@ using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
@@ -18,7 +19,7 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 /// </summary>
 [BsonIgnoreExtraElements]
 [DynamoDBTable(AppConfiguration.RouteTimesCollectionName)]
-public class RouteTimes : IDynamoDbTable
+public class RouteTimes : IDynamoDbTable, ISynchronizationType<RouteTimes>
 {
     /// <summary>
     ///     Name of the route
@@ -76,6 +77,13 @@ public class RouteTimes : IDynamoDbTable
 
     public bool CompareSyncData(RouteTimes otherData)
     {
-        return this.Route == otherData.Route;
+        return this.Route != otherData.Route;
+    }
+
+    public FilterDefinition<RouteTimes> BuildFilter()
+    {
+        var filter = Builders<RouteTimes>.Filter
+            .Eq(routeTimes => routeTimes.Route, this.Route);
+        return filter;
     }
 }

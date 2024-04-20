@@ -28,7 +28,7 @@ public class Synchronizer
         await RunSyncTask<Stop>(db, request.StopsCollectionName,
             request.StopsPath);
         
-        await RunSyncTask<RouteTimes, RouteTimesSynchronization>(db, request.RouteTimesCollectionName, 
+        await RunSyncTask<RouteTimes>(db, request.RouteTimesCollectionName, 
             request.RouteTimesPath);
 
         await RunSyncTask<Route>(db, request.RoutesCollectionName,
