@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
 using LiveTramsMCR.Models.V1.RoutePlanner;
@@ -31,8 +30,8 @@ public class Synchronizer
         
         await RunSyncTask<RouteTimes, RouteTimesSynchronization>(db, request.RouteTimesCollectionName, 
             request.RouteTimesPath);
-        
-        await RunSyncTask<Route, RouteSynchronization>(db, request.RoutesCollectionName, 
+
+        await RunSyncTask<Route>(db, request.RoutesCollectionName,
             request.RoutesPath);
         
         await RunSyncTask<StopV2, StopV2Synchronization>(db, request.StopsV2CollectionName, 
@@ -54,5 +53,19 @@ public class Synchronizer
 
         var syncTask = (ISynchronizationTask<T>)Activator.CreateInstance(typeof(TU));
         await syncTask?.SyncData(mongoCollection, importedStaticData)!;
+    }
+
+    private static async Task RunSyncTask<T>(
+        IMongoDatabase db,
+        string collectionName,
+        string configPath)
+    where T: ISynchronizationType<T>
+    {
+        var mongoCollection = db.GetCollection<T>(collectionName);
+        var staticDataPath = Path.Combine(Environment.CurrentDirectory, configPath);
+        var importedStaticData = FileHelper.ImportFromJsonFile<List<T>>(staticDataPath);
+
+        var syncTask = new SynchronizationTask<T>();
+        await syncTask.SyncData(mongoCollection, importedStaticData);
     }
 }
