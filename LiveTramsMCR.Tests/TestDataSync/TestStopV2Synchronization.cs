@@ -19,7 +19,7 @@ namespace LiveTramsMCR.Tests.TestDataSync;
 
 public class TestStopV2Synchronization : BaseNunitTest
 {
-    private StopV2Synchronization? _stopSynchronization;
+    private SynchronizationTask<StopV2>? _stopSynchronization;
     private MongoClient? _mongoClient;
     private IStopsRepositoryV2? _stopsRepository;
     private List<StopV2>? _stops;
@@ -28,7 +28,7 @@ public class TestStopV2Synchronization : BaseNunitTest
     [SetUp]
     public void SetUp()
     {
-        _stopSynchronization = new StopV2Synchronization();
+        _stopSynchronization = new SynchronizationTask<StopV2>();
         _mongoClient = TestHelper.GetService<MongoClient>();
         _stopsRepository = TestHelper.GetService<IStopsRepositoryV2>();
         var stopsPath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.StopsV2Path);

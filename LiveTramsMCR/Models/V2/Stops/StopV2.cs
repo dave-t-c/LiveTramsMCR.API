@@ -120,12 +120,14 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
 
     public bool CompareSyncData(StopV2 otherData)
     {
-        return this.StopName == otherData.StopName;
+        return this.StopName != otherData.StopName;
     }
 
     public FilterDefinition<StopV2> BuildFilter()
     {
-        throw new NotImplementedException();
+        var filter = Builders<StopV2>.Filter
+            .Eq(stop => stop.Tlaref, this.Tlaref);
+        return filter;
     }
 
     /// <summary>
