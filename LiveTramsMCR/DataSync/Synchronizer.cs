@@ -51,7 +51,7 @@ public class Synchronizer
         var staticDataPath = Path.Combine(Environment.CurrentDirectory, configPath);
         var importedStaticData = FileHelper.ImportFromJsonFile<List<T>>(staticDataPath);
 
-        var syncTask = new SynchronizationTask<T>();
-        await syncTask.SyncData(mongoCollection, importedStaticData);
+        var syncTask = new SynchronizationTask<T>(mongoCollection);
+        await syncTask.SyncData(importedStaticData);
     }
 }

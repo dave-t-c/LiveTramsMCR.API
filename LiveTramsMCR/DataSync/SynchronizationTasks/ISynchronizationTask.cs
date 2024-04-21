@@ -12,7 +12,6 @@ public interface ISynchronizationTask<T>
     /// <summary>
     /// Executes a task to sync static data
     /// </summary>
-    /// <param name="mongoCollection">Mongo collection to use to sync data</param>
     /// <param name="staticData">Latest copy of data to upsert</param>
-    public Task SyncData(IMongoCollection<T> mongoCollection, List<T> staticData);
+    public Task SyncData(List<T> staticData);
 }

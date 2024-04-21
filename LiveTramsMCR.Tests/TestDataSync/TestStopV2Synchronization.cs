@@ -28,14 +28,13 @@ public class TestStopV2Synchronization : BaseNunitTest
     [SetUp]
     public void SetUp()
     {
-        _stopSynchronization = new SynchronizationTask<StopV2>();
         _mongoClient = TestHelper.GetService<MongoClient>();
         _stopsRepository = TestHelper.GetService<IStopsRepositoryV2>();
         var stopsPath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.StopsV2Path);
         _stops = FileHelper.ImportFromJsonFile<List<StopV2>>(stopsPath);
         var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         _stopsCollection = db.GetCollection<StopV2>(AppConfiguration.StopsV2CollectionName);
-
+        _stopSynchronization = new SynchronizationTask<StopV2>(_stopsCollection);
     }
 
     [TearDown]
@@ -50,7 +49,7 @@ public class TestStopV2Synchronization : BaseNunitTest
     [Test]
     public async Task TestCreateStopsFromEmptyDb()
     {
-        await _stopSynchronization.SyncData(_stopsCollection, _stops);
+        await _stopSynchronization.SyncData(_stops);
 
         var createdStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, createdStops.Count);
@@ -67,7 +66,7 @@ public class TestStopV2Synchronization : BaseNunitTest
         var altrinchamIndex = _stops.FindIndex(stop => stop.Tlaref == "ALT");
         _stops[altrinchamIndex] = altrinchamStop;
 
-        await _stopSynchronization.SyncData(_stopsCollection, _stops);
+        await _stopSynchronization.SyncData(_stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);
@@ -83,7 +82,7 @@ public class TestStopV2Synchronization : BaseNunitTest
         
         _stops.RemoveAll(stop => stop.Tlaref == "ALT");
 
-        await _stopSynchronization.SyncData(_stopsCollection, _stops);
+        await _stopSynchronization.SyncData(_stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);
@@ -110,7 +109,7 @@ public class TestStopV2Synchronization : BaseNunitTest
         
         _stops.Add(createdStop);
 
-        await _stopSynchronization.SyncData(_stopsCollection, _stops);
+        await _stopSynchronization.SyncData(_stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);

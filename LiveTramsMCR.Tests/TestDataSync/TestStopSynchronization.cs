@@ -34,7 +34,7 @@ public class TestStopSynchronization : BaseNunitTest
         _stops = FileHelper.ImportFromJsonFile<List<Stop>>(stopsPath);
         var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         _stopsCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
-        _synchronizationTask = new SynchronizationTask<Stop>();
+        _synchronizationTask = new SynchronizationTask<Stop>(_stopsCollection);
     }
 
     [TearDown]
@@ -49,7 +49,7 @@ public class TestStopSynchronization : BaseNunitTest
     [Test]
     public async Task TestCreateStopsFromEmptyDb()
     {
-        await _synchronizationTask.SyncData(_stopsCollection, _stops);
+        await _synchronizationTask.SyncData(_stops);
 
         var createdStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, createdStops.Count);
@@ -66,7 +66,7 @@ public class TestStopSynchronization : BaseNunitTest
         var altrinchamIndex = _stops.FindIndex(stop => stop.Tlaref == "ALT");
         _stops[altrinchamIndex] = altrinchamStop;
 
-        await _synchronizationTask.SyncData(_stopsCollection, _stops);
+        await _synchronizationTask.SyncData(_stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);
@@ -82,7 +82,7 @@ public class TestStopSynchronization : BaseNunitTest
         
         _stops.RemoveAll(stop => stop.Tlaref == "ALT");
 
-        await _synchronizationTask.SyncData(_stopsCollection, _stops);
+        await _synchronizationTask.SyncData(_stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);
@@ -109,7 +109,7 @@ public class TestStopSynchronization : BaseNunitTest
         
         _stops.Add(createdStop);
 
-        await _synchronizationTask.SyncData(_stopsCollection, _stops);
+        await _synchronizationTask.SyncData(_stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);

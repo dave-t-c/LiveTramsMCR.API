@@ -35,7 +35,7 @@ public class TestRouteSynchronization : BaseNunitTest
         _routes = FileHelper.ImportFromJsonFile<List<Route>>(routePath);
         var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         _routeCollection = db.GetCollection<Route>(AppConfiguration.RoutesCollectionName);
-        _synchronizationTask = new SynchronizationTask<Route>();
+        _synchronizationTask = new SynchronizationTask<Route>(_routeCollection);
     }
 
     [TearDown]
@@ -50,7 +50,7 @@ public class TestRouteSynchronization : BaseNunitTest
     [Test]
     public async Task TestCreateRoutesFromEmptyDb()
     {
-        await _synchronizationTask.SyncData(_routeCollection, _routes);
+        await _synchronizationTask.SyncData(_routes);
 
         var createdRoutes = _routeRepository.GetAllRoutes();
         Assert.AreEqual(_routes.Count, createdRoutes.Count);
@@ -67,7 +67,7 @@ public class TestRouteSynchronization : BaseNunitTest
         var purpleRouteIndex = _routes.FindIndex(route => route.Name == "Purple");
         _routes[purpleRouteIndex] = purpleRoute;
 
-        await _synchronizationTask.SyncData(_routeCollection, _routes);
+        await _synchronizationTask.SyncData( _routes);
         
         var updatedRoutes = _routeRepository.GetAllRoutes();
         Assert.AreEqual(_routes.Count, updatedRoutes.Count);
@@ -83,7 +83,7 @@ public class TestRouteSynchronization : BaseNunitTest
         
         _routes.RemoveAll(route => route.Name == "Purple");
 
-        await _synchronizationTask.SyncData(_routeCollection, _routes);
+        await _synchronizationTask.SyncData(_routes);
         
         var updatedRoutes = _routeRepository.GetAllRoutes();
         Assert.AreEqual(_routes.Count, updatedRoutes.Count);
@@ -106,7 +106,7 @@ public class TestRouteSynchronization : BaseNunitTest
         
         _routes.Add(createdRoute);
 
-        await _synchronizationTask.SyncData(_routeCollection, _routes);
+        await _synchronizationTask.SyncData(_routes);
         
         var updatedRoutes = _routeRepository.GetAllRoutes();
         Assert.AreEqual(_routes.Count, updatedRoutes.Count);
@@ -136,7 +136,7 @@ public class TestRouteSynchronization : BaseNunitTest
         
         _routes.Add(createdRoute);
 
-        await _synchronizationTask.SyncData(_routeCollection, _routes);
+        await _synchronizationTask.SyncData(_routes);
         
         var updatedRoutes = _routeRepository.GetAllRoutes();
         Assert.AreEqual(_routes.Count, updatedRoutes.Count);
