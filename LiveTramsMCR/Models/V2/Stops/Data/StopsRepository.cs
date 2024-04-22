@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Amazon.DynamoDBv2.DataModel;
 using LiveTramsMCR.Configuration;
-using LiveTramsMCR.Models.V1.Stops;
 using MongoDB.Driver;
 
 namespace LiveTramsMCR.Models.V2.Stops.Data;

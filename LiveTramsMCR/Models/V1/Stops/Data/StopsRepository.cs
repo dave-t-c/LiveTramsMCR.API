@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.Model;
 using LiveTramsMCR.Configuration;
 using MongoDB.Driver;
 

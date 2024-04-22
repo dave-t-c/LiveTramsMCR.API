@@ -6,7 +6,6 @@ using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V2;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
-using LiveTramsMCR.Models.V2.Stops.Data;
 using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;

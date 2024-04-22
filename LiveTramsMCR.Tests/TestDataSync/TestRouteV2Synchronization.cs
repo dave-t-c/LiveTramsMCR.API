@@ -15,7 +15,6 @@ using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
 using MongoDB.Driver;
 using NUnit.Framework;
-using DynamoDbHelper = LiveTramsMCR.Common.Data.DynamoDb.DynamoDbHelper;
 
 #pragma warning disable CS8604 // Possible null reference argument.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.

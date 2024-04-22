@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Configuration;
-using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.Data;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;

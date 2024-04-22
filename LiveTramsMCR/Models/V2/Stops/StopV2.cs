@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
@@ -8,7 +7,6 @@ using LiveTramsMCR.Common.Data.DynamoDb;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 

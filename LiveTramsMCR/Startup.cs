@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
@@ -26,7 +25,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using static System.AppDomain;
 

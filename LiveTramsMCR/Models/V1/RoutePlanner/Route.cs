@@ -7,7 +7,6 @@ using LiveTramsMCR.Common.Data.DynamoDb;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
 using LiveTramsMCR.Models.V1.Stops;
-using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 
