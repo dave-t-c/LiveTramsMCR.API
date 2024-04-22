@@ -109,12 +109,17 @@ public class TestRouteSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestCreateUpdateDelete()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateUpdateDelete(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeCollection.InsertManyAsync(_routes);
-        
+        await DynamoDbTestHelper.CreateRecords(_routes);
+
         var purpleRoute = _routes.First(route => route.Name == "Purple");
-        purpleRoute.Colour = "Updated route colour";
+        purpleRoute.Stops.Add(new Stop());
         var purpleRouteIndex = _routes.FindIndex(route => route.Name == "Purple");
         _routes[purpleRouteIndex] = purpleRoute;
         
@@ -130,7 +135,7 @@ public class TestRouteSynchronization : BaseNunitTest
         Assert.AreEqual(_routes.Count, updatedRoutes.Count);
 
         var updatedPurpleRoute = updatedRoutes.First(route => route.Name == "Purple");
-        Assert.AreEqual("Updated route colour", updatedPurpleRoute.Colour);
+        Assert.AreEqual(purpleRoute.Stops.Count, updatedPurpleRoute.Stops.Count);
         
         Assert.IsNull(updatedRoutes.FirstOrDefault(route => route.Name == "Yellow"));
 
