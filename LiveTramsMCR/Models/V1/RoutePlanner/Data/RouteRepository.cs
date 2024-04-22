@@ -18,8 +18,6 @@ public class RouteRepository : IRouteRepository
     /// <summary>
     ///     Creates a new route repository using a collection of routes and route times
     /// </summary>
-    /// <param name="routeCollection">Collection of route instances</param>
-    /// <param name="routeTimesCollection">Collection of route times instances</param>
     public RouteRepository(
         IMongoCollection<Route> routeCollection, 
         IMongoCollection<RouteTimes> routeTimesCollection, 

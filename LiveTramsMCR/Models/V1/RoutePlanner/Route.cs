@@ -96,6 +96,7 @@ public class Route: IDynamoDbTable, ISynchronizationType<Route>
         return Stops.Contains(stop);
     }
 
+    /// <inheritdoc />
     public CreateTableRequest BuildCreateTableRequest()
     {
         return new CreateTableRequest
@@ -135,11 +136,13 @@ public class Route: IDynamoDbTable, ISynchronizationType<Route>
         };
     }
 
+    /// <inheritdoc />
     public bool CompareSyncData(Route otherData)
     {
         return this.Name != otherData.Name;
     }
 
+    /// <inheritdoc />
     public FilterDefinition<Route> BuildFilter()
     {
         var filter = Builders<Route>.Filter

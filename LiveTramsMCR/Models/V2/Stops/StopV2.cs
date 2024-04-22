@@ -116,11 +116,13 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
 
     }
 
+    /// <inheritdoc />
     public bool CompareSyncData(StopV2 otherData)
     {
         return this.StopName != otherData.StopName;
     }
 
+    /// <inheritdoc />
     public FilterDefinition<StopV2> BuildFilter()
     {
         var filter = Builders<StopV2>.Filter
@@ -150,7 +152,8 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
         hashCode.Add(StopName);
         return hashCode.ToHashCode();
     }
-
+    
+    /// <inheritdoc />
     public CreateTableRequest BuildCreateTableRequest()
     {
         return new CreateTableRequest()

@@ -21,6 +21,7 @@ where T: ISynchronizationType<T>, IDynamoDbTable
     /// Creates a new sync task for a given Synchronisation type.
     /// </summary>
     /// <param name="mongoCollection">Mongo collection to use to sync data</param>
+    /// <param name="dynamoDbClient">DynamoDb client for retrieving and updating data</param>
     /// <param name="dynamoDbContext">Dynamodb context for modifying data</param>
     public SynchronizationTask(
         IMongoCollection<T> mongoCollection,
@@ -32,6 +33,7 @@ where T: ISynchronizationType<T>, IDynamoDbTable
         this._dynamoDbContext = dynamoDbContext;
     }
     
+    /// <inheritdoc />
     public async Task SyncData(List<T> staticData)
     {
         var existingDataValues = await RetrieveExistingDataAsync();
@@ -58,7 +60,7 @@ where T: ISynchronizationType<T>, IDynamoDbTable
     {
         if (FeatureFlags.DynamoDbEnabled)
         {
-            var result = await DynamoDbHelper.RetriveExistingRecords<T>(
+            var result = await DynamoDbHelper.RetrieveExistingRecords<T>(
                 _dynamoDbContext,
                 _dynamoDbClient);
             return result;

@@ -16,7 +16,6 @@ public class StopsRepository : IStopsRepository
     /// <summary>
     ///     Create a new stops repository using a stops collection
     /// </summary>
-    /// <param name="stopsCollection"></param>
     public StopsRepository(IMongoCollection<Stop> stopsCollection, IDynamoDBContext context)
     {
         _stopsCollection = stopsCollection;

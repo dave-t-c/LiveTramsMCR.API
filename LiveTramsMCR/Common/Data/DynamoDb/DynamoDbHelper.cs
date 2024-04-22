@@ -8,8 +8,15 @@ using Amazon.DynamoDBv2.DataModel;
 
 namespace LiveTramsMCR.Common.Data.DynamoDb;
 
+/// <summary>
+/// Utility class for working with DynamoDB
+/// </summary>
 public static class DynamoDbHelper
 {
+    /// <summary>
+    /// Creates records in a dynamo db table.
+    /// If the table does not exist it is created.
+    /// </summary>
     public static async Task CreateRecords<T>(
         IDynamoDBContext dynamoDbContext,
         IAmazonDynamoDB dynamoDbClient,
@@ -29,7 +36,10 @@ public static class DynamoDbHelper
         await itemBatch.ExecuteAsync();
     }
 
-    public static async Task<List<T>> RetriveExistingRecords<T>(
+    /// <summary>
+    /// Retrieves existing records of a given type.
+    /// </summary>
+    public static async Task<List<T>> RetrieveExistingRecords<T>(
         IDynamoDBContext dynamoDbContext,
         IAmazonDynamoDB dynamoDbClient)
         where T : IDynamoDbTable
@@ -45,6 +55,9 @@ public static class DynamoDbHelper
         return results.ToList();
     }
     
+    /// <summary>
+    /// Retrieves the table name for a table
+    /// </summary>
     public static string GetTableName(Type tableType)
     {
         var tableNameProperty = tableType
@@ -61,6 +74,9 @@ public static class DynamoDbHelper
         return tableName;
     }
 
+    /// <summary>
+    /// Determines if a table exists for a type.
+    /// </summary>
     public static async Task<bool> TableExists(
         Type tableType,
         IAmazonDynamoDB dynamoDbClient)

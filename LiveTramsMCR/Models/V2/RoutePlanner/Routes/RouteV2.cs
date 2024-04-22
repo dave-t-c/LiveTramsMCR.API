@@ -155,6 +155,7 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
         );
     }
 
+    /// <inheritdoc />
     public CreateTableRequest BuildCreateTableRequest()
     {
         return new CreateTableRequest
@@ -194,11 +195,13 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
         };
     }
 
+    /// <inheritdoc />
     public bool CompareSyncData(RouteV2 otherData)
     {
         return this.Name != otherData.Name;
     }
 
+    /// <inheritdoc />
     public FilterDefinition<RouteV2> BuildFilter()
     {
         var filter = Builders<RouteV2>.Filter

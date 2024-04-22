@@ -103,11 +103,13 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationTyp
 
     }
 
+    /// <inheritdoc />
     public bool CompareSyncData(Stop otherData)
     {
         return this.StopName != otherData.StopName;
     }
 
+    /// <inheritdoc />
     public FilterDefinition<Stop> BuildFilter()
     {
         var filter = Builders<Stop>.Filter
@@ -138,6 +140,7 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationTyp
         return hashCode.ToHashCode();
     }
 
+    /// <inheritdoc />
     public CreateTableRequest BuildCreateTableRequest()
     {
         return new CreateTableRequest()

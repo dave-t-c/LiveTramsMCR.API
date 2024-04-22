@@ -30,9 +30,13 @@ public class RouteTimes : IDynamoDbTable, ISynchronizationType<RouteTimes>
     [DynamoDBProperty]
     public Dictionary<string, string> Times { get; set; }
     
+    /// <summary>
+    /// Dummy DynamoDbRangeKey
+    /// </summary>
     [DynamoDBRangeKey]
     public int Range { get; set; }
 
+    /// <inheritdoc />
     public CreateTableRequest BuildCreateTableRequest()
     {
         return new CreateTableRequest()
@@ -72,11 +76,13 @@ public class RouteTimes : IDynamoDbTable, ISynchronizationType<RouteTimes>
         };
     }
 
+    /// <inheritdoc />
     public bool CompareSyncData(RouteTimes otherData)
     {
         return this.Route != otherData.Route;
     }
 
+    /// <inheritdoc />
     public FilterDefinition<RouteTimes> BuildFilter()
     {
         var filter = Builders<RouteTimes>.Filter
