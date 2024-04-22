@@ -26,6 +26,8 @@ public static class TestHelper
         var services = new ServiceCollection();
         var mongoClient = new MongoClient(TestAppConfiguration.TestDbConnectionString);
         
+        Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", "foo");
+        Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", "bar");
         var dynamoDbConfig = new AmazonDynamoDBConfig
         {
             MaxErrorRetry = 1,
