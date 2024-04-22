@@ -23,6 +23,8 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: List docker processes
         run: docker ps -a
+      - name: Run Tests in container
+        run: docker run --rm -v ${pwd}:/app -w /app/tests mcr.microsoft.com/dotnet/sdk:8.0 dotnet test --verbosity normal --blame-hang --blame-hang-timeout 100000ms
       - name: Test
         run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 100000ms
       - name: Teardown docker containers

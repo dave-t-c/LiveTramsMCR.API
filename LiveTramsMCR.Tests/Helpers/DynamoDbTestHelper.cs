@@ -19,7 +19,6 @@ internal static class DynamoDbTestHelper
         var dynamoDbClient = TestHelper.GetService<IAmazonDynamoDB>();
         var instance = (IDynamoDbTable)Activator.CreateInstance(typeof(T));
         var createTableRequest = instance?.BuildCreateTableRequest();
-        dynamoDbContext.GetTargetTable<T>();
         var existingTables = await dynamoDbClient.ListTablesAsync();
 
         if (!existingTables.TableNames.Contains(createTableRequest.TableName))

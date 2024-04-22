@@ -31,8 +31,8 @@ public static class TestHelper
             MaxErrorRetry = 1,
             RetryMode = RequestRetryMode.Standard,
             LogMetrics = true,
-            ServiceURL = "http://localhost:8000",
-            Timeout = TimeSpan.FromSeconds(5)
+            ServiceURL = "http://dynamodb-local:8000",
+            Timeout = TimeSpan.FromSeconds(5),
         };
 
         var awsCreds = new BasicAWSCredentials("foo", "bar");
