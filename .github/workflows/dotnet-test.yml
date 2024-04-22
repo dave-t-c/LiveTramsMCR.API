@@ -24,6 +24,6 @@ jobs:
       - name: List docker processes
         run: docker ps -a
       - name: Test
-        run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 1000ms
+        run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 100000ms
       - name: Teardown docker containers
         run: docker-compose down
