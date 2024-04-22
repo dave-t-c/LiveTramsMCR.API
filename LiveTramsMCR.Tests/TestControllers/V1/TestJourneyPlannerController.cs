@@ -31,7 +31,6 @@ public class TestJourneyPlannerController : BaseNunitTest
     [SetUp]
     public async Task SetUp()
     {
-        Console.WriteLine("Starting set up...");
         _resourcesConfig = new ResourcesConfig
         {
             StopResourcePath = "../../../Resources/TestRoutePlanner/stops.json",
@@ -43,13 +42,10 @@ public class TestJourneyPlannerController : BaseNunitTest
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
 
         _stopsRepository = TestHelper.GetService<IStopsRepository>();
-        Console.WriteLine("Creating mongo stops...");
         MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
-        Console.WriteLine("Creating dynamodb stops...");
         await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedStops);
         _routeRepository = TestHelper.GetService<IRouteRepository>();
         
-        Console.WriteLine("Creating mongo routes...");
         MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _importedResources.ImportedRoutes);
         await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedRoutes);
         MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _importedResources.ImportedRouteTimes);
@@ -58,7 +54,6 @@ public class TestJourneyPlannerController : BaseNunitTest
         _journeyPlanner = new JourneyPlanner(_routeRepository);
         _journeyPlannerModel = new JourneyPlannerModel(_stopsRepository, _journeyPlanner);
         _journeyPlannerController = new JourneyPlannerController(_journeyPlannerModel);
-        Console.WriteLine("Completed set up...");
     }
 
     [TearDown]
