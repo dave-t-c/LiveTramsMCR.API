@@ -24,6 +24,6 @@ jobs:
       - name: List docker processes
         run: docker ps -a
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test --no-restore --verbosity diag
       - name: Teardown docker containers
         run: docker-compose down
