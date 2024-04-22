@@ -15,6 +15,12 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '6.0'
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: foo
+          aws-secret-access-key: bar
+          aws-region: eu-west-1
       - name: Start docker containers
         run: docker-compose -f docker-compose.run-local.yml up -d
       - name: Install dependencies
@@ -23,8 +29,6 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: List docker processes
         run: docker ps -a
-      - name: List created tables
-        run: aws dynamodb list-tables --endpoint-url http://localhost:8000
       - name: Test
         run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 100000ms
       - name: Teardown docker containers
