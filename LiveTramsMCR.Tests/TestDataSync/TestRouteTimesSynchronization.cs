@@ -51,8 +51,12 @@ public class TestRouteTimesSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestCreateRoutesFromEmptyDb()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateRoutesFromEmptyDb(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _synchronizationTask.SyncData(_routeTimes);
 
         var createdRouteTimes = _routeRepository.GetAllRouteTimes();
@@ -60,8 +64,12 @@ public class TestRouteTimesSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestUpdateExistingRoute()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestUpdateExistingRoute(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeTimesCollection.InsertManyAsync(_routeTimes);
 
         var purpleRoute = _routeTimes.First(route => route.Route == "Purple");
@@ -80,8 +88,12 @@ public class TestRouteTimesSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestDeleteExistingRoute()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestDeleteExistingRoute(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeTimesCollection.InsertManyAsync(_routeTimes);
         
         _routeTimes.RemoveAll(route => route.Route == "Purple");
@@ -94,8 +106,12 @@ public class TestRouteTimesSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestCreateUpdateDelete()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateUpdateDelete(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeTimesCollection.InsertManyAsync(_routeTimes);
         
         var purpleRoute = _routeTimes.First(route => route.Route == "Purple");
