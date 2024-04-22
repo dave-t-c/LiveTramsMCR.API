@@ -26,7 +26,11 @@ public static class TestHelper
         var mongoClient = new MongoClient(TestAppConfiguration.TestDbConnectionString);
         var dynamoDbConfig = new AmazonDynamoDBConfig
         {
-            ServiceURL = TestAppConfiguration.LocalDynamoDbServiceUrl
+            MaxErrorRetry = 1,
+            RetryMode = RequestRetryMode.Standard,
+            LogMetrics = true,
+            ServiceURL = TestAppConfiguration.LocalDynamoDbServiceUrl,
+            Timeout = TimeSpan.FromSeconds(5)
         };
         var awsCredentials = new BasicAWSCredentials("foo", "bar"); 
 
