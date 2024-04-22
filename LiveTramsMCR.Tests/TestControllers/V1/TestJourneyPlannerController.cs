@@ -43,13 +43,13 @@ public class TestJourneyPlannerController : BaseNunitTest
 
         _stopsRepository = TestHelper.GetService<IStopsRepository>();
         MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
-        await DynamoDbHelper.CreateRecords(_importedResources.ImportedStops);
+        await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedStops);
         _routeRepository = TestHelper.GetService<IRouteRepository>();
         
         MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, _importedResources.ImportedRoutes);
-        await DynamoDbHelper.CreateRecords(_importedResources.ImportedRoutes);
+        await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedRoutes);
         MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, _importedResources.ImportedRouteTimes);
-        await DynamoDbHelper.CreateRecords(_importedResources.ImportedRouteTimes);
+        await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedRouteTimes);
 
         _journeyPlanner = new JourneyPlanner(_routeRepository);
         _journeyPlannerModel = new JourneyPlannerModel(_stopsRepository, _journeyPlanner);

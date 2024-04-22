@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using LiveTramsMCR.Common.Data.DynamoDb;
 using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
 using LiveTramsMCR.Models.V1.RoutePlanner;
@@ -25,33 +28,55 @@ public class Synchronizer
     {
         var db = request.MongoClient.GetDatabase(request.TargetDbName);
 
-        await RunSyncTask<Stop>(db, request.StopsCollectionName,
+        await RunSyncTask<Stop>(
+            db,
+            request.DynamoDbClient,
+            request.DynamoDbContext,
+            request.StopsCollectionName,
             request.StopsPath);
         
-        await RunSyncTask<RouteTimes>(db, request.RouteTimesCollectionName, 
+        await RunSyncTask<RouteTimes>(
+            db,
+            request.DynamoDbClient,
+            request.DynamoDbContext,
+            request.RouteTimesCollectionName, 
             request.RouteTimesPath);
 
-        await RunSyncTask<Route>(db, request.RoutesCollectionName,
+        await RunSyncTask<Route>(
+            db,
+            request.DynamoDbClient,
+            request.DynamoDbContext,
+            request.RoutesCollectionName,
             request.RoutesPath);
         
-        await RunSyncTask<StopV2>(db, request.StopsV2CollectionName, 
+        await RunSyncTask<StopV2>(
+            db,
+            request.DynamoDbClient,
+            request.DynamoDbContext,
+            request.StopsV2CollectionName, 
             request.StopsV2Path);
         
-        await RunSyncTask<RouteV2>(db, request.RoutesV2CollectionName, 
+        await RunSyncTask<RouteV2>(
+            db,
+            request.DynamoDbClient,
+            request.DynamoDbContext,
+            request.RoutesV2CollectionName, 
             request.RoutesV2Path);
     }
 
     private static async Task RunSyncTask<T>(
         IMongoDatabase db,
+        IAmazonDynamoDB dynamoDbClient,
+        IDynamoDBContext dynamoDbContext,
         string collectionName,
         string configPath)
-    where T: ISynchronizationType<T>
+    where T: ISynchronizationType<T>, IDynamoDbTable
     {
         var mongoCollection = db.GetCollection<T>(collectionName);
         var staticDataPath = Path.Combine(Environment.CurrentDirectory, configPath);
         var importedStaticData = FileHelper.ImportFromJsonFile<List<T>>(staticDataPath);
 
-        var syncTask = new SynchronizationTask<T>(mongoCollection);
+        var syncTask = new SynchronizationTask<T>(mongoCollection, dynamoDbClient, dynamoDbContext);
         await syncTask.SyncData(importedStaticData);
     }
 }

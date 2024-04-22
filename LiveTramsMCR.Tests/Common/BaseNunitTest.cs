@@ -10,6 +10,6 @@ public class BaseNunitTest
     public async Task BaseTearDown()
     {
         MongoHelper.TearDownDatabase();
-        await DynamoDbHelper.TearDownDatabase();
+        await DynamoDbTestHelper.TearDownDatabase();
     }
 }

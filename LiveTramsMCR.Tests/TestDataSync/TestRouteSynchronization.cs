@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
@@ -30,12 +32,14 @@ public class TestRouteSynchronization : BaseNunitTest
     public void SetUp()
     {
         _mongoClient = TestHelper.GetService<MongoClient>();
+        var dynamoDbClient = TestHelper.GetService<IAmazonDynamoDB>();
+        var dynamodbContext = TestHelper.GetService<IDynamoDBContext>();
         _routeRepository = TestHelper.GetService<IRouteRepository>();
         var routePath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.RoutesPath);
         _routes = FileHelper.ImportFromJsonFile<List<Route>>(routePath);
         var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         _routeCollection = db.GetCollection<Route>(AppConfiguration.RoutesCollectionName);
-        _synchronizationTask = new SynchronizationTask<Route>(_routeCollection);
+        _synchronizationTask = new SynchronizationTask<Route>(_routeCollection, dynamoDbClient, dynamodbContext);
     }
 
     [TearDown]

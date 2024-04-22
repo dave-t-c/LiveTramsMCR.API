@@ -10,7 +10,7 @@ using LiveTramsMCR.Common.Data.DynamoDb;
 
 namespace LiveTramsMCR.Tests.Helpers;
 
-internal static class DynamoDbHelper
+internal static class DynamoDbTestHelper
 {
     internal static async Task CreateRecords<T>(IEnumerable<T> items)
     where T: IDynamoDbTable

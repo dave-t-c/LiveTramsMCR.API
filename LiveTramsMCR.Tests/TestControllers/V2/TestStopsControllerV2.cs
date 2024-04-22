@@ -39,7 +39,7 @@ public class TestStopsControllerV2 : BaseNunitTest
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
         MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedResources.ImportedStopsV2);
-        await DynamoDbHelper.CreateRecords(_importedResources.ImportedStopsV2);
+        await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedStopsV2);
         _stopsDataModelV2 = new StopsDataModelV2(_stopsRepositoryV2);
         _testStopController = new StopsControllerV2(_stopsDataModelV2);
     }

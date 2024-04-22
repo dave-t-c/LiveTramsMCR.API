@@ -1,3 +1,5 @@
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using MongoDB.Driver;
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
@@ -7,6 +9,10 @@ namespace LiveTramsMCR.DataSync;
 public class SynchronizationRequest
 {
     public IMongoClient MongoClient { get; set; }
+    
+    public IAmazonDynamoDB DynamoDbClient { get; set; }
+    
+    public IDynamoDBContext DynamoDbContext { get; set; }
     
     public string TargetDbName { get; set; }
     

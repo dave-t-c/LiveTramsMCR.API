@@ -64,7 +64,7 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
 
         var stopsV1Repository = TestHelper.GetService<IStopsRepository>();
         MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, stopsV1);
-        await DynamoDbHelper.CreateRecords(stopsV1);
+        await DynamoDbTestHelper.CreateRecords(stopsV1);
 
 
         var stopsV2Loader = new StopV2Loader(resourcesConfig);
@@ -72,7 +72,7 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
 
         var stopsRepositoryV2 = TestHelper.GetService<IStopsRepositoryV2>();
         MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedStopV2S);
-        await DynamoDbHelper.CreateRecords(_importedStopV2S);
+        await DynamoDbTestHelper.CreateRecords(_importedStopV2S);
         
         _stopLookupV2 = new StopLookupV2(stopsRepositoryV2);
 
@@ -87,13 +87,13 @@ public class TestJourneyPlannerControllerV2 : BaseNunitTest
 
         var routeRepositoryV1 = TestHelper.GetService<IRouteRepository>();
         MongoHelper.CreateRecords(AppConfiguration.RoutesCollectionName, routesV1);
-        await DynamoDbHelper.CreateRecords(routesV1);
+        await DynamoDbTestHelper.CreateRecords(routesV1);
         MongoHelper.CreateRecords(AppConfiguration.RouteTimesCollectionName, routeTimes);
-        await DynamoDbHelper.CreateRecords(routeTimes);
+        await DynamoDbTestHelper.CreateRecords(routeTimes);
         
         var routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
         MongoHelper.CreateRecords(AppConfiguration.RoutesV2CollectionName, _importedRouteV2S);
-        await DynamoDbHelper.CreateRecords(_importedRouteV2S);
+        await DynamoDbTestHelper.CreateRecords(_importedRouteV2S);
 
         var journeyVisualiserV2 = new JourneyVisualiserV2();
 

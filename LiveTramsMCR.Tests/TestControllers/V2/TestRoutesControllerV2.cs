@@ -35,9 +35,9 @@ public class TestRoutesControllerV2 : BaseNunitTest
 
         _routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
         MongoHelper.CreateRecords(AppConfiguration.StopsV2CollectionName, _importedResources.ImportedStopsV2);
-        await DynamoDbHelper.CreateRecords(_importedResources.ImportedStopsV2);
+        await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedStopsV2);
         MongoHelper.CreateRecords(AppConfiguration.RoutesV2CollectionName, _importedResources.ImportedRoutesV2);
-        await DynamoDbHelper.CreateRecords(_importedResources.ImportedRoutesV2);
+        await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedRoutesV2);
         
         _routesDataModel = new RoutesDataModelV2(_routeRepositoryV2);
         _routesControllerV2 = new RoutesControllerV2(_routesDataModel);

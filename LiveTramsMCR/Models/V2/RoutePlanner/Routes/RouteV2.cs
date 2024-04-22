@@ -45,7 +45,6 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
     ///     Stop detail generated using the Stop keys
     ///     Contains the full detail for all stops on the route.
     /// </summary>
-    [DynamoDBProperty]
     public List<StopV2>? StopsDetail { get; set; }
 #nullable disable
 

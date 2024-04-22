@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
@@ -29,12 +31,14 @@ public class TestStopV2Synchronization : BaseNunitTest
     public void SetUp()
     {
         _mongoClient = TestHelper.GetService<MongoClient>();
+        var dynamoDbClient = TestHelper.GetService<IAmazonDynamoDB>();
+        var dynamoDbContext = TestHelper.GetService<IDynamoDBContext>();
         _stopsRepository = TestHelper.GetService<IStopsRepositoryV2>();
         var stopsPath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.StopsV2Path);
         _stops = FileHelper.ImportFromJsonFile<List<StopV2>>(stopsPath);
         var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         _stopsCollection = db.GetCollection<StopV2>(AppConfiguration.StopsV2CollectionName);
-        _stopSynchronization = new SynchronizationTask<StopV2>(_stopsCollection);
+        _stopSynchronization = new SynchronizationTask<StopV2>(_stopsCollection, dynamoDbClient, dynamoDbContext);
     }
 
     [TearDown]
