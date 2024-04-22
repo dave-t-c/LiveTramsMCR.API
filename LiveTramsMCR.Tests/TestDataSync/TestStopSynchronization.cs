@@ -48,11 +48,16 @@ public class TestStopSynchronization : BaseNunitTest
         _stopsRepository = null;
         _stops = null;
         _synchronizationTask = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     [Test]
-    public async Task TestCreateStopsFromEmptyDb()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateStopsFromEmptyDb(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _synchronizationTask.SyncData(_stops);
 
         var createdStops = _stopsRepository.GetAll();
@@ -60,8 +65,12 @@ public class TestStopSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestUpdateExistingStop()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestUpdateExistingStop(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _stopsCollection.InsertManyAsync(_stops);
 
         var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");
@@ -80,8 +89,12 @@ public class TestStopSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestDeleteExistingStop()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestDeleteExistingStop(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _stopsCollection.InsertManyAsync(_stops);
         
         _stops.RemoveAll(stop => stop.Tlaref == "ALT");
@@ -94,8 +107,12 @@ public class TestStopSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestCreateUpdateDelete()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateUpdateDelete(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _stopsCollection.InsertManyAsync(_stops);
         
         var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");

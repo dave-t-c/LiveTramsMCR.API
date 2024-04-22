@@ -48,6 +48,7 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         _routeRepository = null;
         _routeTimes = null;
         _synchronizationTask = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     [Test]
