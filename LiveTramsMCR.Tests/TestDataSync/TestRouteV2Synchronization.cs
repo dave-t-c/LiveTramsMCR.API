@@ -129,7 +129,7 @@ public class TestRouteV2Synchronization : BaseNunitTest
         await DynamoDbTestHelper.CreateRecords(_routes);
         
         var purpleRoute = _routes.First(route => route.Name == "Purple");
-        purpleRoute.Colour = "Updated route colour";
+        purpleRoute.PolylineCoordinates.Add(new List<double>() {1.0, 2.0});
         var purpleRouteIndex = _routes.FindIndex(route => route.Name == "Purple");
         _routes[purpleRouteIndex] = purpleRoute;
         
@@ -150,7 +150,7 @@ public class TestRouteV2Synchronization : BaseNunitTest
         Assert.AreEqual(_routes.Count, updatedRoutes.Count);
 
         var updatedPurpleRoute = updatedRoutes.First(route => route.Name == "Purple");
-        Assert.AreEqual("Updated route colour", updatedPurpleRoute.Colour);
+        Assert.AreEqual(purpleRoute.PolylineCoordinates.Count, updatedPurpleRoute.PolylineCoordinates.Count);
         
         Assert.IsNull(updatedRoutes.FirstOrDefault(route => route.Name == "Yellow"));
 
