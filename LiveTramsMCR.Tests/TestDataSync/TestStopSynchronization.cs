@@ -59,6 +59,7 @@ public class TestStopSynchronization : BaseNunitTest
         Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
 
         await _synchronizationTask.SyncData(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
 
         var createdStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, createdStops.Count);
@@ -72,7 +73,8 @@ public class TestStopSynchronization : BaseNunitTest
         Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
 
         await _stopsCollection.InsertManyAsync(_stops);
-
+        await DynamoDbTestHelper.CreateRecords(_stops);
+        
         var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");
 
         altrinchamStop.StopName = "Updated stop name";
@@ -96,6 +98,7 @@ public class TestStopSynchronization : BaseNunitTest
         Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
 
         await _stopsCollection.InsertManyAsync(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
         
         _stops.RemoveAll(stop => stop.Tlaref == "ALT");
 
@@ -114,6 +117,7 @@ public class TestStopSynchronization : BaseNunitTest
         Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
 
         await _stopsCollection.InsertManyAsync(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
         
         var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");
         altrinchamStop.StopName = "Updated stop name";

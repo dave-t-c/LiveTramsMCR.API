@@ -48,11 +48,16 @@ public class TestStopV2Synchronization : BaseNunitTest
         _mongoClient = null;
         _stopsRepository = null;
         _stops = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     [Test]
-    public async Task TestCreateStopsFromEmptyDb()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateStopsFromEmptyDb(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _stopSynchronization.SyncData(_stops);
 
         var createdStops = _stopsRepository.GetAll();
@@ -60,9 +65,14 @@ public class TestStopV2Synchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestUpdateExistingStop()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestUpdateExistingStop(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _stopsCollection.InsertManyAsync(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
 
         var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");
 
@@ -80,9 +90,14 @@ public class TestStopV2Synchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestDeleteExistingStop()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestDeleteExistingStop(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _stopsCollection.InsertManyAsync(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
         
         _stops.RemoveAll(stop => stop.Tlaref == "ALT");
 
@@ -94,9 +109,14 @@ public class TestStopV2Synchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestCreateUpdateDelete()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateUpdateDelete(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _stopsCollection.InsertManyAsync(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
         
         var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");
         altrinchamStop.StopName = "Updated stop name";
