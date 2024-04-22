@@ -15,7 +15,12 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '6.0'
-      - name: 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4.0.2
+        with:
+          aws-region: 'eu-west-1'
+          aws-access-key-id: 'foo'
+          aws-secret-access-key: 'bar'
       - name: Start docker containers
         run: docker-compose up -d
       - name: Install dependencies
@@ -25,9 +30,7 @@ jobs:
       - name: List docker processes
         run: docker ps -a
       - name: Test
-        run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 100000ms
-        env:
-          AWS_ACCESS_KEY_ID: foo
-          AWS_SECRET_ACCESS_KEY: bar
+        run: |
+          dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 100000ms
       - name: Teardown docker containers
         run: docker-compose down
