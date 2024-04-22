@@ -49,11 +49,16 @@ public class TestRouteSynchronization : BaseNunitTest
         _routeRepository = null;
         _routes = null;
         _synchronizationTask = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
     
     [Test]
-    public async Task TestCreateRoutesFromEmptyDb()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateRoutesFromEmptyDb(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _synchronizationTask.SyncData(_routes);
 
         var createdRoutes = _routeRepository.GetAllRoutes();
@@ -61,13 +66,17 @@ public class TestRouteSynchronization : BaseNunitTest
     }
     
     [Test]
-    public async Task TestUpdateExistingRoute()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestUpdateExistingRoute(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeCollection.InsertManyAsync(_routes);
+        await DynamoDbTestHelper.CreateRecords(_routes);
 
         var purpleRoute = _routes.First(route => route.Name == "Purple");
-
-        purpleRoute.Colour = "Updated route colour";
+        purpleRoute.Stops.Add(new Stop());
         var purpleRouteIndex = _routes.FindIndex(route => route.Name == "Purple");
         _routes[purpleRouteIndex] = purpleRoute;
 
@@ -77,13 +86,18 @@ public class TestRouteSynchronization : BaseNunitTest
         Assert.AreEqual(_routes.Count, updatedRoutes.Count);
 
         var updatedPurpleRoute = updatedRoutes.First(route => route.Name == "Purple");
-        Assert.AreEqual("Updated route colour", updatedPurpleRoute.Colour);
+        Assert.AreEqual(purpleRoute.Stops.Count, updatedPurpleRoute.Stops.Count);
     }
 
     [Test]
-    public async Task TestDeleteExistingRoute()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestDeleteExistingRoute(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeCollection.InsertManyAsync(_routes);
+        await DynamoDbTestHelper.CreateRecords(_routes);
         
         _routes.RemoveAll(route => route.Name == "Purple");
 
@@ -125,12 +139,17 @@ public class TestRouteSynchronization : BaseNunitTest
     }
     
     [Test]
-    public async Task TestCreateUpdateDeleteDynamoDb()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateUpdateDeleteDynamoDb(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeCollection.InsertManyAsync(_routes);
+        await DynamoDbTestHelper.CreateRecords(_routes);
         
         var purpleRoute = _routes.First(route => route.Name == "Purple");
-        purpleRoute.Colour = "Updated route colour";
+        purpleRoute.Stops.Add(new Stop());
         var purpleRouteIndex = _routes.FindIndex(route => route.Name == "Purple");
         _routes[purpleRouteIndex] = purpleRoute;
         
@@ -146,7 +165,7 @@ public class TestRouteSynchronization : BaseNunitTest
         Assert.AreEqual(_routes.Count, updatedRoutes.Count);
 
         var updatedPurpleRoute = updatedRoutes.First(route => route.Name == "Purple");
-        Assert.AreEqual("Updated route colour", updatedPurpleRoute.Colour);
+        Assert.AreEqual(purpleRoute.Stops.Count, updatedPurpleRoute.Stops.Count);
         
         Assert.IsNull(updatedRoutes.FirstOrDefault(route => route.Name == "Yellow"));
 
