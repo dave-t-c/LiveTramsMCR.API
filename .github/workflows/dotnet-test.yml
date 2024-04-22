@@ -15,6 +15,7 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '6.0'
+      - name: 
       - name: Start docker containers
         run: docker-compose up -d
       - name: Install dependencies
@@ -25,5 +26,8 @@ jobs:
         run: docker ps -a
       - name: Test
         run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 100000ms
+        env:
+          AWS_ACCESS_KEY_ID: foo
+          AWS_SECRET_ACCESS_KEY: bar
       - name: Teardown docker containers
         run: docker-compose down
