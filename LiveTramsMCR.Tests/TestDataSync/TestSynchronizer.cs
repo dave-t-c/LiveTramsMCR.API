@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync;
 using LiveTramsMCR.DataSync.Helpers;
@@ -22,6 +25,8 @@ namespace LiveTramsMCR.Tests.TestDataSync;
 public class TestSynchronizer : BaseNunitTest
 {
     private MongoClient? _mongoClient;
+    private IAmazonDynamoDB? _dynamoDbClient;
+    private IDynamoDBContext? _dynamoDbContext;
     private Synchronizer? _synchronizer;
     private IRouteRepository? _routeRepository;
     private IRouteRepositoryV2? _routeRepositoryV2;
@@ -39,6 +44,8 @@ public class TestSynchronizer : BaseNunitTest
     {
         _synchronizer = new Synchronizer();
         _mongoClient = TestHelper.GetService<MongoClient>();
+        _dynamoDbClient = TestHelper.GetService<IAmazonDynamoDB>();
+        _dynamoDbContext = TestHelper.GetService<IDynamoDBContext>();
         _routeRepository = TestHelper.GetService<IRouteRepository>();
         _routeRepositoryV2 = TestHelper.GetService<IRouteRepositoryV2>();
         _stopsRepository = TestHelper.GetService<IStopsRepository>();
@@ -47,6 +54,8 @@ public class TestSynchronizer : BaseNunitTest
         _request = new SynchronizationRequest
         {
             MongoClient = _mongoClient,
+            DynamoDbContext = _dynamoDbContext,
+            DynamoDbClient = _dynamoDbClient,
             TargetDbName = AppConfiguration.DatabaseName,
             StopsCollectionName = AppConfiguration.StopsCollectionName,
             StopsPath = AppConfiguration.StopsPath,
@@ -76,12 +85,16 @@ public class TestSynchronizer : BaseNunitTest
         _stopsRepositoryV2 = null;
         _stopsRepository = null;
         _request = null;
-        
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     [Test]
-    public async Task TestCreateFromEmptyDb()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateFromEmptyDb(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _synchronizer.SynchronizeStaticData(_request);
 
         var createdStops = _stopsRepository.GetAll();
