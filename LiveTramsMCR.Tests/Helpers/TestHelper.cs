@@ -26,8 +26,6 @@ public static class TestHelper
         var services = new ServiceCollection();
         var mongoClient = new MongoClient(TestAppConfiguration.TestDbConnectionString);
         
-        Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", "foo");
-        Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", "bar");
         var dynamoDbConfig = new AmazonDynamoDBConfig
         {
             MaxErrorRetry = 1,
@@ -36,9 +34,8 @@ public static class TestHelper
             ServiceURL = "http://localhost:8000",
             Timeout = TimeSpan.FromSeconds(5)
         };
-        var awsCredentials = new BasicAWSCredentials("foo", "bar"); 
-
-        IAmazonDynamoDB dynamoDbClient = new AmazonDynamoDBClient(awsCredentials, dynamoDbConfig);
+        
+        IAmazonDynamoDB dynamoDbClient = new AmazonDynamoDBClient(dynamoDbConfig);
         IDynamoDBContext dynamoDbContext = new DynamoDBContext(dynamoDbClient);
         
         var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
