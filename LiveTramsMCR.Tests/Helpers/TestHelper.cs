@@ -2,6 +2,7 @@ using System;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.Runtime;
+using Amazon.Util;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
@@ -24,6 +25,9 @@ public static class TestHelper
     {
         var services = new ServiceCollection();
         var mongoClient = new MongoClient(TestAppConfiguration.TestDbConnectionString);
+        
+        Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", "foo");
+        Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", "bar");
         var dynamoDbConfig = new AmazonDynamoDBConfig
         {
             MaxErrorRetry = 1,
