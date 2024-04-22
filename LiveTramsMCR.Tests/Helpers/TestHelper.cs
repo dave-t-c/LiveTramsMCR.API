@@ -1,6 +1,7 @@
 using System;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.Runtime;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V1.RoutePlanner;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
@@ -27,7 +28,7 @@ public static class TestHelper
         {
             ServiceURL = TestAppConfiguration.LocalDynamoDbServiceUrl
         };
-        var awsCredentials = new Amazon.Runtime.BasicAWSCredentials("foo", "bar"); 
+        var awsCredentials = new BasicAWSCredentials("foo", "bar"); 
 
         IAmazonDynamoDB dynamoDbClient = new AmazonDynamoDBClient(awsCredentials, dynamoDbConfig);
         IDynamoDBContext dynamoDbContext = new DynamoDBContext(dynamoDbClient);

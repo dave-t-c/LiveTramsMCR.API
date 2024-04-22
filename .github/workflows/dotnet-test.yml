@@ -9,15 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      dynamodb:
-        image: amazon/dynamodb-local:latest
-        ports:
-        - 8000:8000
-        env:
-          AWS_ACCESS_KEY_ID: foo
-          AWS_SECRET_ACCESS_KEY: bar
-          AWS_REGION: eu-west-1
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET Core SDK 6.0
