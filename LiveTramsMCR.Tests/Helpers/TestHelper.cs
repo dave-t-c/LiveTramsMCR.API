@@ -27,8 +27,9 @@ public static class TestHelper
         {
             ServiceURL = TestAppConfiguration.LocalDynamoDbServiceUrl
         };
+        var awsCredentials = new Amazon.Runtime.BasicAWSCredentials("foo", "bar"); 
 
-        IAmazonDynamoDB dynamoDbClient = new AmazonDynamoDBClient(dynamoDbConfig);
+        IAmazonDynamoDB dynamoDbClient = new AmazonDynamoDBClient(awsCredentials, dynamoDbConfig);
         IDynamoDBContext dynamoDbContext = new DynamoDBContext(dynamoDbClient);
         
         var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
