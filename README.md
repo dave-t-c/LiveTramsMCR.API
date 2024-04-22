@@ -32,6 +32,7 @@ This will start the system locally on `localhost:8080`. Head to `localhost:8080/
 
 You will also be able to view any changes you make to data using
 mongo express, which will be started on `localhost:8081`. This can be accessed using the default mentioned `ME_CONFIG_MONGODB_AUTH_USERNAME` username and `ME_CONFIG_MONGODB_AUTH_PASSWORD` password specified [here](https://github.com/mongo-express/mongo-express?tab=readme-ov-file#usage-docker).
+You can also do this for the dynamodb data by instead going to `localhost:8001`.
 
 ## Coming soon
 - Expected journey time and stops for route planning
