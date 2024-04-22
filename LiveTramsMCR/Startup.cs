@@ -71,10 +71,17 @@ public class Startup
         services.AddSingleton(apiOptions);
 
         var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
-        var dynamoDbConfig = new AmazonDynamoDBConfig
+        var dynamoDbConfig = new AmazonDynamoDBConfig();
+        
+        if (Configuration["AWS_SERVICE_URL"] != null)
         {
-            RegionEndpoint = RegionEndpoint.GetBySystemName(Configuration["aws-region-name"])
-        };
+            dynamoDbConfig.ServiceURL = Configuration["AWS_SERVICE_URL"];
+        }
+        
+        if (Configuration["AWS_REGION"] != null)
+        {
+            dynamoDbConfig.RegionEndpoint = RegionEndpoint.GetBySystemName(Configuration["AWS_REGION"]);
+        }
         
         var dynamoDbClient = new AmazonDynamoDBClient(dynamoDbConfig);
         var dynamoDbContext = new DynamoDBContext(dynamoDbClient);
@@ -86,6 +93,8 @@ public class Startup
             var synchronizationRequest = new SynchronizationRequest
             {
                 MongoClient = mongoClient,
+                DynamoDbClient = dynamoDbClient,
+                DynamoDbContext = dynamoDbContext,
                 TargetDbName = AppConfiguration.DatabaseName,
                 StopsCollectionName = AppConfiguration.StopsCollectionName,
                 StopsPath = AppConfiguration.StopsPath,

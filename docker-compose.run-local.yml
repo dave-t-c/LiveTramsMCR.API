@@ -2,16 +2,23 @@ version: '3.1'
 
 services:
   server:
+    depends_on: 
+      - dynamodb-local
+    links:
+      - dynamodb-local
     build:
       context: .
-      target: final
     ports:
       - 8080:80
     environment:
-      CosmosConnectionString: mongodb://foo:bar@mongo:27017/
+      CosmosConnectionString: "mongodb://foo:bar@mongo:27017/"
       OcpApimSubscriptionKey: "<Your TfGM OpenData API OcpApimSubscriptionKey here>"
       ASPNETCORE_ENVIRONMENT: Development # Allow SwaggerUI
       MIGRATIONMODE: CREATE # Create required data in mongodb on startup
+      AWS_SERVICE_URL: "http://dynamodb-local:8000"
+      DynamoDbEnabled: "true"
+      AWS_ACCESS_KEY_ID: "foo"
+      AWS_SECRET_ACCESS_KEY: "bar"
   mongo:
     image: mongo
     restart: always
@@ -29,5 +36,26 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: foo
       ME_CONFIG_MONGODB_ADMINPASSWORD: bar
-      ME_CONFIG_MONGODB_URL: mongodb://foo:bar@mongo:27017/
+      ME_CONFIG_MONGODB_URL: "mongodb://foo:bar@mongo:27017/"
+      
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+    
+  dynamodb-admin:
+    image: "aaronshaf/dynamodb-admin:latest"
+    depends_on: 
+      - dynamodb-local 
+    links:
+      - dynamodb-local
+    ports: 
+      - "8001:8001"
+    environment:
+      DYNAMO_ENDPOINT: "http://dynamodb-local:8000"
 
