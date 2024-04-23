@@ -12,6 +12,8 @@ jobs:
     container: ubuntu
     steps:
       - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: apt-get update; apt-get install curl -y
       - name: Setup .NET Core SDK 6.0
         uses: actions/setup-dotnet@v1.7.2
         with:
