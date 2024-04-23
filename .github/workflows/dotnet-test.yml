@@ -31,6 +31,8 @@ jobs:
         run: docker ps -a
       - name: Inspect container states
         run: docker inspect -f '{{.Name}} -> {{.State.Status}}' $(docker ps -aq)
+      - name: Output logs for container
+        run: docker logs dynamodb-local
       - name: List created tables
         run: aws dynamodb list-tables --endpoint-url http://localhost:8000
       - name: Test
