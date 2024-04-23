@@ -31,8 +31,6 @@ jobs:
         run: docker ps -a
       - name: Inspect container states
         run: docker inspect -f '{{.Name}} -> {{.State.Status}}' $(docker ps -aq)
-      - name: Output logs for container
-        run: docker logs dynamodb-local
       - name: Test
         run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 10000ms
       - name: Teardown docker containers
