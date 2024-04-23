@@ -114,8 +114,8 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
         if (StopsDetail is null)
             throw new InvalidOperationException("Cannot find polyline when stop detail is null");
         
-        var originStopDetail = StopsDetail?[Stops.IndexOf(origin)];
-        var destinationStopDetail = StopsDetail?[Stops.IndexOf(destination)];
+        var originStopDetail = StopsDetail[Stops.IndexOf(origin)];
+        var destinationStopDetail = StopsDetail[Stops.IndexOf(destination)];
         
         var polylineCoordinates = PolylineCoordinates.Select(pc =>
             new Coordinate(pc[1], pc[0])).ToList();
