@@ -100,7 +100,18 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationTyp
         if (ReferenceEquals(this, other)) return true;
         return StopName == other.StopName
                || Tlaref == other.Tlaref;
-
+    }
+    
+    /// <summary>
+    ///     Checks equality between this stop and another obj
+    /// </summary>
+    /// <param name="obj">Obj to compare</param>
+    /// <returns></returns>
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        return obj.GetType() == GetType() && Equals((Stop)obj);
     }
 
     /// <inheritdoc />
@@ -115,18 +126,6 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationTyp
         var filter = Builders<Stop>.Filter
             .Eq(stop => stop.Tlaref, this.Tlaref);
         return filter;
-    }
-
-    /// <summary>
-    ///     Checks equality between this stop and another obj
-    /// </summary>
-    /// <param name="obj">Obj to compare</param>
-    /// <returns></returns>
-    public override bool Equals(object obj)
-    {
-        if (ReferenceEquals(null, obj)) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        return obj.GetType() == GetType() && Equals((Stop)obj);
     }
 
     /// <summary>
