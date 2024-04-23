@@ -21,7 +21,7 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://foo:bar@mongo:27017/
     
   dynamodb-local:
-    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    command: "-jar DynamoDBLocal.jar -sharedDb -inMemory"
     image: "amazon/dynamodb-local:latest"
     container_name: dynamodb-local
     ports:
