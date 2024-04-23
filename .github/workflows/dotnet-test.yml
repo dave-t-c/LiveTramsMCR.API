@@ -31,6 +31,8 @@ jobs:
         run: docker ps -a
       - name: Inspect container states
         run: docker inspect -f '{{.Name}} -> {{.State.Status}}' $(docker ps -aq)
+      - name: List created tables
+        run: aws dynamodb list-tables --endpoint-url http://localhost:8000
       - name: Test
         run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 10000ms
         env: 
