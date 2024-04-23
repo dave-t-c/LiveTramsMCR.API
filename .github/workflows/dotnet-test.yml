@@ -22,9 +22,11 @@ jobs:
         with:
           dotnet-version: '6.0'
       - name: Create dynamodb volume
-        run: mkdir -p ./docker/dynamodb
+        run: |
+          mkdir -p ./docker/dynamodb
+          chmod 777 ./docker-dynamodb
       - name: Start docker containers
-        run: docker-compose -f docker-compose.run-local.yml up -d
+        run: docker-compose up -d
       - name: Install dependencies
         run: dotnet restore
       - name: Build
