@@ -113,7 +113,18 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
         if (ReferenceEquals(this, other)) return true;
         return StopName == other.StopName
                || Tlaref == other.Tlaref;
-
+    }
+    
+    /// <summary>
+    ///     Checks equality between this stop and another obj
+    /// </summary>
+    /// <param name="obj">Obj to compare</param>
+    /// <returns></returns>
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        return obj.GetType() == GetType() && Equals((StopV2)obj);
     }
 
     /// <inheritdoc />
@@ -131,18 +142,6 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
     }
 
     /// <summary>
-    ///     Checks equality between this stop and another obj
-    /// </summary>
-    /// <param name="obj">Obj to compare</param>
-    /// <returns></returns>
-    public override bool Equals(object obj)
-    {
-        if (ReferenceEquals(null, obj)) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        return obj.GetType() == GetType() && Equals((StopV2)obj);
-    }
-
-    /// <summary>
     ///     Generates a hash code for a stop
     /// </summary>
     /// <returns></returns>
@@ -151,6 +150,16 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
         var hashCode = new HashCode();
         hashCode.Add(StopName);
         return hashCode.ToHashCode();
+    }
+    
+    /// <summary>
+    ///     Generates a hash code for a stop obj
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public int GetHashCode(StopV2 obj)
+    {
+        return HashCode.Combine(obj.StopName, obj.Tlaref);
     }
     
     /// <inheritdoc />
@@ -191,16 +200,5 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
                 WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
             }
         };
-    }
-
-
-    /// <summary>
-    ///     Generates a hash code for a stop obj
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public int GetHashCode(StopV2 obj)
-    {
-        return HashCode.Combine(obj.StopName, obj.Tlaref);
     }
 }
