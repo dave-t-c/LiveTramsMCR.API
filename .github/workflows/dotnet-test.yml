@@ -37,8 +37,5 @@ jobs:
         run: aws dynamodb list-tables --endpoint-url http://localhost:8000
       - name: Test
         run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 10000ms
-        env: 
-          AWS_ACCESS_KEY_ID: "foo"
-          AWS_SECRET_ACCESS_KEY: "bar"
       - name: Teardown docker containers
         run: docker-compose down
