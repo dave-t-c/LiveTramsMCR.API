@@ -24,7 +24,6 @@ jobs:
       - name: Create dynamodb volume
         run: |
           mkdir -p ./docker/dynamodb
-          chmod 777 ./docker-dynamodb
       - name: Start docker containers
         run: docker-compose up -d
       - name: Install dependencies
