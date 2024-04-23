@@ -21,9 +21,6 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '6.0'
-      - name: Create dynamodb volume
-        run: |
-          mkdir -p ./docker/dynamodb
       - name: Start docker containers
         run: docker-compose up -d
       - name: Install dependencies
