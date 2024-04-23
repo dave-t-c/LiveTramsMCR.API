@@ -28,16 +28,10 @@ public static class TestHelper
         
         var dynamoDbConfig = new AmazonDynamoDBConfig
         {
-            MaxErrorRetry = 1,
-            RetryMode = RequestRetryMode.Standard,
-            LogMetrics = true,
-            ServiceURL = "http://dynamodb-local:8000",
-            Timeout = TimeSpan.FromSeconds(5),
+            ServiceURL = TestAppConfiguration.LocalDynamoDbServiceUrl
         };
-
-        var awsCreds = new BasicAWSCredentials("foo", "bar");
         
-        IAmazonDynamoDB dynamoDbClient = new AmazonDynamoDBClient(awsCreds, dynamoDbConfig);
+        IAmazonDynamoDB dynamoDbClient = new AmazonDynamoDBClient(dynamoDbConfig);
         IDynamoDBContext dynamoDbContext = new DynamoDBContext(dynamoDbClient);
         
         var db = mongoClient.GetDatabase(AppConfiguration.DatabaseName);
