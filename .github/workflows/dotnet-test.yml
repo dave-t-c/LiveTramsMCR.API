@@ -23,8 +23,8 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: List docker processes
         run: docker ps -a
-      - name: Output logs for container
-        run: docker logs -f livetramsmcrapi_server_1
+      - name: Inspect container states
+        run: docker inspect -f '{{.Name}} -> {{.State.Status}}' $(docker ps -aq)
       - name: Run Tests in container
         run: docker run --network=livetramsmcrapi_default --rm -v $(pwd):/app -w /app mcr.microsoft.com/dotnet/sdk:6.0 dotnet test --logger:trx --verbosity normal --blame-hang --blame-hang-timeout 10000ms
       - name: Test
