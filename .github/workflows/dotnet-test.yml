@@ -9,17 +9,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ubuntu
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: apt-get update; apt-get install curl -y
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
       - name: Setup .NET Core SDK 6.0
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '6.0'
-      - name: Start docker containers
-        run: docker-compose -f docker-compose.run-local.yml up -d
       - name: Install dependencies
         run: dotnet restore
       - name: Build
@@ -28,10 +28,6 @@ jobs:
         run: docker ps -a
       - name: Inspect container states
         run: docker inspect -f '{{.Name}} -> {{.State.Status}}' $(docker ps -aq)
-      - name: Run request against created service
-        run:  curl -i  -X GET http://livetramsmcrapi_server_1:8080/v1/stops
-      - name: Run Tests in container
-        run: docker run --network=livetramsmcrapi_default --rm -v $(pwd):/app -w /app mcr.microsoft.com/dotnet/sdk:6.0 dotnet test --logger:trx --verbosity normal --blame-hang --blame-hang-timeout 10000ms
       - name: Test
         run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 100000ms
       - name: Teardown docker containers
