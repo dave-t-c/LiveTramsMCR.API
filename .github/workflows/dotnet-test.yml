@@ -27,8 +27,6 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
-      - name: List docker processes
-        run: docker ps -a
       - name: Inspect container states
         run: docker inspect -f '{{.Name}} -> {{.State.Status}}' $(docker ps -aq)
       - name: Test
