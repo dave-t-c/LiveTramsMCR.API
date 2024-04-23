@@ -1,7 +1,9 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync;
 using LiveTramsMCR.Models.V1.Resources;
@@ -69,7 +71,21 @@ public class Startup
         services.AddSingleton(apiOptions);
 
         var mongoClient = new MongoClient(Configuration["CosmosConnectionString"]);
+        var dynamoDbConfig = new AmazonDynamoDBConfig();
         
+        if (Configuration["AWS_SERVICE_URL"] != null)
+        {
+            dynamoDbConfig.ServiceURL = Configuration["AWS_SERVICE_URL"];
+        }
+        
+        if (Configuration["AWS_REGION"] != null)
+        {
+            dynamoDbConfig.RegionEndpoint = RegionEndpoint.GetBySystemName(Configuration["AWS_REGION"]);
+        }
+        
+        var dynamoDbClient = new AmazonDynamoDBClient(dynamoDbConfig);
+        var dynamoDbContext = new DynamoDBContext(dynamoDbClient);
+
         var migrationMode = Environment.GetEnvironmentVariable(AppConfiguration.MigrationModeVariable);
         if (migrationMode == AppConfiguration.MigrationModeCreateValue)
         {
@@ -77,6 +93,8 @@ public class Startup
             var synchronizationRequest = new SynchronizationRequest
             {
                 MongoClient = mongoClient,
+                DynamoDbClient = dynamoDbClient,
+                DynamoDbContext = dynamoDbContext,
                 TargetDbName = AppConfiguration.DatabaseName,
                 StopsCollectionName = AppConfiguration.StopsCollectionName,
                 StopsPath = AppConfiguration.StopsPath,
@@ -99,11 +117,11 @@ public class Startup
         var routesMongoCollection = db.GetCollection<Route>(AppConfiguration.RoutesCollectionName);
         var routesV2MongoCollection = db.GetCollection<RouteV2>(AppConfiguration.RoutesV2CollectionName);
         var routeTimesMongoCollection = db.GetCollection<RouteTimes>(AppConfiguration.RouteTimesCollectionName);
-
-        IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection);
-        IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection);
-        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection);
-        IRouteRepositoryV2 routeRepositoryV2 = new RouteRepositoryV2(routesV2MongoCollection, stopsRepositoryV2);
+        
+        IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection, dynamoDbContext);
+        IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection, dynamoDbContext);
+        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection, dynamoDbContext);
+        IRouteRepositoryV2 routeRepositoryV2 = new RouteRepositoryV2(routesV2MongoCollection, dynamoDbContext, stopsRepositoryV2);
 
         IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
         services.AddSingleton(stopsDataModel);

@@ -78,7 +78,7 @@ public class TestJourneyPlannerModel : BaseNunitTest
     [Test]
     public void TestIdentifyAltrinchamPiccadillyNames()
     {
-        var plannedRoute = _journeyPlannerModel?.PlanJourney("Altrincham", "Piccadilly");
+        var plannedRoute = _journeyPlannerModel?.PlanJourney("ALT", "PIC");
         Assert.IsNotNull(plannedRoute);
         var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
         var piccadillyStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Piccadilly");
@@ -98,7 +98,7 @@ public class TestJourneyPlannerModel : BaseNunitTest
     [Test]
     public void TestIdentifyAltrinchamAshtonRoute()
     {
-        var plannedRoute = _journeyPlannerModel?.PlanJourney("Altrincham", "Ashton-Under-Lyne");
+        var plannedRoute = _journeyPlannerModel?.PlanJourney("ALT", "ASH");
         var altrinchamStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Altrincham");
         var ashtonStop = _importedResources?.ImportedStops.First(stop => stop.StopName == "Ashton-Under-Lyne");
         Assert.IsNotNull(plannedRoute);

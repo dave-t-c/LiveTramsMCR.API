@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using LiveTramsMCR.Models.V1.RoutePlanner.Data;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
@@ -45,12 +46,15 @@ public class JourneyTimeFinder
         if (!selectedRoute!.Times.ContainsKey(originStopName))
             throw new InvalidOperationException($"The origin stop '{originStopName}' was not " +
                                                 $"found on the '{routeName}' route");
-        var originTimeSpan = selectedRoute.Times[originStopName];
+        var originTime = selectedRoute.Times[originStopName];
 
         if (!selectedRoute.Times.ContainsKey(destStopName))
             throw new InvalidOperationException($"The destination stop '{destStopName}' was not " +
                                                 $"found on the '{routeName}' route");
-        var destinationTimeSpan = selectedRoute.Times[destStopName];
+        var destinationTime = selectedRoute.Times[destStopName];
+
+        var originTimeSpan = TimeSpan.Parse(originTime, new CultureInfo("en-US"));
+        var destinationTimeSpan = TimeSpan.Parse(destinationTime, new CultureInfo("en-US"));
         var minutesDifference = Math.Abs(originTimeSpan.Subtract(destinationTimeSpan).TotalMinutes);
         return Convert.ToInt32(minutesDifference);
     }

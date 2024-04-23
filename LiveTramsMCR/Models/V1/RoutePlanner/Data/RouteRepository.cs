@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+using Amazon.DynamoDBv2.DataModel;
+using LiveTramsMCR.Configuration;
 using MongoDB.Driver;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner.Data;
@@ -10,48 +13,66 @@ public class RouteRepository : IRouteRepository
 
     private readonly IMongoCollection<RouteTimes> _routeTimesCollection;
 
+    private readonly IDynamoDBContext _context;
+
     /// <summary>
     ///     Creates a new route repository using a collection of routes and route times
     /// </summary>
-    /// <param name="routeCollection">Collection of route instances</param>
-    /// <param name="routeTimesCollection">Collection of route times instances</param>
-    public RouteRepository(IMongoCollection<Route> routeCollection, IMongoCollection<RouteTimes> routeTimesCollection)
+    public RouteRepository(
+        IMongoCollection<Route> routeCollection, 
+        IMongoCollection<RouteTimes> routeTimesCollection, 
+        IDynamoDBContext context)
     {
         _routeCollection = routeCollection;
         _routeTimesCollection = routeTimesCollection;
+        _context = context;
     }
 
     /// <inheritdoc />
     public RouteTimes GetRouteTimesByNameAsync(string routeName)
     {
-        return _routeTimesCollection.FindAsync(route => route.Route == routeName).Result.FirstOrDefault();
+        RouteTimes result;
+        if (FeatureFlags.DynamoDbEnabled)
+        {
+            result = _context.QueryAsync<RouteTimes>(routeName).GetRemainingAsync().Result.FirstOrDefault();
+        }
+        else
+        {
+            result = _routeTimesCollection.FindAsync(route => route.Route == routeName).Result.FirstOrDefault(); 
+        }
+
+        return result;
     }
 
     /// <inheritdoc />
     public List<RouteTimes> GetAllRouteTimes()
     {
-        return _routeTimesCollection.FindAsync(_ => true).Result.ToList();
+        List<RouteTimes> result;
+        if (FeatureFlags.DynamoDbEnabled)
+        {
+            result = _context.ScanAsync<RouteTimes>(default).GetRemainingAsync().Result;
+        }
+        else
+        {
+            result = _routeTimesCollection.FindAsync(_ => true).Result.ToList();
+        }
 
+        return result;
     }
 
     /// <inheritdoc />
     public List<Route> GetAllRoutes()
     {
-        return _routeCollection.FindAsync(_ => true).Result.ToList();
-    }
-
-    /// <inheritdoc />
-    public void UpdateRoutes(List<Route> routes)
-    {
-        foreach (var route in routes)
+        List<Route> result;
+        if (FeatureFlags.DynamoDbEnabled)
         {
-            UpdateRoute(route);
+            result = _context.ScanAsync<Route>(default).GetRemainingAsync().Result;
         }
-    }
+        else
+        {
+            result = _routeCollection.FindAsync(_ => true).Result.ToList(); 
+        }
 
-    /// <inheritdoc />
-    public void UpdateRoute(Route route)
-    {
-        _routeCollection.ReplaceOne(r => r.Name == route.Name, route);
+        return result;
     }
 }

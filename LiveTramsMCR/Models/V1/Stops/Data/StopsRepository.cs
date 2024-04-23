@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Amazon.DynamoDBv2.DataModel;
+using LiveTramsMCR.Configuration;
 using MongoDB.Driver;
 
 namespace LiveTramsMCR.Models.V1.Stops.Data;
@@ -8,43 +11,51 @@ namespace LiveTramsMCR.Models.V1.Stops.Data;
 public class StopsRepository : IStopsRepository
 {
     private readonly IMongoCollection<Stop> _stopsCollection;
-
+    private readonly IDynamoDBContext _context;
+    
     /// <summary>
     ///     Create a new stops repository using a stops collection
     /// </summary>
-    /// <param name="stopsCollection"></param>
-    public StopsRepository(IMongoCollection<Stop> stopsCollection)
+    public StopsRepository(IMongoCollection<Stop> stopsCollection, IDynamoDBContext context)
     {
         _stopsCollection = stopsCollection;
+        _context = context;
     }
 
     /// <inheritdoc />
-    public Stop GetStop(string searchTerm)
+    public Stop GetStop(string stopTlaref)
     {
-        return _stopsCollection.FindAsync(stop =>
-            stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-            || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-        ).Result.FirstOrDefault();
+        Stop result;
+        if (FeatureFlags.DynamoDbEnabled)
+        {
+            result = _context.QueryAsync<Stop>(stopTlaref).GetRemainingAsync().Result.FirstOrDefault();
+        }
+        else
+        {
+            result = _stopsCollection.FindAsync(stop =>
+                stop.Tlaref.Equals(stopTlaref, StringComparison.OrdinalIgnoreCase)
+            ).Result.FirstOrDefault();
+        }
+
+        return result;
     }
 
     /// <inheritdoc />
     public List<Stop> GetAll()
     {
-        return _stopsCollection.FindAsync(_ => true).Result.ToList();
-    }
-
-    /// <inheritdoc />
-    public void UpdateStops(List<Stop> stops)
-    {
-        foreach (var stop in stops)
+        List<Stop> result;
+        if (FeatureFlags.DynamoDbEnabled)
         {
-            UpdateStop(stop);
+            
+            result = _context.ScanAsync<Stop>(default).GetRemainingAsync().Result
+                .OrderBy(stop => stop.StopName)
+                .ToList();
         }
-    }
+        else
+        {
+            result = _stopsCollection.FindAsync(_ => true).Result.ToList();
+        }
 
-    /// <inheritdoc />
-    public void UpdateStop(Stop stop)
-    {
-        _stopsCollection.ReplaceOne(s => s.Tlaref == stop.Tlaref, stop);
+        return result;
     }
 }

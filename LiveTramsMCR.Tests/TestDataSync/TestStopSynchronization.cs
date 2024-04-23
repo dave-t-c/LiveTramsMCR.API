@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
@@ -19,55 +21,67 @@ namespace LiveTramsMCR.Tests.TestDataSync;
 
 public class TestStopSynchronization : BaseNunitTest
 {
-    private StopSynchronization? _stopSynchronization;
     private MongoClient? _mongoClient;
     private IStopsRepository? _stopsRepository;
     private List<Stop>? _stops;
     private IMongoCollection<Stop>? _stopsCollection;
+    private SynchronizationTask<Stop>? _synchronizationTask;
     
     [SetUp]
     public void SetUp()
     {
-        _stopSynchronization = new StopSynchronization();
         _mongoClient = TestHelper.GetService<MongoClient>();
+        var dynamoDbClient = TestHelper.GetService<IAmazonDynamoDB>();
+        var dynamoDbContext = TestHelper.GetService<IDynamoDBContext>();
         _stopsRepository = TestHelper.GetService<IStopsRepository>();
         var stopsPath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.StopsPath);
         _stops = FileHelper.ImportFromJsonFile<List<Stop>>(stopsPath);
         var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         _stopsCollection = db.GetCollection<Stop>(AppConfiguration.StopsCollectionName);
-
+        _synchronizationTask = new SynchronizationTask<Stop>(_stopsCollection, dynamoDbClient, dynamoDbContext);
     }
 
     [TearDown]
     public void TearDown()
     {
-        _stopSynchronization = null;
         _mongoClient = null;
         _stopsRepository = null;
         _stops = null;
+        _synchronizationTask = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     [Test]
-    public async Task TestCreateStopsFromEmptyDb()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateStopsFromEmptyDb(string dynamoDbEnabled)
     {
-        await _stopSynchronization.SyncData(_stopsCollection, _stops);
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
+        await _synchronizationTask.SyncData(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
 
         var createdStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, createdStops.Count);
     }
 
     [Test]
-    public async Task TestUpdateExistingStop()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestUpdateExistingStop(string dynamoDbEnabled)
     {
-        await _stopsCollection.InsertManyAsync(_stops);
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
 
+        await _stopsCollection.InsertManyAsync(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
+        
         var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");
 
         altrinchamStop.StopName = "Updated stop name";
         var altrinchamIndex = _stops.FindIndex(stop => stop.Tlaref == "ALT");
         _stops[altrinchamIndex] = altrinchamStop;
 
-        await _stopSynchronization.SyncData(_stopsCollection, _stops);
+        await _synchronizationTask.SyncData(_stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);
@@ -77,13 +91,18 @@ public class TestStopSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestDeleteExistingStop()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestDeleteExistingStop(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _stopsCollection.InsertManyAsync(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
         
         _stops.RemoveAll(stop => stop.Tlaref == "ALT");
 
-        await _stopSynchronization.SyncData(_stopsCollection, _stops);
+        await _synchronizationTask.SyncData(_stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);
@@ -91,9 +110,14 @@ public class TestStopSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestCreateUpdateDelete()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateUpdateDelete(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _stopsCollection.InsertManyAsync(_stops);
+        await DynamoDbTestHelper.CreateRecords(_stops);
         
         var altrinchamStop = _stops.First(stop => stop.Tlaref == "ALT");
         altrinchamStop.StopName = "Updated stop name";
@@ -110,7 +134,7 @@ public class TestStopSynchronization : BaseNunitTest
         
         _stops.Add(createdStop);
 
-        await _stopSynchronization.SyncData(_stopsCollection, _stops);
+        await _synchronizationTask.SyncData(_stops);
         
         var updatedStops = _stopsRepository.GetAll();
         Assert.AreEqual(_stops.Count, updatedStops.Count);

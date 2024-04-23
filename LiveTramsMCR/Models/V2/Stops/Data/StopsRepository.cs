@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Amazon.DynamoDBv2.DataModel;
+using LiveTramsMCR.Configuration;
 using MongoDB.Driver;
 
 namespace LiveTramsMCR.Models.V2.Stops.Data;
@@ -8,28 +11,48 @@ namespace LiveTramsMCR.Models.V2.Stops.Data;
 public class StopsRepositoryV2 : IStopsRepositoryV2
 {
     private readonly IMongoCollection<StopV2> _stopsCollection;
+    private readonly IDynamoDBContext _context;
 
     /// <summary>
     ///     Create a new stops repository using a stops collection
     /// </summary>
-    /// <param name="stopsCollection"></param>
-    public StopsRepositoryV2(IMongoCollection<StopV2> stopsCollection)
+    public StopsRepositoryV2(IMongoCollection<StopV2> stopsCollection, IDynamoDBContext context)
     {
         _stopsCollection = stopsCollection;
+        _context = context;
     }
 
     /// <inheritdoc />
-    public StopV2 GetStop(string searchTerm)
+    public StopV2 GetStop(string stopTlaref)
     {
-        return _stopsCollection.FindAsync(stop =>
-            stop.StopName.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-            || stop.Tlaref.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)
-        ).Result.FirstOrDefault();
+        StopV2 result;
+        if (FeatureFlags.DynamoDbEnabled)
+        {
+            result = _context.QueryAsync<StopV2>(stopTlaref).GetRemainingAsync().Result.FirstOrDefault();
+        }
+        else
+        {
+            result = _stopsCollection.FindAsync(stop =>
+                stop.Tlaref.Equals(stopTlaref, StringComparison.OrdinalIgnoreCase)
+            ).Result.FirstOrDefault();
+        }
+
+        return result;
     }
 
     /// <inheritdoc />
     public List<StopV2> GetAll()
     {
-        return _stopsCollection.FindAsync(_ => true).Result.ToList();
+        List<StopV2> stops;
+        if (FeatureFlags.DynamoDbEnabled)
+        {
+            stops = _context.ScanAsync<StopV2>(default).GetRemainingAsync().Result.ToList();
+        }
+        else
+        {
+            stops = _stopsCollection.FindAsync(_ => true).Result.ToList();
+        }
+
+        return stops;
     }
 }

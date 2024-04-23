@@ -5,7 +5,7 @@ public static partial class AppConfiguration
     /// <summary>
     /// Base Static files folder path
     /// </summary>
-    public const string StaticFilesPath = "StaticFiles";
+    private const string StaticFilesPath = "StaticFiles";
     
     /// <summary>
     /// Static routes json file path

@@ -187,7 +187,7 @@ public class TestServiceProcessor : BaseNunitTest
     public void TestServicesDepartureBoardNullStop()
     {
         Assert.Throws(Is.TypeOf<ArgumentNullException>()
-                .And.Message.EqualTo("Value cannot be null. (Parameter 'stopIdentifier')"),
+                .And.Message.EqualTo("Value cannot be null. (Parameter 'stopTlaref')"),
             delegate
             {
                 _serviceProcessor?.RequestDepartureBoardServices(null);

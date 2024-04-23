@@ -8,8 +8,8 @@ public interface IJourneyPlannerModel
     /// <summary>
     ///     Plans a route between an origin and destination
     /// </summary>
-    /// <param name="origin">Origin stop name or TLAREF</param>
-    /// <param name="destination">Destination stop name or TLAREF</param>
+    /// <param name="origin">Origin stop TLAREF</param>
+    /// <param name="destination">Destination stop TLAREF</param>
     /// <returns>Planned Journey including interchange information</returns>
     public PlannedJourney PlanJourney(string origin, string destination);
 }

@@ -41,3 +41,7 @@ dotCover.Output.html
 
 # JetBrains ReSharper Output File
 ReSharper-Output.txt
+
+# docker output
+LiveTramsMCR/publish
+docker/

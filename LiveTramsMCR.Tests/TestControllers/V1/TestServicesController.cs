@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Services;
@@ -28,7 +30,7 @@ public class TestServicesController : BaseNunitTest
     private ResourcesConfig? _updateStopsResourceConfig;
 
     [SetUp]
-    public void SetUp()
+    public async Task SetUp()
     {
         _resourcesConfig = new ResourcesConfig
         {
@@ -58,6 +60,7 @@ public class TestServicesController : BaseNunitTest
 
         _stopsRepository = TestHelper.GetService<IStopsRepository>();
         MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
+        await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedStops);
         _servicesDataModel = new ServicesDataModel(_stopsRepository, _requester);
 
         _serviceController = new ServiceController(_servicesDataModel);
@@ -71,6 +74,7 @@ public class TestServicesController : BaseNunitTest
         _requester = null;
         _servicesDataModel = null;
         _serviceController = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     /// <summary>
@@ -81,6 +85,21 @@ public class TestServicesController : BaseNunitTest
     [Test]
     public void TestRequestServices()
     {
+        var result = _serviceController?.GetService("BMR");
+        Assert.NotNull(result);
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        Assert.AreEqual(200, okResult!.StatusCode);
+        var returnedServices = okResult.Value as FormattedServices;
+        Assert.NotNull(returnedServices);
+        Assert.AreEqual(1, returnedServices?.Destinations.Count);
+    }
+
+    [Test]
+    public void TestRequestServicesDynamoDb()
+    {
+        MongoHelper.TearDownDatabase();
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, "true");
         var result = _serviceController?.GetService("BMR");
         Assert.NotNull(result);
         var okResult = result as OkObjectResult;

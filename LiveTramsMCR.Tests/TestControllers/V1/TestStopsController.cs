@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Controllers.V1;
 using LiveTramsMCR.Models.V1.Stops;
@@ -23,7 +25,7 @@ public class TestStopsController : BaseNunitTest
     private StopsController? _testStopController;
 
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
         _resourcesConfig = new ResourcesConfig
         {
@@ -36,6 +38,7 @@ public class TestStopsController : BaseNunitTest
         _importedResources = new ResourceLoader(_resourcesConfig).ImportResources();
         _stopsRepository = TestHelper.GetService<IStopsRepository>();
         MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
+        await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedStops);
         _stopsDataModel = new StopsDataModel(_stopsRepository);
         _testStopController = new StopsController(_stopsDataModel);
     }
@@ -52,6 +55,7 @@ public class TestStopsController : BaseNunitTest
         _importedResources = null;
         _stopsDataModel = null;
         _testStopController = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     /// <summary>
@@ -76,6 +80,20 @@ public class TestStopsController : BaseNunitTest
     [Test]
     public void TestGetExpectedStopsCount()
     {
+        var result = _testStopController!.GetAllStops();
+        Assert.IsNotNull(result);
+
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        var retrievedStops = okResult!.Value as List<Stop> ?? new List<Stop>();
+        Assert.AreEqual(99, retrievedStops.Count);
+    }
+
+    [Test]
+    public void TestGetExpectedStopsDynamoDb()
+    {
+        MongoHelper.TearDownDatabase();
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, "true");
         var result = _testStopController!.GetAllStops();
         Assert.IsNotNull(result);
 

@@ -1,8 +1,12 @@
-using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using MongoDB.Bson;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.Model;
+using LiveTramsMCR.Common.Data.DynamoDb;
+using LiveTramsMCR.Configuration;
+using LiveTramsMCR.DataSync.SynchronizationTasks;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 
 namespace LiveTramsMCR.Models.V1.RoutePlanner;
 
@@ -11,15 +15,78 @@ namespace LiveTramsMCR.Models.V1.RoutePlanner;
 ///     against an example timetable entry.
 /// </summary>
 [BsonIgnoreExtraElements]
-public class RouteTimes
+[DynamoDBTable(AppConfiguration.RouteTimesCollectionName)]
+public class RouteTimes : IDynamoDbTable, ISynchronizationType<RouteTimes>
 {
     /// <summary>
     ///     Name of the route
     /// </summary>
+    [DynamoDBHashKey]
     public string Route { get; set; }
 
     /// <summary>
     ///     Times for each stop on the route
     /// </summary>
-    public Dictionary<string, TimeSpan> Times { get; set; }
+    [DynamoDBProperty]
+    public Dictionary<string, string> Times { get; set; }
+    
+    /// <summary>
+    /// Dummy DynamoDbRangeKey
+    /// </summary>
+    [DynamoDBRangeKey]
+    public int Range { get; set; }
+
+    /// <inheritdoc />
+    public CreateTableRequest BuildCreateTableRequest()
+    {
+        return new CreateTableRequest()
+        {
+            TableName = AppConfiguration.RouteTimesCollectionName,
+            KeySchema = new List<KeySchemaElement>
+            {
+                new()
+                {
+                    AttributeName = nameof(Route),
+                    KeyType = KeyType.HASH
+                },
+                new()
+                {
+                    AttributeName = nameof(Range),
+                    KeyType = KeyType.RANGE
+                }
+            },
+            AttributeDefinitions = new List<AttributeDefinition>
+            {
+                new()
+                {
+                    AttributeName = nameof(Route),
+                    AttributeType = ScalarAttributeType.S
+                },
+                new ()
+                {
+                    AttributeName = nameof(Range),
+                    AttributeType = ScalarAttributeType.N
+                }
+            },
+            ProvisionedThroughput = new ProvisionedThroughput
+            {
+                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
+                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
+            }
+        };
+    }
+
+    /// <inheritdoc />
+    public bool CompareSyncData(RouteTimes otherData)
+    {
+        return this.Route != otherData.Route;
+    }
+
+    /// <inheritdoc />
+    public FilterDefinition<RouteTimes> BuildFilter()
+    {
+        var filter = Builders<RouteTimes>.Filter
+            .Eq(routeTimes => routeTimes.Route, this.Route);
+        return filter;
+    }
 }

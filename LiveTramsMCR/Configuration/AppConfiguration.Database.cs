@@ -18,4 +18,10 @@ public static partial class AppConfiguration
     public const string MigrationModeVariable = "MIGRATIONMODE";
 
     public const string MigrationModeCreateValue = "CREATE";
+
+    public const string DynamoDbEnabledKey = "DynamoDbEnabled";
+
+    public const int DefaultReadCapacityUnits = 1;
+
+    public const int DefaultWriteCapacityUnits = 1;
 }

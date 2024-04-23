@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.DataSync.Helpers;
 using LiveTramsMCR.DataSync.SynchronizationTasks;
@@ -19,70 +21,85 @@ namespace LiveTramsMCR.Tests.TestDataSync;
 
 public class TestRouteTimesSynchronization : BaseNunitTest
 {
-    private RouteTimesSynchronization? _routeTimesSynchronization;
     private MongoClient? _mongoClient;
     private IRouteRepository? _routeRepository;
     private List<RouteTimes>? _routeTimes;
     private IMongoCollection<RouteTimes>? _routeTimesCollection;
+    private SynchronizationTask<RouteTimes>? _synchronizationTask;
     
     [SetUp]
     public void SetUp()
     {
-        _routeTimesSynchronization = new RouteTimesSynchronization();
         _mongoClient = TestHelper.GetService<MongoClient>();
+        var dynamoDbClient = TestHelper.GetService<IAmazonDynamoDB>();
+        var dynamoDbContext = TestHelper.GetService<IDynamoDBContext>();
         _routeRepository = TestHelper.GetService<IRouteRepository>();
         var routeTimesPath = Path.Combine(Environment.CurrentDirectory, AppConfiguration.RouteTimesPath);
         _routeTimes = FileHelper.ImportFromJsonFile<List<RouteTimes>>(routeTimesPath);
         var db = _mongoClient.GetDatabase(AppConfiguration.DatabaseName);
         _routeTimesCollection = db.GetCollection<RouteTimes>(AppConfiguration.RouteTimesCollectionName);
+        _synchronizationTask = new SynchronizationTask<RouteTimes>(_routeTimesCollection, dynamoDbClient, dynamoDbContext);
     }
 
     [TearDown]
     public void TearDown()
     {
-        _routeTimesSynchronization = null;
         _mongoClient = null;
         _routeRepository = null;
         _routeTimes = null;
+        _synchronizationTask = null;
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, null);
     }
 
     [Test]
-    public async Task TestCreateRoutesFromEmptyDb()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateRoutesFromEmptyDb(string dynamoDbEnabled)
     {
-        await _routeTimesSynchronization.SyncData(_routeTimesCollection, _routeTimes);
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
+        await _synchronizationTask.SyncData(_routeTimes);
 
         var createdRouteTimes = _routeRepository.GetAllRouteTimes();
         Assert.AreEqual(_routeTimes.Count, createdRouteTimes.Count);
     }
 
     [Test]
-    public async Task TestUpdateExistingRoute()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestUpdateExistingRoute(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeTimesCollection.InsertManyAsync(_routeTimes);
 
         var purpleRoute = _routeTimes.First(route => route.Route == "Purple");
 
-        purpleRoute.Times["Test stop name"] = TimeSpan.MaxValue;
+        purpleRoute.Times["Test stop name"] = "00:00:00";
         var purpleRouteIndex = _routeTimes.FindIndex(route => route.Route == "Purple");
         _routeTimes[purpleRouteIndex] = purpleRoute;
 
-        await _routeTimesSynchronization.SyncData(_routeTimesCollection, _routeTimes);
+        await _synchronizationTask.SyncData(_routeTimes);
         
         var updatedRouteTimes = _routeRepository.GetAllRouteTimes();
         Assert.AreEqual(_routeTimes.Count, updatedRouteTimes.Count);
 
         var updatedPurpleRoute = updatedRouteTimes.First(route => route.Route == "Purple");
-        Assert.AreEqual(TimeSpan.MaxValue, updatedPurpleRoute.Times["Test stop name"]);
+        Assert.AreEqual("00:00:00", updatedPurpleRoute.Times["Test stop name"]);
     }
 
     [Test]
-    public async Task TestDeleteExistingRoute()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestDeleteExistingRoute(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeTimesCollection.InsertManyAsync(_routeTimes);
         
         _routeTimes.RemoveAll(route => route.Route == "Purple");
 
-        await _routeTimesSynchronization.SyncData(_routeTimesCollection, _routeTimes);
+        await _synchronizationTask.SyncData(_routeTimes);
         
         var updatedRouteTimes = _routeRepository.GetAllRouteTimes();
         Assert.AreEqual(_routeTimes.Count, updatedRouteTimes.Count);
@@ -90,12 +107,16 @@ public class TestRouteTimesSynchronization : BaseNunitTest
     }
 
     [Test]
-    public async Task TestCreateUpdateDelete()
+    [TestCase("true")]
+    [TestCase("false")]
+    public async Task TestCreateUpdateDelete(string dynamoDbEnabled)
     {
+        Environment.SetEnvironmentVariable(AppConfiguration.DynamoDbEnabledKey, dynamoDbEnabled);
+
         await _routeTimesCollection.InsertManyAsync(_routeTimes);
         
         var purpleRoute = _routeTimes.First(route => route.Route == "Purple");
-        purpleRoute.Times["Test stop name"] = TimeSpan.MaxValue;
+        purpleRoute.Times["Test stop name"] = "00:00:00";
         var purpleRouteIndex = _routeTimes.FindIndex(route => route.Route == "Purple");
         _routeTimes[purpleRouteIndex] = purpleRoute;
         
@@ -104,18 +125,18 @@ public class TestRouteTimesSynchronization : BaseNunitTest
         var createdRouteTimes = new RouteTimes
         {
             Route = "TestRoute",
-            Times = new Dictionary<string, TimeSpan>()
+            Times = new Dictionary<string, string>()
         };
         
         _routeTimes.Add(createdRouteTimes);
 
-        await _routeTimesSynchronization.SyncData(_routeTimesCollection, _routeTimes);
+        await _synchronizationTask.SyncData(_routeTimes);
         
         var updatedRoutes = _routeRepository.GetAllRouteTimes();
         Assert.AreEqual(_routeTimes.Count, updatedRoutes.Count);
 
         var updatedPurpleRoute = updatedRoutes.First(route => route.Route == "Purple");
-        Assert.AreEqual(TimeSpan.MaxValue, updatedPurpleRoute.Times["Test stop name"]);
+        Assert.AreEqual("00:00:00", updatedPurpleRoute.Times["Test stop name"]);
         
         Assert.IsNull(updatedRoutes.FirstOrDefault(route => route.Route == "Yellow"));
 
