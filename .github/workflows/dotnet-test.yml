@@ -21,10 +21,10 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '6.0'
-      - name: Set dynamodb file permissions
-        run: sudo chown $user -R docker
       - name: Start docker containers
         run: docker-compose -f docker-compose.run-local.yml up -d
+      - name: Set dynamodb file permissions
+        run: sudo chown $user -R docker
       - name: Install dependencies
         run: dotnet restore
       - name: Build
