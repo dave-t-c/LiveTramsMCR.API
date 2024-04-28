@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.Model;
 
 namespace LiveTramsMCR.Common.Data.DynamoDb;
 
@@ -28,7 +30,8 @@ public static class DynamoDbHelper
         {
             var instance = (IDynamoDbTable)Activator.CreateInstance(typeof(T));
             var createTableRequest = instance?.BuildCreateTableRequest();
-            await dynamoDbClient.CreateTableAsync(createTableRequest);
+            var response = await dynamoDbClient.CreateTableAsync(createTableRequest);
+            await WaitForTableToBeActive(response.TableDescription, dynamoDbClient);
         }
             
         var itemBatch = dynamoDbContext.CreateBatchWrite<T>();
@@ -85,5 +88,26 @@ public static class DynamoDbHelper
         var tableName = GetTableName(tableType);
 
         return existingTables.TableNames.Contains(tableName);
+    }
+
+    private static async Task WaitForTableToBeActive(
+        TableDescription tableDescription,
+        IAmazonDynamoDB dynamoDbClient)
+    {
+        var request = new DescribeTableRequest
+        {
+            TableName = tableDescription.TableName,
+        };
+
+        TableStatus status;
+        do
+        {
+            const int sleepDuration = 500;
+            Thread.Sleep(sleepDuration);
+
+            var describeTableResponse = await dynamoDbClient.DescribeTableAsync(request);
+            status = describeTableResponse.Table.TableStatus;
+        }
+        while (status != TableStatus.ACTIVE);
     }
 }
