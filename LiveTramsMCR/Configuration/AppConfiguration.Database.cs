@@ -21,7 +21,7 @@ public static partial class AppConfiguration
 
     public const string DynamoDbEnabledKey = "DynamoDbEnabled";
 
-    public const int DefaultReadCapacityUnits = 1;
+    public const int DefaultReadCapacityUnits = 10;
 
-    public const int DefaultWriteCapacityUnits = 1;
+    public const int DefaultWriteCapacityUnits = 10;
 }
