@@ -85,7 +85,7 @@ public class TestRouteV2Synchronization : BaseNunitTest
 
         var purpleRoute = _routes.First(route => route.Name == "Purple");
 
-        purpleRoute.PolylineCoordinates.Add(new List<double>() {1.0, 2.0});
+        purpleRoute.PolylineCoordinates.Add(new RouteV2.RouteCoordinate() {Latitude = 1.0, Longitude = 2.0});
         var purpleRouteIndex = _routes.FindIndex(route => route.Name == "Purple");
         _routes[purpleRouteIndex] = purpleRoute;
 
@@ -128,7 +128,7 @@ public class TestRouteV2Synchronization : BaseNunitTest
         await DynamoDbTestHelper.CreateRecords(_routes);
         
         var purpleRoute = _routes.First(route => route.Name == "Purple");
-        purpleRoute.PolylineCoordinates.Add(new List<double>() {1.0, 2.0});
+        purpleRoute.PolylineCoordinates.Add(new RouteV2.RouteCoordinate() {Latitude = 1.0, Longitude = 2.0});
         var purpleRouteIndex = _routes.FindIndex(route => route.Name == "Purple");
         _routes[purpleRouteIndex] = purpleRoute;
         

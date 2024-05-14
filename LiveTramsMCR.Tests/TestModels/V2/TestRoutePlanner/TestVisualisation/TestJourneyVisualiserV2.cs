@@ -91,21 +91,22 @@ public class TestJourneyVisualiserV2 : BaseNunitTest
         Assert.IsNull(visualisedJourney?.PolylineFromInterchange);
         
         var expectedInitialPosition = _purpleRouteV2?.PolylineCoordinates.First();
-        var expectedFinalPosition = new List<double>()
+        var expectedFinalPosition = new RouteV2.RouteCoordinate()
         {
-            -2.3197075925999999, 53.423642572600002
+            Latitude = -2.3197075925999999, 
+            Longitude = 53.423642572600002
         };
         
         Assert.Contains(expectedInitialPosition, visualisedJourney?.PolylineFromOrigin);
         var expectedInitialPositionIndex = visualisedJourney?.PolylineFromOrigin!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedInitialPosition![1]) < RouteCoordinateTolerance &&
-            Math.Abs(coord[0] - expectedInitialPosition![0]) < RouteCoordinateTolerance
+            Math.Abs(coord.Latitude - expectedInitialPosition!.Latitude) < RouteCoordinateTolerance &&
+            Math.Abs(coord.Longitude - expectedInitialPosition!.Longitude) < RouteCoordinateTolerance
         );
         Assert.AreEqual(0, expectedInitialPositionIndex);
         
         var expectedFinalPositionIndex = visualisedJourney?.PolylineFromOrigin!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedFinalPosition![1]) < RouteCoordinateTolerance &&
-            Math.Abs(coord[0] - expectedFinalPosition![0]) < RouteCoordinateTolerance
+            Math.Abs(coord.Latitude - expectedFinalPosition!.Latitude) < RouteCoordinateTolerance &&
+            Math.Abs(coord.Longitude - expectedFinalPosition!.Longitude) < RouteCoordinateTolerance
         );
         
         Assert.AreEqual(visualisedJourney?.PolylineFromOrigin.Count -1, expectedFinalPositionIndex);
@@ -126,8 +127,8 @@ public class TestJourneyVisualiserV2 : BaseNunitTest
         var expectedInitialPosition = _purpleRouteV2?.PolylineCoordinates.First();
         Assert.Contains(expectedInitialPosition, visualisedJourney?.PolylineFromOrigin);
         var expectedInitialPositionIndex = visualisedJourney?.PolylineFromOrigin!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedInitialPosition![1]) < RouteCoordinateTolerance &&
-            Math.Abs(coord[0] - expectedInitialPosition![0]) < RouteCoordinateTolerance
+            Math.Abs(coord.Latitude - expectedInitialPosition!.Latitude) < RouteCoordinateTolerance &&
+            Math.Abs(coord.Longitude - expectedInitialPosition!.Longitude) < RouteCoordinateTolerance
         );
         Assert.AreEqual(0, expectedInitialPositionIndex);
         
@@ -136,8 +137,8 @@ public class TestJourneyVisualiserV2 : BaseNunitTest
         var expectedInitialPositionInterchange = _blueRouteV2?.PolylineCoordinates.First();
         Assert.Contains(expectedInitialPositionInterchange, visualisedJourney?.PolylineFromInterchange);
         var expectedInterchangePositionIndex = visualisedJourney?.PolylineFromInterchange!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedInitialPositionInterchange![1]) < RouteCoordinateTolerance &&
-            Math.Abs(coord[0] - expectedInitialPositionInterchange![0]) < RouteCoordinateTolerance
+            Math.Abs(coord.Latitude - expectedInitialPositionInterchange!.Latitude) < RouteCoordinateTolerance &&
+            Math.Abs(coord.Longitude - expectedInitialPositionInterchange!.Longitude) < RouteCoordinateTolerance
         );
         Assert.AreEqual(0, expectedInterchangePositionIndex);
     }

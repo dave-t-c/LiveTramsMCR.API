@@ -174,9 +174,10 @@ public class TestRouteV2
     public void TestGetPolylineBetweenStops()
     {
         var expectedInitialPosition = _exampleRoute?.PolylineCoordinates.First();
-        var expectedFinalPosition = new List<double>()
+        var expectedFinalPosition = new RouteV2.RouteCoordinate()
         {
-            -2.3197075925999999, 53.423642572600002
+            Latitude = -2.3197075925999999, 
+            Longitude = 53.423642572600002
         };
 
         var returnedPolyline = _exampleRoute?.GetPolylineBetweenStops(
@@ -184,14 +185,14 @@ public class TestRouteV2
             _exampleSaleStopKeys);
         Assert.Contains(expectedInitialPosition, returnedPolyline);
         var expectedInitialPositionIndex = returnedPolyline!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedInitialPosition![1]) < RouteCoordinateTolerance &&
-            Math.Abs(coord[0] - expectedInitialPosition![0]) < RouteCoordinateTolerance
+            Math.Abs(coord.Latitude - expectedInitialPosition!.Latitude) < RouteCoordinateTolerance &&
+            Math.Abs(coord.Longitude - expectedInitialPosition!.Longitude) < RouteCoordinateTolerance
         );
         Assert.AreEqual(0, expectedInitialPositionIndex);
         
         var expectedFinalPositionIndex = returnedPolyline!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedFinalPosition![1]) < RouteCoordinateTolerance &&
-            Math.Abs(coord[0] - expectedFinalPosition![0]) < RouteCoordinateTolerance
+            Math.Abs(coord.Latitude - expectedFinalPosition!.Latitude) < RouteCoordinateTolerance &&
+            Math.Abs(coord.Longitude - expectedFinalPosition!.Longitude) < RouteCoordinateTolerance
         );
         
         Assert.AreEqual(returnedPolyline.Count -1, expectedFinalPositionIndex);

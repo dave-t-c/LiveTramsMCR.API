@@ -146,8 +146,8 @@ public class TestJourneyPlannerModelV2 : BaseNunitTest
         var purpleRoute = _importedRouteV2S.Single(route => route.Name == "Purple");
         var allPolyLineCoordinatesExistOnRoute = polylinesFromOrigin?.All(coord => 
             purpleRoute.PolylineCoordinates.Exists(pr =>
-                Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
-                Math.Abs(coord[0] - pr[0]) < RouteCoordinateTolerance)
+                Math.Abs(coord.Latitude - pr!.Latitude) < RouteCoordinateTolerance &&
+                Math.Abs(coord.Longitude - pr.Longitude) < RouteCoordinateTolerance)
         );
         Assert.IsTrue(allPolyLineCoordinatesExistOnRoute);
         
@@ -245,8 +245,8 @@ public class TestJourneyPlannerModelV2 : BaseNunitTest
         var purpleRoute = _importedRouteV2S.Single(route => route.Name == "Purple");
         var allPolyLineCoordinatesExistOnPurpleRoute = polylinesFromOrigin?.All(coord => 
             purpleRoute.PolylineCoordinates.Exists(pr =>
-                Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
-                Math.Abs(coord[0] - pr[0]) < RouteCoordinateTolerance)
+                Math.Abs(coord.Latitude - pr!.Latitude) < RouteCoordinateTolerance &&
+                Math.Abs(coord.Longitude - pr.Longitude) < RouteCoordinateTolerance)
         );
         Assert.IsTrue(allPolyLineCoordinatesExistOnPurpleRoute);
 
@@ -255,8 +255,8 @@ public class TestJourneyPlannerModelV2 : BaseNunitTest
         var blueRoute = _importedRouteV2S.Single(route => route.Name == "Blue");
         var allPolyLineCoordinatesFromInterchangeExistOnBlueRoute = polylinesFromInterchange?.All(coord => 
             blueRoute.PolylineCoordinates.Exists(pr =>
-                Math.Abs(coord[1] - pr![1]) < RouteCoordinateTolerance &&
-                Math.Abs(coord[0] - pr[0]) < RouteCoordinateTolerance)
+                Math.Abs(coord.Latitude - pr!.Latitude) < RouteCoordinateTolerance &&
+                Math.Abs(coord.Longitude - pr.Longitude) < RouteCoordinateTolerance)
         );
         Assert.IsTrue(allPolyLineCoordinatesFromInterchangeExistOnBlueRoute);
 
