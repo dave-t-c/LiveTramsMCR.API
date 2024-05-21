@@ -34,7 +34,7 @@ public class RouteRepository : IRouteRepository
         RouteTimes result;
         if (FeatureFlags.DynamoDbEnabled)
         {
-            result = _context.QueryAsync<RouteTimes>(routeName).GetRemainingAsync().Result.FirstOrDefault();
+            result = _context.LoadAsync<RouteTimes>(routeName).Result;
         }
         else
         {
