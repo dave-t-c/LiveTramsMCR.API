@@ -28,7 +28,7 @@ public class StopsRepository : IStopsRepository
         Stop result;
         if (FeatureFlags.DynamoDbEnabled)
         {
-            result = _context.QueryAsync<Stop>(stopTlaref).GetRemainingAsync().Result.FirstOrDefault();
+            result = _context.LoadAsync<Stop>(stopTlaref).Result;
         }
         else
         {

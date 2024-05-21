@@ -26,7 +26,7 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationTyp
     /// <summary>
     ///     Name of the stop, such as Piccadilly
     /// </summary>
-    [DynamoDBRangeKey]
+    [DynamoDBProperty]
     public string StopName { get; set; }
 
     /// <summary>
@@ -151,11 +151,6 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationTyp
                 {
                     AttributeName = nameof(Tlaref),
                     KeyType = KeyType.HASH
-                },
-                new()
-                {
-                    AttributeName = nameof(StopName),
-                    KeyType = KeyType.RANGE
                 }
             },
             AttributeDefinitions = new List<AttributeDefinition>
@@ -163,11 +158,6 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationTyp
                 new()
                 {
                     AttributeName = nameof(Tlaref),
-                    AttributeType = ScalarAttributeType.S
-                },
-                new()
-                {
-                    AttributeName = nameof(StopName),
                     AttributeType = ScalarAttributeType.S
                 }
             },
