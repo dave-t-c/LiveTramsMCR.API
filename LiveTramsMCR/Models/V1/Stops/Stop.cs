@@ -161,11 +161,7 @@ public sealed class Stop : IEquatable<Stop>, IDynamoDbTable, ISynchronizationTyp
                     AttributeType = ScalarAttributeType.S
                 }
             },
-            ProvisionedThroughput = new ProvisionedThroughput
-            {
-                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
-                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
-            }
+            BillingMode = BillingMode.PAY_PER_REQUEST
         };
     }
 }

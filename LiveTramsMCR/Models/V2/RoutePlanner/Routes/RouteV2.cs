@@ -187,11 +187,7 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
                     AttributeType = ScalarAttributeType.S
                 }
             },
-            ProvisionedThroughput = new ProvisionedThroughput
-            {
-                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
-                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
-            }
+            BillingMode = BillingMode.PAY_PER_REQUEST
         };
     }
 

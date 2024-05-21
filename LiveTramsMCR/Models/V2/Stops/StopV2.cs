@@ -185,11 +185,7 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
                     AttributeType = ScalarAttributeType.S
                 }
             },
-            ProvisionedThroughput = new ProvisionedThroughput
-            {
-                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
-                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
-            }
+            BillingMode = BillingMode.PAY_PER_REQUEST
         };
     }
 }

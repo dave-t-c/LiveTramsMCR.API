@@ -53,6 +53,6 @@ public class StopsRepositoryV2 : IStopsRepositoryV2
             stops = _stopsCollection.FindAsync(_ => true).Result.ToList();
         }
 
-        return stops;
+        return stops.OrderBy(stop => stop.StopName).ToList();
     }
 }
