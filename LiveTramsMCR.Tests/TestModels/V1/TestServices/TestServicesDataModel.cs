@@ -39,7 +39,8 @@ public class TestServicesDataModel : BaseNunitTest
         _requester = new MockServiceRequester(mockHttpResponse!);
         _stopsRepository = TestHelper.GetService<IStopsRepository>();
         MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
-        _servicesDataModel = new ServicesDataModel(_stopsRepository, _requester);
+        IServiceProcessor serviceProcessor = new ServiceProcessor(_requester, _stopsRepository);
+        _servicesDataModel = new ServicesDataModel(serviceProcessor);
     }
 
     [TearDown]

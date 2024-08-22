@@ -8,16 +8,15 @@ namespace LiveTramsMCR.Models.V1.Services;
 public class ServicesDataModel : IServicesDataModel
 {
 
-    private readonly ServiceProcessor _serviceProcessor;
+    private readonly IServiceProcessor _serviceProcessor;
 
     /// <summary>
     ///     Creates a new Services model using provided resources and requester
     /// </summary>
-    /// <param name="stopsRepository">Repository for retrieving stops</param>
-    /// <param name="requester">Requester responsible for live service requests.</param>
-    public ServicesDataModel(IStopsRepository stopsRepository, IRequester requester)
+    /// <param name="serviceProcessor">Service processes for retrieving service information</param>
+    public ServicesDataModel(IServiceProcessor serviceProcessor)
     {
-        _serviceProcessor = new ServiceProcessor(requester, stopsRepository);
+        _serviceProcessor = serviceProcessor;
     }
 
     /// <summary>
