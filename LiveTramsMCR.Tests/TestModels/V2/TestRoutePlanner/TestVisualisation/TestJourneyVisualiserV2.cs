@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveTramsMCR.Configuration;
@@ -13,8 +12,6 @@ using LiveTramsMCR.Tests.Common;
 using LiveTramsMCR.Tests.Helpers;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
-
-using static LiveTramsMCR.Tests.Configuration.TestAppConfiguration;
 
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner.TestVisualisation;
 
@@ -98,11 +95,11 @@ public class TestJourneyVisualiserV2 : BaseNunitTest
         };
 
         var actualInitialPosition = visualisedJourney?.PolylineFromOrigin.First();
-        Assert.AreEqual(expectedInitialPosition.Latitude, actualInitialPosition.Latitude);
+        Assert.AreEqual(expectedInitialPosition!.Latitude, actualInitialPosition!.Latitude);
         Assert.AreEqual(expectedInitialPosition.Longitude, actualInitialPosition.Longitude);
 
         var actualFinalPosition = visualisedJourney?.PolylineFromOrigin.Last();
-        Assert.AreEqual(expectedFinalPosition.Latitude, actualFinalPosition.Latitude);
+        Assert.AreEqual(expectedFinalPosition.Latitude, actualFinalPosition!.Latitude);
         Assert.AreEqual(expectedFinalPosition.Longitude, actualFinalPosition.Longitude);
     }
 
@@ -121,14 +118,14 @@ public class TestJourneyVisualiserV2 : BaseNunitTest
         var expectedInitialPosition = _purpleRouteV2?.PolylineCoordinates.First();
 
         var actualInitialPosition = visualisedJourney?.PolylineFromOrigin.First();
-        Assert.AreEqual(expectedInitialPosition.Latitude, actualInitialPosition.Latitude);
+        Assert.AreEqual(expectedInitialPosition!.Latitude, actualInitialPosition!.Latitude);
         Assert.AreEqual(expectedInitialPosition.Longitude, actualInitialPosition.Longitude);
         
         // Blue line is ordered with Ashton first so in the returned polyline from interchange, the line 
         // will be Ashton to Piccadilly
         var expectedInitialPositionInterchange = _blueRouteV2?.PolylineCoordinates.First();
         var actualInitialPositionInterchange = visualisedJourney?.PolylineFromInterchange.First();
-        Assert.AreEqual(expectedInitialPositionInterchange.Latitude, actualInitialPositionInterchange.Latitude);
+        Assert.AreEqual(expectedInitialPositionInterchange!.Latitude, actualInitialPositionInterchange!.Latitude);
         Assert.AreEqual(expectedInitialPositionInterchange.Longitude, actualInitialPositionInterchange.Longitude);
     }
 }

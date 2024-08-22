@@ -16,20 +16,20 @@ public class JourneyPlannerModelV2 : IJourneyPlannerModelV2
 {
     private readonly IJourneyVisualiserV2 _journeyVisualiserV2;
     private readonly IJourneyPlannerV2 _journeyPlannerV2;
-    private readonly StopLookupV2 _stopLookupV2;
+    private readonly IStopLookupV2 _stopLookupV2;
     private readonly INextServiceIdentifierV2 _nextServiceIdentifierV2;
-    private readonly ServiceProcessor _serviceProcessor;
+    private readonly IServiceProcessor _serviceProcessor;
     private readonly ZoneIdentifierV2 _zoneIdentifierV2;
 
     /// <summary>
     ///     Creates a new journey planner model
     /// </summary>
     public JourneyPlannerModelV2(
-        StopLookupV2 stopLookupV2,
+        IStopLookupV2 stopLookupV2,
         IJourneyPlannerV2 journeyPlannerV2,
         IJourneyVisualiserV2 journeyVisualiserV2,
         INextServiceIdentifierV2 nextServiceIdentifierV2,
-        ServiceProcessor serviceProcessor)
+        IServiceProcessor serviceProcessor)
     {
         _stopLookupV2 = stopLookupV2;
         _journeyPlannerV2 = journeyPlannerV2;

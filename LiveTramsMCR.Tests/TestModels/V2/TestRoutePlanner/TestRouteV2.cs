@@ -5,7 +5,6 @@ using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
-using static LiveTramsMCR.Tests.Configuration.TestAppConfiguration;
 
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 
@@ -183,11 +182,11 @@ public class TestRouteV2
         var returnedPolyline = _exampleRoute?.GetPolylineBetweenStops(
             _exampleAltrinchamStopKeys,
             _exampleSaleStopKeys);
-        var actualInitialPosition = returnedPolyline.First();
-        Assert.AreEqual(expectedInitialPosition.Latitude, actualInitialPosition.Latitude);
+        var actualInitialPosition = returnedPolyline!.First();
+        Assert.AreEqual(expectedInitialPosition!.Latitude, actualInitialPosition.Latitude);
         Assert.AreEqual(expectedInitialPosition.Longitude, actualInitialPosition.Longitude);
 
-        var actualFinalPosition = returnedPolyline.Last();
+        var actualFinalPosition = returnedPolyline!.Last();
         Assert.AreEqual(expectedFinalPosition.Latitude, actualFinalPosition.Latitude);
         Assert.AreEqual(expectedFinalPosition.Longitude, actualFinalPosition.Longitude);
     }

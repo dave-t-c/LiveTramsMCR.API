@@ -6,7 +6,7 @@ namespace LiveTramsMCR.Models.V2.Stops;
 /// <summary>
 ///     Looks up a
 /// </summary>
-public class StopLookupV2
+public class StopLookupV2 : IStopLookupV2
 {
     private readonly IStopsRepositoryV2 _stopsRepositoryV2;
 

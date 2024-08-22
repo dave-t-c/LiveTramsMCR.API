@@ -118,42 +118,33 @@ public class Startup
         var routesV2MongoCollection = db.GetCollection<RouteV2>(AppConfiguration.RoutesV2CollectionName);
         var routeTimesMongoCollection = db.GetCollection<RouteTimes>(AppConfiguration.RouteTimesCollectionName);
         
-        IStopsRepository stopsRepository = new StopsRepository(stopsMongoCollection, dynamoDbContext);
-        IStopsRepositoryV2 stopsRepositoryV2 = new StopsRepositoryV2(stopsV2MongoCollection, dynamoDbContext);
-        IRouteRepository routeRepository = new RouteRepository(routesMongoCollection, routeTimesMongoCollection, dynamoDbContext);
-        IRouteRepositoryV2 routeRepositoryV2 = new RouteRepositoryV2(routesV2MongoCollection, dynamoDbContext, stopsRepositoryV2);
+        services.AddSingleton<IDynamoDBContext>(dynamoDbContext);
+        services.AddSingleton(stopsMongoCollection);
+        services.AddSingleton(stopsV2MongoCollection);
+        services.AddSingleton(routesMongoCollection);
+        services.AddSingleton(routesV2MongoCollection);
+        services.AddSingleton(routeTimesMongoCollection);
 
-        IStopsDataModel stopsDataModel = new StopsDataModel(stopsRepository);
-        services.AddSingleton(stopsDataModel);
+        services.AddScoped<IStopsRepository, StopsRepository>();
+        services.AddScoped<IStopsRepositoryV2, StopsRepositoryV2>();
+        services.AddScoped<IRouteRepository, RouteRepository>();
+        services.AddScoped<IRouteRepositoryV2, RouteRepositoryV2>();
+        
+        services.AddScoped<IStopLookupV2, StopLookupV2>();
+        services.AddScoped<IJourneyPlanner, JourneyPlanner>();
+        services.AddScoped<IJourneyPlannerV2, JourneyPlannerV2>();
+        services.AddScoped<IJourneyVisualiserV2, JourneyVisualiserV2>();
+        services.AddScoped<INextServiceIdentifierV2, NextServiceIdentifierV2>();
+        
+        services.AddScoped<IStopsDataModel, StopsDataModel>();
+        services.AddScoped<IStopsDataModelV2, StopsDataModelV2>();
+        services.AddScoped<IRoutesDataModelV2, RoutesDataModelV2>();
+        services.AddScoped<IJourneyPlannerModel, JourneyPlannerModel>();
 
-        IStopsDataModelV2 stopsDataModelV2 = new StopsDataModelV2(stopsRepositoryV2);
-        services.AddSingleton(stopsDataModelV2);
-
-        IRequester serviceRequester = new ServiceRequester(apiOptions);
-        IServicesDataModel servicesDataModel = new ServicesDataModel(stopsRepository, serviceRequester);
-        services.AddSingleton(servicesDataModel);
-
-        IJourneyPlanner journeyPlanner = new JourneyPlanner(routeRepository);
-        IJourneyPlannerModel journeyPlannerModel = new JourneyPlannerModel(stopsRepository, journeyPlanner);
-        services.AddSingleton(journeyPlannerModel);
-
-        IRoutesDataModelV2 routesDataModelV2 = new RoutesDataModelV2(routeRepositoryV2);
-        services.AddSingleton(routesDataModelV2);
-
-        var stopLookupV2 = new StopLookupV2(stopsRepositoryV2);
-        IJourneyPlannerV2 journeyPlannerV2 = new JourneyPlannerV2(routeRepository, routeRepositoryV2);
-        var journeyVisualiserV2 = new JourneyVisualiserV2();
-        var nextServiceIdentifierV2 = new NextServiceIdentifierV2();
-        IRequester requester = new ServiceRequester(apiOptions);
-        var serviceProcessor = new ServiceProcessor(requester, stopsRepository);
-        IJourneyPlannerModelV2 journeyPlannerModelV2 = new JourneyPlannerModelV2(
-            stopLookupV2,
-            journeyPlannerV2,
-            journeyVisualiserV2,
-            nextServiceIdentifierV2,
-            serviceProcessor);
-
-        services.AddSingleton(journeyPlannerModelV2);
+        services.AddScoped<IServicesDataModel, ServicesDataModel>();
+        services.AddScoped<IRequester, ServiceRequester>();
+        services.AddScoped<IServiceProcessor, ServiceProcessor>();
+        services.AddScoped<IJourneyPlannerModelV2, JourneyPlannerModelV2>();
 
         services.AddControllers();
 
