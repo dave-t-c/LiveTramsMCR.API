@@ -3,9 +3,7 @@ using LiveTramsMCR.Models.V2.Stops.Data;
 
 namespace LiveTramsMCR.Models.V2.Stops;
 
-/// <summary>
-///     Looks up a
-/// </summary>
+/// <inheritdoc />
 public class StopLookupV2 : IStopLookupV2
 {
     private readonly IStopsRepositoryV2 _stopsRepositoryV2;
@@ -18,10 +16,8 @@ public class StopLookupV2 : IStopLookupV2
     {
         _stopsRepositoryV2 = stopsRepositoryV2;
     }
-
-    /// <summary>
-    ///     Looks up a stop tlaref or name from a value string.
-    /// </summary>
+    
+    /// <inheritdoc />
     public StopV2 LookupStop(string value)
     {
         if (value is null)

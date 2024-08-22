@@ -205,10 +205,19 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
         return filter;
     }
 
+    /// <summary>
+    /// Coordinates to build a route polyline
+    /// </summary>
     public class RouteCoordinate
     {
+        /// <summary>
+        /// Latitude value of the coordinate
+        /// </summary>
         public double Latitude { get; set; }
         
+        /// <summary>
+        /// Longitude value of the coordinate
+        /// </summary>
         public double Longitude { get; set; }
     }
 }
