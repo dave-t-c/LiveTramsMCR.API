@@ -24,6 +24,6 @@ jobs:
       - name: Inspect container states
         run: docker inspect -f '{{.Name}} -> {{.State.Status}}' $(docker ps -aq)
       - name: Test
-        run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 10000ms
+        run: docker run --rm -v $(pwd):/app -w /app -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --network=livetramsmcrapi_default --name test-runner mcr.microsoft.com/dotnet/sdk:6.0 dotnet test
       - name: Teardown docker containers
         run: docker compose down
