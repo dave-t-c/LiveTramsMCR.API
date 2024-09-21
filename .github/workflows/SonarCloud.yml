@@ -27,7 +27,7 @@ jobs:
       - name: Install SonarCloud scanner
         run: dotnet tool install --global dotnet-sonarscanner
       - name: Build coverage docker image
-        run: docker build -t BuildCoverage -f BuildCoverage.Dockerfile . 
+        run: docker build -t build-coverage -f BuildCoverage.Dockerfile . 
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -35,7 +35,7 @@ jobs:
         run: |
           dotnet-sonarscanner begin /k:"dave-t-c_TfGM-API-Wrapper" /o:"dave-t-c" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=./Output/coverage.xml
           dotnet build --no-incremental
-          docker run --network=livetramsmcrapi_default --name coverage-builder -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} -v $(pwd)/Output:/Output -d BuildCoverage
+          docker run --network=livetramsmcrapi_default --name coverage-builder -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} -v $(pwd)/Output:/Output -d build-coverage
           dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       - name: Teardown docker containers
         run: docker compose down
