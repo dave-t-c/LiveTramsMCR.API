@@ -38,4 +38,4 @@ jobs:
           dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
           dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       - name: Teardown docker containers
-        run: docker-compose down
+        run: docker compose down

@@ -6,5 +6,5 @@ internal static class TestAppConfiguration
 
     internal static string TestDbConnectionString => "mongodb://foo:bar@localhost:27017";
 
-    internal static string LocalDynamoDbServiceUrl => "http://localhost:4566";
+    internal static string LocalDynamoDbServiceUrl => "http://localstack:4566";
 }

@@ -26,4 +26,4 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 10000ms
       - name: Teardown docker containers
-        run: docker-compose down
+        run: docker compose down
