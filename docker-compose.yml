@@ -20,24 +20,8 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: bar
       ME_CONFIG_MONGODB_URL: mongodb://foo:bar@mongo:27017/
     
-  dynamodb-local:
-    command: "-jar DynamoDBLocal.jar -sharedDb -inMemory"
-    image: "amazon/dynamodb-local:latest"
-    container_name: dynamodb-local
+  localstack:
+    image: localstack/localstack:latest
     ports:
-      - "8000:8000"
-    user: root
-    volumes:
-      - "./docker/dynamodb:/home/dynamodblocal/data"
-    working_dir: /home/dynamodblocal
-    
-  dynamodb-admin:
-    image: "aaronshaf/dynamodb-admin:latest"
-    depends_on:
-      - dynamodb-local
-    links:
-      - dynamodb-local
-    ports:
-      - "8001:8001"
-    environment:
-      DYNAMO_ENDPOINT: "http://dynamodb-local:8000"
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
