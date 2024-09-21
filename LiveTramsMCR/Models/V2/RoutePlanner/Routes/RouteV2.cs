@@ -54,7 +54,7 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
     ///     In the format longitude, latitude
     /// </summary>
     [DynamoDBProperty]
-    public List<List<double>> PolylineCoordinates { get; set; }
+    public List<RouteCoordinate> PolylineCoordinates { get; set; }
 
     /// <summary>
     ///     Identifies Stops between an Origin and Destination stop.
@@ -107,7 +107,7 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
     /// <param name="origin">Start of polyline</param>
     /// <param name="destination">Stop on end of polyline</param>
     /// <returns></returns>
-    public List<List<double>> GetPolylineBetweenStops(StopKeysV2 origin, StopKeysV2 destination)
+    public List<RouteCoordinate> GetPolylineBetweenStops(StopKeysV2 origin, StopKeysV2 destination)
     {
         ValidateStopsOnRoute(origin, destination);
 
@@ -118,7 +118,7 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
         var destinationStopDetail = StopsDetail[Stops.IndexOf(destination)];
         
         var polylineCoordinates = PolylineCoordinates.Select(pc =>
-            new Coordinate(pc[1], pc[0])).ToList();
+            new Coordinate(pc.Latitude, pc.Longitude)).ToList();
 
         var originStopCoordinate = new Coordinate(originStopDetail!.Latitude, originStopDetail!.Longitude);
         var destinationStopCoordinate = new Coordinate(destinationStopDetail!.Latitude, destinationStopDetail!.Longitude);
@@ -150,8 +150,8 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
     private int IdentifyClosestCoordinateIndex(Coordinate coordinate)
     {
         return PolylineCoordinates.FindIndex(coord =>
-            Math.Abs(coord[1] - coordinate.Latitude) < LocationAccuracyTolerance && 
-            Math.Abs(coord[0] - coordinate.Longitude) < LocationAccuracyTolerance
+            Math.Abs(coord.Latitude - coordinate.Latitude) < LocationAccuracyTolerance && 
+            Math.Abs(coord.Longitude - coordinate.Longitude) < LocationAccuracyTolerance
         );
     }
 
@@ -187,11 +187,7 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
                     AttributeType = ScalarAttributeType.S
                 }
             },
-            ProvisionedThroughput = new ProvisionedThroughput
-            {
-                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
-                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
-            }
+            BillingMode = BillingMode.PAY_PER_REQUEST
         };
     }
 
@@ -207,5 +203,21 @@ public class RouteV2 : IDynamoDbTable, ISynchronizationType<RouteV2>
         var filter = Builders<RouteV2>.Filter
             .Eq(route => route.Name, this.Name);
         return filter;
+    }
+
+    /// <summary>
+    /// Coordinates to build a route polyline
+    /// </summary>
+    public class RouteCoordinate
+    {
+        /// <summary>
+        /// Latitude value of the coordinate
+        /// </summary>
+        public double Latitude { get; set; }
+        
+        /// <summary>
+        /// Longitude value of the coordinate
+        /// </summary>
+        public double Longitude { get; set; }
     }
 }

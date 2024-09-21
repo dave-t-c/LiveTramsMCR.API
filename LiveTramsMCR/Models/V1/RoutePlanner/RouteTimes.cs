@@ -29,12 +29,6 @@ public class RouteTimes : IDynamoDbTable, ISynchronizationType<RouteTimes>
     /// </summary>
     [DynamoDBProperty]
     public Dictionary<string, string> Times { get; set; }
-    
-    /// <summary>
-    /// Dummy DynamoDbRangeKey
-    /// </summary>
-    [DynamoDBRangeKey]
-    public int Range { get; set; }
 
     /// <inheritdoc />
     public CreateTableRequest BuildCreateTableRequest()
@@ -48,11 +42,6 @@ public class RouteTimes : IDynamoDbTable, ISynchronizationType<RouteTimes>
                 {
                     AttributeName = nameof(Route),
                     KeyType = KeyType.HASH
-                },
-                new()
-                {
-                    AttributeName = nameof(Range),
-                    KeyType = KeyType.RANGE
                 }
             },
             AttributeDefinitions = new List<AttributeDefinition>
@@ -61,18 +50,9 @@ public class RouteTimes : IDynamoDbTable, ISynchronizationType<RouteTimes>
                 {
                     AttributeName = nameof(Route),
                     AttributeType = ScalarAttributeType.S
-                },
-                new ()
-                {
-                    AttributeName = nameof(Range),
-                    AttributeType = ScalarAttributeType.N
                 }
             },
-            ProvisionedThroughput = new ProvisionedThroughput
-            {
-                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
-                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
-            }
+            BillingMode = BillingMode.PAY_PER_REQUEST
         };
     }
 

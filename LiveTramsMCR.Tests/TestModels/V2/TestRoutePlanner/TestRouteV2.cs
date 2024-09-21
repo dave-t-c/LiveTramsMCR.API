@@ -5,7 +5,6 @@ using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
 using LiveTramsMCR.Tests.Resources.ResourceLoaders;
 using NUnit.Framework;
-using static LiveTramsMCR.Tests.Configuration.TestAppConfiguration;
 
 namespace LiveTramsMCR.Tests.TestModels.V2.TestRoutePlanner;
 
@@ -174,27 +173,22 @@ public class TestRouteV2
     public void TestGetPolylineBetweenStops()
     {
         var expectedInitialPosition = _exampleRoute?.PolylineCoordinates.First();
-        var expectedFinalPosition = new List<double>()
+        var expectedFinalPosition = new RouteV2.RouteCoordinate()
         {
-            -2.3197075925999999, 53.423642572600002
+            Latitude = 53.423642572600002, 
+            Longitude = -2.3197075925999999
         };
 
         var returnedPolyline = _exampleRoute?.GetPolylineBetweenStops(
             _exampleAltrinchamStopKeys,
             _exampleSaleStopKeys);
-        Assert.Contains(expectedInitialPosition, returnedPolyline);
-        var expectedInitialPositionIndex = returnedPolyline!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedInitialPosition![1]) < RouteCoordinateTolerance &&
-            Math.Abs(coord[0] - expectedInitialPosition![0]) < RouteCoordinateTolerance
-        );
-        Assert.AreEqual(0, expectedInitialPositionIndex);
-        
-        var expectedFinalPositionIndex = returnedPolyline!.FindIndex(coord =>
-            Math.Abs(coord[1] - expectedFinalPosition![1]) < RouteCoordinateTolerance &&
-            Math.Abs(coord[0] - expectedFinalPosition![0]) < RouteCoordinateTolerance
-        );
-        
-        Assert.AreEqual(returnedPolyline.Count -1, expectedFinalPositionIndex);
+        var actualInitialPosition = returnedPolyline!.First();
+        Assert.AreEqual(expectedInitialPosition!.Latitude, actualInitialPosition.Latitude);
+        Assert.AreEqual(expectedInitialPosition.Longitude, actualInitialPosition.Longitude);
+
+        var actualFinalPosition = returnedPolyline!.Last();
+        Assert.AreEqual(expectedFinalPosition.Latitude, actualFinalPosition.Latitude);
+        Assert.AreEqual(expectedFinalPosition.Longitude, actualFinalPosition.Longitude);
     }
 
     [Test]

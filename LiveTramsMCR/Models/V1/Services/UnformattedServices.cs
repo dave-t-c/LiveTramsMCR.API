@@ -14,11 +14,6 @@ namespace LiveTramsMCR.Models.V1.Services;
 public class UnformattedServices
 {
     /// <summary>
-    ///     ID used in TfGM API request
-    /// </summary>
-    public int Id { get; set; }
-
-    /// <summary>
     ///     Line the ID and stop belong to.
     ///     This is a single line, so if a stop is on multiple lines,
     ///     it will only show one.

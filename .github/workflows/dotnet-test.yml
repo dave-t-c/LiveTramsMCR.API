@@ -11,18 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4.0.2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
       - name: Setup .NET Core SDK 6.0
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '6.0'
       - name: Start docker containers
-        run: docker-compose up -d
+        run: docker compose up -d
       - name: Install dependencies
         run: dotnet restore
       - name: Build
@@ -30,6 +24,6 @@ jobs:
       - name: Inspect container states
         run: docker inspect -f '{{.Name}} -> {{.State.Status}}' $(docker ps -aq)
       - name: Test
-        run: dotnet test --no-restore --verbosity normal --blame-hang --blame-hang-timeout 10000ms
+        run: docker run --rm -v $(pwd):/app -w /app -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --network=livetramsmcrapi_default --name test-runner mcr.microsoft.com/dotnet/sdk:6.0 dotnet test
       - name: Teardown docker containers
-        run: docker-compose down
+        run: docker compose down

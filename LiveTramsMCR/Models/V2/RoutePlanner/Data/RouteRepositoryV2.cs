@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Amazon.DynamoDBv2.DataModel;
+using Geolocation;
 using LiveTramsMCR.Configuration;
 using LiveTramsMCR.Models.V2.RoutePlanner.Routes;
 using LiveTramsMCR.Models.V2.Stops;
@@ -38,7 +39,6 @@ public class RouteRepositoryV2 : IRouteRepositoryV2
         else
         {
             routes = _routesCollection.FindAsync(_ => true).Result.ToList();
-
         }
         
         var stops = _stopsRepositoryV2.GetAll();

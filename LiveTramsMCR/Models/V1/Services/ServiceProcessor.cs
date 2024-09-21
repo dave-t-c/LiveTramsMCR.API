@@ -9,7 +9,7 @@ namespace LiveTramsMCR.Models.V1.Services;
 /// <summary>
 ///     Processes service requests
 /// </summary>
-public class ServiceProcessor
+public class ServiceProcessor : IServiceProcessor
 {
     private readonly IRequester _requester;
     private readonly ServiceFormatter _serviceFormatter;

@@ -22,26 +22,20 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '6.0'
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4.0.2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
       - name: Start docker containers
-        run: docker-compose up -d
+        run: docker compose up -d
       - name: Install SonarCloud scanner
         run: dotnet tool install --global dotnet-sonarscanner
-      - name: Install dotnet-covereage
-        run: dotnet tool install --global dotnet-coverage
+      - name: Build coverage docker image
+        run: docker build -t build-coverage -f BuildCoverage.Dockerfile . 
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet-sonarscanner begin /k:"dave-t-c_TfGM-API-Wrapper" /o:"dave-t-c" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          dotnet-sonarscanner begin /k:"dave-t-c_TfGM-API-Wrapper" /o:"dave-t-c" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=./Output/coverage.xml
           dotnet build --no-incremental
-          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+          docker run --network=livetramsmcrapi_default --name coverage-builder -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} -v $(pwd)/Output:/Output -d build-coverage
           dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       - name: Teardown docker containers
-        run: docker-compose down
+        run: docker compose down

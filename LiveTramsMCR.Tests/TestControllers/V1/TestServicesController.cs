@@ -61,7 +61,8 @@ public class TestServicesController : BaseNunitTest
         _stopsRepository = TestHelper.GetService<IStopsRepository>();
         MongoHelper.CreateRecords(AppConfiguration.StopsCollectionName, _importedResources.ImportedStops);
         await DynamoDbTestHelper.CreateRecords(_importedResources.ImportedStops);
-        _servicesDataModel = new ServicesDataModel(_stopsRepository, _requester);
+        IServiceProcessor serviceProcessor = new ServiceProcessor(_requester, _stopsRepository);
+        _servicesDataModel = new ServicesDataModel(serviceProcessor);
 
         _serviceController = new ServiceController(_servicesDataModel);
     }

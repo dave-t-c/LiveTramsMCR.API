@@ -26,7 +26,7 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
     /// <summary>
     ///     Name of the stop, such as Piccadilly
     /// </summary>
-    [DynamoDBRangeKey]
+    [DynamoDBProperty]
     public string StopName { get; set; }
 
     /// <summary>
@@ -51,6 +51,7 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
     /// <summary>
     ///     Stop Latitude. This may be different to that shown by apple or google maps.
     /// </summary>
+    [DynamoDBProperty]
     public double Latitude { get; set; }
 
     /// <summary>
@@ -174,11 +175,6 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
                 {
                     AttributeName = nameof(Tlaref),
                     KeyType = KeyType.HASH
-                },
-                new()
-                {
-                    AttributeName = nameof(StopName),
-                    KeyType = KeyType.RANGE
                 }
             },
             AttributeDefinitions = new List<AttributeDefinition>
@@ -187,18 +183,9 @@ public sealed class StopV2 : IEquatable<StopV2>, IEqualityComparer<StopV2>, IDyn
                 {
                     AttributeName = nameof(Tlaref),
                     AttributeType = ScalarAttributeType.S
-                },
-                new()
-                {
-                    AttributeName = nameof(StopName),
-                    AttributeType = ScalarAttributeType.S
                 }
             },
-            ProvisionedThroughput = new ProvisionedThroughput
-            {
-                ReadCapacityUnits = AppConfiguration.DefaultReadCapacityUnits,
-                WriteCapacityUnits = AppConfiguration.DefaultWriteCapacityUnits
-            }
+            BillingMode = BillingMode.PAY_PER_REQUEST
         };
     }
 }
